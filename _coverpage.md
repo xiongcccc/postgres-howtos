@@ -11,4 +11,4 @@
 - 不仅是数据库，更是经验的积累。 
 
 [GitHub](https://github.com/xiongcccc/postgres-howto)
-[Get Started](#docsify)
+[Get Started](README.md)
