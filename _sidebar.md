@@ -40,30 +40,30 @@
    * [How to enable data checksums without downtime](./docs/37.md)
    * [How to NOT get screwed as a DBA (DBRE)](./docs/38.md)
    * [How to break a database, Part 1: How to corrupt](./docs/39.md)
-   * How to break a database, Part 2: Simulate infamous transaction ID wraparound
-   * How to break a database, Part 3: Harmful workloads
-   * How to analyze heavyweight locks, part 2: Lock trees (a.k.a. "lock queues", "wait queues", "blocking chains")
-   * How to format SQL (SQL style guide)
-   * How to monitor transaction ID wraparound risks
-   * How to monitor xmin horizon to prevent XID/MultiXID wraparound and high bloat
-   * How to deal with bloat
-   * How to install Postgres 16 with plpython3u: Recipes for macOS, Ubuntu, Debian, CentOS, Docker
-   * How to generate fake data
-   * How to use variables in psql scripts
-   * Pre- and post-steps for benchmark iterations
-   * Learn how to work with schema metadata by spying after psql
-   * How to reduce WAL generation rates
-   * Index maintenance
-   * How to check btree indexes for corruption (pg_amcheck)
-   * How to drop a column
-   * How to make the non-production Postgres planner behave like in production
-   * How to convert a physical replica to logical
-   * How to use Docker to run Postgres
-   * psql tuning
-   * How to add a column
-   * How to create an index, part 1
-   * How to create an index, part 2
-   * How to help others
+   * [How to break a database, Part 2: Simulate infamous transaction ID wraparound](./docs/40.md)
+   * [How to break a database, Part 3: Harmful workloads](./docs/41.md)
+   * [How to analyze heavyweight locks, part 2: Lock trees (a.k.a. "lock queues", "wait queues", "blocking chains")](./docs/42.md)
+   * [How to format SQL (SQL style guide)](./docs/43.md)
+   * [How to monitor transaction ID wraparound risks](./docs/44.md)
+   * [How to monitor xmin horizon to prevent XID/MultiXID wraparound and high bloat](./docs/45.md)
+   * [How to deal with bloat](./docs/46.md)
+   * [How to install Postgres 16 with plpython3u: Recipes for macOS, Ubuntu, Debian, CentOS, Docker](./docs/47.md)
+   * [How to generate fake data](./docs/48.md)
+   * [How to use variables in psql scripts](./docs/49.md)
+   * [Pre- and post-steps for benchmark iterations](./docs/50.md)
+   * [Learn how to work with schema metadata by spying after psql](./docs/51.md)
+   * [How to reduce WAL generation rates](./docs/52.md)
+   * [Index maintenance](./docs/53.md)
+   * [How to check btree indexes for corruption (pg_amcheck)](./docs/54.md)
+   * [How to drop a column](./docs/55.md)
+   * [How to make the non-production Postgres planner behave like in production](./docs/56.md)
+   * [How to convert a physical replica to logical](./docs/57.md)
+   * [How to use Docker to run Postgres](./docs/58.md)
+   * [psql tuning](./docs/59.md)
+   * [How to add a column](./docs/60.md)
+   * [How to create an index, part 1](./docs/61.md)
+   * [How to create an index, part 2](./docs/62.md)
+   * [How to help others](./docs/63.md)
 
 
 
