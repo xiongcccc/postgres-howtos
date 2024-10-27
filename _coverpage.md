@@ -10,5 +10,5 @@
 - 从技巧到最佳实践，让复杂变得简单 
 - 不仅是数据库，更是经验的积累。 
 
-[GitHub](https://github.com/xiongcccc/howto_chinese)
+[GitHub](https://github.com/xiongcccc/postgres-howto)
 [Get Started](#docsify)
