@@ -26,20 +26,20 @@
    * [How to use OpenAI APIs right from Postgres to implement semantic search and GPT chat](./docs/23.md)
    * [How to work with metadata](./docs/24.md)
    * [How to quit from psql](./docs/25.md)
-   * How to check btree indexes for corruption
-   * How to compile Postgres on Ubuntu 22.04
-   * How to work with arrays, part 1
-   * How to work with arrays, part 2
-   * How to deal with long-running transactions (OLTP)
-   * How to troubleshoot a growing pg_wal directory
-   * How to speed up bulk load
-   * How to redefine a PK without downtime
-   * How to perform initial / rough Postgres tuning
-   * How to use subtransactions in Postgres
-   * "Find-or-insert" using a single query
-   * How to enable data checksums without downtime
-   * How to NOT get screwed as a DBA (DBRE)
-   * How to break a database, Part 1: How to corrupt
+   * [How to check btree indexes for corruption](./docs/26.md)
+   * [How to compile Postgres on Ubuntu 22.04](./docs/27.md)
+   * [How to work with arrays, part 1](./docs/28.md)
+   * [How to work with arrays, part 2](./docs/29.md)
+   * [How to deal with long-running transactions (OLTP)](./docs/30.md)
+   * [How to troubleshoot a growing pg_wal directory](./docs/31.md)
+   * [How to speed up bulk load](./docs/32.md)
+   * [How to redefine a PK without downtime](./docs/33.md)
+   * [How to perform initial / rough Postgres tuning](./docs/34.md)
+   * [How to use subtransactions in Postgres](./docs/35.md)
+   * ["Find-or-insert" using a single query](./docs/36.md)
+   * [How to enable data checksums without downtime](./docs/37.md)
+   * [How to NOT get screwed as a DBA (DBRE)](./docs/38.md)
+   * [How to break a database, Part 1: How to corrupt](./docs/39.md)
    * How to break a database, Part 2: Simulate infamous transaction ID wraparound
    * How to break a database, Part 3: Harmful workloads
    * How to analyze heavyweight locks, part 2: Lock trees (a.k.a. "lock queues", "wait queues", "blocking chains")
