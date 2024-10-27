@@ -64,6 +64,3 @@
    * [How to create an index, part 1](./docs/61.md)
    * [How to create an index, part 2](./docs/62.md)
    * [How to help others](./docs/63.md)
-
-- 面试与资料汇总
-  - [说件正事：postgres-howtos 中文系列](https://mp.weixin.qq.com/s?__biz=MzUyOTAyMzMyNg==&mid=2247492089&idx=1&sn=c6faf9dad2dc01c652b009eaab863cd7&chksm=fa65c9c8cd1240deb21234068c0e8e04d4bdb9c7a42c4db7c3882ed4a9a1a246d0a7f37b5003&token=492160454&lang=zh_CN#rd)
