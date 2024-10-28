@@ -65,3 +65,4 @@
    * [How to create an index, part 2](./docs/62.md)
    * [How to help others](./docs/63.md)
    * [How to use UUID](./docs/64.md)
+   * [UUID v7 and partitioning (TimescaleDB)](./docs/65.md)
