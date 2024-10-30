@@ -66,3 +66,4 @@
    * [How to help others](./docs/63.md)
    * [How to use UUID](./docs/64.md)
    * [UUID v7 and partitioning (TimescaleDB)](./docs/65.md)
+   * [How many tuples can be inserted in a page](./docs/66.md)
