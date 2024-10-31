@@ -68,3 +68,4 @@
    * [UUID v7 and partitioning (TimescaleDB)](./docs/65.md)
    * [How many tuples can be inserted in a page](./docs/66.md)
    * [Autovacuum "queue" and progress](./docs/67.md)
+   * [psql shortcuts](./docs/68.md)
