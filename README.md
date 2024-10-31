@@ -18,6 +18,8 @@ This project has been started by [@NikolayS]() on 2023-09-26 https://twitter.com
 
 一个非常棒的学习资源，都是关于 PostgreSQL 的经验、技巧与最佳实践等。我会不定期翻译一篇，并添加笔者自己的理解。
 
+☎ **阅读过程中，如果各位读者发现有任何 issue，欢迎提供你们的反馈。**
+
 觉得项目不错，不妨点个 ⭐️ 再走 ~
 
 # 关于我
