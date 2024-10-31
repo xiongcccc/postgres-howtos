@@ -69,3 +69,4 @@
    * [How many tuples can be inserted in a page](./docs/66.md)
    * [Autovacuum "queue" and progress](./docs/67.md)
    * [psql shortcuts](./docs/68.md)
+   * [How to add a CHECK constraint without downtime](./docs/69.md)
