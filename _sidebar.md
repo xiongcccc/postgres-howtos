@@ -70,3 +70,4 @@
    * [Autovacuum "queue" and progress](./docs/67.md)
    * [psql shortcuts](./docs/68.md)
    * [How to add a CHECK constraint without downtime](./docs/69.md)
+   * [How to add a foreign key](./docs/70.md)
