@@ -71,3 +71,5 @@
    * [psql shortcuts](./docs/68.md)
    * [How to add a CHECK constraint without downtime](./docs/69.md)
    * [How to add a foreign key](./docs/70.md)
+   * [How to understand what's blocking DDL](./docs/71.md)
+   * [How to remove a foreign key](./docs/72.md)
