@@ -10,6 +10,7 @@
     content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
   <link rel="stylesheet" href="./styles/custom.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css">
 </head>
 
 <body>
@@ -25,6 +26,7 @@
       homepage: 'README.md',
       coverpage: true,
       loadSidebar: true,
+      loadNavbar: true,
       auto2top: true,//切换页面后是否自动跳转到页面顶部
       //全文搜索
       search: {
@@ -35,8 +37,28 @@
         // 搜索标题的最大程级, 1 - 6
         depth: 3,
       },
-    }
-  </script>
+      pagination: {
+    	previousText: '上一章节',
+    	// or
+    	nextText: {
+      	  '/en/': 'NEXT',
+          '/': '下一章节'
+    	},
+    	crossChapter: true,
+    	crossChapterText: true,
+      },
+      gitalk: {
+    	clientID: 'Ov23liQBwmxWjc0oPeFw',
+    	clientSecret: 'c71a6283d1190656fe158e02b16f1ca9d08e3e61',
+    	repo: 'gitalk-comment',
+    	owner: 'xiongcccc',
+    	admin: ['xiongcccc']
+      },
+}
+</script>
+
+  <script src="//unpkg.com/docsify/lib/plugins/gitalk.min.js"></script>
+  <script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
   <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
   <!--Java代码高亮-->
   <script src="//unpkg.com/prismjs/components/prism-java.js"></script>
@@ -48,6 +70,13 @@
   <script src="//unpkg.com/docsify/lib/plugins/zoom-image.js"></script>
   <!-- 字数统计 -->
   <script src="//unpkg.com/docsify-count/dist/countable.js"></script>
+  <!-- 分页 -->
+  <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <!-- Gittalk -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://unpkg.com/docsify-gitalk@1.0.0/dist/docsify-gitalk.min.js"></script>
+
 </body>
 
 </html>
