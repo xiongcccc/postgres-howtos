@@ -24,7 +24,7 @@ This project has been started by [@NikolayS]() on 2023-09-26 https://twitter.com
 
 # 关于我
 
-Hi all, I'm an experienced PostgreSQL enthusiast and currently working on something related to the PostgreSQL ecosystem. I will keep sharing my experience about PostgreSQL. 
+Hi all, I'm an experienced PostgreSQL enthusiast and currently working on something related to the PostgreSQL and Greenplum. I will keep sharing my experience about PostgreSQL. 
 
 Feel free to contact me：
 
