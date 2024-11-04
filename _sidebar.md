@@ -74,3 +74,4 @@
    * [How to understand what's blocking DDL](./docs/71.md)
    * [How to remove a foreign key](./docs/72.md)
    * [How to analyze heavyweight locks, part 3. Persistent monitoring](./docs/73.md)
+   * [How to flush caches (OS page cache and Postgres buffer pool)](./docs/74.md)
