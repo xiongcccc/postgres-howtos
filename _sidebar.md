@@ -76,3 +76,4 @@
    * [How to analyze heavyweight locks, part 3. Persistent monitoring](./docs/73.md)
    * [How to flush caches (OS page cache and Postgres buffer pool)](./docs/74.md)
    * [How to find unused indexes](./docs/75.md)
+   * [How to find redundant indexes](./docs/76.md)
