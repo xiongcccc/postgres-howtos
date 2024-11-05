@@ -77,3 +77,4 @@
    * [How to flush caches (OS page cache and Postgres buffer pool)](./docs/74.md)
    * [How to find unused indexes](./docs/75.md)
    * [How to find redundant indexes](./docs/76.md)
+   * [Postgres major upgrade without any downtime for a very large cluster running under heavy load](./docs/77.md)
