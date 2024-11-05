@@ -78,3 +78,4 @@
    * [How to find unused indexes](./docs/75.md)
    * [How to find redundant indexes](./docs/76.md)
    * [Postgres major upgrade without any downtime for a very large cluster running under heavy load](./docs/77.md)
+   * [How to estimate the YoY growth of a very large table using row creation timestamps and the planner statistics](./docs/78.md)
