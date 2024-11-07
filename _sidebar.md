@@ -80,3 +80,4 @@
    * [Postgres major upgrade without any downtime for a very large cluster running under heavy load](./docs/77.md)
    * [How to estimate the YoY growth of a very large table using row creation timestamps and the planner statistics](./docs/78.md)
    * [How to rebuild many indexes using many backends avoiding deadlocks](./docs/79.md)
+   * [How to find int4 PKs with out-of-range risks in a large database](./docs/80.md)
