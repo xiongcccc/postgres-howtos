@@ -82,3 +82,4 @@
    * [How to rebuild many indexes using many backends avoiding deadlocks](./docs/79.md)
    * [How to find int4 PKs with out-of-range risks in a large database](./docs/80.md)
    * [How to plot graphs right in psql on macOS (iTerm2)](./docs/81.md)
+   * [How to draw frost patterns using SQL](./docs/82.md) 
