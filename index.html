@@ -11,6 +11,9 @@
   <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
   <link rel="stylesheet" href="./styles/custom.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css" />
+  <!-- stylesheets -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/dark.css" disabled>
 </head>
 
 <body>
@@ -58,7 +61,13 @@
             // facebook-like distraction free mode
             distractionFreeMode: false,
         }
-    },
+      },
+     switchLightDarkMode: {
+        useSwitchMode: true,
+        top: 130,
+        right: 26,
+        svgColor: '#7d7b75',
+     },
 }
 </script>
 
@@ -79,6 +88,9 @@
   <!-- gitalk --> 
   <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/pikapikapikaori/docsify-gitalk-with-footer@latest/src/gitalkWithFooter.js"></script>
+
+  <!-- docsify-simple-dark-mode plugin -->
+  <script src="https://cdn.jsdelivr.net/gh/pikapikapikaori/docsify-simple-dark-mode@latest/src/switchLightDarkMode.js"></script>
 
 </body>
 
