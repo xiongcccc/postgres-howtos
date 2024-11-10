@@ -87,3 +87,4 @@
    * [How to find the best order of columns to save on storage ("Column Tetris")](./docs/84.md)
    * [How to quickly check data type and storage size of a value](./docs/85.md)
    * [How to make "\e" work in psql on a new machine ("editor/nano/vi not found")](./docs/86.md)
+   * [How to change ownership of all objects in a database](./docs/87.md)
