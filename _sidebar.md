@@ -85,3 +85,4 @@
    * [How to draw frost patterns using SQL](./docs/82.md)
    * [How to change a Postgres parameter](./docs/83.md)
    * [How to find the best order of columns to save on storage ("Column Tetris")](./docs/84.md)
+   * [How to quickly check data type and storage size of a value](./docs/85.md)
