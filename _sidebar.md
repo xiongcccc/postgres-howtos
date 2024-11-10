@@ -84,3 +84,4 @@
    * [How to plot graphs right in psql on macOS (iTerm2)](./docs/81.md)
    * [How to draw frost patterns using SQL](./docs/82.md)
    * [How to change a Postgres parameter](./docs/83.md)
+   * [How to find the best order of columns to save on storage ("Column Tetris")](./docs/84.md)
