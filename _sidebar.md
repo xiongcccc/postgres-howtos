@@ -89,3 +89,4 @@
    * [How to make "\e" work in psql on a new machine ("editor/nano/vi not found")](./docs/86.md)
    * [How to change ownership of all objects in a database](./docs/87.md)
    * [How to tune Linux parameters for OLTP Postgres](./docs/88.md)
+   * [Rough configuration tuning (80/20 rule; OLTP)](./docs/89.md)
