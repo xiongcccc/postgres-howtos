@@ -20,7 +20,7 @@ This project has been started by [@NikolayS]() on 2023-09-26 https://twitter.com
 
 ☎ **阅读过程中，如果各位读者发现有任何 issue，欢迎提供你们的反馈。**
 
-觉得项目不错，不妨点个 ⭐️ 再走 ~
+觉得项目不错，不妨点个 ⭐️ 再走 ~ :smile: :laughing: :blush: :smiley: :relaxed: :smirk: :heart_eyes: :kissing_heart: :kissing_closed_eyes:
 
 # 关于我
 

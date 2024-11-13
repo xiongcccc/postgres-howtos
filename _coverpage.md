@@ -1,7 +1,7 @@
 <!-- _coverpage.md -->
 
 <p align="center">
-  <img src="./images/elephant.webp" alt="Logo" width="400" height="400">
+  <img src="./images/logo.png" alt="Logo" width="400" height="300">
 </p>
 
 
@@ -14,3 +14,4 @@
 [GitHub](https://github.com/xiongcccc)
 [Get Started](README.md)
 
+![color](#ffffff)

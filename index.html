@@ -17,10 +17,49 @@
 </head>
 
 <body>
-  <div id="app"></div>
+  <div id="app">别急,你也即将成为一名PostgreSQL高手!</div>
   <!-- docsify-edit-on-github -->
   <script src="//unpkg.com/docsify-edit-on-github/index.js"></script>
+
+  <!-- Buy me a coffee 按钮 -->
+  <div id="coffee-btn" style="position: fixed; top: 40px; right: 80px; z-index: 1000;">
+      <button onclick="showImage()"> ☕️ Buy me a coffee</button>
+  </div>
+
+
+  <!-- 弹出图片的对话框 -->
+  <div id="imageModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center;">
+      <div style="position: relative; text-align: center; color: white; display: flex; flex-direction: column; align-items: center;">
+          <!-- 缩小图片的尺寸 -->
+          <img src="images/wechat_pay.png" style="width: 400px; height: auto;" alt="Buy me a coffee">
+        
+          <!-- 中心显示的文字 -->
+          <p style="margin-top: 20px; font-size: 18px; text-align: center;">维护不易,多谢你的资瓷! 一分也是爱 ❤️</p>
+        
+          <!-- 点击关闭按钮关闭图片 -->
+          <span onclick="closeImage()" style="position: absolute; top: 10px; right: 10px; cursor: pointer; font-size: 24px; color: white;">&times;</span>
+      </div>
+  </div>
   <script>
+
+    <!-- buy me a coffee -->
+    // 显示图片对话框
+    function showImage() {
+        document.getElementById("imageModal").style.display = "flex";
+    }
+    
+    // 关闭图片对话框
+    function closeImage() {
+        document.getElementById("imageModal").style.display = "none";
+    }
+    
+    // 监听点击对话框外部区域关闭图片
+    window.onclick = function(event) {
+        var modal = document.getElementById("imageModal");
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
     window.$docsify = {
       name: 'postgres-howto in chinese',
       repo: 'https://github.com/xiongcccc',
@@ -31,6 +70,7 @@
       loadSidebar: true,
       loadNavbar: true,
       auto2top: true,//切换页面后是否自动跳转到页面顶部
+      onlyCover: true,
       //全文搜索
       search: {
         //maxAge: 86400000, // 过期时间，单位毫秒，默认一天
