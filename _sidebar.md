@@ -90,3 +90,4 @@
    * [How to change ownership of all objects in a database](./docs/87.md)
    * [How to tune Linux parameters for OLTP Postgres](./docs/88.md)
    * [Rough configuration tuning (80/20 rule; OLTP)](./docs/89.md)
+   * [How to use lib_pgquery in shell to normalize and match queries from various sources](./docs/90.md)
