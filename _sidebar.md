@@ -92,4 +92,5 @@
    * [89. Rough configuration tuning (80/20 rule; OLTP)](./docs/89.md)
    * [90. How to use lib_pgquery in shell to normalize and match queries from various sources](./docs/90.md)
    * [91. How to format text output in psql scripts](./docs/91.md)
+   * [92. How to tune work_mem](./docs/92.md)
 
