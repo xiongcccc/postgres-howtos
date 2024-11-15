@@ -93,4 +93,7 @@
    * [90. How to use lib_pgquery in shell to normalize and match queries from various sources](./docs/90.md)
    * [91. How to format text output in psql scripts](./docs/91.md)
    * [92. How to tune work_mem](./docs/92.md)
+   * [93. How to troubleshoot streaming replication lag](./docs/93.md)
+   * [后记](./docs/94.md)
 
+- 🎉 恭喜你，在精进之路上又进一步
