@@ -1,6 +1,5 @@
 
- * 日积月累，精通 PostgreSQL 不再遥远。  
-
+ * **日积月累，精通 PostgreSQL 不再遥远。**  
    * [1. EXPLAIN ANALYZE or EXPLAIN (ANALYZE, BUFFERS)](./docs/1.md)
    * [2. How to troubleshoot and speed up Postgres stop and restart attempts](./docs/2.md)
    * [3. How to troubleshoot long Postgres startup](./docs/3.md)
@@ -96,4 +95,5 @@
    * [93. How to troubleshoot streaming replication lag](./docs/93.md)
    * [后记](./docs/94.md)
 
-- 🎉 恭喜你，在精进之路上又进一步
+- 🎉 **恭喜你，在精进之路上又前进了一大步**
+
