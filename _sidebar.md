@@ -95,5 +95,3 @@
    * [93. How to troubleshoot streaming replication lag](./docs/93.md)
    * [后记](./docs/94.md)
 
-- 🎉 **恭喜你，在精进之路上又前进了一大步**
-
