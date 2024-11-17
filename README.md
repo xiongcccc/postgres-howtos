@@ -26,12 +26,16 @@ This project has been started by [@NikolayS]() on 2023-09-26 https://twitter.com
 
 Hi all, I'm an experienced PostgreSQL enthusiast and currently working on something related to the PostgreSQL and Greenplum. I will keep sharing my experience about PostgreSQL. 
 
+<p>
+  <img src="./images/contactme.png" alt="Logo" width="650" height="420">
+</p>
+
 Feel free to contact me：
 
 1. 微信：_xiongcc
-2. 邮箱：xiongcc_1994@126.com/xiongcc_1994@outlook.com
+2. 邮箱：xiongcc_1994&#8203;@126.com / xiongcc_1994&#8203;@outlook.com
 3. 公众号：PostgreSQL学徒
-4. Github：https://github.com/xiongcccc
+4. Github：https\://github\.com/xiongcccc
 
 各位好，各位可以喊我 CC，我是PostgreSQL ACE/MVP，杰出新人，CSDN 社区之星，PostgreSQL 学徒公众号主理人，亲身保障过第七次人口普查等重大项目，精通 PostgreSQL 体系架构与运行原理，实战经验丰富。目前正在从事 PostgreSQL 与 Greenplum 相关工作。
 
