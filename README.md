@@ -32,6 +32,7 @@ Hi all, I'm an experienced PostgreSQL enthusiast and currently working on someth
 
 
 
+
 Feel free to contact me：
 
 1. 微信：_xiongcc
@@ -41,3 +42,14 @@ Feel free to contact me：
 
 各位好，各位可以喊我 CC，我是PostgreSQL ACE/MVP，杰出新人，CSDN 社区之星，PostgreSQL 学徒公众号主理人，亲身保障过第七次人口普查等重大项目，精通 PostgreSQL 体系架构与运行原理，实战经验丰富。目前正在从事 PostgreSQL 与 Greenplum 相关工作。
 
+# 注意事项
+
+阅读过程中如果有什么问题，可以加群沟通 (群聊二维码不定时更新，如果过期，请狠狠地催译者 👋)
+
+<div style="overflow: hidden;">
+  <img src="./images/wechatgroup.jpeg" alt="Logo" width="280" height="420" style="float: left; margin-right: 10px;">
+  <div style="overflow: hidden; text-align: center;">
+  </div>
+</div>
+
+现在，可以开启你的旅程了！Enjoy it ~~ 😉🥳🥰🤒😃😘😆
