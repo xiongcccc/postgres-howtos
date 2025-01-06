@@ -27,8 +27,9 @@ This project has been started by [@NikolayS]() on 2023-09-26 https://twitter.com
 Hi all, I'm an experienced PostgreSQL enthusiast and currently working on something related to the PostgreSQL and Greenplum. I will keep sharing my experience about PostgreSQL. 
 
 <p>
-  <img src="./images/contactme.png" alt="Logo" width="500" height="300">
+  <img src="./images/contactme.png" alt="Logo" width="400" height="250">
 </p>
+
 
 
 
