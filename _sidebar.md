@@ -93,5 +93,6 @@
    * [91. How to format text output in psql scripts](./docs/91.md)
    * [92. How to tune work_mem](./docs/92.md)
    * [93. How to troubleshoot streaming replication lag](./docs/93.md)
-   * [后记](./docs/94.md)
+   * [94. How to run ANALYZE (to collect statistics)](./docs/94.md)
+   * [后记](./docs/95.md)
 
