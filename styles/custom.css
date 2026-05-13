@@ -58,8 +58,8 @@ a {
 .app-nav {
   align-items: center;
   display: flex;
-  gap: 18px;
-  margin: 18px 96px 0 0;
+  gap: 28px;
+  margin: 22px 136px 0 0;
 }
 
 .app-nav a {
@@ -68,6 +68,7 @@ a {
   font-weight: 600;
   margin: 0;
   padding: 4px 0;
+  white-space: nowrap;
 }
 
 .app-nav a:hover {
@@ -658,8 +659,8 @@ body.dark .cover-logo img {
   }
 
   .app-nav {
-    gap: 12px;
-    margin-right: 72px;
+    gap: 18px;
+    margin-right: 88px;
   }
 
   .coffee-btn {

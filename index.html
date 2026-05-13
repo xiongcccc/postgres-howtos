@@ -73,14 +73,36 @@
       });
     })();
 
+    function toDocsifyRoute(href) {
+      if (!href || href.indexOf('http://') === 0 || href.indexOf('https://') === 0 || href.indexOf('mailto:') === 0) {
+        return '';
+      }
+
+      var cleanHref = href.split('#')[0].split('?')[0];
+      cleanHref = cleanHref.replace(/^\.\//, '').replace(/^\//, '');
+
+      if (cleanHref === 'README.md') {
+        return '/README';
+      }
+
+      if (cleanHref.indexOf('docs/') === 0 && cleanHref.slice(-3) === '.md') {
+        return '/' + cleanHref.slice(0, -3);
+      }
+
+      return '';
+    }
+
     document.addEventListener('click', function (event) {
-      var link = event.target.closest('a[data-docs-route]');
+      var link = event.target.closest('a');
       if (!link) {
         return;
       }
 
-      event.preventDefault();
-      window.location.hash = link.getAttribute('data-docs-route');
+      var route = link.getAttribute('data-docs-route') || toDocsifyRoute(link.getAttribute('href'));
+      if (route) {
+        event.preventDefault();
+        window.location.hash = route;
+      }
     }, true);
 
     window.$docsify = {

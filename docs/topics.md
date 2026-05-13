@@ -39,16 +39,16 @@
 
 先建立正确的分析习惯，再从全局负载逐步定位到具体 SQL。
 
-- [EXPLAIN ANALYZE or EXPLAIN (ANALYZE, BUFFERS)](./1.md)
-- [How to work with pg_stat_statements, part 1](./5.md)
-- [How to work with pg_stat_statements, part 2](./6.md)
-- [How to work with pg_stat_statements, part 3](./7.md)
-- [How to troubleshoot Postgres performance using FlameGraphs and eBPF (or perf)](./10.md)
-- [Ad-hoc monitoring](./11.md)
-- [How to find query examples for problematic pg_stat_statements records](./12.md)
-- [How to benchmark](./13.md)
-- [How to decide when a query is too slow and needs optimization](./14.md)
-- [How to tune work_mem](./92.md)
+- [EXPLAIN ANALYZE or EXPLAIN (ANALYZE, BUFFERS)](./docs/1.md)
+- [How to work with pg_stat_statements, part 1](./docs/5.md)
+- [How to work with pg_stat_statements, part 2](./docs/6.md)
+- [How to work with pg_stat_statements, part 3](./docs/7.md)
+- [How to troubleshoot Postgres performance using FlameGraphs and eBPF (or perf)](./docs/10.md)
+- [Ad-hoc monitoring](./docs/11.md)
+- [How to find query examples for problematic pg_stat_statements records](./docs/12.md)
+- [How to benchmark](./docs/13.md)
+- [How to decide when a query is too slow and needs optimization](./docs/14.md)
+- [How to tune work_mem](./docs/92.md)
 
 <span id="topic-indexes"></span>
 
@@ -56,16 +56,16 @@
 
 索引不是越多越好。这里关注创建、维护、清理和风险控制。
 
-- [How to monitor CREATE INDEX / REINDEX progress in Postgres 12+](./15.md)
-- [Over-indexing](./18.md)
-- [Index maintenance](./53.md)
-- [How to check btree indexes for corruption](./26.md)
-- [How to check btree indexes for corruption (pg_amcheck)](./54.md)
-- [How to create an index, part 1](./61.md)
-- [How to create an index, part 2](./62.md)
-- [How to find unused indexes](./75.md)
-- [How to find redundant indexes](./76.md)
-- [How to rebuild many indexes using many backends avoiding deadlocks](./79.md)
+- [How to monitor CREATE INDEX / REINDEX progress in Postgres 12+](./docs/15.md)
+- [Over-indexing](./docs/18.md)
+- [Index maintenance](./docs/53.md)
+- [How to check btree indexes for corruption](./docs/26.md)
+- [How to check btree indexes for corruption (pg_amcheck)](./docs/54.md)
+- [How to create an index, part 1](./docs/61.md)
+- [How to create an index, part 2](./docs/62.md)
+- [How to find unused indexes](./docs/75.md)
+- [How to find redundant indexes](./docs/76.md)
+- [How to rebuild many indexes using many backends avoiding deadlocks](./docs/79.md)
 
 <span id="topic-locks"></span>
 
@@ -73,20 +73,20 @@
 
 生产环境里的 DDL 和长事务，重点是降低锁等待、避免阻塞链扩大。
 
-- [How to analyze heavyweight locks, part 1](./22.md)
-- [How to deal with long-running transactions (OLTP)](./30.md)
-- [How to redefine a PK without downtime](./33.md)
-- [How to use subtransactions in Postgres](./35.md)
-- ["Find-or-insert" using a single query](./36.md)
-- [How to enable data checksums without downtime](./37.md)
-- [How to analyze heavyweight locks, part 2](./42.md)
-- [How to drop a column](./55.md)
-- [How to add a column](./60.md)
-- [How to add a CHECK constraint without downtime](./69.md)
-- [How to add a foreign key](./70.md)
-- [How to understand what's blocking DDL](./71.md)
-- [How to remove a foreign key](./72.md)
-- [How to analyze heavyweight locks, part 3. Persistent monitoring](./73.md)
+- [How to analyze heavyweight locks, part 1](./docs/22.md)
+- [How to deal with long-running transactions (OLTP)](./docs/30.md)
+- [How to redefine a PK without downtime](./docs/33.md)
+- [How to use subtransactions in Postgres](./docs/35.md)
+- ["Find-or-insert" using a single query](./docs/36.md)
+- [How to enable data checksums without downtime](./docs/37.md)
+- [How to analyze heavyweight locks, part 2](./docs/42.md)
+- [How to drop a column](./docs/55.md)
+- [How to add a column](./docs/60.md)
+- [How to add a CHECK constraint without downtime](./docs/69.md)
+- [How to add a foreign key](./docs/70.md)
+- [How to understand what's blocking DDL](./docs/71.md)
+- [How to remove a foreign key](./docs/72.md)
+- [How to analyze heavyweight locks, part 3. Persistent monitoring](./docs/73.md)
 
 <span id="topic-storage"></span>
 
@@ -94,20 +94,20 @@
 
 理解数据如何落盘、WAL 如何增长、Vacuum 如何工作，是排查很多线上问题的基础。
 
-- [Understanding how sparsely tuples are stored in a table](./4.md)
-- [How to understand LSN values and WAL filenames](./9.md)
-- [How to get into trouble using some Postgres features](./16.md)
-- [How to troubleshoot a growing pg_wal directory](./31.md)
-- [How to monitor transaction ID wraparound risks](./44.md)
-- [How to monitor xmin horizon to prevent XID/MultiXID wraparound and high bloat](./45.md)
-- [How to deal with bloat](./46.md)
-- [How to reduce WAL generation rates](./52.md)
-- [How many tuples can be inserted in a page](./66.md)
-- [Autovacuum "queue" and progress](./67.md)
-- [How to flush caches (OS page cache and Postgres buffer pool)](./74.md)
-- [How to find int4 PKs with out-of-range risks in a large database](./80.md)
-- [How to find the best order of columns to save on storage ("Column Tetris")](./84.md)
-- [How to quickly check data type and storage size of a value](./85.md)
+- [Understanding how sparsely tuples are stored in a table](./docs/4.md)
+- [How to understand LSN values and WAL filenames](./docs/9.md)
+- [How to get into trouble using some Postgres features](./docs/16.md)
+- [How to troubleshoot a growing pg_wal directory](./docs/31.md)
+- [How to monitor transaction ID wraparound risks](./docs/44.md)
+- [How to monitor xmin horizon to prevent XID/MultiXID wraparound and high bloat](./docs/45.md)
+- [How to deal with bloat](./docs/46.md)
+- [How to reduce WAL generation rates](./docs/52.md)
+- [How many tuples can be inserted in a page](./docs/66.md)
+- [Autovacuum "queue" and progress](./docs/67.md)
+- [How to flush caches (OS page cache and Postgres buffer pool)](./docs/74.md)
+- [How to find int4 PKs with out-of-range risks in a large database](./docs/80.md)
+- [How to find the best order of columns to save on storage ("Column Tetris")](./docs/84.md)
+- [How to quickly check data type and storage size of a value](./docs/85.md)
 
 <span id="topic-ops"></span>
 
@@ -115,20 +115,20 @@
 
 面向日常 DBA 工作流：启动停止、备份恢复、psql、Docker、Linux 参数和脚本化处理。
 
-- [How to troubleshoot and speed up Postgres stop and restart attempts](./2.md)
-- [How to troubleshoot long Postgres startup](./3.md)
-- [How to speed up pg_dump when dumping large databases](./8.md)
-- [How to import CSV to Postgres](./19.md)
-- [How to use pg_restore](./20.md)
-- [How to compile Postgres on Ubuntu 22.04](./27.md)
-- [How to perform initial / rough Postgres tuning](./34.md)
-- [How to install Postgres 16 with plpython3u](./47.md)
-- [How to use Docker to run Postgres](./58.md)
-- [psql tuning](./59.md)
-- [psql shortcuts](./68.md)
-- [How to tune Linux parameters for OLTP Postgres](./88.md)
-- [How to use lib_pgquery in shell to normalize and match queries from various sources](./90.md)
-- [How to format text output in psql scripts](./91.md)
+- [How to troubleshoot and speed up Postgres stop and restart attempts](./docs/2.md)
+- [How to troubleshoot long Postgres startup](./docs/3.md)
+- [How to speed up pg_dump when dumping large databases](./docs/8.md)
+- [How to import CSV to Postgres](./docs/19.md)
+- [How to use pg_restore](./docs/20.md)
+- [How to compile Postgres on Ubuntu 22.04](./docs/27.md)
+- [How to perform initial / rough Postgres tuning](./docs/34.md)
+- [How to install Postgres 16 with plpython3u](./docs/47.md)
+- [How to use Docker to run Postgres](./docs/58.md)
+- [psql tuning](./docs/59.md)
+- [psql shortcuts](./docs/68.md)
+- [How to tune Linux parameters for OLTP Postgres](./docs/88.md)
+- [How to use lib_pgquery in shell to normalize and match queries from various sources](./docs/90.md)
+- [How to format text output in psql scripts](./docs/91.md)
 
 <span id="topic-sql"></span>
 
@@ -136,17 +136,17 @@
 
 这里适合补充 SQL 风格、数据生成、数组、UUID、元数据和一些有趣玩法。
 
-- [How to use OpenAI APIs right from Postgres to implement semantic search and GPT chat](./23.md)
-- [How to work with metadata](./24.md)
-- [How to work with arrays, part 1](./28.md)
-- [How to work with arrays, part 2](./29.md)
-- [How to speed up bulk load](./32.md)
-- [How to format SQL (SQL style guide)](./43.md)
-- [How to generate fake data](./48.md)
-- [How to use UUID](./64.md)
-- [UUID v7 and partitioning (TimescaleDB)](./65.md)
-- [How to estimate the YoY growth of a very large table using row creation timestamps and the planner statistics](./78.md)
-- [How to draw frost patterns using SQL](./82.md)
+- [How to use OpenAI APIs right from Postgres to implement semantic search and GPT chat](./docs/23.md)
+- [How to work with metadata](./docs/24.md)
+- [How to work with arrays, part 1](./docs/28.md)
+- [How to work with arrays, part 2](./docs/29.md)
+- [How to speed up bulk load](./docs/32.md)
+- [How to format SQL (SQL style guide)](./docs/43.md)
+- [How to generate fake data](./docs/48.md)
+- [How to use UUID](./docs/64.md)
+- [UUID v7 and partitioning (TimescaleDB)](./docs/65.md)
+- [How to estimate the YoY growth of a very large table using row creation timestamps and the planner statistics](./docs/78.md)
+- [How to draw frost patterns using SQL](./docs/82.md)
 
 <span id="topic-replication"></span>
 
@@ -154,7 +154,7 @@
 
 复制延迟、物理/逻辑复制切换、主版本升级，都是高风险但高价值主题。
 
-- [How to determine the replication lag](./17.md)
-- [How to convert a physical replica to logical](./57.md)
-- [Postgres major upgrade without any downtime for a very large cluster running under heavy load](./77.md)
-- [How to troubleshoot streaming replication lag](./93.md)
+- [How to determine the replication lag](./docs/17.md)
+- [How to convert a physical replica to logical](./docs/57.md)
+- [Postgres major upgrade without any downtime for a very large cluster running under heavy load](./docs/77.md)
+- [How to troubleshoot streaming replication lag](./docs/93.md)
