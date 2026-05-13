@@ -1,14 +1,20 @@
-# PostgreSQL Howto 中文版
-
-面向 DBA、DBRE 和后端工程师的 PostgreSQL 工程实践知识库。
-
-这里不追求把官方文档重写一遍，而是整理那些在真实生产环境里经常遇到的问题：查询为什么慢、索引该怎么建、锁该怎么查、WAL 为什么暴涨、复制延迟如何定位、参数调优从哪里下手。
+<div class="home-hero">
+  <div class="home-hero__brand">
+    <img src="./images/logo.png" alt="PostgreSQL Howto 中文版 logo" width="96" height="74" loading="lazy">
+    <div>
+      <p class="home-hero__eyebrow">postgres-howto in chinese</p>
+      <h1>PostgreSQL Howto 中文版</h1>
+    </div>
+  </div>
+  <p class="home-hero__lead">面向 DBA、DBRE 和后端工程师的 PostgreSQL 工程实践知识库。</p>
+  <p class="home-hero__summary">这里不追求把官方文档重写一遍，而是整理那些在真实生产环境里经常遇到的问题：查询为什么慢、索引该怎么建、锁该怎么查、WAL 为什么暴涨、复制延迟如何定位、参数调优从哪里下手。</p>
 
 <div class="home-actions">
   <a href="#/docs/topics" class="home-action home-action--primary" data-docs-route="/docs/topics">按专题阅读</a>
-  <a href="#/docs/paths" class="home-action" data-docs-route="/docs/paths">推荐路径</a>
+  <a href="#/docs/paths" class="home-action home-action--accent" data-docs-route="/docs/paths">推荐路径</a>
   <a href="#/docs/1" class="home-action" data-docs-route="/docs/1">从第 1 篇开始</a>
   <a href="https://github.com/xiongcccc/postgres-howto" class="home-action" target="_blank" rel="noopener">GitHub</a>
+</div>
 </div>
 
 ## 适合谁阅读

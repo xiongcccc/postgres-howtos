@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
   <link rel="stylesheet" href="./styles/custom.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css" />
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/dark.css" disabled>
+  <link id="docsify-dark-theme" rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/dark.css" disabled>
 </head>
 
 <body>
@@ -104,6 +104,27 @@
         window.location.hash = route;
       }
     }, true);
+
+    (function () {
+      function syncDarkClass() {
+        var darkTheme = document.getElementById('docsify-dark-theme');
+        document.body.classList.toggle('dark', Boolean(darkTheme && !darkTheme.disabled));
+      }
+
+      window.addEventListener('DOMContentLoaded', function () {
+        var darkTheme = document.getElementById('docsify-dark-theme');
+        syncDarkClass();
+
+        if (darkTheme && window.MutationObserver) {
+          new MutationObserver(syncDarkClass).observe(darkTheme, {
+            attributes: true,
+            attributeFilter: ['disabled']
+          });
+        }
+
+        window.setInterval(syncDarkClass, 500);
+      });
+    })();
 
     window.$docsify = {
       name: 'postgres-howto in chinese',
