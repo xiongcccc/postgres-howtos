@@ -556,6 +556,35 @@ section.cover.show .cover-main > p:last-of-type a:hover,
   opacity: 1;
 }
 
+.site-stats {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.74);
+  border: 1px solid rgba(216, 224, 234, 0.76);
+  border-radius: 8px;
+  bottom: 22px;
+  box-shadow: 0 6px 18px rgba(23, 32, 51, 0.06);
+  color: #64748b;
+  display: inline-flex;
+  font-size: 12px;
+  gap: 10px;
+  left: 22px;
+  line-height: 1;
+  min-height: 32px;
+  opacity: 0.72;
+  padding: 0 10px;
+  position: fixed;
+  z-index: 900;
+}
+
+.site-stats strong {
+  color: #475569;
+  font-weight: 700;
+}
+
+.site-stats:hover {
+  opacity: 1;
+}
+
 .support-modal[hidden] {
   display: none;
 }
@@ -776,6 +805,17 @@ body.dark .coffee-btn button:hover {
   color: #f1f5f9;
 }
 
+body.dark .site-stats {
+  background: rgba(29, 34, 41, 0.72);
+  border-color: rgba(52, 59, 70, 0.86);
+  box-shadow: none;
+  color: #a6b0bd;
+}
+
+body.dark .site-stats strong {
+  color: #e5edf7;
+}
+
 body.dark section.cover.show h1,
 body.dark section.cover.show blockquote,
 body.dark section.cover.show li {
@@ -864,6 +904,11 @@ body.dark .cover-logo img {
     min-height: 38px;
     padding: 0 12px;
   }
+
+  .site-stats {
+    bottom: 18px;
+    left: 18px;
+  }
 }
 
 @media (max-width: 520px) {
@@ -894,5 +939,9 @@ body.dark .cover-logo img {
 
   .support-modal {
     padding: 16px;
+  }
+
+  .site-stats {
+    display: none;
   }
 }
