@@ -1,56 +1,76 @@
-# 项目简介
+# PostgreSQL Howto 中文版
 
-postgres-howtos in chinese，original repo🔗：https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos
+面向 DBA、DBRE 和后端工程师的 PostgreSQL 工程实践知识库。
 
-This project has been started by [@NikolayS]() on 2023-09-26 https://twitter.com/samokhvalov/status/1706748070967624174:
+这里不追求把官方文档重写一遍，而是整理那些在真实生产环境里经常遇到的问题：查询为什么慢、索引该怎么建、锁该怎么查、WAL 为什么暴涨、复制延迟如何定位、参数调优从哪里下手。
 
-> I'm going to start a PostgreSQL marathon: each day I'll be posting a new "howto" recipe. Today is the day zero, and the first post is here.
-
-> My goal is to create at least 365 posts 😎
-
-> Why am I doing it?
->
-> 1. Postgres docs are awesome but often lack practical pieces of advice (howtos)
-> 2. 20+ years of database experience, from small startups to giants like Chewy, GitLab, Miro - always have a feeling that I need to share
-> 3. eventually I aim to have a structured set of howtos, constantly improving it - and make the systems we develop at [Postgres.ai](https://Postgres.ai) / [Database_Lab](https://twitter.com/Database_Lab) better and more helpful.
-
-[Subscribe](https://twitter.com/samokhvalov/status/1706748070967624174), like, share, and wish me luck with this -- and let's go! 🏊
-
-一个非常棒的学习资源，都是关于 PostgreSQL 的经验、技巧与最佳实践等。我会不定期翻译一篇，并添加笔者自己的理解。🔗 https://postgres-howto.cn/
-
-☎ **阅读过程中，如果各位读者发现有任何 issue，欢迎提供你们的反馈。**
-
-觉得项目不错，不妨点个 ⭐️ 再走 ~ :smile: :laughing: :blush: :smiley: :relaxed: :smirk: :heart_eyes: :kissing_heart: :kissing_closed_eyes:
-
-# 关于我
-
-Hi all, I'm an experienced PostgreSQL enthusiast and currently working on something related to the PostgreSQL and Greenplum. I will keep sharing my experience about PostgreSQL. 
-
-<p>
-  <img src="./images/contactme.png" alt="Logo" width="400" height="250">
-</p>
-
-
-
-
-
-Feel free to contact me：
-
-1. 微信：_xiongcc
-2. 邮箱：xiongcc_1994&#8203;@126.com / xiongcc_1994&#8203;@outlook.com
-3. 公众号：PostgreSQL学徒
-4. Github：https\://github\.com/xiongcccc
-
-各位好，各位可以喊我 CC，我是PostgreSQL ACE/MVP，杰出新人，CSDN 社区之星，PostgreSQL 学徒公众号主理人，亲身保障过第七次人口普查等重大项目，精通 PostgreSQL 体系架构与运行原理，实战经验丰富。目前正在从事 PostgreSQL 与 Greenplum 相关工作。
-
-# 注意事项
-
-阅读过程中如果有什么问题，可以加群沟通 (群聊二维码不定时更新，如果过期，请狠狠地催译者 👋)
-
-<div style="overflow: hidden;">
-  <img src="./images/wechatgroup.jpeg" alt="Logo" width="280" height="420" style="float: left; margin-right: 10px;">
-  <div style="overflow: hidden; text-align: center;">
-  </div>
+<div class="home-actions">
+  <a href="#/docs/topics" class="home-action home-action--primary">按专题阅读</a>
+  <a href="#/docs/paths" class="home-action">推荐路径</a>
+  <a href="#/docs/1" class="home-action">从第 1 篇开始</a>
+  <a href="https://github.com/xiongcccc/postgres-howtos" class="home-action" target="_blank" rel="noopener">GitHub</a>
 </div>
 
-现在，可以开启你的旅程了！Enjoy it ~~ 😉🥳🥰🤒😃😘😆
+## 适合谁阅读
+
+<div class="feature-grid">
+  <section>
+    <h3>数据库工程师</h3>
+    <p>快速定位锁、复制、WAL、膨胀、统计信息和参数配置相关问题。</p>
+  </section>
+  <section>
+    <h3>后端工程师</h3>
+    <p>理解 SQL 执行计划、索引代价、事务行为和常见 schema 变更风险。</p>
+  </section>
+  <section>
+    <h3>学习 PostgreSQL 的同学</h3>
+    <p>从真实问题进入 PostgreSQL，而不是只停留在语法和概念层面。</p>
+  </section>
+</div>
+
+## 推荐阅读路径
+
+1. 先读 [EXPLAIN ANALYZE or EXPLAIN (ANALYZE, BUFFERS)](./docs/1.md)，建立正确的性能分析习惯。
+2. 再读 [pg_stat_statements 系列](./docs/5.md)，了解如何从整体负载找到最值得优化的 SQL。
+3. 接着进入 [索引维护](./docs/53.md)、[未使用索引](./docs/75.md)、[冗余索引](./docs/76.md)，补齐索引治理思路。
+4. 如果你负责生产环境，建议继续阅读 [锁分析系列](./docs/22.md)、[WAL 目录增长排查](./docs/31.md)、[复制延迟排查](./docs/93.md)。
+5. 如果想少走弯路，可以直接使用 [推荐路径](./docs/paths.md) 或 [专题索引](./docs/topics.md)。
+
+## 项目来源
+
+原项目由 [@NikolayS](https://twitter.com/samokhvalov) 于 2023-09-26 发起：
+
+> Postgres docs are awesome but often lack practical pieces of advice (howtos).
+
+原始仓库：[postgres-ai/postgresql-consulting/postgres-howtos](https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos)
+
+中文站点：[postgres-howto.cn](https://postgres-howto.cn/)
+
+阅读过程中如果发现错误、过期内容或更好的实践，欢迎通过 GitHub issue、邮件或微信反馈。觉得项目不错，也欢迎点个 Star。
+
+## About Me
+
+<p class="profile-image">
+  <img src="./images/contactme.png" alt="PostgreSQL 学徒联系方式" width="400" height="250" loading="lazy">
+</p>
+
+PostgreSQL expert, open-source enthusiast, and software engineer. Personal homepage: [https://xiongcc.cn](https://xiongcc.cn)
+
+🛠 Founder of PostgreSQL-howto in chinese project<br>
+📚 Translator of PostgreSQL 14 Internals<br>
+📝 PostgreSQL 14 Internals in chinese: [https://postgres-internals.cn/](https://postgres-internals.cn/)<br>
+🧑‍💻 Personal Homepage: [https://xiongcc.cn](https://xiongcc.cn)<br>
+🧘🏻‍♂️ PostgreSQL DBA Daily 5.0 Author
+
+Feel free to Connect with Me：
+
+[GitHub](https://github.com/xiongcccc) | 微信公众号：PostgreSQL学徒<br>
+📨 xiongcc_1994@126.com / xiongcc19950101@gmail.com
+
+## 交流群
+
+阅读过程中如果有什么问题，可以加群沟通。群聊二维码会不定期更新，如果过期，可以联系译者。
+
+<p class="wechat-group">
+  <img src="./images/wechatgroup.jpeg" alt="PostgreSQL 学徒交流群二维码" width="280" height="420" loading="lazy">
+</p>

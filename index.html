@@ -1,128 +1,137 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
   <meta charset="UTF-8">
-  <title>postgres-howto</title>
+  <title>PostgreSQL Howto 中文版 | postgres-howto</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="description" content="Description">
-  <meta name="viewport"
-    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+  <meta name="description" content="PostgreSQL Howto 中文版：面向 DBA、DBRE 和后端工程师的 PostgreSQL 工程实践知识库，涵盖性能诊断、索引、锁、复制、运维和调优。">
+  <meta name="keywords" content="PostgreSQL, Postgres, 数据库, DBA, DBRE, SQL, 性能优化, 中文教程">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#336791">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="PostgreSQL Howto 中文版">
+  <meta property="og:description" content="面向 DBA、DBRE 和后端工程师的 PostgreSQL 工程实践知识库。">
+  <meta property="og:url" content="https://postgres-howto.cn/">
+  <meta property="og:image" content="https://postgres-howto.cn/images/logo.png">
+  <link rel="canonical" href="https://postgres-howto.cn/">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
   <link rel="stylesheet" href="./styles/custom.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css" />
-  <!-- stylesheets -->
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/dark.css" disabled>
-  
 </head>
 
 <body>
   <div id="app">别急,你也即将成为一名PostgreSQL高手!</div>
-  <!-- docsify-edit-on-github -->
-  <script src="//unpkg.com/docsify-edit-on-github/index.js"></script>
 
-  <!-- Buy me a coffee 按钮 -->
-  <div id="coffee-btn" style="position: fixed; top: 20px; right: 80px; z-index: 1000;">
-      <button onclick="showImage()"> ☕️ Buy me a coffee</button>
+  <div id="coffee-btn" class="coffee-btn">
+    <button type="button" aria-haspopup="dialog" aria-controls="imageModal">
+      <span aria-hidden="true">☕</span>
+      支持作者
+    </button>
   </div>
 
-
-  <!-- 弹出图片的对话框 -->
-  <div id="imageModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center;">
-      <div style="position: relative; text-align: center; color: white; display: flex; flex-direction: column; align-items: center;">
-          <!-- 缩小图片的尺寸 -->
-          <img src="images/wechat_pay.png" style="width: 400px; height: auto;" alt="Buy me a coffee">
-        
-          <!-- 中心显示的文字 -->
-          <p style="margin-top: 20px; font-size: 18px; text-align: center;">维护不易,多谢你的资瓷! 一分也是爱 ❤️</p>
-        
-          <!-- 点击关闭按钮关闭图片 -->
-          <span onclick="closeImage()" style="position: absolute; top: 10px; right: 10px; cursor: pointer; font-size: 24px; color: white;">&times;</span>
-      </div>
+  <div id="imageModal" class="support-modal" role="dialog" aria-modal="true" aria-labelledby="support-title" hidden>
+    <div class="support-modal__panel">
+      <button type="button" class="support-modal__close" aria-label="关闭支持作者弹窗">&times;</button>
+      <img src="images/wechat_pay.png" alt="微信赞赏码" loading="lazy">
+      <p id="support-title">维护不易，多谢你的资瓷！一分也是爱 ❤️</p>
+    </div>
   </div>
+
   <script>
+    (function () {
+      var trigger = document.querySelector('#coffee-btn button');
+      var modal = document.getElementById('imageModal');
+      var closeButton = document.querySelector('.support-modal__close');
 
-    <!-- buy me a coffee -->
-    // 显示图片对话框
-    function showImage() {
-        document.getElementById("imageModal").style.display = "flex";
-    }
-    
-    // 关闭图片对话框
-    function closeImage() {
-        document.getElementById("imageModal").style.display = "none";
-    }
-    
-    // 监听点击对话框外部区域关闭图片
-    window.onclick = function(event) {
-        var modal = document.getElementById("imageModal");
-        if (event.target == modal) {
-            modal.style.display = "none";
+      function showSupportModal() {
+        modal.hidden = false;
+        closeButton.focus();
+      }
+
+      function closeSupportModal() {
+        modal.hidden = true;
+        trigger.focus();
+      }
+
+      trigger.addEventListener('click', showSupportModal);
+      closeButton.addEventListener('click', closeSupportModal);
+      modal.addEventListener('click', function (event) {
+        if (event.target === modal) {
+          closeSupportModal();
         }
-    }
+      });
+      window.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && !modal.hidden) {
+          closeSupportModal();
+        }
+      });
+    })();
+
     window.$docsify = {
       name: 'postgres-howto in chinese',
-      repo: 'https://github.com/xiongcccc',
-      maxLevel: 5,//最大支持渲染的标题层级
+      repo: 'https://github.com/xiongcccc/postgres-howtos',
+      maxLevel: 5, // 最大支持渲染的标题层级
       subMaxLevel: 3,
       homepage: 'README.md',
       coverpage: true,
       loadSidebar: true,
       loadNavbar: true,
-      auto2top: true,//切换页面后是否自动跳转到页面顶部
+      auto2top: true, // 切换页面后是否自动跳转到页面顶部
       onlyCover: true,
-      //全文搜索
       search: {
         //maxAge: 86400000, // 过期时间，单位毫秒，默认一天
         paths: 'auto',
         placeholder: '搜索',
         noData: '找不到结果',
-        // 搜索标题的最大程级, 1 - 6
+        // 搜索标题的最大层级, 1 - 6
         depth: 3,
       },
       pagination: {
-    	previousText: '上一章节',
-    	// or
-    	nextText: {
-      	  '/en/': 'NEXT',
+        previousText: '上一章节',
+        nextText: {
+          '/en/': 'NEXT',
           '/': '下一章节'
-    	},
-    	crossChapter: true,
-    	crossChapterText: true,
+        },
+        crossChapter: true,
+        crossChapterText: true,
       },
       gitalkWithFooter: {
         //footerInnerHtml: "<p>到底了,别再划了!</p>",
         gitalkConfig: {
-            clientID: 'Ov23liQBwmxWjc0oPeFw', // Your Client Id
-            clientSecret: 'c71a6283d1190656fe158e02b16f1ca9d08e3e61', // Your Client secret
-            repo: 'gitalk-comment',
-            owner: 'xiongcccc',
-            admin: ['xiongcccc'],
-            // facebook-like distraction free mode
-            distractionFreeMode: false,
+          clientID: 'Ov23liQBwmxWjc0oPeFw', // Your Client Id
+          clientSecret: 'c71a6283d1190656fe158e02b16f1ca9d08e3e61', // Your Client secret
+          repo: 'gitalk-comment',
+          owner: 'xiongcccc',
+          admin: ['xiongcccc'],
+          // facebook-like distraction free mode
+          distractionFreeMode: false,
         }
       },
-     switchLightDarkMode: {
+      switchLightDarkMode: {
         useSwitchMode: true,
         top: 130,
         right: 26,
         svgColor: '#7d7b75',
-     },
-     
-}
-</script>
+      },
+    }
+  </script>
 
-  <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <!-- docsify-edit-on-github -->
+  <script src="//unpkg.com/docsify-edit-on-github/index.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
 
   <!--Java代码高亮-->
-  <script src="//unpkg.com/prismjs/components/prism-java.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
   <!--全文搜索,直接用官方提供的无法生效-->
-  <script src="//unpkg.com/docsify/lib/plugins/search.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
   <!-- 复制到剪贴板 -->
   <script src="//unpkg.com/docsify-copy-code"></script>
   <!-- 图片缩放 -->
-  <script src="//unpkg.com/docsify/lib/plugins/zoom-image.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/zoom-image.min.js"></script>
   <!-- 字数统计 -->
   <script src="//unpkg.com/docsify-count/dist/countable.js"></script>
   <!-- 分页 -->

@@ -1,19 +1,19 @@
 <!-- _coverpage.md -->
 
-<p align="center">
-  <img src="./images/logo.png" alt="Logo" width="400" height="300">
+<p align="center" class="cover-logo">
+  <img src="./images/logo.png" alt="postgres-howto logo" width="220" height="170">
 </p>
 
+# PostgreSQL Howto 中文版
 
-> PostgreSQL-howto in chinese
+> 面向 DBA、DBRE 和后端工程师的 PostgreSQL 工程实践知识库。
 
-- 🛠 每一篇指南，都是掌握 PostgreSQL 的关键一步
-- 📚 从技巧到最佳实践，让复杂变得简单 
-- 🔰 不仅是数据库，更是经验的积累。 
+- 从故障诊断、性能优化到日常运维，按真实问题组织经验。
+- 保留原文的实践味道，并补充译者自己的理解和延伸。
+- 适合碎片化查阅，也适合按专题系统阅读。
 
-<iframe src="https://cn.widgetstore.net/view/index.html?q=5b049cc8622189440f31d6307d40e568.7f296b21673588ae011a4b483596fca5" frameborder="0" sandbox="allow-scripts allow-popups allow-top-navigation-by-user-activation allow-forms allow-same-origin allow-storage-access-by-user-activation allow-popups-to-escape-sandbox" allowfullscreen="" style="width: 100%; height: 80px; border-radius: 1px; pointer-events: auto; background-color: white;"></iframe>
+[开始阅读](#/README)
+[专题索引](#/docs/topics)
+[GitHub](https://github.com/xiongcccc/postgres-howtos)
 
-[GitHub](https://github.com/xiongcccc/postgres-howto)
-[Get Started](README.md)
-
-![color](#ffffff)
+![color](#f8fbff)
