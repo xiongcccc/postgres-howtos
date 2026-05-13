@@ -3,31 +3,31 @@
 这份索引按使用场景组织文章，适合在遇到具体问题时快速定位，也适合按主题系统阅读。
 
 <div class="topic-grid">
-  <a class="topic-card" href="#/docs/topics?id=topic-performance">
+  <a class="topic-card" href="#/docs/topics?id=topic-performance" data-docs-route="/docs/topics?id=topic-performance">
     <strong>查询性能与观测</strong>
     <span>EXPLAIN、pg_stat_statements、benchmark、FlameGraph。</span>
   </a>
-  <a class="topic-card" href="#/docs/topics?id=topic-indexes">
+  <a class="topic-card" href="#/docs/topics?id=topic-indexes" data-docs-route="/docs/topics?id=topic-indexes">
     <strong>索引治理</strong>
     <span>创建、维护、清理、冗余索引和过度索引。</span>
   </a>
-  <a class="topic-card" href="#/docs/topics?id=topic-locks">
+  <a class="topic-card" href="#/docs/topics?id=topic-locks" data-docs-route="/docs/topics?id=topic-locks">
     <strong>锁、事务与在线变更</strong>
     <span>长事务、DDL 阻塞、锁队列和零停机 schema 变更。</span>
   </a>
-  <a class="topic-card" href="#/docs/topics?id=topic-storage">
+  <a class="topic-card" href="#/docs/topics?id=topic-storage" data-docs-route="/docs/topics?id=topic-storage">
     <strong>存储、WAL 与 Vacuum</strong>
     <span>WAL 增长、膨胀、XID 回卷、页面和存储布局。</span>
   </a>
-  <a class="topic-card" href="#/docs/topics?id=topic-ops">
+  <a class="topic-card" href="#/docs/topics?id=topic-ops" data-docs-route="/docs/topics?id=topic-ops">
     <strong>运维排障与日常工具</strong>
     <span>备份恢复、psql、Docker、Linux 参数和脚本化处理。</span>
   </a>
-  <a class="topic-card" href="#/docs/topics?id=topic-sql">
+  <a class="topic-card" href="#/docs/topics?id=topic-sql" data-docs-route="/docs/topics?id=topic-sql">
     <strong>SQL、数据建模与扩展玩法</strong>
     <span>数组、UUID、元数据、测试数据和 SQL 风格。</span>
   </a>
-  <a class="topic-card" href="#/docs/topics?id=topic-replication">
+  <a class="topic-card" href="#/docs/topics?id=topic-replication" data-docs-route="/docs/topics?id=topic-replication">
     <strong>复制、校验与升级</strong>
     <span>复制延迟、物理/逻辑复制转换、主版本升级。</span>
   </a>

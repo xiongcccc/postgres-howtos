@@ -12,8 +12,10 @@
 - 保留原文的实践味道，并补充译者自己的理解和延伸。
 - 适合碎片化查阅，也适合按专题系统阅读。
 
-[开始阅读](#/README)
-[专题索引](#/docs/topics)
-[GitHub](https://github.com/xiongcccc/postgres-howtos)
+<p class="cover-actions">
+  <a href="#/README" data-docs-route="/README">开始阅读</a>
+  <a href="#/docs/topics" data-docs-route="/docs/topics">专题索引</a>
+  <a href="https://github.com/xiongcccc/postgres-howto">GitHub</a>
+</p>
 
 ![color](#f8fbff)

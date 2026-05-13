@@ -71,9 +71,19 @@
       });
     })();
 
+    document.addEventListener('click', function (event) {
+      var link = event.target.closest('a[data-docs-route]');
+      if (!link) {
+        return;
+      }
+
+      event.preventDefault();
+      window.location.hash = link.getAttribute('data-docs-route');
+    }, true);
+
     window.$docsify = {
       name: 'postgres-howto in chinese',
-      repo: 'https://github.com/xiongcccc/postgres-howtos',
+      repo: 'https://github.com/xiongcccc',
       maxLevel: 5, // 最大支持渲染的标题层级
       subMaxLevel: 3,
       homepage: 'README.md',

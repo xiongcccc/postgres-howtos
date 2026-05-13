@@ -26,7 +26,11 @@ body.cover {
   background: var(--pg-panel);
 }
 
-section.cover {
+section.cover:not(.show) {
+  display: none;
+}
+
+section.cover.show {
   align-items: center;
   background: radial-gradient(circle at 50% 0%, #ffffff 0, #f8fbff 42%, #f3f7fc 100%);
   display: flex;
@@ -35,7 +39,7 @@ section.cover {
   padding: 72px 24px 96px;
 }
 
-section.cover::before {
+section.cover.show::before {
   background: linear-gradient(90deg, rgba(51, 103, 145, 0.08), rgba(47, 158, 143, 0.08));
   content: "";
   height: 1px;
@@ -52,17 +56,27 @@ a {
 }
 
 .app-nav {
-  margin: 18px 36px 0 0;
+  align-items: center;
+  display: flex;
+  gap: 18px;
+  margin: 18px 96px 0 0;
 }
 
 .app-nav a {
   color: var(--pg-ink);
   font-size: 14px;
   font-weight: 600;
+  margin: 0;
+  padding: 4px 0;
 }
 
 .app-nav a:hover {
   color: var(--pg-blue);
+}
+
+.github-corner svg {
+  height: 72px;
+  width: 72px;
 }
 
 .sidebar {
@@ -228,7 +242,7 @@ a {
   padding: 14px;
 }
 
-section.cover .cover-main {
+section.cover.show .cover-main {
   position: relative;
   color: var(--pg-ink);
   margin: 0 auto;
@@ -237,7 +251,7 @@ section.cover .cover-main {
   transform: translateY(-3vh);
 }
 
-section.cover h1 {
+section.cover.show h1 {
   color: var(--pg-blue-dark);
   font-size: 48px;
   font-weight: 780;
@@ -246,26 +260,27 @@ section.cover h1 {
   margin: 22px 0 16px;
 }
 
-section.cover blockquote {
+section.cover.show blockquote {
   color: #334155;
   font-size: 19px;
   line-height: 1.7;
   margin: 0 auto 18px;
 }
 
-section.cover ul {
+section.cover.show ul {
   display: inline-block;
   margin: 10px auto 24px;
   max-width: 680px;
   text-align: left;
 }
 
-section.cover li {
+section.cover.show li {
   color: #334155;
   line-height: 1.8;
 }
 
-section.cover .cover-main > p:last-of-type a,
+.cover-actions a,
+section.cover.show .cover-main > p:last-of-type a,
 .home-action {
   align-items: center;
   border: 1px solid var(--pg-border);
@@ -281,15 +296,18 @@ section.cover .cover-main > p:last-of-type a,
   text-decoration: none;
 }
 
-section.cover .cover-main > p:last-of-type {
+.cover-actions,
+section.cover.show .cover-main > p:last-of-type {
   margin-top: 10px;
 }
 
-section.cover .cover-main > p:last-of-type a {
+.cover-actions a,
+section.cover.show .cover-main > p:last-of-type a {
   min-width: 96px;
 }
 
-section.cover .cover-main > p:last-of-type a:first-child,
+.cover-actions a:first-child,
+section.cover.show .cover-main > p:last-of-type a:first-child,
 .home-action--primary {
   background: var(--pg-blue);
   border-color: var(--pg-blue);
@@ -582,13 +600,13 @@ body.dark .feature-grid p {
   color: var(--pg-muted);
 }
 
-body.dark section.cover h1,
-body.dark section.cover blockquote,
-body.dark section.cover li {
+body.dark section.cover.show h1,
+body.dark section.cover.show blockquote,
+body.dark section.cover.show li {
   color: var(--pg-ink);
 }
 
-body.dark section.cover {
+body.dark section.cover.show {
   background: radial-gradient(circle at 50% 0%, #152238 0, #101827 48%, #0f1724 100%);
 }
 
@@ -597,15 +615,15 @@ body.dark .cover-logo img {
 }
 
 @media (max-width: 860px) {
-  section.cover {
+  section.cover.show {
     padding: 48px 20px 84px;
   }
 
-  section.cover::before {
+  section.cover.show::before {
     display: none;
   }
 
-  section.cover .cover-main {
+  section.cover.show .cover-main {
     transform: none;
   }
 
@@ -634,7 +652,8 @@ body.dark .cover-logo img {
   }
 
   .app-nav {
-    margin-right: 18px;
+    gap: 12px;
+    margin-right: 72px;
   }
 
   .coffee-btn {
@@ -650,7 +669,7 @@ body.dark .cover-logo img {
 }
 
 @media (max-width: 520px) {
-  section.cover h1 {
+  section.cover.show h1 {
     font-size: 32px;
   }
 
@@ -658,11 +677,11 @@ body.dark .cover-logo img {
     max-width: min(180px, 58vw);
   }
 
-  section.cover blockquote {
+  section.cover.show blockquote {
     font-size: 16px;
   }
 
-  section.cover ul {
+  section.cover.show ul {
     padding-left: 20px;
   }
 

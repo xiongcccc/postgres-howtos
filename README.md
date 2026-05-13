@@ -5,10 +5,10 @@
 这里不追求把官方文档重写一遍，而是整理那些在真实生产环境里经常遇到的问题：查询为什么慢、索引该怎么建、锁该怎么查、WAL 为什么暴涨、复制延迟如何定位、参数调优从哪里下手。
 
 <div class="home-actions">
-  <a href="#/docs/topics" class="home-action home-action--primary">按专题阅读</a>
-  <a href="#/docs/paths" class="home-action">推荐路径</a>
-  <a href="#/docs/1" class="home-action">从第 1 篇开始</a>
-  <a href="https://github.com/xiongcccc/postgres-howtos" class="home-action" target="_blank" rel="noopener">GitHub</a>
+  <a href="#/docs/topics" class="home-action home-action--primary" data-docs-route="/docs/topics">按专题阅读</a>
+  <a href="#/docs/paths" class="home-action" data-docs-route="/docs/paths">推荐路径</a>
+  <a href="#/docs/1" class="home-action" data-docs-route="/docs/1">从第 1 篇开始</a>
+  <a href="https://github.com/xiongcccc/postgres-howto" class="home-action" target="_blank" rel="noopener">GitHub</a>
 </div>
 
 ## 适合谁阅读
