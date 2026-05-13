@@ -314,6 +314,12 @@ section.cover.show .cover-main > p:last-of-type a:first-child,
   color: #ffffff;
 }
 
+.markdown-section a.home-action--primary,
+.markdown-section a.home-action--primary:hover,
+.markdown-section a.home-action--primary:visited {
+  color: #ffffff;
+}
+
 .home-actions {
   display: flex;
   flex-wrap: wrap;

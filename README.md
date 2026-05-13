@@ -48,24 +48,22 @@
 
 阅读过程中如果发现错误、过期内容或更好的实践，欢迎通过 GitHub issue、邮件或微信反馈。觉得项目不错，也欢迎点个 Star。
 
-## About Me
+## Hi 👋, I'm xiongcc.
 
-<p class="profile-image">
-  <img src="./images/contactme.png" alt="PostgreSQL 学徒联系方式" width="400" height="250" loading="lazy">
-</p>
+### About Me
 
 PostgreSQL expert, open-source enthusiast, and software engineer. Personal homepage: [https://xiongcc.cn](https://xiongcc.cn)
 
-🛠 Founder of PostgreSQL-howto in chinese project<br>
-📚 Translator of PostgreSQL 14 Internals<br>
-📝 PostgreSQL 14 Internals in chinese: [https://postgres-internals.cn/](https://postgres-internals.cn/)<br>
-🧑‍💻 Personal Homepage: [https://xiongcc.cn](https://xiongcc.cn)<br>
-🧘🏻‍♂️ PostgreSQL DBA Daily 5.0 Author
+- 🛠 Founder of [PostgreSQL-howto in chinese](https://github.com/xiongcccc/postgres-howto) project
+- 📚 Translator of [PostgreSQL 14 Internals](https://postgres-internals.cn/)
+- 📝 PostgreSQL 14 Internals in chinese: [https://postgres-internals.cn/](https://postgres-internals.cn/)
+- 🧑‍💻 Personal Homepage: [https://xiongcc.cn](https://xiongcc.cn)
+- 🧘🏻‍♂️ PostgreSQL DBA Daily 5.0 Author
 
 Feel free to Connect with Me：
 
-[GitHub](https://github.com/xiongcccc) | 微信公众号：PostgreSQL学徒<br>
-📨 xiongcc_1994@126.com / xiongcc19950101@gmail.com
+- [GitHub](https://github.com/xiongcccc) | 微信公众号：PostgreSQL学徒
+- 📨 xiongcc_1994@126.com / xiongcc19950101@gmail.com
 
 ## 交流群
 
