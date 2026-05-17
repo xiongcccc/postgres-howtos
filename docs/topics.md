@@ -31,6 +31,10 @@
     <strong>复制、校验与升级</strong>
     <span>复制延迟、物理/逻辑复制转换、主版本升级。</span>
   </a>
+  <a class="topic-card" href="#/docs/topics?id=topic-practice" data-docs-route="/docs/topics?id=topic-practice">
+    <strong>实践剖析</strong>
+    <span>从真实问题出发，拆解执行计划、源码路径和排查口径。</span>
+  </a>
 </div>
 
 <span id="topic-performance"></span>
@@ -158,3 +162,11 @@
 - [How to convert a physical replica to logical](./docs/57.md)
 - [Postgres major upgrade without any downtime for a very large cluster running under heavy load](./docs/77.md)
 - [How to troubleshoot streaming replication lag](./docs/93.md)
+
+<span id="topic-practice"></span>
+
+## 实践剖析
+
+这里收录真实问题驱动的分析文章，更强调问题背景、源码路径、判断边界和排查顺序。
+
+- [为什么 actual time 和 Execution Time 有很大差异？](./docs/96.md)

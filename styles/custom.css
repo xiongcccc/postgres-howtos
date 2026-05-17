@@ -215,6 +215,22 @@ a {
   padding: 1.1em 1.2em;
 }
 
+.markdown-section .mermaid {
+  background: #ffffff;
+  border: 1px solid var(--pg-border);
+  border-radius: 8px;
+  color: #172033;
+  margin: 22px 0;
+  overflow-x: auto;
+  padding: 18px;
+  text-align: center;
+}
+
+.markdown-section .mermaid svg {
+  height: auto;
+  max-width: 100%;
+}
+
 .markdown-section table {
   border-collapse: collapse;
   display: block;
@@ -675,6 +691,16 @@ body.dark .markdown-section {
   background: #171a1f !important;
 }
 
+body.dark .markdown-section {
+  box-sizing: border-box;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  max-width: var(--content-max-width) !important;
+  padding-left: 48px !important;
+  padding-right: 48px !important;
+  width: 100% !important;
+}
+
 body.dark .sidebar,
 body.dark .feature-grid section,
 body.dark .topic-card,
@@ -736,6 +762,12 @@ body.dark .markdown-section blockquote {
 body.dark .markdown-section th {
   background: #20252d !important;
   color: #e5edf7 !important;
+}
+
+body.dark .markdown-section .mermaid {
+  background: #f8fafc !important;
+  border-color: #3d4652 !important;
+  color: #172033 !important;
 }
 
 body.dark .home-hero {
@@ -847,6 +879,13 @@ body.dark .cover-logo img {
     padding: 28px 22px 72px;
   }
 
+  body.dark .markdown-section {
+    max-width: var(--content-max-width) !important;
+    padding-left: 22px !important;
+    padding-right: 22px !important;
+    width: 100% !important;
+  }
+
   .markdown-section h1 {
     font-size: 28px;
   }
@@ -939,6 +978,11 @@ body.dark .cover-logo img {
 
   .support-modal {
     padding: 16px;
+  }
+
+  body.dark .markdown-section {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
   }
 
   .site-stats {

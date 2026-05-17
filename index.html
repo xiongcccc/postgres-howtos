@@ -163,6 +163,9 @@
         crossChapter: true,
         crossChapterText: true,
       },
+      mermaidConfig: {
+        querySelector: '.mermaid'
+      },
       gitalkWithFooter: {
         //footerInnerHtml: "<p>到底了,别再划了!</p>",
         gitalkConfig: {
@@ -187,6 +190,17 @@
   <!-- docsify-edit-on-github -->
   <script src="//unpkg.com/docsify-edit-on-github/index.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+
+  <!-- Mermaid diagrams -->
+  <script src="//cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: 'loose',
+      theme: 'default'
+    });
+  </script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-mermaid@2/dist/docsify-mermaid.js"></script>
 
   <!--Java代码高亮-->
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>

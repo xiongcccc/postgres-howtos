@@ -8,6 +8,7 @@
     <p>适合正在处理慢 SQL、整体负载升高、索引效果不确定的场景。</p>
     <ol>
       <li><a href="#/docs/1" data-docs-route="/docs/1">EXPLAIN 为什么应该带 BUFFERS</a></li>
+      <li><a href="#/docs/96" data-docs-route="/docs/96">actual time 和 Execution Time 为什么差异很大？</a></li>
       <li><a href="#/docs/5" data-docs-route="/docs/5">pg_stat_statements 入门</a></li>
       <li><a href="#/docs/12" data-docs-route="/docs/12">为 pg_stat_statements 找到真实 SQL 样例</a></li>
       <li><a href="#/docs/14" data-docs-route="/docs/14">如何判断一个查询是否太慢</a></li>
