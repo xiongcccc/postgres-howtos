@@ -111,6 +111,7 @@
 
 * **实践剖析**
   * [96. actual time 和 Execution Time 为什么差异很大？](./docs/96.md)
+  * [97. 深入浅出 bpftrace 分析 PostgreSQL](./docs/97.md)
 
 * **工程实践与后记**
   * [38. 如何不把 DBA/DBRE 工作搞砸](./docs/38.md)

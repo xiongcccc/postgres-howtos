@@ -33,7 +33,7 @@
   </a>
   <a class="topic-card" href="#/docs/topics?id=topic-practice" data-docs-route="/docs/topics?id=topic-practice">
     <strong>实践剖析</strong>
-    <span>从真实问题出发，拆解执行计划、源码路径和排查口径。</span>
+    <span>从真实问题出发，拆解执行计划、bpftrace、源码路径和排查口径。</span>
   </a>
 </div>
 
@@ -167,6 +167,7 @@
 
 ## 实践剖析
 
-这里收录真实问题驱动的分析文章，更强调问题背景、源码路径、判断边界和排查顺序。
+这里收录真实问题驱动的分析文章，更强调问题背景、源码路径、系统观测、判断边界和排查顺序。
 
 - [为什么 actual time 和 Execution Time 有很大差异？](./docs/96.md)
+- [深入浅出 bpftrace 分析 PostgreSQL](./docs/97.md)
