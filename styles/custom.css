@@ -233,10 +233,20 @@ a {
 
 .markdown-section table {
   border-collapse: collapse;
+  width: 100%;
+}
+
+.markdown-section .table-scroll {
   display: block;
+  margin: 20px 0;
   overflow-x: auto;
   width: 100%;
   -webkit-overflow-scrolling: touch;
+}
+
+.markdown-section .table-scroll table {
+  margin: 0;
+  min-width: 640px;
 }
 
 .markdown-section th {
@@ -771,6 +781,10 @@ body.dark .markdown-section table {
   color: #e5edf7 !important;
 }
 
+body.dark .markdown-section .table-scroll {
+  background: #171a1f !important;
+}
+
 body.dark .markdown-section thead,
 body.dark .markdown-section tbody,
 body.dark .markdown-section tr {
@@ -919,6 +933,9 @@ body.dark .cover-logo img {
 
   .markdown-section table {
     font-size: 14px;
+  }
+
+  .markdown-section .table-scroll table {
     min-width: 640px;
   }
 

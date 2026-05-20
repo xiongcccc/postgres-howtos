@@ -166,6 +166,22 @@
       mermaidConfig: {
         querySelector: '.mermaid'
       },
+      plugins: [
+        function (hook) {
+          hook.doneEach(function () {
+            document.querySelectorAll('.markdown-section table').forEach(function (table) {
+              if (table.parentElement && table.parentElement.classList.contains('table-scroll')) {
+                return;
+              }
+
+              var wrapper = document.createElement('div');
+              wrapper.className = 'table-scroll';
+              table.parentNode.insertBefore(wrapper, table);
+              wrapper.appendChild(table);
+            });
+          });
+        }
+      ],
       gitalkWithFooter: {
         //footerInnerHtml: "<p>到底了,别再划了!</p>",
         gitalkConfig: {
