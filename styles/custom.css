@@ -236,6 +236,7 @@ a {
   display: block;
   overflow-x: auto;
   width: 100%;
+  -webkit-overflow-scrolling: touch;
 }
 
 .markdown-section th {
@@ -764,6 +765,36 @@ body.dark .markdown-section th {
   color: #e5edf7 !important;
 }
 
+body.dark .markdown-section table {
+  background: #171a1f !important;
+  border-color: var(--pg-border) !important;
+  color: #e5edf7 !important;
+}
+
+body.dark .markdown-section thead,
+body.dark .markdown-section tbody,
+body.dark .markdown-section tr {
+  background: transparent !important;
+}
+
+body.dark .markdown-section tr:nth-child(odd) td,
+body.dark .markdown-section tr:nth-child(even) td {
+  background: #1d2229 !important;
+  color: #e5edf7 !important;
+}
+
+body.dark .markdown-section td,
+body.dark .markdown-section th {
+  border-color: #586273 !important;
+}
+
+body.dark .markdown-section td code,
+body.dark .markdown-section th code {
+  background: #111827 !important;
+  border-color: #3d4652 !important;
+  color: #f8fafc !important;
+}
+
 body.dark .markdown-section .mermaid {
   background: #f8fafc !important;
   border-color: #3d4652 !important;
@@ -884,6 +915,16 @@ body.dark .cover-logo img {
     padding-left: 22px !important;
     padding-right: 22px !important;
     width: 100% !important;
+  }
+
+  .markdown-section table {
+    font-size: 14px;
+    min-width: 640px;
+  }
+
+  .markdown-section td,
+  .markdown-section th {
+    padding: 8px 10px;
   }
 
   .markdown-section h1 {
