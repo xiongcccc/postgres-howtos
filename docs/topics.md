@@ -171,3 +171,4 @@
 
 - [为什么 actual time 和 Execution Time 有很大差异？](./docs/96.md)
 - [深入浅出 bpftrace 分析 PostgreSQL](./docs/97.md)
+- [当 PostgreSQL 慢在数据库之外：用 bpftrace 打通 SQL 与内核观测](./docs/98.md)
