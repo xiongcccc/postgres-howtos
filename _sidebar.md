@@ -2,6 +2,7 @@
   * [首页](README.md)
   * [专题索引](./docs/topics.md)
   * [推荐路径](./docs/paths.md)
+  * [会议精选](/docs/conferences.md)
 
 * **查询性能与观测**
   * [1. EXPLAIN 为什么应该带 BUFFERS](./docs/1.md)
@@ -43,6 +44,7 @@
   * [91. 格式化 psql 脚本文本输出](./docs/91.md)
 
 * **锁、事务与在线变更**
+  * [99. 安全执行在线变更：DDL、回填与批量删除](/docs/99.md)
   * [22. heavyweight locks 分析：基础](./docs/22.md)
   * [30. 处理 OLTP 长事务](./docs/30.md)
   * [33. 无停机重定义主键](./docs/33.md)

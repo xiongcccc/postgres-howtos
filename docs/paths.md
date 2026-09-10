@@ -47,6 +47,7 @@
     <h2>在线变更路径</h2>
     <p>适合上线 schema 变更、避免锁等待扩大、降低 DDL 风险。</p>
     <ol>
+      <li><a href="#/docs/99" data-docs-route="/docs/99">安全执行在线变更：DDL、回填与批量删除</a></li>
       <li><a href="#/docs/30" data-docs-route="/docs/30">处理 OLTP 长事务</a></li>
       <li><a href="#/docs/42" data-docs-route="/docs/42">heavyweight locks 分析：锁树</a></li>
       <li><a href="#/docs/55" data-docs-route="/docs/55">删除列</a></li>

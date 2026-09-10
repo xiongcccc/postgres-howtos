@@ -77,6 +77,8 @@
 
 生产环境里的 DDL 和长事务，重点是降低锁等待、避免阻塞链扩大。
 
+- [如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除](/docs/99.md) · 会议精选，先了解完整变更流程。
+
 - [How to analyze heavyweight locks, part 1](./docs/22.md)
 - [How to deal with long-running transactions (OLTP)](./docs/30.md)
 - [How to redefine a PK without downtime](./docs/33.md)
