@@ -20,9 +20,10 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="preconnect" href="https://unpkg.com">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
-  <link rel="stylesheet" href="./styles/custom.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css" />
   <link id="docsify-dark-theme" rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/dark.css" disabled>
+  <link rel="stylesheet" href="./styles/custom.css?v=0422363ecc1f3fbd">
+  <link rel="stylesheet" href="./styles/reading.css?v=9a304ebff623fb5c">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css" />
 </head>
 
 <body>
@@ -102,8 +103,9 @@
     }
 
     document.addEventListener('click', function (event) {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       var link = event.target.closest('a');
-      if (!link) {
+      if (!link || link.target === '_blank' || link.hasAttribute('download')) {
         return;
       }
 
@@ -139,21 +141,13 @@
       name: 'postgres-howto in chinese',
       repo: 'https://github.com/xiongcccc',
       maxLevel: 5, // 最大支持渲染的标题层级
-      subMaxLevel: 3,
+      subMaxLevel: 0,
       homepage: 'README.md',
-      coverpage: true,
+      coverpage: { '/': '_coverpage.md' },
       loadSidebar: true,
       loadNavbar: true,
       auto2top: true, // 切换页面后是否自动跳转到页面顶部
-      onlyCover: true,
-      search: {
-        //maxAge: 86400000, // 过期时间，单位毫秒，默认一天
-        paths: 'auto',
-        placeholder: '搜索',
-        noData: '找不到结果',
-        // 搜索标题的最大层级, 1 - 6
-        depth: 3,
-      },
+      onlyCover: false,
       pagination: {
         previousText: '上一章节',
         nextText: {
@@ -203,6 +197,10 @@
     }
   </script>
 
+  <script src="./scripts/catalog-data.js?v=1373ee4fde337e0c"></script>
+  <script src="./scripts/search-core.js?v=280acca4813b26a5"></script>
+  <script src="./scripts/reading.js?v=d7e8c21d452291ac"></script>
+
   <!-- docsify-edit-on-github -->
   <script src="//unpkg.com/docsify-edit-on-github/index.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
@@ -220,8 +218,7 @@
 
   <!--Java代码高亮-->
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
-  <!--全文搜索,直接用官方提供的无法生效-->
-  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+  <!-- Search uses the shared article catalog and generated local full-text index. -->
   <!-- 复制到剪贴板 -->
   <script src="//unpkg.com/docsify-copy-code"></script>
   <!-- 图片缩放 -->
@@ -233,7 +230,7 @@
 
   <!-- gitalk --> 
   <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/pikapikapikaori/docsify-gitalk-with-footer@latest/src/gitalkWithFooter.js"></script>
+  <script src="./scripts/comments.js?v=c7a0ee80454ed8f3"></script>
 
   <!-- docsify-simple-dark-mode plugin -->
   <script src="https://cdn.jsdelivr.net/gh/pikapikapikaori/docsify-simple-dark-mode@latest/src/switchLightDarkMode.js"></script>

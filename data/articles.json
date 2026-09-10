@@ -1,0 +1,2379 @@
+{
+  "schemaVersion": 1,
+  "types": {
+    "translation": "上游译文",
+    "practice": "实践剖析",
+    "conference": "会议精选",
+    "editorial": "项目后记"
+  },
+  "topics": [
+    {
+      "id": "performance",
+      "title": "查询性能与观测",
+      "description": "执行计划、慢 SQL、统计信息与基准测试。"
+    },
+    {
+      "id": "ops",
+      "title": "运维排障与日常工具",
+      "description": "备份恢复、psql、Docker 和日常运维。"
+    },
+    {
+      "id": "locks",
+      "title": "锁、事务与在线变更",
+      "description": "长事务、锁等待、DDL 与在线变更。"
+    },
+    {
+      "id": "indexes",
+      "title": "索引治理",
+      "description": "索引创建、维护、清理和损坏检查。"
+    },
+    {
+      "id": "storage",
+      "title": "存储、WAL 与 Vacuum",
+      "description": "WAL、膨胀、Vacuum 与存储布局。"
+    },
+    {
+      "id": "sql",
+      "title": "SQL、数据建模与扩展玩法",
+      "description": "SQL、数组、UUID、元数据和数据建模。"
+    },
+    {
+      "id": "replication",
+      "title": "复制、校验与升级",
+      "description": "复制延迟、数据校验与主版本升级。"
+    },
+    {
+      "id": "practice",
+      "title": "实践剖析",
+      "description": "真实问题、源码分析与操作系统观测。"
+    },
+    {
+      "id": "engineering",
+      "title": "工程实践与后记",
+      "description": "工程方法、协作与项目后记。"
+    }
+  ],
+  "paths": [
+    {
+      "title": "性能优化路径",
+      "description": "适合正在处理慢 SQL、整体负载升高、索引效果不确定的场景。",
+      "articles": [
+        1,
+        96,
+        5,
+        12,
+        14,
+        13,
+        92
+      ]
+    },
+    {
+      "title": "DBA 排障路径",
+      "description": "适合生产环境值班、处理重启、WAL 增长、复制延迟和锁等待。",
+      "articles": [
+        2,
+        3,
+        31,
+        22,
+        71,
+        100,
+        93
+      ]
+    },
+    {
+      "title": "索引治理路径",
+      "description": "适合做索引评审、清理无效索引、降低写入和规划开销。",
+      "articles": [
+        18,
+        61,
+        62,
+        53,
+        75,
+        76
+      ]
+    },
+    {
+      "title": "在线变更路径",
+      "description": "适合上线 schema 变更、避免锁等待扩大、降低 DDL 风险。",
+      "articles": [
+        99,
+        30,
+        42,
+        55,
+        60,
+        69,
+        70
+      ]
+    },
+    {
+      "title": "存储与 Vacuum 路径",
+      "description": "适合理解膨胀、XID 回卷、WAL、页面布局和 autovacuum 行为。",
+      "articles": [
+        4,
+        9,
+        44,
+        45,
+        46,
+        67
+      ]
+    },
+    {
+      "title": "日常工具路径",
+      "description": "适合补齐 psql、备份恢复、Docker、脚本化和日常操作手感。",
+      "articles": [
+        25,
+        58,
+        19,
+        20,
+        49,
+        68
+      ]
+    }
+  ],
+  "problems": [
+    {
+      "title": "查询为什么慢？",
+      "query": "慢SQL"
+    },
+    {
+      "title": "DDL 卡住了？",
+      "query": "锁等待"
+    },
+    {
+      "title": "WAL 突然暴涨？",
+      "query": "WAL暴涨"
+    },
+    {
+      "title": "哪些索引可以删？",
+      "query": "索引清理"
+    },
+    {
+      "title": "主从为什么有延迟？",
+      "query": "复制延迟"
+    },
+    {
+      "title": "怎么安全加列？",
+      "query": "在线变更"
+    }
+  ],
+  "featured": [
+    100,
+    99,
+    96,
+    98
+  ],
+  "articles": [
+    {
+      "id": 1,
+      "title": "EXPLAIN 为什么应该带 BUFFERS",
+      "originalTitle": "EXPLAIN ANALYZE OR EXPLAIN (ANALYZE, BUFFERS)?",
+      "topics": [
+        "performance"
+      ],
+      "aliases": [
+        "执行计划",
+        "慢查询",
+        "缓冲区",
+        "explain analyze",
+        "buffers"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/query-tuning/explain-analyze-buffers.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 5,
+      "title": "pg_stat_statements 入门",
+      "originalTitle": "How to work with pg_stat_statements, part 1",
+      "topics": [
+        "performance"
+      ],
+      "aliases": [
+        "慢SQL",
+        "慢查询",
+        "pgss",
+        "pg stat statements"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/monitoring/pg-stat-statements-part-1.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 6,
+      "title": "pg_stat_statements 进阶",
+      "originalTitle": "How to work with pg_stat_statements, part 2",
+      "topics": [
+        "performance"
+      ],
+      "aliases": [
+        "pgss"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0006_pg_stat_statements_part_2.md",
+        "commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 7,
+      "title": "pg_stat_statements 深入使用",
+      "originalTitle": "How to work with pg_stat_statements, part 3",
+      "topics": [
+        "performance"
+      ],
+      "aliases": [
+        "pgss"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0007_pg_stat_statements_part_3.md",
+        "commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 10,
+      "title": "使用 FlameGraph 和 eBPF/perf 排查性能",
+      "originalTitle": "How to troubleshoot Postgres performance using FlameGraphs and eBPF (or perf)",
+      "topics": [
+        "performance"
+      ],
+      "aliases": [
+        "火焰图",
+        "ebpf",
+        "perf"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/monitoring-troubleshooting/system-monitoring/flamegraphs-for-postgres.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 11,
+      "title": "临时监控方法",
+      "originalTitle": "Ad-hoc monitoring",
+      "topics": [
+        "performance"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/monitoring/ad-hoc-monitoring.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 12,
+      "title": "为 pg_stat_statements 找到真实 SQL 样例",
+      "originalTitle": "How to find query examples for problematic pg_stat_statements records",
+      "topics": [
+        "performance"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/query-tuning/from-pgss-to-explain--how-to-find-query-examples.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 13,
+      "title": "如何做基准测试",
+      "originalTitle": "How to benchmark",
+      "topics": [
+        "performance"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/benchmarks/how-to-benchmark.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 14,
+      "title": "如何判断一个查询是否太慢",
+      "originalTitle": "How to decide when a query is too slow and needs optimization",
+      "topics": [
+        "performance"
+      ],
+      "aliases": [
+        "慢SQL",
+        "慢查询"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/query-tuning/how-to-decide-if-query-too-slow.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 50,
+      "title": "基准测试迭代前后的准备工作",
+      "originalTitle": "Pre- and post-steps for benchmark iterations",
+      "topics": [
+        "performance"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/benchmarks/pre-and-post-steps-for-benchmark-iterations.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 56,
+      "title": "让非生产环境 Planner 更像生产环境",
+      "originalTitle": "How to make the non-production Postgres planner behave like in production",
+      "topics": [
+        "performance"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/query-tuning/how-to-imitate-production-planner.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 89,
+      "title": "OLTP 粗略配置调优",
+      "originalTitle": "Rough configuration tuning (80/20 rule; OLTP)",
+      "topics": [
+        "performance"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/configuration/rough-oltp-configuration-tuning.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 92,
+      "title": "work_mem 调优",
+      "originalTitle": "How to tune work_mem",
+      "topics": [
+        "performance"
+      ],
+      "aliases": [
+        "排序内存",
+        "work mem"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/configuration/how-to-tune-work-mem.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 94,
+      "title": "运行 ANALYZE 收集统计信息",
+      "originalTitle": "How to run ANALYZE (to collect statistics)",
+      "topics": [
+        "performance"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/maintenance/how-to-run-analyze.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 2,
+      "title": "排查并加速 Postgres 停止和重启",
+      "originalTitle": "How to troubleshoot and speed up Postgres stop and restart attempts",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/maintenance/how-to-troubleshoot-and-speedup-postgres-restarts.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 3,
+      "title": "排查 Postgres 启动缓慢",
+      "originalTitle": "How to troubleshoot long Postgres startup",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/maintenance/how-to-troubleshoot-long-startup.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 8,
+      "title": "加速大库 pg_dump",
+      "originalTitle": "How to speed up pg_dump when dumping large databases",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/backup-recovery/how-to-speed-up-pg-dump.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 19,
+      "title": "导入 CSV 到 Postgres",
+      "originalTitle": "How to import CSV to Postgres",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/sql-techniques/how-to-import-csv-to-postgres.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 20,
+      "title": "使用 pg_restore",
+      "originalTitle": "How to use pg_restore",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/backup-recovery/how-to-use-pg-restore.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 21,
+      "title": "不发额外查询设置 application_name",
+      "originalTitle": "How to set application_name without extra queries",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/client-tools/how-to-set-application-name-without-extra-queries.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 25,
+      "title": "如何退出 psql",
+      "originalTitle": "How to quit from psql",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0025_how_to_quit_from_psql.md",
+        "commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 27,
+      "title": "在 Ubuntu 22.04 编译 Postgres",
+      "originalTitle": "How to compile Postgres on Ubuntu 22.04",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/misc/how-to-compile-postgres-on-ubuntu-22.04.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 34,
+      "title": "初步配置调优",
+      "originalTitle": "How to perform initial / rough Postgres tuning",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/configuration/how-to-perform-postgres-tuning.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 47,
+      "title": "安装带 plpython3u 的 Postgres 16",
+      "originalTitle": "How to install Postgres 16 with plpython3u: Recipes for macOS, Ubuntu, Debian, CentOS, Docker",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/misc/how-to-install-postgres-16-with-plpython3u.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 49,
+      "title": "在 psql 脚本中使用变量",
+      "originalTitle": "How to use variables in psql scripts",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/psql/how-to-use-variables-in-psql-scripts.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 51,
+      "title": "通过观察 psql 学习元数据",
+      "originalTitle": "Learn how to work with schema metadata by spying after psql",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/psql/learn-about-schema-metadata-via-psql.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 58,
+      "title": "使用 Docker 运行 Postgres",
+      "originalTitle": "How to use Docker to run Postgres",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/client-tools/how-to-use-docker-to-run-postgres.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 59,
+      "title": "psql 调优",
+      "originalTitle": "psql tuning",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/psql/psql-tuning.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 68,
+      "title": "psql 快捷操作",
+      "originalTitle": "psql shortcuts",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/psql/psql-shortcuts.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 81,
+      "title": "在 psql 中绘图",
+      "originalTitle": "How to plot graphs right in psql on macOS (iTerm2)",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/psql/how-to-plot-graphs-right-in-psql-on-macos-iterm2.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 86,
+      "title": "修复 psql 中的 \\\\e 编辑器问题",
+      "originalTitle": "How to make \"\\e\" work in psql on a new machine (\"editor/nano/vi not found\")",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/psql/how-to-make-e-work-in-psql.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 87,
+      "title": "修改数据库中所有对象所有者",
+      "originalTitle": "How to change ownership of all objects in a database",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/client-tools/how-to-change-ownership-of-all-objects-in-a-database.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 88,
+      "title": "面向 OLTP 的 Linux 参数调优",
+      "originalTitle": "How to tune Linux parameters for OLTP Postgres",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/configuration/how-to-tune-linux-parameters-for-oltp-postgres.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 90,
+      "title": "使用 lib_pgquery 归一化和匹配查询",
+      "originalTitle": "How to use lib_pgquery in shell to normalize and match queries from various sources",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/sql-techniques/how-to-use-lib-pgquery-in-shell.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 91,
+      "title": "格式化 psql 脚本文本输出",
+      "originalTitle": "How to format text output in psql scripts",
+      "topics": [
+        "ops"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/psql/how-to-format-text-output-in-psql-scripts.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 99,
+      "addedOn": "2026-09-10",
+      "title": "如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除",
+      "originalTitle": "PostgreSQL Migrations Without Drama",
+      "topics": [
+        "locks"
+      ],
+      "aliases": [
+        "在线变更",
+        "加字段",
+        "批量删除",
+        "回填",
+        "DDL"
+      ],
+      "type": "conference",
+      "source": {
+        "label": "Daria Nikolaenko（Data Egret）",
+        "url": "https://dataegret.com/wp-content/uploads/2026/04/DariaNikolaenko-pgconf2026.reveal.pdf",
+        "event": "PGConf.DE 2026",
+        "date": "2026-04-21"
+      },
+      "versionNote": "实测 PostgreSQL 16.14；文中 PG18 语法仅作文档核对。",
+      "validation": {
+        "status": "tested",
+        "date": "2026-09-10",
+        "note": "隔离集群验证 DDL、锁队列与分批修改；未做生产规模测试。",
+        "record": "/maintenance/99-validation.md"
+      }
+    },
+    {
+      "id": 100,
+      "addedOn": "2026-09-10",
+      "title": "如何排查 LISTEN／NOTIFY 引起的提交阻塞",
+      "originalTitle": "LISTEN Carefully: How NOTIFY Can Trip Up Your Database",
+      "topics": [
+        "locks"
+      ],
+      "aliases": [
+        "通知",
+        "提交慢",
+        "提交阻塞",
+        "listen notify",
+        "锁等待"
+      ],
+      "type": "conference",
+      "source": {
+        "label": "Jimmy Angelakos（pgEdge）",
+        "url": "https://vyruss.org/computing/slides/pgdata2026_listen_carefully.pdf",
+        "event": "PG DATA 2026",
+        "date": "2026-06-05"
+      },
+      "versionNote": "源码与实测基线：PostgreSQL 16.14。",
+      "validation": {
+        "status": "tested",
+        "date": "2026-09-10",
+        "note": "隔离集群验证通知锁与队尾时序；未测吞吐、真实备库与故障恢复。",
+        "record": "/maintenance/100-validation.md"
+      }
+    },
+    {
+      "id": 22,
+      "title": "heavyweight locks 分析：基础",
+      "originalTitle": "How to analyze heavyweight locks, part 1",
+      "topics": [
+        "locks"
+      ],
+      "aliases": [
+        "锁等待",
+        "阻塞",
+        "lock"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/monitoring/how-to-analyze-heavyweight-locks-part-1.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 30,
+      "title": "处理 OLTP 长事务",
+      "originalTitle": "How to deal with long-running transactions (OLTP)",
+      "topics": [
+        "locks"
+      ],
+      "aliases": [
+        "长事务",
+        "锁等待"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/maintenance/how-to-deal-with-long-running-transactions-oltp.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 33,
+      "title": "无停机重定义主键",
+      "originalTitle": "How to redefine a PK without downtime",
+      "topics": [
+        "locks"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/schema-design/ddl-operations/how-to-redefine-a-PK-without-downtime.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 35,
+      "title": "使用子事务",
+      "originalTitle": "How to use subtransactions in Postgres",
+      "topics": [
+        "locks"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/maintenance/how-to-use-subtransactions-in-postgres.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 36,
+      "title": "单条查询实现 find-or-insert",
+      "originalTitle": "\"Find-or-insert\" using a single query",
+      "topics": [
+        "locks"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/sql-techniques/find-or-insert-using-a-single-query.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 37,
+      "title": "无停机启用 data checksums",
+      "originalTitle": "How to enable data checksums without downtime",
+      "topics": [
+        "locks",
+        "replication"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/maintenance/how-to-enable-data-checksums-without-downtime.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 42,
+      "title": "heavyweight locks 分析：锁树",
+      "originalTitle": "How to analyze heavyweight locks, part 2: Lock trees (a.k.a. \"lock queues\", \"wait queues\", \"blocking chains\")",
+      "topics": [
+        "locks"
+      ],
+      "aliases": [
+        "锁树",
+        "锁等待",
+        "阻塞链"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0042_how_to_analyze_heavyweight_locks_part_2.md",
+        "commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 55,
+      "title": "删除列",
+      "originalTitle": "How to drop a column",
+      "topics": [
+        "locks"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/schema-design/ddl-operations/how-to-drop-a-column.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 60,
+      "title": "添加列",
+      "originalTitle": "How to add a column",
+      "topics": [
+        "locks"
+      ],
+      "aliases": [
+        "加字段",
+        "加列",
+        "在线变更"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/schema-design/ddl-operations/how-to-add-a-column.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 69,
+      "title": "无停机添加 CHECK 约束",
+      "originalTitle": "How to add a CHECK constraint without downtime",
+      "topics": [
+        "locks"
+      ],
+      "aliases": [
+        "在线变更",
+        "加约束"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/schema-design/ddl-operations/how-to-add-a-check-constraint-without-downtime.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 70,
+      "title": "添加外键",
+      "originalTitle": "How to add a foreign key",
+      "topics": [
+        "locks"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/schema-design/constraints/how-to-add-a-foreign-key.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 71,
+      "title": "理解 DDL 被什么阻塞",
+      "originalTitle": "How to understand what's blocking DDL",
+      "topics": [
+        "locks"
+      ],
+      "aliases": [
+        "DDL阻塞",
+        "锁等待"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/monitoring-troubleshooting/lock-analysis/how-to-understand-what-is-blocking-ddl.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 72,
+      "title": "移除外键",
+      "originalTitle": "How to remove a foreign key",
+      "topics": [
+        "locks"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/schema-design/constraints/how-to-remove-a-foreign-key.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 73,
+      "title": "heavyweight locks 分析：持久监控",
+      "originalTitle": "How to analyze heavyweight locks, part 3. Persistent monitoring",
+      "topics": [
+        "locks"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0073_how_to_analyze_heavyweight_locks_part_3_persistent_monitoring.md",
+        "commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 83,
+      "title": "修改 Postgres 参数",
+      "originalTitle": "How to change a Postgres parameter",
+      "topics": [
+        "locks"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/configuration/how-to-change-postgres-parameter.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 15,
+      "title": "监控 CREATE INDEX / REINDEX 进度",
+      "originalTitle": "How to monitor CREATE INDEX / REINDEX progress in Postgres 12+",
+      "topics": [
+        "indexes"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/indexing/how-to-monitor-index-operations.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 18,
+      "title": "过度索引",
+      "originalTitle": "Over-indexing",
+      "topics": [
+        "indexes"
+      ],
+      "aliases": [
+        "索引太多"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/indexing/over-indexing.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 53,
+      "title": "索引维护",
+      "originalTitle": "Index maintenance",
+      "topics": [
+        "indexes"
+      ],
+      "aliases": [
+        "索引维护"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/indexing/index-maintenance.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 54,
+      "title": "使用 pg_amcheck 检查 btree 索引损坏",
+      "originalTitle": "How to check btree indexes for corruption (pg_amcheck)",
+      "topics": [
+        "indexes"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0054_how_to_check_btree_indexes_for_corruption.md",
+        "commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 61,
+      "title": "创建索引：基础",
+      "originalTitle": "How to create an index, part 1",
+      "topics": [
+        "indexes"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0061_how_to_create_an_index_part_1.md",
+        "commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 62,
+      "title": "创建索引：进阶",
+      "originalTitle": "How to create an index, part 2",
+      "topics": [
+        "indexes"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0062_how_to_create_an_index_part_2.md",
+        "commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 75,
+      "title": "查找未使用索引",
+      "originalTitle": "How to find unused indexes",
+      "topics": [
+        "indexes"
+      ],
+      "aliases": [
+        "无用索引",
+        "索引清理"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/indexing/how-to-find-unused-indexes.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 76,
+      "title": "查找冗余索引",
+      "originalTitle": "How to find redundant indexes",
+      "topics": [
+        "indexes"
+      ],
+      "aliases": [
+        "重复索引",
+        "冗余索引"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/indexing/how-to-find-redundent-indexes.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 79,
+      "title": "并行重建大量索引并避免死锁",
+      "originalTitle": "How to rebuild many indexes using many backends avoiding deadlocks",
+      "topics": [
+        "indexes"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/indexing/rebuild-indexes-without-deadlocks.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 4,
+      "title": "理解 tuple 在表中的稀疏存储",
+      "originalTitle": "Understanding how sparsely tuples are stored in a table",
+      "topics": [
+        "storage"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/misc/tuple-sparsity.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 9,
+      "title": "理解 LSN 和 WAL 文件名",
+      "originalTitle": "How to understand LSN values and WAL filenames",
+      "topics": [
+        "storage"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/misc/lsn-values-and-wal-filenames.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 16,
+      "title": "容易踩坑的 Postgres 特性",
+      "originalTitle": "How to get into trouble using some Postgres features",
+      "topics": [
+        "storage"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/miscellaneous/how-to-get-into-trouble-using-some-postgres-features.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 26,
+      "title": "检查 btree 索引损坏",
+      "originalTitle": "How to check btree indexes for corruption",
+      "topics": [
+        "storage",
+        "indexes"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0026_how_to_check_btree_indexes_for_corruption.md",
+        "commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 31,
+      "title": "排查 pg_wal 目录增长",
+      "originalTitle": "How to troubleshoot a growing pg_wal directory",
+      "topics": [
+        "storage"
+      ],
+      "aliases": [
+        "WAL暴涨",
+        "磁盘满",
+        "归档",
+        "复制槽"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/maintenance/how-to-troubleshoot-a-growing-pg-wal-directory.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 39,
+      "title": "如何破坏数据库：制造损坏",
+      "originalTitle": "How to break a database, Part 1: How to corrupt",
+      "topics": [
+        "storage"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0039_how_to_break_a_database_part_1_how_to_corrupt.md",
+        "commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 40,
+      "title": "如何破坏数据库：模拟 XID 回卷",
+      "originalTitle": "How to break a database, Part 2: Simulate infamous transaction ID wraparound",
+      "topics": [
+        "storage"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0040_how_to_break_a_database_part_2_simulate_xid_wraparound.md",
+        "commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 41,
+      "title": "如何破坏数据库：有害负载",
+      "originalTitle": "How to break a database, Part 3: Harmful workloads",
+      "topics": [
+        "storage"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0041_harmful_workloads.md",
+        "commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 44,
+      "title": "监控 XID 回卷风险",
+      "originalTitle": "How to monitor transaction ID wraparound risks",
+      "topics": [
+        "storage"
+      ],
+      "aliases": [
+        "事务回卷",
+        "xid"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/monitoring/how-to-monitor-transaction-id-wraparound-risks.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 45,
+      "title": "监控 xmin horizon 避免回卷和膨胀",
+      "originalTitle": "How to monitor xmin horizon to prevent XID/MultiXID wraparound and high bloat",
+      "topics": [
+        "storage"
+      ],
+      "aliases": [
+        "膨胀",
+        "xmin"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/monitoring/how-to-monitor-xmin-horizon.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 46,
+      "title": "处理 bloat",
+      "originalTitle": "How to deal with bloat",
+      "topics": [
+        "storage"
+      ],
+      "aliases": [
+        "表膨胀",
+        "空间回收"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/maintenance/how-to-deal-with-bloat.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 52,
+      "title": "降低 WAL 生成速率",
+      "originalTitle": "How to reduce WAL generation rates",
+      "topics": [
+        "storage"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/monitoring/how-to-reduce-wal-generation-rates.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 66,
+      "title": "一个 page 能插入多少 tuple",
+      "originalTitle": "How many tuples can be inserted in a page",
+      "topics": [
+        "storage"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/misc/how-many-tuples-can-be-inserted-in-a-page.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 67,
+      "title": "Autovacuum 队列和进度",
+      "originalTitle": "Autovacuum \"queue\" and progress",
+      "topics": [
+        "storage"
+      ],
+      "aliases": [
+        "自动清理",
+        "autovacuum"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/maintenance/autovacuum-queue-and-progress.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 74,
+      "title": "刷新 OS page cache 和 Postgres buffer pool",
+      "originalTitle": "How to flush caches (OS page cache and Postgres buffer pool)",
+      "topics": [
+        "storage"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/monitoring-troubleshooting/troubleshooting/how-to-flush-caches.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 80,
+      "title": "查找有 int4 主键溢出风险的表",
+      "originalTitle": "How to find int4 PKs with out-of-range risks in a large database",
+      "topics": [
+        "storage"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/schema-design/constraints/how-to-find-int4-pks-with-out-of-range-risks.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 84,
+      "title": "列顺序与存储优化：Column Tetris",
+      "originalTitle": "How to find the best order of columns to save on storage (\"Column Tetris\")",
+      "topics": [
+        "storage"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/misc/how-to-find-the-best-order-of-columns-to-save-on-storage.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 85,
+      "title": "快速检查值的数据类型和存储大小",
+      "originalTitle": "How to quickly check data type and storage size of a value",
+      "topics": [
+        "storage"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/schema-design/data-types/how-to-quickly-check-data-type-and-storage-size-of-a-value.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 23,
+      "title": "在 Postgres 中调用 OpenAI API 实现语义搜索和 GPT Chat",
+      "originalTitle": "How to use OpenAI APIs right from Postgres to implement semantic search and GPT chat",
+      "topics": [
+        "sql"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/misc/how-to-use-openai-apis-in-postgres.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 24,
+      "title": "使用元数据",
+      "originalTitle": "How to work with metadata",
+      "topics": [
+        "sql"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/misc/how-to-work-with-metadata.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 28,
+      "title": "数组使用：基础",
+      "originalTitle": "How to work with arrays, part 1",
+      "topics": [
+        "sql"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0028_how_to_work_with_arrays_part_1.md",
+        "commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 29,
+      "title": "数组使用：进阶",
+      "originalTitle": "How to work with arrays, part 2",
+      "topics": [
+        "sql"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0029_how_to_work_with_arrays_part_2.md",
+        "commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 32,
+      "title": "加速批量加载",
+      "originalTitle": "How to speed up bulk load",
+      "topics": [
+        "sql"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/backup-recovery/how-to-speed-up-bulk-load.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 43,
+      "title": "SQL 格式化与风格指南",
+      "originalTitle": "How to format SQL (SQL style guide)",
+      "topics": [
+        "sql"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/sql-techniques/how-to-format-sql.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 48,
+      "title": "生成测试数据",
+      "originalTitle": "How to generate fake data",
+      "topics": [
+        "sql"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/sql-techniques/how-to-generate-fake-data.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 64,
+      "title": "使用 UUID",
+      "originalTitle": "How to use UUID",
+      "topics": [
+        "sql"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/schema-design/data-types/how-to-use-uuid.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 65,
+      "title": "UUID v7 与分区",
+      "originalTitle": "UUID v7 and partitioning (TimescaleDB)",
+      "topics": [
+        "sql"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/schema-design/data-types/uuid-v7-and-partitioning-timescaledb.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 78,
+      "title": "使用创建时间和统计信息估算大表同比增长",
+      "originalTitle": "How to estimate the YoY growth of a very large table using row creation timestamps and the planner statistics",
+      "topics": [
+        "sql"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/misc/estimate-yoy-table-growth.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 82,
+      "title": "用 SQL 绘制霜花图案",
+      "originalTitle": "How to draw frost patterns using SQL ❄",
+      "topics": [
+        "sql"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0082_how_to_draw_frost_patterns_using_sql.md",
+        "commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 17,
+      "title": "判断复制延迟",
+      "originalTitle": "How to determine the replication lag",
+      "topics": [
+        "replication"
+      ],
+      "aliases": [
+        "主从延迟",
+        "复制延迟"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/monitoring-troubleshooting/system-monitoring/how-to-determine-the-replication-lag.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 57,
+      "title": "将物理副本转换为逻辑副本",
+      "originalTitle": "How to convert a physical replica to logical",
+      "topics": [
+        "replication"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/replication/how-to-convert-a-physical-replica-to-logical.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 77,
+      "title": "大型高负载集群的无停机大版本升级",
+      "originalTitle": "Postgres major upgrade without any downtime for a very large cluster running under heavy load",
+      "topics": [
+        "replication"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/replication/zero-downtime-major-upgrade.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 93,
+      "title": "排查流复制延迟",
+      "originalTitle": "How to troubleshoot streaming replication lag",
+      "topics": [
+        "replication"
+      ],
+      "aliases": [
+        "主从延迟",
+        "复制延迟"
+      ],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/replication/how-to-troubleshoot-streaming-replication-lag.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 96,
+      "addedOn": "2026-05-17",
+      "title": "为什么 actual time 和 Execution Time 有很大差异？",
+      "originalTitle": "为什么 actual time 和 Execution Time 有很大差异？",
+      "topics": [
+        "practice",
+        "performance"
+      ],
+      "aliases": [
+        "执行时间",
+        "actual time",
+        "execution time",
+        "慢SQL"
+      ],
+      "type": "practice",
+      "source": {
+        "label": "xiongcc",
+        "url": "https://github.com/xiongcccc/postgres-howtos/blob/master/docs/96.md"
+      },
+      "versionNote": "正文分析 PostgreSQL 18 源码；不同版本需核对实现。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "未收录独立的实测记录。"
+      }
+    },
+    {
+      "id": 97,
+      "title": "深入浅出 bpftrace 分析 PostgreSQL",
+      "originalTitle": "深入浅出 bpftrace 分析 PostgreSQL",
+      "topics": [
+        "practice",
+        "performance",
+        "ops"
+      ],
+      "aliases": [
+        "ebpf",
+        "系统调用",
+        "bpftrace"
+      ],
+      "type": "practice",
+      "source": {
+        "label": "xiongcc",
+        "url": "https://github.com/xiongcccc/postgres-howtos/blob/master/docs/97.md"
+      },
+      "versionNote": "Linux / bpftrace；内核探针与 PostgreSQL 符号依环境而异。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "未收录独立的实测记录。"
+      }
+    },
+    {
+      "id": 98,
+      "addedOn": "2026-05-20",
+      "title": "当 PostgreSQL 慢在数据库之外：用 bpftrace 打通 SQL 与内核观测",
+      "originalTitle": "当 PostgreSQL 慢在数据库之外：用 bpftrace 打通 SQL 与内核观测",
+      "topics": [
+        "practice",
+        "performance",
+        "ops"
+      ],
+      "aliases": [
+        "ebpf",
+        "strace",
+        "perf",
+        "系统调用"
+      ],
+      "type": "practice",
+      "source": {
+        "label": "xiongcc",
+        "url": "https://github.com/xiongcccc/postgres-howtos/blob/master/docs/98.md"
+      },
+      "versionNote": "Linux / bpftrace；内核探针与 PostgreSQL 符号依环境而异。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "未收录独立的实测记录。"
+      }
+    },
+    {
+      "id": 38,
+      "title": "如何不把 DBA/DBRE 工作搞砸",
+      "originalTitle": "How to NOT get screwed as a DBA (DBRE)",
+      "topics": [
+        "engineering"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/monitoring-troubleshooting/troubleshooting/how-to-not-get-screwed-as-a-dba.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 63,
+      "title": "如何帮助别人",
+      "originalTitle": "How to help others",
+      "topics": [
+        "engineering"
+      ],
+      "aliases": [],
+      "type": "translation",
+      "source": {
+        "label": "Nikolay Samokhvalov / Postgres.ai",
+        "url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/misc/how-to-help-others.md",
+        "commit": "80536bb97f28d1007ad09627db434c2b7016da1f"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "上游内容已核对；未逐条运行所有示例。",
+        "date": "2026-09-10"
+      }
+    },
+    {
+      "id": 95,
+      "title": "后记",
+      "originalTitle": "后记",
+      "topics": [
+        "engineering"
+      ],
+      "aliases": [],
+      "type": "editorial",
+      "source": {
+        "label": "xiongcc",
+        "url": "https://github.com/xiongcccc/postgres-howtos/blob/master/docs/95.md"
+      },
+      "versionNote": "适用版本以正文为准，未声明统一最低版本。",
+      "validation": {
+        "status": "not-recorded",
+        "note": "未收录独立的实测记录。"
+      }
+    }
+  ]
+}
