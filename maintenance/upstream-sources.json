@@ -1,0 +1,670 @@
+{
+  "checked_on": "2026-09-10",
+  "scope": "Article identity and upstream changes; not a claim that every historical command has been runtime-tested.",
+  "excluded": [
+    "docs/95.md",
+    "docs/96.md",
+    "docs/97.md",
+    "docs/98.md"
+  ],
+  "articles": [
+    {
+      "local": "docs/1.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/performance-optimization/query-tuning/explain-analyze-buffers.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/query-tuning/explain-analyze-buffers.md"
+    },
+    {
+      "local": "docs/2.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/database-administration/maintenance/how-to-troubleshoot-and-speedup-postgres-restarts.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/maintenance/how-to-troubleshoot-and-speedup-postgres-restarts.md"
+    },
+    {
+      "local": "docs/3.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/database-administration/maintenance/how-to-troubleshoot-long-startup.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/maintenance/how-to-troubleshoot-long-startup.md"
+    },
+    {
+      "local": "docs/4.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/advanced-topics/misc/tuple-sparsity.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/misc/tuple-sparsity.md"
+    },
+    {
+      "local": "docs/5.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/performance-optimization/monitoring/pg-stat-statements-part-1.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/monitoring/pg-stat-statements-part-1.md"
+    },
+    {
+      "local": "docs/6.md",
+      "source_repository": "postgres-ai/postgresql-consulting/postgres-howtos",
+      "source_path": "0006_pg_stat_statements_part_2.md",
+      "source_commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb",
+      "source_url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0006_pg_stat_statements_part_2.md"
+    },
+    {
+      "local": "docs/7.md",
+      "source_repository": "postgres-ai/postgresql-consulting/postgres-howtos",
+      "source_path": "0007_pg_stat_statements_part_3.md",
+      "source_commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb",
+      "source_url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0007_pg_stat_statements_part_3.md"
+    },
+    {
+      "local": "docs/8.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/database-administration/backup-recovery/how-to-speed-up-pg-dump.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/backup-recovery/how-to-speed-up-pg-dump.md"
+    },
+    {
+      "local": "docs/9.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/advanced-topics/misc/lsn-values-and-wal-filenames.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/misc/lsn-values-and-wal-filenames.md"
+    },
+    {
+      "local": "docs/10.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/monitoring-troubleshooting/system-monitoring/flamegraphs-for-postgres.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/monitoring-troubleshooting/system-monitoring/flamegraphs-for-postgres.md"
+    },
+    {
+      "local": "docs/11.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/performance-optimization/monitoring/ad-hoc-monitoring.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/monitoring/ad-hoc-monitoring.md"
+    },
+    {
+      "local": "docs/12.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/performance-optimization/query-tuning/from-pgss-to-explain--how-to-find-query-examples.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/query-tuning/from-pgss-to-explain--how-to-find-query-examples.md"
+    },
+    {
+      "local": "docs/13.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/performance-optimization/benchmarks/how-to-benchmark.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/benchmarks/how-to-benchmark.md"
+    },
+    {
+      "local": "docs/14.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/performance-optimization/query-tuning/how-to-decide-if-query-too-slow.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/query-tuning/how-to-decide-if-query-too-slow.md"
+    },
+    {
+      "local": "docs/15.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/performance-optimization/indexing/how-to-monitor-index-operations.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/indexing/how-to-monitor-index-operations.md"
+    },
+    {
+      "local": "docs/16.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/miscellaneous/how-to-get-into-trouble-using-some-postgres-features.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/miscellaneous/how-to-get-into-trouble-using-some-postgres-features.md"
+    },
+    {
+      "local": "docs/17.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/monitoring-troubleshooting/system-monitoring/how-to-determine-the-replication-lag.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/monitoring-troubleshooting/system-monitoring/how-to-determine-the-replication-lag.md"
+    },
+    {
+      "local": "docs/18.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/performance-optimization/indexing/over-indexing.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/indexing/over-indexing.md"
+    },
+    {
+      "local": "docs/19.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/development-tools/sql-techniques/how-to-import-csv-to-postgres.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/sql-techniques/how-to-import-csv-to-postgres.md"
+    },
+    {
+      "local": "docs/20.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/database-administration/backup-recovery/how-to-use-pg-restore.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/backup-recovery/how-to-use-pg-restore.md"
+    },
+    {
+      "local": "docs/21.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/development-tools/client-tools/how-to-set-application-name-without-extra-queries.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/client-tools/how-to-set-application-name-without-extra-queries.md"
+    },
+    {
+      "local": "docs/22.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/performance-optimization/monitoring/how-to-analyze-heavyweight-locks-part-1.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/monitoring/how-to-analyze-heavyweight-locks-part-1.md"
+    },
+    {
+      "local": "docs/23.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/advanced-topics/misc/how-to-use-openai-apis-in-postgres.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/misc/how-to-use-openai-apis-in-postgres.md"
+    },
+    {
+      "local": "docs/24.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/advanced-topics/misc/how-to-work-with-metadata.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/misc/how-to-work-with-metadata.md"
+    },
+    {
+      "local": "docs/25.md",
+      "source_repository": "postgres-ai/postgresql-consulting/postgres-howtos",
+      "source_path": "0025_how_to_quit_from_psql.md",
+      "source_commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb",
+      "source_url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0025_how_to_quit_from_psql.md"
+    },
+    {
+      "local": "docs/26.md",
+      "source_repository": "postgres-ai/postgresql-consulting/postgres-howtos",
+      "source_path": "0026_how_to_check_btree_indexes_for_corruption.md",
+      "source_commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb",
+      "source_url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0026_how_to_check_btree_indexes_for_corruption.md"
+    },
+    {
+      "local": "docs/27.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/advanced-topics/misc/how-to-compile-postgres-on-ubuntu-22.04.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/misc/how-to-compile-postgres-on-ubuntu-22.04.md"
+    },
+    {
+      "local": "docs/28.md",
+      "source_repository": "postgres-ai/postgresql-consulting/postgres-howtos",
+      "source_path": "0028_how_to_work_with_arrays_part_1.md",
+      "source_commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb",
+      "source_url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0028_how_to_work_with_arrays_part_1.md"
+    },
+    {
+      "local": "docs/29.md",
+      "source_repository": "postgres-ai/postgresql-consulting/postgres-howtos",
+      "source_path": "0029_how_to_work_with_arrays_part_2.md",
+      "source_commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb",
+      "source_url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0029_how_to_work_with_arrays_part_2.md"
+    },
+    {
+      "local": "docs/30.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/database-administration/maintenance/how-to-deal-with-long-running-transactions-oltp.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/maintenance/how-to-deal-with-long-running-transactions-oltp.md"
+    },
+    {
+      "local": "docs/31.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/database-administration/maintenance/how-to-troubleshoot-a-growing-pg-wal-directory.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/maintenance/how-to-troubleshoot-a-growing-pg-wal-directory.md"
+    },
+    {
+      "local": "docs/32.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/database-administration/backup-recovery/how-to-speed-up-bulk-load.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/backup-recovery/how-to-speed-up-bulk-load.md"
+    },
+    {
+      "local": "docs/33.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/schema-design/ddl-operations/how-to-redefine-a-PK-without-downtime.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/schema-design/ddl-operations/how-to-redefine-a-PK-without-downtime.md"
+    },
+    {
+      "local": "docs/34.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/database-administration/configuration/how-to-perform-postgres-tuning.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/configuration/how-to-perform-postgres-tuning.md"
+    },
+    {
+      "local": "docs/35.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/database-administration/maintenance/how-to-use-subtransactions-in-postgres.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/maintenance/how-to-use-subtransactions-in-postgres.md"
+    },
+    {
+      "local": "docs/36.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/development-tools/sql-techniques/find-or-insert-using-a-single-query.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/sql-techniques/find-or-insert-using-a-single-query.md"
+    },
+    {
+      "local": "docs/37.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/database-administration/maintenance/how-to-enable-data-checksums-without-downtime.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/maintenance/how-to-enable-data-checksums-without-downtime.md"
+    },
+    {
+      "local": "docs/38.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/monitoring-troubleshooting/troubleshooting/how-to-not-get-screwed-as-a-dba.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/monitoring-troubleshooting/troubleshooting/how-to-not-get-screwed-as-a-dba.md"
+    },
+    {
+      "local": "docs/39.md",
+      "source_repository": "postgres-ai/postgresql-consulting/postgres-howtos",
+      "source_path": "0039_how_to_break_a_database_part_1_how_to_corrupt.md",
+      "source_commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb",
+      "source_url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0039_how_to_break_a_database_part_1_how_to_corrupt.md"
+    },
+    {
+      "local": "docs/40.md",
+      "source_repository": "postgres-ai/postgresql-consulting/postgres-howtos",
+      "source_path": "0040_how_to_break_a_database_part_2_simulate_xid_wraparound.md",
+      "source_commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb",
+      "source_url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0040_how_to_break_a_database_part_2_simulate_xid_wraparound.md"
+    },
+    {
+      "local": "docs/41.md",
+      "source_repository": "postgres-ai/postgresql-consulting/postgres-howtos",
+      "source_path": "0041_harmful_workloads.md",
+      "source_commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb",
+      "source_url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0041_harmful_workloads.md"
+    },
+    {
+      "local": "docs/42.md",
+      "source_repository": "postgres-ai/postgresql-consulting/postgres-howtos",
+      "source_path": "0042_how_to_analyze_heavyweight_locks_part_2.md",
+      "source_commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb",
+      "source_url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0042_how_to_analyze_heavyweight_locks_part_2.md"
+    },
+    {
+      "local": "docs/43.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/development-tools/sql-techniques/how-to-format-sql.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/sql-techniques/how-to-format-sql.md"
+    },
+    {
+      "local": "docs/44.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/performance-optimization/monitoring/how-to-monitor-transaction-id-wraparound-risks.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/monitoring/how-to-monitor-transaction-id-wraparound-risks.md"
+    },
+    {
+      "local": "docs/45.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/performance-optimization/monitoring/how-to-monitor-xmin-horizon.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/monitoring/how-to-monitor-xmin-horizon.md"
+    },
+    {
+      "local": "docs/46.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/database-administration/maintenance/how-to-deal-with-bloat.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/maintenance/how-to-deal-with-bloat.md"
+    },
+    {
+      "local": "docs/47.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/advanced-topics/misc/how-to-install-postgres-16-with-plpython3u.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/misc/how-to-install-postgres-16-with-plpython3u.md"
+    },
+    {
+      "local": "docs/48.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/development-tools/sql-techniques/how-to-generate-fake-data.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/sql-techniques/how-to-generate-fake-data.md"
+    },
+    {
+      "local": "docs/49.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/development-tools/psql/how-to-use-variables-in-psql-scripts.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/psql/how-to-use-variables-in-psql-scripts.md"
+    },
+    {
+      "local": "docs/50.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/performance-optimization/benchmarks/pre-and-post-steps-for-benchmark-iterations.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/benchmarks/pre-and-post-steps-for-benchmark-iterations.md"
+    },
+    {
+      "local": "docs/51.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/development-tools/psql/learn-about-schema-metadata-via-psql.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/psql/learn-about-schema-metadata-via-psql.md"
+    },
+    {
+      "local": "docs/52.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/performance-optimization/monitoring/how-to-reduce-wal-generation-rates.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/monitoring/how-to-reduce-wal-generation-rates.md"
+    },
+    {
+      "local": "docs/53.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/performance-optimization/indexing/index-maintenance.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/indexing/index-maintenance.md"
+    },
+    {
+      "local": "docs/54.md",
+      "source_repository": "postgres-ai/postgresql-consulting/postgres-howtos",
+      "source_path": "0054_how_to_check_btree_indexes_for_corruption.md",
+      "source_commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb",
+      "source_url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0054_how_to_check_btree_indexes_for_corruption.md"
+    },
+    {
+      "local": "docs/55.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/schema-design/ddl-operations/how-to-drop-a-column.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/schema-design/ddl-operations/how-to-drop-a-column.md"
+    },
+    {
+      "local": "docs/56.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/performance-optimization/query-tuning/how-to-imitate-production-planner.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/query-tuning/how-to-imitate-production-planner.md"
+    },
+    {
+      "local": "docs/57.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/advanced-topics/replication/how-to-convert-a-physical-replica-to-logical.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/replication/how-to-convert-a-physical-replica-to-logical.md"
+    },
+    {
+      "local": "docs/58.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/development-tools/client-tools/how-to-use-docker-to-run-postgres.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/client-tools/how-to-use-docker-to-run-postgres.md"
+    },
+    {
+      "local": "docs/59.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/development-tools/psql/psql-tuning.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/psql/psql-tuning.md"
+    },
+    {
+      "local": "docs/60.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/schema-design/ddl-operations/how-to-add-a-column.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/schema-design/ddl-operations/how-to-add-a-column.md"
+    },
+    {
+      "local": "docs/61.md",
+      "source_repository": "postgres-ai/postgresql-consulting/postgres-howtos",
+      "source_path": "0061_how_to_create_an_index_part_1.md",
+      "source_commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb",
+      "source_url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0061_how_to_create_an_index_part_1.md"
+    },
+    {
+      "local": "docs/62.md",
+      "source_repository": "postgres-ai/postgresql-consulting/postgres-howtos",
+      "source_path": "0062_how_to_create_an_index_part_2.md",
+      "source_commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb",
+      "source_url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0062_how_to_create_an_index_part_2.md"
+    },
+    {
+      "local": "docs/63.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/advanced-topics/misc/how-to-help-others.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/misc/how-to-help-others.md"
+    },
+    {
+      "local": "docs/64.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/schema-design/data-types/how-to-use-uuid.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/schema-design/data-types/how-to-use-uuid.md"
+    },
+    {
+      "local": "docs/65.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/schema-design/data-types/uuid-v7-and-partitioning-timescaledb.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/schema-design/data-types/uuid-v7-and-partitioning-timescaledb.md"
+    },
+    {
+      "local": "docs/66.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/advanced-topics/misc/how-many-tuples-can-be-inserted-in-a-page.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/misc/how-many-tuples-can-be-inserted-in-a-page.md"
+    },
+    {
+      "local": "docs/67.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/database-administration/maintenance/autovacuum-queue-and-progress.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/maintenance/autovacuum-queue-and-progress.md"
+    },
+    {
+      "local": "docs/68.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/development-tools/psql/psql-shortcuts.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/psql/psql-shortcuts.md"
+    },
+    {
+      "local": "docs/69.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/schema-design/ddl-operations/how-to-add-a-check-constraint-without-downtime.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/schema-design/ddl-operations/how-to-add-a-check-constraint-without-downtime.md"
+    },
+    {
+      "local": "docs/70.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/schema-design/constraints/how-to-add-a-foreign-key.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/schema-design/constraints/how-to-add-a-foreign-key.md"
+    },
+    {
+      "local": "docs/71.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/monitoring-troubleshooting/lock-analysis/how-to-understand-what-is-blocking-ddl.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/monitoring-troubleshooting/lock-analysis/how-to-understand-what-is-blocking-ddl.md"
+    },
+    {
+      "local": "docs/72.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/schema-design/constraints/how-to-remove-a-foreign-key.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/schema-design/constraints/how-to-remove-a-foreign-key.md"
+    },
+    {
+      "local": "docs/73.md",
+      "source_repository": "postgres-ai/postgresql-consulting/postgres-howtos",
+      "source_path": "0073_how_to_analyze_heavyweight_locks_part_3_persistent_monitoring.md",
+      "source_commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb",
+      "source_url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0073_how_to_analyze_heavyweight_locks_part_3_persistent_monitoring.md"
+    },
+    {
+      "local": "docs/74.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/monitoring-troubleshooting/troubleshooting/how-to-flush-caches.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/monitoring-troubleshooting/troubleshooting/how-to-flush-caches.md"
+    },
+    {
+      "local": "docs/75.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/performance-optimization/indexing/how-to-find-unused-indexes.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/indexing/how-to-find-unused-indexes.md"
+    },
+    {
+      "local": "docs/76.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/performance-optimization/indexing/how-to-find-redundent-indexes.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/indexing/how-to-find-redundent-indexes.md"
+    },
+    {
+      "local": "docs/77.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/advanced-topics/replication/zero-downtime-major-upgrade.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/replication/zero-downtime-major-upgrade.md"
+    },
+    {
+      "local": "docs/78.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/advanced-topics/misc/estimate-yoy-table-growth.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/misc/estimate-yoy-table-growth.md"
+    },
+    {
+      "local": "docs/79.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/performance-optimization/indexing/rebuild-indexes-without-deadlocks.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/indexing/rebuild-indexes-without-deadlocks.md"
+    },
+    {
+      "local": "docs/80.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/schema-design/constraints/how-to-find-int4-pks-with-out-of-range-risks.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/schema-design/constraints/how-to-find-int4-pks-with-out-of-range-risks.md"
+    },
+    {
+      "local": "docs/81.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/development-tools/psql/how-to-plot-graphs-right-in-psql-on-macos-iterm2.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/psql/how-to-plot-graphs-right-in-psql-on-macos-iterm2.md"
+    },
+    {
+      "local": "docs/82.md",
+      "source_repository": "postgres-ai/postgresql-consulting/postgres-howtos",
+      "source_path": "0082_how_to_draw_frost_patterns_using_sql.md",
+      "source_commit": "41b389c5b820ab8e31255728c8b768774f4ff1bb",
+      "source_url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/blob/41b389c5b820ab8e31255728c8b768774f4ff1bb/0082_how_to_draw_frost_patterns_using_sql.md"
+    },
+    {
+      "local": "docs/83.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/database-administration/configuration/how-to-change-postgres-parameter.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/configuration/how-to-change-postgres-parameter.md"
+    },
+    {
+      "local": "docs/84.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/advanced-topics/misc/how-to-find-the-best-order-of-columns-to-save-on-storage.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/misc/how-to-find-the-best-order-of-columns-to-save-on-storage.md"
+    },
+    {
+      "local": "docs/85.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/schema-design/data-types/how-to-quickly-check-data-type-and-storage-size-of-a-value.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/schema-design/data-types/how-to-quickly-check-data-type-and-storage-size-of-a-value.md"
+    },
+    {
+      "local": "docs/86.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/development-tools/psql/how-to-make-e-work-in-psql.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/psql/how-to-make-e-work-in-psql.md"
+    },
+    {
+      "local": "docs/87.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/development-tools/client-tools/how-to-change-ownership-of-all-objects-in-a-database.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/client-tools/how-to-change-ownership-of-all-objects-in-a-database.md"
+    },
+    {
+      "local": "docs/88.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/database-administration/configuration/how-to-tune-linux-parameters-for-oltp-postgres.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/configuration/how-to-tune-linux-parameters-for-oltp-postgres.md"
+    },
+    {
+      "local": "docs/89.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/database-administration/configuration/rough-oltp-configuration-tuning.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/configuration/rough-oltp-configuration-tuning.md"
+    },
+    {
+      "local": "docs/90.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/development-tools/sql-techniques/how-to-use-lib-pgquery-in-shell.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/sql-techniques/how-to-use-lib-pgquery-in-shell.md"
+    },
+    {
+      "local": "docs/91.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/development-tools/psql/how-to-format-text-output-in-psql-scripts.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/development-tools/psql/how-to-format-text-output-in-psql-scripts.md"
+    },
+    {
+      "local": "docs/92.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/database-administration/configuration/how-to-tune-work-mem.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/configuration/how-to-tune-work-mem.md"
+    },
+    {
+      "local": "docs/93.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/advanced-topics/replication/how-to-troubleshoot-streaming-replication-lag.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/replication/how-to-troubleshoot-streaming-replication-lag.md"
+    },
+    {
+      "local": "docs/94.md",
+      "source_repository": "postgres-ai/docs",
+      "source_path": "docs/postgres-howtos/database-administration/maintenance/how-to-run-analyze.md",
+      "source_commit": "80536bb97f28d1007ad09627db434c2b7016da1f",
+      "source_url": "https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/database-administration/maintenance/how-to-run-analyze.md"
+    }
+  ]
+}
