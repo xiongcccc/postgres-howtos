@@ -45,6 +45,7 @@
 
 * **锁、事务与在线变更**
   * [99. 安全执行在线变更：DDL、回填与批量删除](/docs/99.md)
+  * [100. 排查 LISTEN／NOTIFY 引起的提交阻塞](/docs/100.md)
   * [22. heavyweight locks 分析：基础](./docs/22.md)
   * [30. 处理 OLTP 长事务](./docs/30.md)
   * [33. 无停机重定义主键](./docs/33.md)

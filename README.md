@@ -46,6 +46,8 @@
 
 除上游译文外，本站也持续整理个人实践与社区会议内容。[会议精选](/docs/conferences.md) 的第一篇是 [如何安全执行 PostgreSQL 在线变更](/docs/99.md)，涵盖 DDL、数据回填与批量删除。
 
+最新整理：[如何排查 LISTEN／NOTIFY 引起的提交阻塞](/docs/100.md)，讨论高并发通知的锁竞争，以及批量发送与持久事件的边界。
+
 原项目由 [@NikolayS](https://twitter.com/samokhvalov) 于 2023-09-26 发起：
 
 > Postgres docs are awesome but often lack practical pieces of advice (howtos).

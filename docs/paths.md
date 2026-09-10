@@ -26,6 +26,7 @@
       <li><a href="#/docs/31" data-docs-route="/docs/31">排查 pg_wal 目录增长</a></li>
       <li><a href="#/docs/22" data-docs-route="/docs/22">heavyweight locks 分析：基础</a></li>
       <li><a href="#/docs/71" data-docs-route="/docs/71">理解 DDL 被什么阻塞</a></li>
+      <li><a href="#/docs/100" data-docs-route="/docs/100">排查 LISTEN／NOTIFY 引起的提交阻塞</a></li>
       <li><a href="#/docs/93" data-docs-route="/docs/93">排查流复制延迟</a></li>
     </ol>
   </section>
