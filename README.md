@@ -98,22 +98,6 @@
       <tr><td><a href="https://github.com/xiongcccc/pg-slide-harvester">pg-slide-harvester</a></td><td>自动收集 PostgreSQL 大会演讲资料，建立本地可搜索的技术档案</td></tr>
     </tbody></table>
   </div>
-  <h3>✍️ 最近写了</h3>
-  <ul>
-    <li><time datetime="2026-09-07">2026-09-07</time> · <a href="https://xiongcc.cn/2026/09/07/postgresql-2026-next-decade/">PostgreSQL 的 2026 与下一个十年</a></li>
-    <li><time datetime="2026-08-14">2026-08-14</time> · <a href="https://xiongcc.cn/2026/08/14/what-dbas-need-when-answers-are-cheap/">当答案不再稀缺，DBA 真正稀缺的是什么？</a></li>
-    <li><time datetime="2026-07-23">2026-07-23</time> · <a href="https://xiongcc.cn/2026/07/23/postgresql-ai-era-course/">AI 时代首选数据库：PostgreSQL 入门到进阶实战</a></li>
-    <li><time datetime="2026-07-23">2026-07-23</time> · <a href="https://xiongcc.cn/2026/07/23/pg-slide-harvester/">pg-slide-harvester：自动收集 PG 大会演讲资料</a></li>
-    <li><time datetime="2026-07-06">2026-07-06</time> · <a href="https://xiongcc.cn/2026/07/06/higobase-database-backend-platform/">从数据库到后端底座：HigoBase 想讲一个什么新故事？</a></li>
-  </ul>
-  <h3>🌐 找到我</h3>
-  <ul>
-    <li>个人主页：<a href="https://xiongcc.cn">xiongcc.cn</a></li>
-    <li>微信公众号：<strong>PostgreSQL 学徒</strong></li>
-    <li>Email：<a href="mailto:xiongcc_1994@126.com">xiongcc_1994@126.com</a> / <a href="mailto:xiongcc19950101@gmail.com">xiongcc19950101@gmail.com</a></li>
-  </ul>
-  <p>如果你也在研究 PostgreSQL、Greenplum 或数据库内核，欢迎交流。</p>
-  <p class="author-profile__tagline">同步自 <a href="https://github.com/xiongcccc">GitHub 个人主页</a> · 2026-09-11</p>
 </section>
 
 ## 交流群
