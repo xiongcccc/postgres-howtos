@@ -43,6 +43,11 @@
     var topic = el.querySelector('[name=topic]');
     var type = el.querySelector('[name=type]');
     type.querySelector('option[value="editorial"]')?.remove();
+    type.parentElement.firstChild.textContent='来源 ';
+    var seriesLabel=document.createElement('label');
+    seriesLabel.innerHTML='系列 <select name="series"><option value="">全部系列</option>'+Object.entries(catalog.series).map(function(pair){return '<option value="'+pair[0]+'">'+escape(pair[1].title)+'</option>';}).join('')+'</select>';
+    type.parentElement.before(seriesLabel);
+    var series=seriesLabel.querySelector('select');
     var status = el.querySelector('.finder-status');
     var results = el.querySelector('.finder-results');
     var more = el.querySelector('.finder-more');
@@ -50,21 +55,23 @@
     input.value = query;
     topic.value = params.get('topic') || '';
     type.value = params.get('type') || '';
+    series.value = params.get('series') || '';
     function url() {
       var p = new URLSearchParams();
       if (input.value.trim()) p.set('q',input.value.trim());
       if (topic.value) p.set('topic',topic.value);
       if (type.value) p.set('type',type.value);
+      if (series.value) p.set('series',series.value);
       return '#/docs/find'+(p.size?'?'+p.toString():'');
     }
     function render() {
       if (!el.isConnected) return;
-      var empty = !input.value.trim() && !topic.value && !type.value;
+      var empty = !input.value.trim() && !topic.value && !type.value && !series.value;
       if (empty && home) {
         status.textContent = catalog.articles.filter(function(a){return a.type!=='editorial';}).length+' 篇文章 · 支持中文、原题与关键词查找';
         results.replaceChildren(); more.hidden = true; retry.hidden = true; return;
       }
-      var matches = window.HowtoSearch.search(catalog,input.value,{topic:topic.value,type:type.value},bodies);
+      var matches = window.HowtoSearch.search(catalog,input.value,{topic:topic.value,type:type.value,series:series.value},bodies);
       status.textContent = (matches.length ? matches.length+' 条匹配结果' : '没有找到匹配文章，试试更短的关键词或清除筛选。')+(input.value.trim() && !bodies ? (failed?' · 全文索引暂不可用，当前仅匹配标题与别名。':' · 正在加载全文索引…'):'');
       results.replaceChildren();
       matches.slice(0,limit).forEach(function(result){
@@ -73,7 +80,7 @@
         var link=document.createElement('a');
         link.href='#/docs/'+a.id; link.textContent=a.title;
         var info=document.createElement('small');
-        info.textContent=catalog.types[a.type]+' · '+catalog.topics.find(function(t){return t.id===a.topics[0];}).title+' · #'+a.id;
+        info.textContent=(a.series?catalog.series[a.series].title+' · ':'')+catalog.types[a.type]+' · '+catalog.topics.find(function(t){return t.id===a.topics[0];}).title+' · #'+a.id;
         li.append(link,info);
         if (bodies && input.value.trim()) {
           var text=bodies[a.id] || '';
@@ -96,6 +103,7 @@
     var timer;
     input.addEventListener('input',function(){clearTimeout(timer);timer=setTimeout(update,120);});
     topic.addEventListener('change',update); type.addEventListener('change',update);
+    series.addEventListener('change',update);
     form.addEventListener('submit',function(e){e.preventDefault();clearTimeout(timer);if(home) location.hash=url();else update();});
     more.addEventListener('click',function(){limit+=20;render();});
     retry.addEventListener('click',function(){failed=false;update();});
@@ -106,7 +114,7 @@
     if (!nav) return;
     var active=currentArticle();
     var state=readState();
-    var links=[['首页','/'],['查找文章','/docs/find'],['专题索引','/docs/topics'],['推荐路径','/docs/paths'],['会议精选','/docs/conferences']];
+    var links=[['首页','/'],['查找文章','/docs/find'],['专题索引','/docs/topics'],['推荐路径','/docs/paths'],['系列阅读','/docs/series'],['会议精选','/docs/conferences']];
     nav.innerHTML='<nav class="catalog-navigation" aria-label="文章分类"><ul class="catalog-pages">'+links.map(function(pair){var selected=pair[1]===route() || (pair[1]==='/'&&route()==='/README');return '<li><a href="#'+pair[1]+'"'+(selected?' aria-current="page"':'')+'>'+pair[0]+'</a></li>';}).join('')+'</ul>'+catalog.topics.map(function(t){
       var items=catalog.articles.filter(function(a){return a.topics[0]===t.id;});
       var open=(active && active.topics[0]===t.id) || (state[t.id]===undefined ? !active&&t.id==='performance' : state[t.id]);
@@ -140,8 +148,15 @@
     var meta=document.createElement('div');meta.className='article-meta';
     meta.innerHTML='<p class="article-kicker">'+escape(catalog.types[a.type])+' · '+escape(catalog.topics.find(function(t){return t.id===a.topics[0];}).title)+' · #'+a.id+'</p><p>'+escape(a.versionNote)+'</p><details><summary>来源与验证说明</summary><dl><dt>原题</dt><dd>'+escape(a.originalTitle)+'</dd><dt>来源</dt><dd><a href="'+escape(a.source.url)+'" target="_blank" rel="noopener">'+escape(a.source.label)+'</a></dd><dt>验证状态</dt><dd>'+escape(a.validation.note)+(a.validation.date?'（'+escape(a.validation.date)+'）':'')+(a.validation.record?' <a href="#'+a.validation.record.replace(/\.md$/,'')+'">验证记录</a>':'')+'</dd></dl></details>';
     h1.after(meta);
+    if(a.validation.status!=='tested' && a.validation.record) meta.querySelector('a[href^="#/maintenance/"]').textContent='校订记录';
+    if(a.series) {
+      var seriesLink=document.createElement('a');
+      seriesLink.href='#/docs/find?series='+encodeURIComponent(a.series);
+      seriesLink.textContent=catalog.series[a.series].title;
+      meta.querySelector('.article-kicker').prepend(seriesLink,document.createTextNode(' · '));
+    }
     var attribution=meta.nextElementSibling;
-    if(attribution && attribution.tagName==='BLOCKQUOTE' && /^(原作者：|会议精选\s*·)/.test(attribution.textContent.trim())) {
+    if(attribution && attribution.tagName==='BLOCKQUOTE' && /^(原作者：|会议精选\s*·|专题解读\s*·)/.test(attribution.textContent.trim())) {
       meta.querySelector('details').append(attribution);
     }
     var previous=section.querySelector('.article-toc');if(previous)previous.remove();

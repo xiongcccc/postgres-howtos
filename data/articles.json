@@ -1,9 +1,9 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "types": {
     "translation": "上游译文",
-    "practice": "实践剖析",
-    "conference": "会议精选",
+    "practice": "实践材料",
+    "conference": "会议材料",
     "editorial": "项目后记"
   },
   "topics": [
@@ -157,12 +157,36 @@
     }
   ],
   "featured": [
+    101,
     100,
     99,
     96,
     98
   ],
   "articles": [
+    {
+      "id": 101,
+      "title": "PostgreSQL 性能排查：规划开销、分区锁与表膨胀",
+      "originalTitle": "Stop Guessing: How to Actually Fix PostgreSQL Performance",
+      "topics": ["performance", "storage"],
+      "aliases": ["性能排查", "性能诊断", "Stop Guessing", "TOAST 膨胀", "规划时间", "通用计划", "generic plan", "custom plan", "分区锁", "LockManager"],
+      "type": "conference",
+      "series": "interpretation",
+      "addedOn": "2026-09-23",
+      "source": {
+        "label": "Anita Singh、Ranjan Burman · Stop Guessing: How to Actually Fix PostgreSQL Performance",
+        "url": "https://postgresconf.org/conferences/postgresconf_2026/program/proposals/postgresql-statistics-unleashed-mastering-query-optimization-through-data-driven-insights",
+        "event": "Postgres Conference 2026 · San Jose",
+        "date": "2026-04-22"
+      },
+      "versionNote": "原理说明以 PostgreSQL 18 为准；补充实验使用 PostgreSQL 18.4。",
+      "validation": {
+        "status": "tested",
+        "date": "2026-09-23",
+        "note": "PostgreSQL 18.4：已验证计划选择、分区锁范围、TOAST 清理及对象大小查询。",
+        "record": "/maintenance/101-review.md"
+      }
+    },
     {
       "id": 1,
       "title": "EXPLAIN 为什么应该带 BUFFERS",
@@ -188,7 +212,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 5,
@@ -214,7 +239,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 6,
@@ -237,7 +263,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 7,
@@ -260,7 +287,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 10,
@@ -285,7 +313,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 11,
@@ -306,7 +335,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 12,
@@ -327,7 +357,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 13,
@@ -348,7 +379,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 14,
@@ -372,7 +404,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 50,
@@ -393,7 +426,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 56,
@@ -414,7 +448,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 89,
@@ -435,7 +470,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 92,
@@ -459,7 +495,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 94,
@@ -480,7 +517,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 2,
@@ -501,7 +539,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 3,
@@ -522,7 +561,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 8,
@@ -543,7 +583,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 19,
@@ -564,7 +605,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 20,
@@ -585,7 +627,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 21,
@@ -606,7 +649,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 25,
@@ -627,7 +671,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 27,
@@ -648,7 +693,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 34,
@@ -669,7 +715,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 47,
@@ -690,7 +737,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 49,
@@ -711,7 +759,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 51,
@@ -732,7 +781,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 58,
@@ -753,7 +803,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 59,
@@ -774,7 +825,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 68,
@@ -795,7 +847,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 81,
@@ -816,7 +869,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 86,
@@ -837,7 +891,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 87,
@@ -858,7 +913,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 88,
@@ -879,7 +935,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 90,
@@ -900,7 +957,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 91,
@@ -921,7 +979,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 99,
@@ -951,7 +1010,8 @@
         "date": "2026-09-10",
         "note": "隔离集群验证 DDL、锁队列与分批修改；未做生产规模测试。",
         "record": "/maintenance/99-validation.md"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 100,
@@ -981,7 +1041,8 @@
         "date": "2026-09-10",
         "note": "隔离集群验证通知锁与队尾时序；未测吞吐、真实备库与故障恢复。",
         "record": "/maintenance/100-validation.md"
-      }
+      },
+      "series": "practice"
     },
     {
       "id": 22,
@@ -1006,7 +1067,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 30,
@@ -1030,7 +1092,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 33,
@@ -1051,7 +1114,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 35,
@@ -1072,7 +1136,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 36,
@@ -1093,7 +1158,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 37,
@@ -1115,7 +1181,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 42,
@@ -1140,7 +1207,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 55,
@@ -1161,7 +1229,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 60,
@@ -1186,7 +1255,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 69,
@@ -1210,7 +1280,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 70,
@@ -1231,7 +1302,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 71,
@@ -1255,7 +1327,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 72,
@@ -1276,7 +1349,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 73,
@@ -1297,7 +1371,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 83,
@@ -1318,7 +1393,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 15,
@@ -1339,7 +1415,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 18,
@@ -1362,7 +1439,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 53,
@@ -1385,7 +1463,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 54,
@@ -1406,7 +1485,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 61,
@@ -1427,7 +1507,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 62,
@@ -1448,7 +1529,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 75,
@@ -1472,7 +1554,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 76,
@@ -1496,7 +1579,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 79,
@@ -1517,7 +1601,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 4,
@@ -1538,7 +1623,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 9,
@@ -1559,7 +1645,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 16,
@@ -1580,7 +1667,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 26,
@@ -1602,7 +1690,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 31,
@@ -1628,7 +1717,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 39,
@@ -1649,7 +1739,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 40,
@@ -1670,7 +1761,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 41,
@@ -1691,7 +1783,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 44,
@@ -1715,7 +1808,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 45,
@@ -1739,7 +1833,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 46,
@@ -1763,7 +1858,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 52,
@@ -1784,7 +1880,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 66,
@@ -1805,7 +1902,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 67,
@@ -1829,7 +1927,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 74,
@@ -1850,7 +1949,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 80,
@@ -1871,7 +1971,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 84,
@@ -1892,7 +1993,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 85,
@@ -1913,7 +2015,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 23,
@@ -1934,7 +2037,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 24,
@@ -1955,7 +2059,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 28,
@@ -1976,7 +2081,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 29,
@@ -1997,7 +2103,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 32,
@@ -2018,7 +2125,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 43,
@@ -2039,7 +2147,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 48,
@@ -2060,7 +2169,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 64,
@@ -2081,7 +2191,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 65,
@@ -2102,7 +2213,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 78,
@@ -2123,7 +2235,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 82,
@@ -2144,7 +2257,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 17,
@@ -2168,7 +2282,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 57,
@@ -2189,7 +2304,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 77,
@@ -2210,7 +2326,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 93,
@@ -2234,7 +2351,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 96,
@@ -2260,7 +2378,8 @@
       "validation": {
         "status": "not-recorded",
         "note": "未收录独立的实测记录。"
-      }
+      },
+      "series": "practice"
     },
     {
       "id": 97,
@@ -2285,7 +2404,8 @@
       "validation": {
         "status": "not-recorded",
         "note": "未收录独立的实测记录。"
-      }
+      },
+      "series": "practice"
     },
     {
       "id": 98,
@@ -2312,7 +2432,8 @@
       "validation": {
         "status": "not-recorded",
         "note": "未收录独立的实测记录。"
-      }
+      },
+      "series": "practice"
     },
     {
       "id": 38,
@@ -2333,7 +2454,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 63,
@@ -2354,7 +2476,8 @@
         "status": "not-recorded",
         "note": "上游内容已核对；未逐条运行所有示例。",
         "date": "2026-09-10"
-      }
+      },
+      "series": "guide"
     },
     {
       "id": 95,
@@ -2373,7 +2496,22 @@
       "validation": {
         "status": "not-recorded",
         "note": "未收录独立的实测记录。"
-      }
+      },
+      "series": null
     }
-  ]
+  ],
+  "series": {
+    "guide": {
+      "title": "实用指南",
+      "description": "围绕明确任务，提供判断依据、操作方法与验证步骤。"
+    },
+    "practice": {
+      "title": "实践剖析",
+      "description": "沿着具体案例、实验现象和源码，解释问题如何发生。"
+    },
+    "interpretation": {
+      "title": "专题解读",
+      "description": "精选社区材料，梳理原理、诊断思路与工程取舍。"
+    }
+  }
 }

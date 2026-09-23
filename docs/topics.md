@@ -5,11 +5,11 @@
 按技术问题组织文章；同一篇可以属于多个专题。
 
 <div class="topic-grid">
-<a class="topic-card" href="#/docs/topics?id=topic-performance" data-docs-route="/docs/topics?id=topic-performance"><strong>查询性能与观测 · 17</strong><span>执行计划、慢 SQL、统计信息与基准测试。</span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-performance" data-docs-route="/docs/topics?id=topic-performance"><strong>查询性能与观测 · 18</strong><span>执行计划、慢 SQL、统计信息与基准测试。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-ops" data-docs-route="/docs/topics?id=topic-ops"><strong>运维排障与日常工具 · 23</strong><span>备份恢复、psql、Docker 和日常运维。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-locks" data-docs-route="/docs/topics?id=topic-locks"><strong>锁、事务与在线变更 · 17</strong><span>长事务、锁等待、DDL 与在线变更。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-indexes" data-docs-route="/docs/topics?id=topic-indexes"><strong>索引治理 · 10</strong><span>索引创建、维护、清理和损坏检查。</span></a>
-<a class="topic-card" href="#/docs/topics?id=topic-storage" data-docs-route="/docs/topics?id=topic-storage"><strong>存储、WAL 与 Vacuum · 18</strong><span>WAL、膨胀、Vacuum 与存储布局。</span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-storage" data-docs-route="/docs/topics?id=topic-storage"><strong>存储、WAL 与 Vacuum · 19</strong><span>WAL、膨胀、Vacuum 与存储布局。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-sql" data-docs-route="/docs/topics?id=topic-sql"><strong>SQL、数据建模与扩展玩法 · 11</strong><span>SQL、数组、UUID、元数据和数据建模。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-replication" data-docs-route="/docs/topics?id=topic-replication"><strong>复制、校验与升级 · 5</strong><span>复制延迟、数据校验与主版本升级。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-practice" data-docs-route="/docs/topics?id=topic-practice"><strong>实践剖析 · 3</strong><span>真实问题、源码分析与操作系统观测。</span></a>
@@ -22,6 +22,7 @@
 
 执行计划、慢 SQL、统计信息与基准测试。
 
+- [PostgreSQL 性能排查：规划开销、分区锁与表膨胀](/docs/101.md) · 会议材料
 - [EXPLAIN 为什么应该带 BUFFERS](/docs/1.md) · 上游译文
 - [pg_stat_statements 入门](/docs/5.md) · 上游译文
 - [pg_stat_statements 进阶](/docs/6.md) · 上游译文
@@ -36,9 +37,9 @@
 - [OLTP 粗略配置调优](/docs/89.md) · 上游译文
 - [work_mem 调优](/docs/92.md) · 上游译文
 - [运行 ANALYZE 收集统计信息](/docs/94.md) · 上游译文
-- [为什么 actual time 和 Execution Time 有很大差异？](/docs/96.md) · 实践剖析
-- [深入浅出 bpftrace 分析 PostgreSQL](/docs/97.md) · 实践剖析
-- [当 PostgreSQL 慢在数据库之外：用 bpftrace 打通 SQL 与内核观测](/docs/98.md) · 实践剖析
+- [为什么 actual time 和 Execution Time 有很大差异？](/docs/96.md) · 实践材料
+- [深入浅出 bpftrace 分析 PostgreSQL](/docs/97.md) · 实践材料
+- [当 PostgreSQL 慢在数据库之外：用 bpftrace 打通 SQL 与内核观测](/docs/98.md) · 实践材料
 
 <span id="topic-ops"></span>
 
@@ -67,8 +68,8 @@
 - [面向 OLTP 的 Linux 参数调优](/docs/88.md) · 上游译文
 - [使用 lib_pgquery 归一化和匹配查询](/docs/90.md) · 上游译文
 - [格式化 psql 脚本文本输出](/docs/91.md) · 上游译文
-- [深入浅出 bpftrace 分析 PostgreSQL](/docs/97.md) · 实践剖析
-- [当 PostgreSQL 慢在数据库之外：用 bpftrace 打通 SQL 与内核观测](/docs/98.md) · 实践剖析
+- [深入浅出 bpftrace 分析 PostgreSQL](/docs/97.md) · 实践材料
+- [当 PostgreSQL 慢在数据库之外：用 bpftrace 打通 SQL 与内核观测](/docs/98.md) · 实践材料
 
 <span id="topic-locks"></span>
 
@@ -76,8 +77,8 @@
 
 长事务、锁等待、DDL 与在线变更。
 
-- [如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除](/docs/99.md) · 会议精选
-- [如何排查 LISTEN／NOTIFY 引起的提交阻塞](/docs/100.md) · 会议精选
+- [如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除](/docs/99.md) · 会议材料
+- [如何排查 LISTEN／NOTIFY 引起的提交阻塞](/docs/100.md) · 会议材料
 - [heavyweight locks 分析：基础](/docs/22.md) · 上游译文
 - [处理 OLTP 长事务](/docs/30.md) · 上游译文
 - [无停机重定义主键](/docs/33.md) · 上游译文
@@ -117,6 +118,7 @@
 
 WAL、膨胀、Vacuum 与存储布局。
 
+- [PostgreSQL 性能排查：规划开销、分区锁与表膨胀](/docs/101.md) · 会议材料
 - [理解 tuple 在表中的稀疏存储](/docs/4.md) · 上游译文
 - [理解 LSN 和 WAL 文件名](/docs/9.md) · 上游译文
 - [容易踩坑的 Postgres 特性](/docs/16.md) · 上游译文
@@ -172,9 +174,9 @@ SQL、数组、UUID、元数据和数据建模。
 
 真实问题、源码分析与操作系统观测。
 
-- [为什么 actual time 和 Execution Time 有很大差异？](/docs/96.md) · 实践剖析
-- [深入浅出 bpftrace 分析 PostgreSQL](/docs/97.md) · 实践剖析
-- [当 PostgreSQL 慢在数据库之外：用 bpftrace 打通 SQL 与内核观测](/docs/98.md) · 实践剖析
+- [为什么 actual time 和 Execution Time 有很大差异？](/docs/96.md) · 实践材料
+- [深入浅出 bpftrace 分析 PostgreSQL](/docs/97.md) · 实践材料
+- [当 PostgreSQL 慢在数据库之外：用 bpftrace 打通 SQL 与内核观测](/docs/98.md) · 实践材料
 
 <span id="topic-engineering"></span>
 

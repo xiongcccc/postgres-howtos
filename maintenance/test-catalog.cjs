@@ -24,15 +24,31 @@ test('Chinese, English, aliases, article numbers and normalized spelling',()=>{
 });
 test('full text, empty input, no result and filters',()=>{
   assert.ok(find('PreCommit_Notify').includes(100));
-  assert.equal(find('').length,100);
+  assert.equal(find('').length,catalog.articles.length);
   assert.deepEqual(find('does-not-exist-xyz987654321'),[]);
-  assert.ok(find('',{type:'conference'}).every(id=>[99,100].includes(id)));
+  assert.deepEqual(find('',{type:'conference'}),[99,100,101]);
   assert.ok(find('',{topic:'performance'}).includes(96));
   assert.deepEqual(find('WAL暴涨',{type:'conference'}),[]);
   assert.deepEqual(find('<script>alert(1)</script>'),[]);
 });
+test('series and source are independent and preserve old routes',()=>{
+  assert.deepEqual(find('',{series:'interpretation'}),[101]);
+  assert.deepEqual(find('',{series:'interpretation',type:'conference',topic:'performance'}),[101]);
+  assert.deepEqual(find('',{series:'interpretation',type:'translation'}),[]);
+  assert.deepEqual(find('',{series:'guide',type:'conference'}),[99]);
+  assert.deepEqual(find('',{series:'practice',type:'conference'}),[100]);
+  assert.equal(find('Stop Guessing')[0],101);
+  for(const file of ['README.md','docs/series.md','docs/conferences.md','docs/topics.md']) {
+    assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/101(?:\.md|")/);
+  }
+  assert.equal(catalog.articles.find(a=>a.id===101).validation.status,'tested');
+  const article=fs.readFileSync(path.join(root,'docs/101.md'),'utf8');
+  assert.ok(article.includes('## 参考资料'));
+  assert.doesNotMatch(article.split('## 参考资料')[0],/https:\/\/www\.postgresql\.org/);
+  assert.doesNotMatch(article,/先把.+说具体|材料没有提供可供复现|反人类|反直觉/);
+});
 test('generated internal article links exist and titles come from metadata',()=>{
-  const files=['README.md','_sidebar.md','docs/topics.md','docs/paths.md','docs/conferences.md'];
+  const files=['README.md','_sidebar.md','docs/topics.md','docs/paths.md','docs/conferences.md','docs/series.md','docs/101.md'];
   const map=new Map(catalog.articles.map(a=>[a.id,a]));
   for(const file of files){
     const text=fs.readFileSync(path.join(root,file),'utf8');

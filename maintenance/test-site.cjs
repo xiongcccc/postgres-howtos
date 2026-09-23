@@ -27,7 +27,7 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
     assert.equal(await page.locator('.cover.show').count(),0);
     assert.equal(await page.locator('#gitalk-container').count(),0);
     assert.equal(await page.locator('select[name=type] option[value=editorial]').count(),0);
-    assert.deepEqual(await page.locator('.recent-articles time').allTextContents(),['2026-09-10','2026-09-10','2026-05-20','2026-05-17']);
+    assert.deepEqual(await page.locator('.recent-articles time').allTextContents(),catalog.featured.map(id=>catalog.articles.find(a=>a.id===id)).sort((a,b)=>b.addedOn.localeCompare(a.addedOn)||b.id-a.id).map(a=>a.addedOn));
     await page.locator('.author-profile').scrollIntoViewIfNeeded();
     await page.screenshot({path:path.join(shots,'author-profile.png')});
     assert.equal(await page.locator('.home-hero h1').textContent(),'PostgreSQL Howto 中文版');
@@ -43,8 +43,25 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
       assert.ok((await page.title()).includes(a.title),'Browser title: '+a.id);
       assert.equal(await page.locator('.article-meta').count(),1);
       assert.equal(await page.locator('#gitalk-container').count(),1);
+      await page.waitForFunction(()=>Array.from(document.querySelectorAll('.mermaid')).every(el=>el.querySelector('svg')));
     }
-    console.log('PASS: all 100 article routes, Chinese headings and metadata; homepage entry routes');
+    console.log(`PASS: all ${catalog.articles.length} article routes, Chinese headings and metadata; homepage entry routes`);
+    await page.goto(base+'#/docs/101');
+    await page.waitForFunction(()=>document.querySelectorAll('.mermaid svg').length===1);
+    assert.equal(await page.locator('.article-kicker a').textContent(),'专题解读');
+    await page.screenshot({path:path.join(shots,'101-desktop.png')});
+    await page.locator('.article-kicker a').click();
+    await page.waitForFunction(()=>document.querySelector('[name=series]')?.value==='interpretation');
+    assert.equal(await page.locator('.finder-results a').count(),1);
+    await page.locator('[name=type]').selectOption('conference');
+    await page.reload();
+    await page.waitForFunction(()=>document.querySelector('[name=series]')?.value==='interpretation' && document.querySelector('[name=type]')?.value==='conference');
+    assert.equal(await page.locator('.finder-results a').first().getAttribute('href'),'#/docs/101');
+    for(const route of ['series','conferences']) {
+      await page.goto(base+'#/docs/'+route);
+      await page.locator('.markdown-section a[href="#/docs/101"]').first().click();
+      await page.waitForFunction(()=>location.hash==='#/docs/101' && document.querySelector('.article-meta'));
+    }
     await page.goto(base+'#/docs/100');
     await page.waitForFunction(()=>document.querySelectorAll('.mermaid svg').length===2);
     await page.locator('.article-toc a').nth(2).click();
@@ -66,7 +83,7 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
     await page.screenshot({path:path.join(shots,'desktop-home.png')});
     for(const width of [390,768,1280]){
       await page.setViewportSize({width,height:844});
-      for(const route of ['#/README','#/docs/100']){
+      for(const route of ['#/README','#/docs/100','#/docs/101']){
         await page.goto(base+route);
         await page.waitForFunction(()=>document.querySelector('.reading-controls #switchLightDarkModeDivBeforeArticle'));
         // The existing theme control cycles auto -> light -> dark.
@@ -76,6 +93,14 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
         }
         assert.ok(await page.locator('body').evaluate(b=>b.classList.contains('dark')));
         assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+        if(route.includes('/101')) {
+          await page.waitForFunction(()=>document.querySelector('.mermaid svg'));
+          const diagram=page.locator('.mermaid');
+          await diagram.scrollIntoViewIfNeeded();
+          await page.screenshot({path:path.join(shots,`${width}-101-diagram-dark.png`)});
+          await page.locator('.table-scroll').first().scrollIntoViewIfNeeded();
+          await page.screenshot({path:path.join(shots,`${width}-101-table-dark.png`)});
+        }
         if(width<=768)assert.ok(await page.evaluate(()=>document.querySelector('.app-nav').getBoundingClientRect().bottom<=document.querySelector('.reading-controls').getBoundingClientRect().top),'Mobile navigation overlaps controls');
         if(route.includes('/100')){
           const scroller=page.locator('.table-scroll').first();

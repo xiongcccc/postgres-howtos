@@ -42,13 +42,14 @@
 ## 最近收录
 
 <ul class="recent-articles">
-<li><a href="#/docs/100">如何排查 LISTEN／NOTIFY 引起的提交阻塞</a><span>会议精选 · 收录于 <time datetime="2026-09-10">2026-09-10</time></span></li>
-<li><a href="#/docs/99">如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除</a><span>会议精选 · 收录于 <time datetime="2026-09-10">2026-09-10</time></span></li>
+<li><a href="#/docs/101">PostgreSQL 性能排查：规划开销、分区锁与表膨胀</a><span>专题解读 · 收录于 <time datetime="2026-09-23">2026-09-23</time></span></li>
+<li><a href="#/docs/100">如何排查 LISTEN／NOTIFY 引起的提交阻塞</a><span>实践剖析 · 收录于 <time datetime="2026-09-10">2026-09-10</time></span></li>
+<li><a href="#/docs/99">如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除</a><span>实用指南 · 收录于 <time datetime="2026-09-10">2026-09-10</time></span></li>
 <li><a href="#/docs/98">当 PostgreSQL 慢在数据库之外：用 bpftrace 打通 SQL 与内核观测</a><span>实践剖析 · 收录于 <time datetime="2026-05-20">2026-05-20</time></span></li>
 <li><a href="#/docs/96">为什么 actual time 和 Execution Time 有很大差异？</a><span>实践剖析 · 收录于 <time datetime="2026-05-17">2026-05-17</time></span></li>
 </ul>
 
-[全部专题](/docs/topics.md) · [推荐路径](/docs/paths.md) · [会议精选](/docs/conferences.md)
+[全部专题](/docs/topics.md) · [系列阅读](/docs/series.md) · [推荐路径](/docs/paths.md) · [会议精选](/docs/conferences.md)
 
 
 ## 项目来源

@@ -6,7 +6,7 @@
   function search(catalog, query, filters, bodies) {
     var terms = String(query || '').trim().split(/\s+/).filter(Boolean).map(normalize).filter(Boolean);
     return catalog.articles.filter(function (a) {
-      return (!filters.type || a.type === filters.type) && (!filters.topic || a.topics.includes(filters.topic));
+      return (!filters.type || a.type === filters.type) && (!filters.series || a.series === filters.series) && (!filters.topic || a.topics.includes(filters.topic));
     }).map(function (a) {
       var title = normalize(a.title);
       var aliases = a.aliases.map(normalize);

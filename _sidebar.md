@@ -5,9 +5,11 @@
   * [查找文章](/docs/find.md)
   * [专题索引](/docs/topics.md)
   * [推荐路径](/docs/paths.md)
+  * [系列阅读](/docs/series.md)
   * [会议精选](/docs/conferences.md)
 
 * **查询性能与观测**
+  * [101. PostgreSQL 性能排查：规划开销、分区锁与表膨胀](/docs/101.md)
   * [1. EXPLAIN 为什么应该带 BUFFERS](/docs/1.md)
   * [5. pg_stat_statements 入门](/docs/5.md)
   * [6. pg_stat_statements 进阶](/docs/6.md)

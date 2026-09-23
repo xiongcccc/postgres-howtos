@@ -16,6 +16,18 @@ Jimmy Angelakos（pgEdge） · 2026-06-05
 
 [原始材料](https://vyruss.org/computing/slides/pgdata2026_listen_carefully.pdf) · [如何排查 LISTEN／NOTIFY 引起的提交阻塞](/docs/100.md)
 
+## Postgres Conference 2026 · San Jose
+
+### [PostgreSQL 性能排查：规划开销、分区锁与表膨胀](/docs/101.md)
+
+Anita Singh、Ranjan Burman · Stop Guessing: How to Actually Fix PostgreSQL Performance · 2026-04-22
+
+原题：Stop Guessing: How to Actually Fix PostgreSQL Performance
+
+原理说明以 PostgreSQL 18 为准；补充实验使用 PostgreSQL 18.4。 PostgreSQL 18.4：已验证计划选择、分区锁范围、TOAST 清理及对象大小查询。
+
+[原始材料](https://postgresconf.org/conferences/postgresconf_2026/program/proposals/postgresql-statistics-unleashed-mastering-query-optimization-through-data-driven-insights) · [PostgreSQL 性能排查：规划开销、分区锁与表膨胀](/docs/101.md)
+
 ## PGConf.DE 2026
 
 ### [如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除](/docs/99.md)
