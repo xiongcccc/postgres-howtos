@@ -79,6 +79,7 @@
   * [79. 并行重建大量索引并避免死锁](/docs/79.md)
 
 * **存储、WAL 与 Vacuum**
+  * [102. Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢](/docs/102.md)
   * [4. 理解 tuple 在表中的稀疏存储](/docs/4.md)
   * [9. 理解 LSN 和 WAL 文件名](/docs/9.md)
   * [16. 容易踩坑的 Postgres 特性](/docs/16.md)

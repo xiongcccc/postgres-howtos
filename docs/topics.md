@@ -6,10 +6,10 @@
 
 <div class="topic-grid">
 <a class="topic-card" href="#/docs/topics?id=topic-performance" data-docs-route="/docs/topics?id=topic-performance"><strong>查询性能与观测 · 18</strong><span>执行计划、慢 SQL、统计信息与基准测试。</span></a>
-<a class="topic-card" href="#/docs/topics?id=topic-ops" data-docs-route="/docs/topics?id=topic-ops"><strong>运维排障与日常工具 · 23</strong><span>备份恢复、psql、Docker 和日常运维。</span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-ops" data-docs-route="/docs/topics?id=topic-ops"><strong>运维排障与日常工具 · 24</strong><span>备份恢复、psql、Docker 和日常运维。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-locks" data-docs-route="/docs/topics?id=topic-locks"><strong>锁、事务与在线变更 · 17</strong><span>长事务、锁等待、DDL 与在线变更。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-indexes" data-docs-route="/docs/topics?id=topic-indexes"><strong>索引治理 · 10</strong><span>索引创建、维护、清理和损坏检查。</span></a>
-<a class="topic-card" href="#/docs/topics?id=topic-storage" data-docs-route="/docs/topics?id=topic-storage"><strong>存储、WAL 与 Vacuum · 19</strong><span>WAL、膨胀、Vacuum 与存储布局。</span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-storage" data-docs-route="/docs/topics?id=topic-storage"><strong>存储、WAL 与 Vacuum · 20</strong><span>WAL、膨胀、Vacuum 与存储布局。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-sql" data-docs-route="/docs/topics?id=topic-sql"><strong>SQL、数据建模与扩展玩法 · 11</strong><span>SQL、数组、UUID、元数据和数据建模。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-replication" data-docs-route="/docs/topics?id=topic-replication"><strong>复制、校验与升级 · 5</strong><span>复制延迟、数据校验与主版本升级。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-practice" data-docs-route="/docs/topics?id=topic-practice"><strong>实践剖析 · 3</strong><span>真实问题、源码分析与操作系统观测。</span></a>
@@ -47,6 +47,7 @@
 
 备份恢复、psql、Docker 和日常运维。
 
+- [Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢](/docs/102.md) · 会议材料
 - [排查并加速 Postgres 停止和重启](/docs/2.md) · 上游译文
 - [排查 Postgres 启动缓慢](/docs/3.md) · 上游译文
 - [加速大库 pg_dump](/docs/8.md) · 上游译文
@@ -118,6 +119,7 @@
 
 WAL、膨胀、Vacuum 与存储布局。
 
+- [Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢](/docs/102.md) · 会议材料
 - [PostgreSQL 性能排查：规划开销、分区锁与表膨胀](/docs/101.md) · 会议材料
 - [理解 tuple 在表中的稀疏存储](/docs/4.md) · 上游译文
 - [理解 LSN 和 WAL 文件名](/docs/9.md) · 上游译文

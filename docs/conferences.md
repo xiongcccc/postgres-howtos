@@ -18,6 +18,18 @@ Jimmy Angelakos（pgEdge） · 2026-06-05
 
 ## Postgres Conference 2026 · San Jose
 
+### [Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢](/docs/102.md)
+
+Baji Shaik、Mohamed Ali · Autovacuum Blocked, Backlogged, or Slow?! Understanding Why It Can't Keep Up · 2026-04-23
+
+原题：Autovacuum Blocked, Backlogged, or Slow?! Understanding Why It Can't Keep Up
+
+正文按 PostgreSQL 18 说明；旧快照、关系锁及参数上下文使用 PostgreSQL 18.4 验证。 已验证旧快照保留与释放后的清理行为、手动 Vacuum 关系锁等待、参数上下文及三条诊断 SQL。
+
+[原始材料](https://postgresconf.org/conferences/postgresconf_2026) · [Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢](/docs/102.md)
+
+## Postgres Conference 2026 · San Jose
+
 ### [PostgreSQL 性能排查：规划开销、分区锁与表膨胀](/docs/101.md)
 
 Anita Singh、Ranjan Burman · Stop Guessing: How to Actually Fix PostgreSQL Performance · 2026-04-22

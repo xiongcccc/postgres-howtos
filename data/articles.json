@@ -157,13 +157,36 @@
     }
   ],
   "featured": [
+    102,
     101,
     100,
     99,
-    96,
-    98
+    96
   ],
   "articles": [
+    {
+      "id": 102,
+      "title": "Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢",
+      "originalTitle": "Autovacuum Blocked, Backlogged, or Slow?! Understanding Why It Can't Keep Up",
+      "topics": ["storage", "ops"],
+      "aliases": ["autovacuum", "自动清理", "清理不掉", "死元组", "旧快照", "清理积压", "VacuumDelay", "BufferPin", "autovacuum_worker_slots", "autovacuum_work_mem", "dead but not yet removable"],
+      "type": "conference",
+      "series": "interpretation",
+      "addedOn": "2026-09-23",
+      "source": {
+        "label": "Baji Shaik、Mohamed Ali · Autovacuum Blocked, Backlogged, or Slow?! Understanding Why It Can't Keep Up",
+        "url": "https://postgresconf.org/conferences/postgresconf_2026",
+        "event": "Postgres Conference 2026 · San Jose",
+        "date": "2026-04-23"
+      },
+      "versionNote": "正文按 PostgreSQL 18 说明；旧快照、关系锁及参数上下文使用 PostgreSQL 18.4 验证。",
+      "validation": {
+        "status": "tested",
+        "date": "2026-09-23",
+        "note": "已验证旧快照保留与释放后的清理行为、手动 Vacuum 关系锁等待、参数上下文及三条诊断 SQL。",
+        "record": "/maintenance/102-review.md"
+      }
+    },
     {
       "id": 101,
       "title": "PostgreSQL 性能排查：规划开销、分区锁与表膨胀",
