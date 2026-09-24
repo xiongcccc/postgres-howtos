@@ -42,6 +42,18 @@ Anita Singh、Ranjan Burman · Stop Guessing: How to Actually Fix PostgreSQL Per
 
 ## PGConf.DE 2026
 
+### [PostgreSQL 排序规则：文本比较、索引与升级风险](/docs/103.md)
+
+Andreas Karlsson · Everything you need to know about collations · 2026-04-21
+
+原题：Everything you need to know about collations
+
+正文按 PostgreSQL 18 说明；示例使用 UTF-8、ICU；builtin 始于 PG17，pg_unicode_fast 与非确定性 LIKE 始于 PG18。 PostgreSQL 18.4：已验证多语言排序、大小写与重音比较、唯一约束、分组去重、模式匹配限制、索引排序匹配及正文 SQL。
+
+[原始材料](https://percona.community/talks/2026/2026-04-21-everything-you-need-to-know-about-collations/) · [PostgreSQL 排序规则：文本比较、索引与升级风险](/docs/103.md)
+
+## PGConf.DE 2026
+
 ### [如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除](/docs/99.md)
 
 Daria Nikolaenko（Data Egret） · 2026-04-21

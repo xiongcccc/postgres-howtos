@@ -30,7 +30,8 @@
 
 精选社区材料，梳理原理、诊断思路与工程取舍。
 
+- [PostgreSQL 排序规则：文本比较、索引与升级风险](/docs/103.md) · 会议材料
 - [PostgreSQL 性能排查：规划开销、分区锁与表膨胀](/docs/101.md) · 会议材料
 - [Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢](/docs/102.md) · 会议材料
 
-[全部 2 篇](/docs/find.md?series=interpretation)
+[全部 3 篇](/docs/find.md?series=interpretation)

@@ -6,11 +6,11 @@
 
 <div class="topic-grid">
 <a class="topic-card" href="#/docs/topics?id=topic-performance" data-docs-route="/docs/topics?id=topic-performance"><strong>查询性能与观测 · 18</strong><span>执行计划、慢 SQL、统计信息与基准测试。</span></a>
-<a class="topic-card" href="#/docs/topics?id=topic-ops" data-docs-route="/docs/topics?id=topic-ops"><strong>运维排障与日常工具 · 24</strong><span>备份恢复、psql、Docker 和日常运维。</span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-ops" data-docs-route="/docs/topics?id=topic-ops"><strong>运维排障与日常工具 · 25</strong><span>备份恢复、psql、Docker 和日常运维。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-locks" data-docs-route="/docs/topics?id=topic-locks"><strong>锁、事务与在线变更 · 17</strong><span>长事务、锁等待、DDL 与在线变更。</span></a>
-<a class="topic-card" href="#/docs/topics?id=topic-indexes" data-docs-route="/docs/topics?id=topic-indexes"><strong>索引治理 · 10</strong><span>索引创建、维护、清理和损坏检查。</span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-indexes" data-docs-route="/docs/topics?id=topic-indexes"><strong>索引治理 · 11</strong><span>索引创建、维护、清理和损坏检查。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-storage" data-docs-route="/docs/topics?id=topic-storage"><strong>存储、WAL 与 Vacuum · 20</strong><span>WAL、膨胀、Vacuum 与存储布局。</span></a>
-<a class="topic-card" href="#/docs/topics?id=topic-sql" data-docs-route="/docs/topics?id=topic-sql"><strong>SQL、数据建模与扩展玩法 · 11</strong><span>SQL、数组、UUID、元数据和数据建模。</span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-sql" data-docs-route="/docs/topics?id=topic-sql"><strong>SQL、数据建模与扩展玩法 · 12</strong><span>SQL、数组、UUID、元数据和数据建模。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-replication" data-docs-route="/docs/topics?id=topic-replication"><strong>复制、校验与升级 · 5</strong><span>复制延迟、数据校验与主版本升级。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-practice" data-docs-route="/docs/topics?id=topic-practice"><strong>实践剖析 · 3</strong><span>真实问题、源码分析与操作系统观测。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-engineering" data-docs-route="/docs/topics?id=topic-engineering"><strong>工程实践与后记 · 3</strong><span>工程方法、协作与项目后记。</span></a>
@@ -47,6 +47,7 @@
 
 备份恢复、psql、Docker 和日常运维。
 
+- [PostgreSQL 排序规则：文本比较、索引与升级风险](/docs/103.md) · 会议材料
 - [Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢](/docs/102.md) · 会议材料
 - [排查并加速 Postgres 停止和重启](/docs/2.md) · 上游译文
 - [排查 Postgres 启动缓慢](/docs/3.md) · 上游译文
@@ -102,6 +103,7 @@
 
 索引创建、维护、清理和损坏检查。
 
+- [PostgreSQL 排序规则：文本比较、索引与升级风险](/docs/103.md) · 会议材料
 - [监控 CREATE INDEX / REINDEX 进度](/docs/15.md) · 上游译文
 - [过度索引](/docs/18.md) · 上游译文
 - [索引维护](/docs/53.md) · 上游译文
@@ -146,6 +148,7 @@ WAL、膨胀、Vacuum 与存储布局。
 
 SQL、数组、UUID、元数据和数据建模。
 
+- [PostgreSQL 排序规则：文本比较、索引与升级风险](/docs/103.md) · 会议材料
 - [在 Postgres 中调用 OpenAI API 实现语义搜索和 GPT Chat](/docs/23.md) · 上游译文
 - [使用元数据](/docs/24.md) · 上游译文
 - [数组使用：基础](/docs/28.md) · 上游译文

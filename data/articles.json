@@ -157,13 +157,36 @@
     }
   ],
   "featured": [
+    103,
     102,
     101,
     100,
-    99,
-    96
+    99
   ],
   "articles": [
+    {
+      "id": 103,
+      "title": "PostgreSQL 排序规则：文本比较、索引与升级风险",
+      "originalTitle": "Everything you need to know about collations",
+      "topics": ["sql", "indexes", "ops"],
+      "aliases": ["collation", "排序规则", "collation version mismatch", "排序版本不匹配", "ICU", "libc", "pg_c_utf8", "pg_unicode_fast", "不区分大小写", "字符集", "REFRESH COLLATION VERSION"],
+      "type": "conference",
+      "series": "interpretation",
+      "addedOn": "2026-09-24",
+      "source": {
+        "label": "Andreas Karlsson · Everything you need to know about collations",
+        "url": "https://percona.community/talks/2026/2026-04-21-everything-you-need-to-know-about-collations/",
+        "event": "PGConf.DE 2026",
+        "date": "2026-04-21"
+      },
+      "versionNote": "正文按 PostgreSQL 18 说明；示例使用 UTF-8、ICU；builtin 始于 PG17，pg_unicode_fast 与非确定性 LIKE 始于 PG18。",
+      "validation": {
+        "status": "tested",
+        "date": "2026-09-24",
+        "note": "PostgreSQL 18.4：已验证多语言排序、大小写与重音比较、唯一约束、分组去重、模式匹配限制、索引排序匹配及正文 SQL。",
+        "record": "/maintenance/103-review.md"
+      }
+    },
     {
       "id": 102,
       "title": "Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢",

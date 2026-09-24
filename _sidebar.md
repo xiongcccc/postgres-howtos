@@ -100,6 +100,7 @@
   * [85. 快速检查值的数据类型和存储大小](/docs/85.md)
 
 * **SQL、数据建模与扩展玩法**
+  * [103. PostgreSQL 排序规则：文本比较、索引与升级风险](/docs/103.md)
   * [23. 在 Postgres 中调用 OpenAI API 实现语义搜索和 GPT Chat](/docs/23.md)
   * [24. 使用元数据](/docs/24.md)
   * [28. 数组使用：基础](/docs/28.md)

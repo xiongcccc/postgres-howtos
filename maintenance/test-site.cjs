@@ -76,6 +76,19 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
       await page.locator('.markdown-section a[href="#/docs/102"]').first().click();
       await page.waitForFunction(()=>location.hash==='#/docs/102' && document.querySelector('.article-meta'));
     }
+    await page.goto(base+'#/docs/103');
+    await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#103'));
+    assert.equal(await page.locator('.article-kicker a').textContent(),'专题解读');
+    assert.equal(await page.locator('.markdown-section pre[data-lang="sql"]').count(),9);
+    await page.locator('.article-toc a').nth(2).click();
+    await page.waitForFunction(()=>location.hash.includes('?id='));
+    await page.goto(base+'#/docs/find?q=排序版本不匹配');
+    await page.waitForFunction(()=>document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/103');
+    for(const route of ['series','conferences','topics']) {
+      await page.goto(base+'#/docs/'+route);
+      await page.locator('.markdown-section a[href="#/docs/103"]').first().click();
+      await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#103'));
+    }
     await page.goto(base+'#/docs/100');
     await page.waitForFunction(()=>document.querySelectorAll('.mermaid svg').length===2);
     await page.locator('.article-toc a').nth(2).click();
@@ -97,7 +110,7 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
     await page.screenshot({path:path.join(shots,'desktop-home.png')});
     for(const width of [390,768,1280]){
       await page.setViewportSize({width,height:844});
-      for(const route of ['#/README','#/docs/100','#/docs/101','#/docs/102']){
+      for(const route of ['#/README','#/docs/100','#/docs/101','#/docs/102','#/docs/103']){
         await page.goto(base+route);
         if(route.includes('/docs/')) {
           await page.waitForFunction(id=>document.querySelector('.article-kicker')?.textContent.endsWith('#'+id),route.split('/').pop());
@@ -120,7 +133,8 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
           await page.locator('.table-scroll').first().scrollIntoViewIfNeeded();
           await page.screenshot({path:path.join(shots,`${width}-101-table-dark.png`)});
         }
-        if(route.includes('/102')) {
+        if(route.includes('/102') || route.includes('/103')) {
+          const articleId=route.split('/').pop();
           const table=page.locator('.table-scroll').first();
           await table.scrollIntoViewIfNeeded();
           if(width===390) {
@@ -129,10 +143,10 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
             assert.ok(await table.evaluate(e=>e.scrollLeft>0));
             await table.evaluate(e=>{e.scrollLeft=0;});
           }
-          await page.screenshot({path:path.join(shots,`${width}-102-table-dark.png`)});
+          await page.screenshot({path:path.join(shots,`${width}-${articleId}-table-dark.png`)});
           await page.locator('.markdown-section pre[data-lang="sql"]').first().scrollIntoViewIfNeeded();
           assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
-          await page.screenshot({path:path.join(shots,`${width}-102-sql-dark.png`)});
+          await page.screenshot({path:path.join(shots,`${width}-${articleId}-sql-dark.png`)});
         }
         if(width<=768)assert.ok(await page.evaluate(()=>document.querySelector('.app-nav').getBoundingClientRect().bottom<=document.querySelector('.reading-controls').getBoundingClientRect().top),'Mobile navigation overlaps controls');
         if(route.includes('/100')){
