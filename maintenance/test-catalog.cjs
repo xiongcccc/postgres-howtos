@@ -26,15 +26,15 @@ test('full text, empty input, no result and filters',()=>{
   assert.ok(find('PreCommit_Notify').includes(100));
   assert.equal(find('').length,catalog.articles.length);
   assert.deepEqual(find('does-not-exist-xyz987654321'),[]);
-  assert.deepEqual(find('',{type:'conference'}),[99,100,101,102,103]);
+  assert.deepEqual(find('',{type:'conference'}),[99,100,101,102,103,104]);
   assert.ok(find('',{topic:'performance'}).includes(96));
   assert.deepEqual(find('WAL暴涨',{type:'conference'}),[]);
   assert.deepEqual(find('<script>alert(1)</script>'),[]);
 });
 test('series and source are independent and preserve old routes',()=>{
-  assert.deepEqual(find('',{series:'interpretation'}),[101,102,103]);
+  assert.deepEqual(find('',{series:'interpretation'}),[101,102,103,104]);
   assert.deepEqual(find('',{series:'interpretation',topic:'ops'}),[102,103]);
-  assert.deepEqual(find('',{series:'interpretation',type:'conference',topic:'performance'}),[101]);
+  assert.deepEqual(find('',{series:'interpretation',type:'conference',topic:'performance'}),[101,104]);
   assert.deepEqual(find('',{series:'interpretation',type:'translation'}),[]);
   assert.deepEqual(find('',{series:'guide',type:'conference'}),[99]);
   assert.deepEqual(find('',{series:'practice',type:'conference'}),[100]);
@@ -77,7 +77,7 @@ test('collation interpretation is discoverable and has verification evidence',()
   }
 });
 test('generated internal article links exist and titles come from metadata',()=>{
-  const files=['README.md','_sidebar.md','docs/topics.md','docs/paths.md','docs/conferences.md','docs/series.md','docs/101.md','docs/102.md','docs/103.md'];
+  const files=['README.md','_sidebar.md','docs/topics.md','docs/paths.md','docs/conferences.md','docs/series.md','docs/101.md','docs/102.md','docs/103.md','docs/104.md'];
   const map=new Map(catalog.articles.map(a=>[a.id,a]));
   for(const file of files){
     const text=fs.readFileSync(path.join(root,file),'utf8');
@@ -86,6 +86,21 @@ test('generated internal article links exist and titles come from metadata',()=>
   }
   const sidebar=fs.readFileSync(path.join(root,'_sidebar.md'),'utf8');
   for(const a of catalog.articles) assert.equal(sidebar.split('](/docs/'+a.id+'.md)').length,2);
+});
+test('OLTP lock interpretation is discoverable and has verification evidence',()=>{
+  assert.equal(find('热点账户')[0],104);
+  assert.equal(find('Hey, I\'m using that')[0],104);
+  assert.deepEqual(find('',{series:'interpretation',topic:'locks'}),[104]);
+  const entry=catalog.articles.find(a=>a.id===104);
+  assert.equal(entry.validation.status,'tested');
+  assert.ok(fs.existsSync(path.join(root,entry.validation.record)));
+  const article=fs.readFileSync(path.join(root,'docs/104.md'),'utf8');
+  assert.equal([...article.matchAll(/```sql\n/g)].length,8);
+  assert.doesNotMatch(article.split('## 参考资料')[0],/https:\/\/www\.postgresql\.org/);
+  assert.doesNotMatch(article,/先把.+说具体|材料没有提供可供复现|反人类|反直觉|讲者/);
+  for(const file of ['README.md','docs/series.md','docs/conferences.md','docs/topics.md']) {
+    assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/104(?:\.md|")/);
+  }
 });
 test('cover is scoped to root and local assets exist',()=>{
   const html=fs.readFileSync(path.join(root,'index.html'),'utf8');

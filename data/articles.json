@@ -157,13 +157,36 @@
     }
   ],
   "featured": [
+    104,
     103,
     102,
     101,
-    100,
-    99
+    100
   ],
   "articles": [
+    {
+      "id": 104,
+      "title": "SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争",
+      "originalTitle": "Hey, I'm using that! Fixing lock contention in OLTP",
+      "topics": ["locks", "performance"],
+      "aliases": ["热点行", "热点账户", "lock contention", "OLTP", "transactionid", "ClientRead", "WalSync", "SyncRep", "写偏差", "超卖", "40001", "pipeline", "批处理", "持锁时间"],
+      "type": "conference",
+      "series": "interpretation",
+      "addedOn": "2026-09-24",
+      "source": {
+        "label": "Ants Aasma · Hey, I'm using that! Fixing lock contention in OLTP",
+        "url": "https://www.postgresql.eu/events/pgconfde2026/sessions/session/7418-hey-im-using-that-fixing-lock-contention-in-oltp/",
+        "event": "PGConf.DE 2026",
+        "date": "2026-04-21"
+      },
+      "versionNote": "正文按 PostgreSQL 18 说明；并发实验使用 PostgreSQL 18.4；Eventual Durability 仅作为原分享的原型方案介绍。",
+      "validation": {
+        "status": "tested",
+        "date": "2026-09-24",
+        "note": "已验证三种隔离级别的热点更新与写偏差、阻塞者定位、函数错误处理、外层事务持锁，以及正文八个 SQL 块。",
+        "record": "/maintenance/104-review.md"
+      }
+    },
     {
       "id": 103,
       "title": "PostgreSQL 排序规则：文本比较、索引与升级风险",

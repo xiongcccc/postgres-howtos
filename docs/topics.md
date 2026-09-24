@@ -5,9 +5,9 @@
 按技术问题组织文章；同一篇可以属于多个专题。
 
 <div class="topic-grid">
-<a class="topic-card" href="#/docs/topics?id=topic-performance" data-docs-route="/docs/topics?id=topic-performance"><strong>查询性能与观测 · 18</strong><span>执行计划、慢 SQL、统计信息与基准测试。</span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-performance" data-docs-route="/docs/topics?id=topic-performance"><strong>查询性能与观测 · 19</strong><span>执行计划、慢 SQL、统计信息与基准测试。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-ops" data-docs-route="/docs/topics?id=topic-ops"><strong>运维排障与日常工具 · 25</strong><span>备份恢复、psql、Docker 和日常运维。</span></a>
-<a class="topic-card" href="#/docs/topics?id=topic-locks" data-docs-route="/docs/topics?id=topic-locks"><strong>锁、事务与在线变更 · 17</strong><span>长事务、锁等待、DDL 与在线变更。</span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-locks" data-docs-route="/docs/topics?id=topic-locks"><strong>锁、事务与在线变更 · 18</strong><span>长事务、锁等待、DDL 与在线变更。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-indexes" data-docs-route="/docs/topics?id=topic-indexes"><strong>索引治理 · 11</strong><span>索引创建、维护、清理和损坏检查。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-storage" data-docs-route="/docs/topics?id=topic-storage"><strong>存储、WAL 与 Vacuum · 20</strong><span>WAL、膨胀、Vacuum 与存储布局。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-sql" data-docs-route="/docs/topics?id=topic-sql"><strong>SQL、数据建模与扩展玩法 · 12</strong><span>SQL、数组、UUID、元数据和数据建模。</span></a>
@@ -22,6 +22,7 @@
 
 执行计划、慢 SQL、统计信息与基准测试。
 
+- [SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争](/docs/104.md) · 会议材料
 - [PostgreSQL 性能排查：规划开销、分区锁与表膨胀](/docs/101.md) · 会议材料
 - [EXPLAIN 为什么应该带 BUFFERS](/docs/1.md) · 上游译文
 - [pg_stat_statements 入门](/docs/5.md) · 上游译文
@@ -79,6 +80,7 @@
 
 长事务、锁等待、DDL 与在线变更。
 
+- [SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争](/docs/104.md) · 会议材料
 - [如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除](/docs/99.md) · 会议材料
 - [如何排查 LISTEN／NOTIFY 引起的提交阻塞](/docs/100.md) · 会议材料
 - [heavyweight locks 分析：基础](/docs/22.md) · 上游译文

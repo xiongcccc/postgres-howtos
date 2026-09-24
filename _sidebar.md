@@ -49,6 +49,7 @@
   * [91. 格式化 psql 脚本文本输出](/docs/91.md)
 
 * **锁、事务与在线变更**
+  * [104. SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争](/docs/104.md)
   * [99. 如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除](/docs/99.md)
   * [100. 如何排查 LISTEN／NOTIFY 引起的提交阻塞](/docs/100.md)
   * [22. heavyweight locks 分析：基础](/docs/22.md)

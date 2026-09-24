@@ -42,6 +42,18 @@ Anita Singh、Ranjan Burman · Stop Guessing: How to Actually Fix PostgreSQL Per
 
 ## PGConf.DE 2026
 
+### [SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争](/docs/104.md)
+
+Ants Aasma · Hey, I'm using that! Fixing lock contention in OLTP · 2026-04-21
+
+原题：Hey, I'm using that! Fixing lock contention in OLTP
+
+正文按 PostgreSQL 18 说明；并发实验使用 PostgreSQL 18.4；Eventual Durability 仅作为原分享的原型方案介绍。 已验证三种隔离级别的热点更新与写偏差、阻塞者定位、函数错误处理、外层事务持锁，以及正文八个 SQL 块。
+
+[原始材料](https://www.postgresql.eu/events/pgconfde2026/sessions/session/7418-hey-im-using-that-fixing-lock-contention-in-oltp/) · [SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争](/docs/104.md)
+
+## PGConf.DE 2026
+
 ### [PostgreSQL 排序规则：文本比较、索引与升级风险](/docs/103.md)
 
 Andreas Karlsson · Everything you need to know about collations · 2026-04-21
