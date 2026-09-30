@@ -16,6 +16,18 @@ Jimmy Angelakos（pgEdge） · 2026-06-05
 
 [原始材料](https://vyruss.org/computing/slides/pgdata2026_listen_carefully.pdf) · [如何排查 LISTEN／NOTIFY 引起的提交阻塞](/docs/100.md)
 
+## PGConf.dev 2026
+
+### [深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复](/docs/105.md)
+
+Hayato Kuroda、Zhijie Hou · How to Hack on Logical Replication: Insights from contributors · 2026-05-21
+
+原题：How to Hack on Logical Replication: Insights from contributors
+
+正文以 PostgreSQL 18 为基准；实验使用 18.4。序列同步 worker 按原材料的 PG19 开发背景说明，不作为 PG18 功能。 双节点验证 schema 发布刷新、行过滤与复制标识、不同主键的应用和冲突、槽回滚行为，以及正文 SQL 和 pg_recvlogical 命令。
+
+[原始材料](https://2026.pgconf.dev/session/527) · [深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复](/docs/105.md)
+
 ## Postgres Conference 2026 · San Jose
 
 ### [Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢](/docs/102.md)

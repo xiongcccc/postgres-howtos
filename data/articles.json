@@ -157,13 +157,36 @@
     }
   ],
   "featured": [
+    105,
     104,
     103,
     102,
-    101,
-    100
+    101
   ],
   "articles": [
+    {
+      "id": 105,
+      "title": "深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复",
+      "originalTitle": "How to Hack on Logical Replication: Insights from contributors",
+      "topics": ["replication", "storage"],
+      "aliases": ["逻辑复制开发", "logical replication", "logical decoding", "pgoutput", "pg_recvlogical", "历史快照", "historic snapshot", "replication origin", "复制标识", "行过滤", "parallel apply", "streaming", "last_saved_restart_lsn"],
+      "type": "conference",
+      "series": "interpretation",
+      "addedOn": "2026-09-24",
+      "source": {
+        "label": "Hayato Kuroda、Zhijie Hou · How to Hack on Logical Replication: Insights from contributors",
+        "url": "https://2026.pgconf.dev/session/527",
+        "event": "PGConf.dev 2026",
+        "date": "2026-05-21"
+      },
+      "versionNote": "正文以 PostgreSQL 18 为基准；实验使用 18.4。序列同步 worker 按原材料的 PG19 开发背景说明，不作为 PG18 功能。",
+      "validation": {
+        "status": "tested",
+        "date": "2026-09-24",
+        "note": "双节点验证 schema 发布刷新、行过滤与复制标识、不同主键的应用和冲突、槽回滚行为，以及正文 SQL 和 pg_recvlogical 命令。",
+        "record": "/maintenance/105-review.md"
+      }
+    },
     {
       "id": 104,
       "title": "SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争",

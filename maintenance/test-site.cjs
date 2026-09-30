@@ -102,6 +102,21 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
       await page.locator('.markdown-section a[href="#/docs/104"]').first().click();
       await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#104'));
     }
+    await page.goto(base+'#/docs/105');
+    await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#105'));
+    assert.equal(await page.locator('.article-kicker a').textContent(),'专题解读');
+    assert.equal(await page.locator('.markdown-section pre[data-lang="sql"]').count(),3);
+    assert.equal(await page.locator('.markdown-section pre[data-lang="bash"]').count(),1);
+    await page.waitForFunction(()=>document.querySelectorAll('.mermaid svg').length===1);
+    await page.locator('.article-toc a').nth(2).click();
+    await page.waitForFunction(()=>location.hash.includes('?id='));
+    await page.goto(base+'#/docs/find?q=逻辑复制开发');
+    await page.waitForFunction(()=>document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/105');
+    for(const route of ['series','conferences','topics']) {
+      await page.goto(base+'#/docs/'+route);
+      await page.locator('.markdown-section a[href="#/docs/105"]').first().click();
+      await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#105'));
+    }
     await page.goto(base+'#/docs/100');
     await page.waitForFunction(()=>document.querySelectorAll('.mermaid svg').length===2);
     await page.locator('.article-toc a').nth(2).click();
@@ -123,7 +138,7 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
     await page.screenshot({path:path.join(shots,'desktop-home.png')});
     for(const width of [390,768,1280]){
       await page.setViewportSize({width,height:844});
-      for(const route of ['#/README','#/docs/100','#/docs/101','#/docs/102','#/docs/103','#/docs/104']){
+      for(const route of ['#/README','#/docs/100','#/docs/101','#/docs/102','#/docs/103','#/docs/104','#/docs/105']){
         await page.goto(base+route);
         if(route.includes('/docs/')) {
           await page.waitForFunction(id=>document.querySelector('.article-kicker')?.textContent.endsWith('#'+id),route.split('/').pop());
@@ -146,7 +161,12 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
           await page.locator('.table-scroll').first().scrollIntoViewIfNeeded();
           await page.screenshot({path:path.join(shots,`${width}-101-table-dark.png`)});
         }
-        if(route.includes('/102') || route.includes('/103') || route.includes('/104')) {
+        if(route.includes('/105')) {
+          await page.waitForFunction(()=>document.querySelector('.mermaid svg'));
+          await page.locator('.mermaid').scrollIntoViewIfNeeded();
+          await page.screenshot({path:path.join(shots,`${width}-105-diagram-dark.png`)});
+        }
+        if(route.includes('/102') || route.includes('/103') || route.includes('/104') || route.includes('/105')) {
           const articleId=route.split('/').pop();
           const table=page.locator('.table-scroll').first();
           await table.scrollIntoViewIfNeeded();
