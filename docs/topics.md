@@ -6,12 +6,12 @@
 
 <div class="topic-grid">
 <a class="topic-card" href="#/docs/topics?id=topic-performance" data-docs-route="/docs/topics?id=topic-performance"><strong>查询性能与观测 · 22</strong><span>执行计划、慢 SQL、统计信息与基准测试。</span></a>
-<a class="topic-card" href="#/docs/topics?id=topic-ops" data-docs-route="/docs/topics?id=topic-ops"><strong>运维排障与日常工具 · 26</strong><span>备份恢复、psql、Docker 和日常运维。</span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-ops" data-docs-route="/docs/topics?id=topic-ops"><strong>运维排障与日常工具 · 27</strong><span>备份恢复、psql、Docker 和日常运维。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-locks" data-docs-route="/docs/topics?id=topic-locks"><strong>锁、事务与在线变更 · 19</strong><span>长事务、锁等待、DDL 与在线变更。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-indexes" data-docs-route="/docs/topics?id=topic-indexes"><strong>索引治理 · 11</strong><span>索引创建、维护、清理和损坏检查。</span></a>
-<a class="topic-card" href="#/docs/topics?id=topic-storage" data-docs-route="/docs/topics?id=topic-storage"><strong>存储、WAL 与 Vacuum · 23</strong><span>WAL、膨胀、Vacuum 与存储布局。</span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-storage" data-docs-route="/docs/topics?id=topic-storage"><strong>存储、WAL 与 Vacuum · 24</strong><span>WAL、膨胀、Vacuum 与存储布局。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-sql" data-docs-route="/docs/topics?id=topic-sql"><strong>SQL、数据建模与扩展玩法 · 12</strong><span>SQL、数组、UUID、元数据和数据建模。</span></a>
-<a class="topic-card" href="#/docs/topics?id=topic-replication" data-docs-route="/docs/topics?id=topic-replication"><strong>复制、校验与升级 · 7</strong><span>复制延迟、数据校验与主版本升级。</span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-replication" data-docs-route="/docs/topics?id=topic-replication"><strong>复制、校验与升级 · 8</strong><span>复制延迟、数据校验与主版本升级。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-practice" data-docs-route="/docs/topics?id=topic-practice"><strong>实践剖析 · 3</strong><span>真实问题、源码分析与操作系统观测。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-engineering" data-docs-route="/docs/topics?id=topic-engineering"><strong>工程实践与后记 · 3</strong><span>工程方法、协作与项目后记。</span></a>
 </div>
@@ -51,6 +51,7 @@
 
 备份恢复、psql、Docker 和日常运维。
 
+- [备库查询为什么被取消：WAL 回放冲突与等待预算](/docs/109.md) · 技术博客
 - [一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离](/docs/108.md) · 技术博客
 - [PostgreSQL 排序规则：文本比较、索引与升级风险](/docs/103.md) · 会议材料
 - [Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢](/docs/102.md) · 会议材料
@@ -128,6 +129,7 @@
 
 WAL、膨胀、Vacuum 与存储布局。
 
+- [备库查询为什么被取消：WAL 回放冲突与等待预算](/docs/109.md) · 技术博客
 - [外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务](/docs/107.md) · 技术博客
 - [PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化](/docs/106.md) · 会议材料
 - [深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复](/docs/105.md) · 会议材料
@@ -177,6 +179,7 @@ SQL、数组、UUID、元数据和数据建模。
 
 复制延迟、数据校验与主版本升级。
 
+- [备库查询为什么被取消：WAL 回放冲突与等待预算](/docs/109.md) · 技术博客
 - [PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化](/docs/106.md) · 会议材料
 - [深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复](/docs/105.md) · 会议材料
 - [无停机启用 data checksums](/docs/37.md) · 上游译文

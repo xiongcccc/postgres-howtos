@@ -158,13 +158,35 @@
     }
   ],
   "featured": [
+    109,
     108,
     107,
     106,
-    105,
-    104
+    105
   ],
   "articles": [
+    {
+      "id": 109,
+      "title": "备库查询为什么被取消：WAL 回放冲突与等待预算",
+      "originalTitle": "All Your GUCs in a Row: max_standby_archive_delay and max_standby_streaming_delay",
+      "topics": ["replication", "storage", "ops"],
+      "aliases": ["备库查询取消", "恢复冲突", "回放冲突", "max_standby_archive_delay", "max_standby_streaming_delay", "hot_standby_feedback", "canceling statement due to conflict with recovery", "RecoveryConflictSnapshot", "confl_snapshot", "confl_lock", "backend_xmin", "vacuum_truncate", "WAL 回放", "报表备库", "The Build", "Christophe Pettus"],
+      "type": "blog",
+      "series": "interpretation",
+      "addedOn": "2026-10-09",
+      "source": {
+        "label": "Christophe Pettus / The Build",
+        "url": "https://thebuild.com/blog/all-your-gucs-in-a-row-max_standby_archive_delay-and-max_standby_streaming_delay/",
+        "date": "2026-09-26"
+      },
+      "versionNote": "按 PostgreSQL 18 核对，物理流复制实验使用 18.4；vacuum_truncate 表级选项始于 12，配置参数始于 18。",
+      "validation": {
+        "status": "tested",
+        "date": "2026-10-09",
+        "record": "/maintenance/109-review.md",
+        "note": "临时主备实测连续快照冲突预算、跨表取消、反馈保留与释放旧版本、普通 VACUUM 截断锁冲突；归档路径按文档和源码核对。"
+      }
+    },
     {
       "id": 108,
       "title": "一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离",

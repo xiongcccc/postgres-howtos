@@ -42,11 +42,11 @@
 ## 最近收录
 
 <ul class="recent-articles">
+<li><a href="#/docs/109">备库查询为什么被取消：WAL 回放冲突与等待预算</a><span>专题解读 · 收录于 <time datetime="2026-10-09">2026-10-09</time></span></li>
 <li><a href="#/docs/108">一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离</a><span>专题解读 · 收录于 <time datetime="2026-10-09">2026-10-09</time></span></li>
 <li><a href="#/docs/107">外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务</a><span>专题解读 · 收录于 <time datetime="2026-10-09">2026-10-09</time></span></li>
 <li><a href="#/docs/106">PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化</a><span>专题解读 · 收录于 <time datetime="2026-09-30">2026-09-30</time></span></li>
 <li><a href="#/docs/105">深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复</a><span>专题解读 · 收录于 <time datetime="2026-09-24">2026-09-24</time></span></li>
-<li><a href="#/docs/104">SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争</a><span>专题解读 · 收录于 <time datetime="2026-09-24">2026-09-24</time></span></li>
 </ul>
 
 [全部专题](/docs/topics.md) · [系列阅读](/docs/series.md) · [推荐路径](/docs/paths.md) · [会议精选](/docs/conferences.md)

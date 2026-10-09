@@ -32,9 +32,9 @@
 
 - [外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务](/docs/107.md) · 技术博客
 - [一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离](/docs/108.md) · 技术博客
+- [备库查询为什么被取消：WAL 回放冲突与等待预算](/docs/109.md) · 技术博客
 - [PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化](/docs/106.md) · 会议材料
 - [PostgreSQL 排序规则：文本比较、索引与升级风险](/docs/103.md) · 会议材料
 - [SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争](/docs/104.md) · 会议材料
-- [深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复](/docs/105.md) · 会议材料
 
-[全部 8 篇](/docs/find.md?series=interpretation)
+[全部 9 篇](/docs/find.md?series=interpretation)
