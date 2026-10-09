@@ -4,6 +4,18 @@
 
 按会议回溯来源，文章同时归入对应技术专题。
 
+## Mydbops MyWebinar #55
+
+### [PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化](/docs/106.md)
+
+Pranav Ghotekar · PostgreSQL 19: What to Expect from the Upcoming Release · 2026-09-25
+
+原题：PostgreSQL 19: What to Expect from the Upcoming Release
+
+按 2026-09-30 的 PostgreSQL 19 Beta 4 状态整理；尚非正式版本，功能与接口以最终发布为准。 PostgreSQL 19beta4：仅实测 plan advice 的扫描方式、匹配反馈与 RESET 恢复；其余特性按文档核对，未做性能压测。
+
+[原始材料](https://www.meetup.com/mydbops-database-meetup/events/316578787/) · [PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化](/docs/106.md)
+
 ## PG DATA 2026
 
 ### [如何排查 LISTEN／NOTIFY 引起的提交阻塞](/docs/100.md)

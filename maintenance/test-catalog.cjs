@@ -26,22 +26,23 @@ test('full text, empty input, no result and filters',()=>{
   assert.ok(find('PreCommit_Notify').includes(100));
   assert.equal(find('').length,catalog.articles.length);
   assert.deepEqual(find('does-not-exist-xyz987654321'),[]);
-  assert.deepEqual(find('',{type:'conference'}),[99,100,101,102,103,104,105]);
+  assert.deepEqual(find('',{type:'conference'}),[99,100,101,102,103,104,105,106]);
   assert.ok(find('',{topic:'performance'}).includes(96));
   assert.deepEqual(find('WAL暴涨',{type:'conference'}),[]);
   assert.deepEqual(find('<script>alert(1)</script>'),[]);
 });
 test('series and source are independent and preserve old routes',()=>{
-  assert.deepEqual(find('',{series:'interpretation'}),[101,102,103,104,105]);
+  assert.deepEqual(find('',{series:'interpretation'}),[101,102,103,104,105,106,107]);
   assert.deepEqual(find('',{series:'interpretation',topic:'ops'}),[102,103]);
-  assert.deepEqual(find('',{series:'interpretation',type:'conference',topic:'performance'}),[101,104]);
+  assert.deepEqual(find('',{series:'interpretation',type:'conference',topic:'performance'}),[101,104,106]);
   assert.deepEqual(find('',{series:'interpretation',type:'translation'}),[]);
   assert.deepEqual(find('',{series:'guide',type:'conference'}),[99]);
   assert.deepEqual(find('',{series:'practice',type:'conference'}),[100]);
   assert.equal(find('Stop Guessing')[0],101);
-  for(const file of ['README.md','docs/series.md','docs/conferences.md','docs/topics.md']) {
+  for(const file of ['docs/series.md','docs/conferences.md','docs/topics.md']) {
     assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/101(?:\.md|")/);
   }
+  assert.match(fs.readFileSync(path.join(root,'docs/series.md'),'utf8'),/\/docs\/find\.md\?series=interpretation/);
   assert.equal(catalog.articles.find(a=>a.id===101).validation.status,'tested');
   const article=fs.readFileSync(path.join(root,'docs/101.md'),'utf8');
   assert.ok(article.includes('## 参考资料'));
@@ -58,7 +59,7 @@ test('autovacuum interpretation is discoverable and has verification evidence',(
   assert.match(article,/5,000/);
   assert.doesNotMatch(article.split('## 参考资料')[0],/https:\/\/www\.postgresql\.org/);
   assert.doesNotMatch(article,/先把.+说具体|材料没有提供可供复现|反人类|反直觉|讲者/);
-  for(const file of ['README.md','docs/series.md','docs/conferences.md','docs/topics.md']) {
+  for(const file of ['docs/conferences.md','docs/topics.md']) {
     assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/102(?:\.md|")/);
   }
 });
@@ -77,7 +78,7 @@ test('collation interpretation is discoverable and has verification evidence',()
   }
 });
 test('generated internal article links exist and titles come from metadata',()=>{
-  const files=['README.md','_sidebar.md','docs/topics.md','docs/paths.md','docs/conferences.md','docs/series.md','docs/101.md','docs/102.md','docs/103.md','docs/104.md','docs/105.md'];
+  const files=['README.md','_sidebar.md','docs/topics.md','docs/paths.md','docs/conferences.md','docs/series.md','docs/101.md','docs/102.md','docs/103.md','docs/104.md','docs/105.md','docs/106.md','docs/107.md'];
   const map=new Map(catalog.articles.map(a=>[a.id,a]));
   for(const file of files){
     const text=fs.readFileSync(path.join(root,file),'utf8');
@@ -90,7 +91,7 @@ test('generated internal article links exist and titles come from metadata',()=>
 test('OLTP lock interpretation is discoverable and has verification evidence',()=>{
   assert.equal(find('热点账户')[0],104);
   assert.equal(find('Hey, I\'m using that')[0],104);
-  assert.deepEqual(find('',{series:'interpretation',topic:'locks'}),[104]);
+  assert.deepEqual(find('',{series:'interpretation',topic:'locks'}),[104,107]);
   const entry=catalog.articles.find(a=>a.id===104);
   assert.equal(entry.validation.status,'tested');
   assert.ok(fs.existsSync(path.join(root,entry.validation.record)));
@@ -105,7 +106,7 @@ test('OLTP lock interpretation is discoverable and has verification evidence',()
 test('logical replication interpretation is discoverable and has verification evidence',()=>{
   assert.equal(find('逻辑复制开发')[0],105);
   assert.equal(find('How to Hack on Logical Replication')[0],105);
-  assert.deepEqual(find('',{series:'interpretation',topic:'replication'}),[105]);
+  assert.deepEqual(find('',{series:'interpretation',topic:'replication'}),[105,106]);
   const entry=catalog.articles.find(a=>a.id===105);
   assert.equal(entry.validation.status,'tested');
   assert.ok(fs.existsSync(path.join(root,entry.validation.record)));
@@ -118,6 +119,54 @@ test('logical replication interpretation is discoverable and has verification ev
   for(const file of ['README.md','docs/series.md','docs/conferences.md','docs/topics.md']) {
     assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/105(?:\.md|")/);
   }
+});
+test('PG19 preview is discoverable and distinguishes documentation checks from experiments',()=>{
+  assert.equal(find('PG19')[0],106);
+  assert.equal(find('What to Expect from the Upcoming Release')[0],106);
+  const entry=catalog.articles.find(a=>a.id===106);
+  assert.equal(entry.series,'interpretation');
+  assert.equal(entry.addedOn,'2026-09-30');
+  assert.equal(entry.validation.status,'tested');
+  assert.match(entry.validation.note,/仅实测 plan advice/);
+  assert.ok(fs.existsSync(path.join(root,'maintenance/106-verify.py')));
+  assert.ok(fs.existsSync(path.join(root,entry.validation.record)));
+  assert.match(entry.versionNote,/Beta 4/);
+  const article=fs.readFileSync(path.join(root,'docs/106.md'),'utf8');
+  assert.equal([...article.matchAll(/```sql\n/g)].length,6);
+  assert.match(article,/SEQ_SCAN\(d\) \/\* matched \*\//);
+  assert.equal([...article.matchAll(/```mermaid\n/g)].length,1);
+  assert.match(article,/REPACK \(CONCURRENTLY\)/);
+  assert.doesNotMatch(article.split('## 参考资料')[0],/https:\/\/www\.postgresql\.org/);
+  assert.doesNotMatch(article,/先把.+说具体|材料没有提供可供复现|反人类|反直觉|讲者/);
+  for(const file of ['README.md','docs/series.md','docs/conferences.md','docs/topics.md']) {
+    assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/106(?:\.md|")/);
+  }
+});
+test('technical blog interpretation has its own source filter and verification evidence',()=>{
+  assert.equal(find('multixact_offset_buffers')[0],107);
+  assert.equal(find('外键写入')[0],107);
+  assert.deepEqual(find('',{type:'blog'}),[107]);
+  assert.deepEqual(find('',{series:'interpretation',type:'blog',topic:'locks'}),[107]);
+  assert.deepEqual(find('',{series:'guide',type:'blog'}),[]);
+  const entry=catalog.articles.find(a=>a.id===107);
+  assert.equal(entry.source.url,'https://thebuild.com/blog/all-your-gucs-in-a-row-multixact_member_buffers-and-multixact_offset_buffers/');
+  assert.equal(entry.source.date,'2026-10-04');
+  assert.equal(entry.addedOn,'2026-10-09');
+  assert.equal(entry.validation.status,'tested');
+  assert.match(entry.validation.note,/未进行吞吐压测/);
+  assert.ok(fs.existsSync(path.join(root,entry.validation.record)));
+  assert.ok(fs.existsSync(path.join(root,'maintenance/107-verify.py')));
+  const article=fs.readFileSync(path.join(root,'docs/107.md'),'utf8');
+  const steps=[...article.matchAll(/<!-- verify:([a-z-]+) -->\s*```sql\n/g)].map(m=>m[1]);
+  assert.deepEqual(steps,['setup','a','observe-a','b','observe-ab','b-commit','c','observe-ac','finish','final','cleanup','slru','activity']);
+  assert.equal([...article.matchAll(/```sql\n/g)].length,steps.length);
+  assert.equal([...article.matchAll(/<!-- result:([a-z-]+) -->\s*```text\n/g)].length,8);
+  assert.equal([...article.matchAll(/```mermaid\n/g)].length,1);
+  assert.doesNotMatch(article.split('## 参考资料')[0],/https:\/\/www\.postgresql\.org/);
+  for(const file of ['README.md','docs/series.md','docs/topics.md']) {
+    assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/107(?:\.md|")/);
+  }
+  assert.doesNotMatch(fs.readFileSync(path.join(root,'docs/conferences.md'),'utf8'),/\/docs\/107(?:\.md|")/);
 });
 test('cover is scoped to root and local assets exist',()=>{
   const html=fs.readFileSync(path.join(root,'index.html'),'utf8');

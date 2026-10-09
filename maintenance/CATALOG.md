@@ -6,7 +6,7 @@
 
 `series` 独立描述阅读形式：`guide`（实用指南）、`practice`（实践剖析）、`interpretation`（专题解读）。技术主题仍由 `topics` 决定，系列定义来自顶层 `series`，自动生成 `docs/series.md`。项目后记的系列为 `null`，不进入三个正文系列。
 
-保留历史 `type` 字段与 URL 的 `type` 参数作为来源类别，避免旧筛选链接失效：`translation` 上游译文、`practice` 本站实践材料、`conference` 会议材料。具体归属与引用放在 `source`。界面将来源与系列分开筛选；会议入口仍按 `type=conference` 汇总，不能因加入专题解读而丢失。
+保留历史 `type` 字段与 URL 的 `type` 参数作为来源类别，避免旧筛选链接失效：`translation` 上游译文、`practice` 本站实践材料、`conference` 会议材料、`blog` 技术博客。具体归属与引用放在 `source`。界面将来源与系列分开筛选；会议入口仍按 `type=conference` 汇总，技术博客不进入会议页，也不改变文章的阅读系列。
 
 现有 1–94、99 归入实用指南，96–98、100 归入实践剖析，101 为专题解读首篇。归类仅调整元数据，不改旧文章正文、编号与路径。后续按实际内容选择系列，不再由来源推断。
 

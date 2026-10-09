@@ -5,13 +5,13 @@
 按技术问题组织文章；同一篇可以属于多个专题。
 
 <div class="topic-grid">
-<a class="topic-card" href="#/docs/topics?id=topic-performance" data-docs-route="/docs/topics?id=topic-performance"><strong>查询性能与观测 · 19</strong><span>执行计划、慢 SQL、统计信息与基准测试。</span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-performance" data-docs-route="/docs/topics?id=topic-performance"><strong>查询性能与观测 · 21</strong><span>执行计划、慢 SQL、统计信息与基准测试。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-ops" data-docs-route="/docs/topics?id=topic-ops"><strong>运维排障与日常工具 · 25</strong><span>备份恢复、psql、Docker 和日常运维。</span></a>
-<a class="topic-card" href="#/docs/topics?id=topic-locks" data-docs-route="/docs/topics?id=topic-locks"><strong>锁、事务与在线变更 · 18</strong><span>长事务、锁等待、DDL 与在线变更。</span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-locks" data-docs-route="/docs/topics?id=topic-locks"><strong>锁、事务与在线变更 · 19</strong><span>长事务、锁等待、DDL 与在线变更。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-indexes" data-docs-route="/docs/topics?id=topic-indexes"><strong>索引治理 · 11</strong><span>索引创建、维护、清理和损坏检查。</span></a>
-<a class="topic-card" href="#/docs/topics?id=topic-storage" data-docs-route="/docs/topics?id=topic-storage"><strong>存储、WAL 与 Vacuum · 21</strong><span>WAL、膨胀、Vacuum 与存储布局。</span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-storage" data-docs-route="/docs/topics?id=topic-storage"><strong>存储、WAL 与 Vacuum · 23</strong><span>WAL、膨胀、Vacuum 与存储布局。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-sql" data-docs-route="/docs/topics?id=topic-sql"><strong>SQL、数据建模与扩展玩法 · 12</strong><span>SQL、数组、UUID、元数据和数据建模。</span></a>
-<a class="topic-card" href="#/docs/topics?id=topic-replication" data-docs-route="/docs/topics?id=topic-replication"><strong>复制、校验与升级 · 6</strong><span>复制延迟、数据校验与主版本升级。</span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-replication" data-docs-route="/docs/topics?id=topic-replication"><strong>复制、校验与升级 · 7</strong><span>复制延迟、数据校验与主版本升级。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-practice" data-docs-route="/docs/topics?id=topic-practice"><strong>实践剖析 · 3</strong><span>真实问题、源码分析与操作系统观测。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-engineering" data-docs-route="/docs/topics?id=topic-engineering"><strong>工程实践与后记 · 3</strong><span>工程方法、协作与项目后记。</span></a>
 </div>
@@ -22,6 +22,8 @@
 
 执行计划、慢 SQL、统计信息与基准测试。
 
+- [外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务](/docs/107.md) · 技术博客
+- [PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化](/docs/106.md) · 会议材料
 - [SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争](/docs/104.md) · 会议材料
 - [PostgreSQL 性能排查：规划开销、分区锁与表膨胀](/docs/101.md) · 会议材料
 - [EXPLAIN 为什么应该带 BUFFERS](/docs/1.md) · 上游译文
@@ -80,6 +82,7 @@
 
 长事务、锁等待、DDL 与在线变更。
 
+- [外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务](/docs/107.md) · 技术博客
 - [SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争](/docs/104.md) · 会议材料
 - [如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除](/docs/99.md) · 会议材料
 - [如何排查 LISTEN／NOTIFY 引起的提交阻塞](/docs/100.md) · 会议材料
@@ -123,6 +126,8 @@
 
 WAL、膨胀、Vacuum 与存储布局。
 
+- [外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务](/docs/107.md) · 技术博客
+- [PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化](/docs/106.md) · 会议材料
 - [深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复](/docs/105.md) · 会议材料
 - [Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢](/docs/102.md) · 会议材料
 - [PostgreSQL 性能排查：规划开销、分区锁与表膨胀](/docs/101.md) · 会议材料
@@ -170,6 +175,7 @@ SQL、数组、UUID、元数据和数据建模。
 
 复制延迟、数据校验与主版本升级。
 
+- [PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化](/docs/106.md) · 会议材料
 - [深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复](/docs/105.md) · 会议材料
 - [无停机启用 data checksums](/docs/37.md) · 上游译文
 - [判断复制延迟](/docs/17.md) · 上游译文

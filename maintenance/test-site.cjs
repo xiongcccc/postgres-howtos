@@ -24,6 +24,7 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
     await page.screenshot({path:path.join(shots,'restored-cover.png')});
     await page.locator('.cover-actions a').first().click();
     await page.locator('#article-query').waitFor();
+    await page.waitForFunction(()=>location.hash==='#/README' && document.body.classList.contains('reading-home') && !document.querySelector('#gitalk-container'));
     assert.equal(await page.locator('.cover.show').count(),0);
     assert.equal(await page.locator('#gitalk-container').count(),0);
     assert.equal(await page.locator('select[name=type] option[value=editorial]').count(),0);
@@ -71,7 +72,7 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
     await page.waitForFunction(()=>location.hash.includes('?id='));
     await page.goto(base+'#/docs/find?q=清理不掉');
     await page.waitForFunction(()=>document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/102');
-    for(const route of ['series','conferences','topics']) {
+    for(const route of ['conferences','topics']) {
       await page.goto(base+'#/docs/'+route);
       await page.locator('.markdown-section a[href="#/docs/102"]').first().click();
       await page.waitForFunction(()=>location.hash==='#/docs/102' && document.querySelector('.article-meta'));
@@ -117,6 +118,51 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
       await page.locator('.markdown-section a[href="#/docs/105"]').first().click();
       await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#105'));
     }
+    await page.goto(base+'#/docs/106');
+    await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#106'));
+    assert.equal(await page.locator('.article-kicker a').textContent(),'专题解读');
+    assert.equal(await page.locator('.markdown-section pre[data-lang="sql"]').count(),6);
+    await page.waitForFunction(()=>document.querySelectorAll('.mermaid svg').length===1);
+    assert.ok((await page.locator('.article-meta').textContent()).includes('Beta 4'));
+    await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+    await page.screenshot({path:path.join(shots,'106-desktop.png')});
+    await page.locator('.article-toc a').nth(2).click();
+    await page.waitForFunction(()=>location.hash.includes('?id='));
+    await page.goto(base+'#/docs/find?q=PG19');
+    await page.waitForFunction(()=>document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/106');
+    for(const route of ['series','conferences','topics']) {
+      await page.goto(base+'#/docs/'+route);
+      await page.locator('.markdown-section a[href="#/docs/106"]').first().click();
+      await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#106'));
+    }
+    await page.goto(base+'#/docs/107');
+    await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#107'));
+    assert.equal(await page.locator('.article-kicker a').textContent(),'专题解读');
+    assert.equal(await page.locator('.markdown-section pre[data-lang="sql"]').count(),13);
+    assert.equal(await page.locator('.markdown-section pre[data-lang="text"]').count(),8);
+    await page.waitForFunction(()=>document.querySelectorAll('.mermaid svg').length===1);
+    assert.ok((await page.locator('.article-meta').textContent()).includes('技术博客'));
+    assert.equal(await page.locator('.article-meta a[href="https://thebuild.com/blog/all-your-gucs-in-a-row-multixact_member_buffers-and-multixact_offset_buffers/"]').count(),1);
+    await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+    await page.screenshot({path:path.join(shots,'107-desktop.png')});
+    await page.locator('.article-toc a').nth(2).click();
+    await page.waitForFunction(()=>location.hash.includes('?id='));
+    await page.goto(base+'#/docs/find?q=multixact_offset_buffers');
+    await page.waitForFunction(()=>document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/107');
+    await page.locator('[name=series]').selectOption('interpretation');
+    await page.locator('[name=type]').selectOption('blog');
+    await page.reload();
+    await page.waitForFunction(()=>document.querySelector('[name=series]')?.value==='interpretation' && document.querySelector('[name=type]')?.value==='blog');
+    assert.equal(await page.locator('.finder-results a').count(),1);
+    assert.equal(await page.locator('.finder-results a').first().getAttribute('href'),'#/docs/107');
+    for(const route of ['series','topics']) {
+      await page.goto(base+'#/docs/'+route);
+      await page.locator('.markdown-section a[href="#/docs/107"]').first().click();
+      await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#107'));
+    }
+    await page.goto(base+'#/docs/conferences');
+    await page.waitForFunction(()=>document.querySelector('.markdown-section h1')?.textContent==='会议精选');
+    assert.equal(await page.locator('.markdown-section a[href="#/docs/107"]').count(),0);
     await page.goto(base+'#/docs/100');
     await page.waitForFunction(()=>document.querySelectorAll('.mermaid svg').length===2);
     await page.locator('.article-toc a').nth(2).click();
@@ -138,7 +184,7 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
     await page.screenshot({path:path.join(shots,'desktop-home.png')});
     for(const width of [390,768,1280]){
       await page.setViewportSize({width,height:844});
-      for(const route of ['#/README','#/docs/100','#/docs/101','#/docs/102','#/docs/103','#/docs/104','#/docs/105']){
+      for(const route of ['#/README','#/docs/100','#/docs/101','#/docs/102','#/docs/103','#/docs/104','#/docs/105','#/docs/106','#/docs/107']){
         await page.goto(base+route);
         if(route.includes('/docs/')) {
           await page.waitForFunction(id=>document.querySelector('.article-kicker')?.textContent.endsWith('#'+id),route.split('/').pop());
@@ -161,15 +207,16 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
           await page.locator('.table-scroll').first().scrollIntoViewIfNeeded();
           await page.screenshot({path:path.join(shots,`${width}-101-table-dark.png`)});
         }
-        if(route.includes('/105')) {
+        if(route.includes('/105') || route.includes('/106') || route.includes('/107')) {
           await page.waitForFunction(()=>document.querySelector('.mermaid svg'));
           await page.locator('.mermaid').scrollIntoViewIfNeeded();
-          await page.screenshot({path:path.join(shots,`${width}-105-diagram-dark.png`)});
+          await page.screenshot({path:path.join(shots,`${width}-${route.split('/').pop()}-diagram-dark.png`)});
         }
-        if(route.includes('/102') || route.includes('/103') || route.includes('/104') || route.includes('/105')) {
+        if(route.includes('/102') || route.includes('/103') || route.includes('/104') || route.includes('/105') || route.includes('/106') || route.includes('/107')) {
           const articleId=route.split('/').pop();
           const table=page.locator('.table-scroll').first();
           await table.scrollIntoViewIfNeeded();
+          if(articleId==='107') await table.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));
           if(width===390) {
             assert.ok(await table.evaluate(e=>e.scrollWidth>e.clientWidth));
             await table.evaluate(e=>{e.scrollLeft=120;});
@@ -177,9 +224,29 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
             await table.evaluate(e=>{e.scrollLeft=0;});
           }
           await page.screenshot({path:path.join(shots,`${width}-${articleId}-table-dark.png`)});
+          if(articleId==='107') {
+            const membersOutput=page.locator('.markdown-section pre[data-lang="text"]').filter({hasText:'keysh'}).last();
+            await membersOutput.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));
+            await page.screenshot({path:path.join(shots,`${width}-107-members-dark.png`)});
+            assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+          }
           await page.locator('.markdown-section pre[data-lang="sql"]').first().scrollIntoViewIfNeeded();
           assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
           await page.screenshot({path:path.join(shots,`${width}-${articleId}-sql-dark.png`)});
+          if(articleId==='106') {
+            const summaryTable=page.locator('.table-scroll').nth(1);
+            await summaryTable.scrollIntoViewIfNeeded();
+            if(width===390) {
+              assert.ok(await summaryTable.evaluate(e=>e.scrollWidth>e.clientWidth));
+              await summaryTable.evaluate(e=>{e.scrollLeft=120;});
+              assert.ok(await summaryTable.evaluate(e=>e.scrollLeft>0));
+              await summaryTable.evaluate(e=>{e.scrollLeft=0;});
+            }
+            await page.screenshot({path:path.join(shots,`${width}-106-priorities-dark.png`)});
+            await page.locator('.markdown-section pre[data-lang="text"]').first().scrollIntoViewIfNeeded();
+            assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+            await page.screenshot({path:path.join(shots,`${width}-106-advice-dark.png`)});
+          }
         }
         if(width<=768)assert.ok(await page.evaluate(()=>document.querySelector('.app-nav').getBoundingClientRect().bottom<=document.querySelector('.reading-controls').getBoundingClientRect().top),'Mobile navigation overlaps controls');
         if(route.includes('/100')){

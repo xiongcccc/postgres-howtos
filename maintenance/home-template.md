@@ -40,7 +40,7 @@
 
 ## 项目来源
 
-除上游译文外，本站也持续整理个人实践与社区会议内容。[会议精选](/docs/conferences.md) 收录社区分享，文章同时归入对应技术专题。
+除上游译文外，本站也持续整理个人实践、社区会议与优质技术博客。可以从[会议精选](/docs/conferences.md)或[技术博客](/docs/find.md?type=blog)回溯素材，文章同时归入对应技术专题。
 
 原项目由 [@NikolayS](https://twitter.com/samokhvalov) 于 2023-09-26 发起：
 

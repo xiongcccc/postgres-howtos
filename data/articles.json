@@ -4,6 +4,7 @@
     "translation": "上游译文",
     "practice": "实践材料",
     "conference": "会议材料",
+    "blog": "技术博客",
     "editorial": "项目后记"
   },
   "topics": [
@@ -157,13 +158,58 @@
     }
   ],
   "featured": [
+    107,
+    106,
     105,
     104,
-    103,
-    102,
-    101
+    103
   ],
   "articles": [
+    {
+      "id": 107,
+      "title": "外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务",
+      "originalTitle": "All Your GUCs in a Row: multixact_member_buffers and multixact_offset_buffers",
+      "topics": ["locks", "storage", "performance"],
+      "aliases": ["MultiXact", "multixact_member_buffers", "multixact_offset_buffers", "SLRU", "外键写入", "外键插入", "FOR KEY SHARE", "pg_stat_slru", "MultiXactOffsetSLRU", "MultiXactMemberSLRU", "The Build", "Christophe Pettus"],
+      "type": "blog",
+      "series": "interpretation",
+      "addedOn": "2026-10-09",
+      "source": {
+        "label": "Christophe Pettus / The Build",
+        "url": "https://thebuild.com/blog/all-your-gucs-in-a-row-multixact_member_buffers-and-multixact_offset_buffers/",
+        "date": "2026-10-04"
+      },
+      "versionNote": "主要讨论 PostgreSQL 17、18；成员变化实验使用 18.4。19 的成员偏移扩展单独说明。",
+      "validation": {
+        "status": "tested",
+        "date": "2026-10-09",
+        "record": "/maintenance/107-review.md",
+        "note": "实测建表与样例数据、四会话操作、MultiXact 成员变化、提交后结果及诊断 SQL；未进行吞吐压测。"
+      }
+    },
+    {
+      "id": 106,
+      "title": "PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化",
+      "originalTitle": "PostgreSQL 19: What to Expect from the Upcoming Release",
+      "topics": ["replication", "storage", "performance"],
+      "aliases": ["PG19", "PostgreSQL 19", "版本前瞻", "新特性", "REPACK", "并行 autovacuum", "序列同步", "REFRESH SEQUENCES", "WAIT FOR LSN", "读己之写", "effective_wal_level", "pg_plan_advice", "pg_stash_advice", "MyWebinar"],
+      "type": "conference",
+      "series": "interpretation",
+      "addedOn": "2026-09-30",
+      "source": {
+        "label": "Pranav Ghotekar · PostgreSQL 19: What to Expect from the Upcoming Release",
+        "url": "https://www.meetup.com/mydbops-database-meetup/events/316578787/",
+        "event": "Mydbops MyWebinar #55",
+        "date": "2026-09-25"
+      },
+      "versionNote": "按 2026-09-30 的 PostgreSQL 19 Beta 4 状态整理；尚非正式版本，功能与接口以最终发布为准。",
+      "validation": {
+        "status": "tested",
+        "date": "2026-09-30",
+        "note": "PostgreSQL 19beta4：仅实测 plan advice 的扫描方式、匹配反馈与 RESET 恢复；其余特性按文档核对，未做性能压测。",
+        "record": "/maintenance/106-review.md"
+      }
+    },
     {
       "id": 105,
       "title": "深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复",

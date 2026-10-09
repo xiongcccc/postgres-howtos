@@ -49,6 +49,7 @@
   * [91. 格式化 psql 脚本文本输出](/docs/91.md)
 
 * **锁、事务与在线变更**
+  * [107. 外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务](/docs/107.md)
   * [104. SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争](/docs/104.md)
   * [99. 如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除](/docs/99.md)
   * [100. 如何排查 LISTEN／NOTIFY 引起的提交阻塞](/docs/100.md)
@@ -115,6 +116,7 @@
   * [82. 用 SQL 绘制霜花图案](/docs/82.md)
 
 * **复制、校验与升级**
+  * [106. PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化](/docs/106.md)
   * [105. 深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复](/docs/105.md)
   * [17. 判断复制延迟](/docs/17.md)
   * [57. 将物理副本转换为逻辑副本](/docs/57.md)

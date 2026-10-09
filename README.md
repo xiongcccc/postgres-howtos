@@ -42,11 +42,11 @@
 ## 最近收录
 
 <ul class="recent-articles">
+<li><a href="#/docs/107">外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务</a><span>专题解读 · 收录于 <time datetime="2026-10-09">2026-10-09</time></span></li>
+<li><a href="#/docs/106">PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化</a><span>专题解读 · 收录于 <time datetime="2026-09-30">2026-09-30</time></span></li>
 <li><a href="#/docs/105">深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复</a><span>专题解读 · 收录于 <time datetime="2026-09-24">2026-09-24</time></span></li>
 <li><a href="#/docs/104">SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争</a><span>专题解读 · 收录于 <time datetime="2026-09-24">2026-09-24</time></span></li>
 <li><a href="#/docs/103">PostgreSQL 排序规则：文本比较、索引与升级风险</a><span>专题解读 · 收录于 <time datetime="2026-09-24">2026-09-24</time></span></li>
-<li><a href="#/docs/102">Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢</a><span>专题解读 · 收录于 <time datetime="2026-09-23">2026-09-23</time></span></li>
-<li><a href="#/docs/101">PostgreSQL 性能排查：规划开销、分区锁与表膨胀</a><span>专题解读 · 收录于 <time datetime="2026-09-23">2026-09-23</time></span></li>
 </ul>
 
 [全部专题](/docs/topics.md) · [系列阅读](/docs/series.md) · [推荐路径](/docs/paths.md) · [会议精选](/docs/conferences.md)
@@ -54,7 +54,7 @@
 
 ## 项目来源
 
-除上游译文外，本站也持续整理个人实践与社区会议内容。[会议精选](/docs/conferences.md) 收录社区分享，文章同时归入对应技术专题。
+除上游译文外，本站也持续整理个人实践、社区会议与优质技术博客。可以从[会议精选](/docs/conferences.md)或[技术博客](/docs/find.md?type=blog)回溯素材，文章同时归入对应技术专题。
 
 原项目由 [@NikolayS](https://twitter.com/samokhvalov) 于 2023-09-26 发起：
 
