@@ -41,6 +41,7 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
     for(const a of catalog.articles){
       await page.goto(base+'#/docs/'+a.id);
       await page.waitForFunction(title=>document.querySelector('.markdown-section h1')?.textContent===title && document.title.includes(title) && document.querySelector('.article-meta'),a.title);
+      await page.locator('#gitalk-container').waitFor({state:'attached'});
       assert.ok((await page.title()).includes(a.title),'Browser title: '+a.id);
       assert.equal(await page.locator('.article-meta').count(),1);
       assert.equal(await page.locator('#gitalk-container').count(),1);
@@ -58,7 +59,7 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
     await page.reload();
     await page.waitForFunction(()=>document.querySelector('[name=series]')?.value==='interpretation' && document.querySelector('[name=type]')?.value==='conference');
     assert.equal(await page.locator('.finder-results a').first().getAttribute('href'),'#/docs/101');
-    for(const route of ['series','conferences']) {
+    for(const route of ['conferences']) {
       await page.goto(base+'#/docs/'+route);
       await page.locator('.markdown-section a[href="#/docs/101"]').first().click();
       await page.waitForFunction(()=>location.hash==='#/docs/101' && document.querySelector('.article-meta'));
@@ -162,7 +163,32 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
     }
     await page.goto(base+'#/docs/conferences');
     await page.waitForFunction(()=>document.querySelector('.markdown-section h1')?.textContent==='会议精选');
-    assert.equal(await page.locator('.markdown-section a[href="#/docs/107"]').count(),0);
+    assert.equal(await page.locator('.markdown-section h3 a[href="#/docs/107"]').count(),0);
+    assert.equal(await page.locator('.markdown-section h3 a[href="#/docs/108"]').count(),0);
+    await page.goto(base+'#/docs/108');
+    await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#108'));
+    assert.equal(await page.locator('.article-kicker a').textContent(),'专题解读');
+    assert.equal(await page.locator('.markdown-section pre[data-lang="sql"]').count(),13);
+    assert.equal(await page.locator('.markdown-section pre[data-lang="text"]').count(),9);
+    await page.waitForFunction(()=>document.querySelectorAll('.mermaid svg').length===1);
+    assert.ok((await page.locator('.article-meta').textContent()).includes('技术博客'));
+    assert.equal(await page.locator('.article-meta a[href="https://clickhouse.com/blog/can-your-postgres-survive-a-bad-query"]').count(),1);
+    await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+    await page.screenshot({path:path.join(shots,'108-desktop.png')});
+    await page.locator('.article-toc a').nth(2).click();
+    await page.waitForFunction(()=>location.hash.includes('?id='));
+    await page.goto(base+'#/docs/find?q=Can%20your%20Postgres%20survive');
+    await page.waitForFunction(()=>document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/108');
+    await page.locator('[name=series]').selectOption('interpretation');
+    await page.locator('[name=type]').selectOption('blog');
+    await page.reload();
+    await page.waitForFunction(()=>document.querySelector('[name=series]')?.value==='interpretation' && document.querySelector('[name=type]')?.value==='blog');
+    assert.equal(await page.locator('.finder-results a').count(),1);
+    for(const route of ['series','topics']) {
+      await page.goto(base+'#/docs/'+route);
+      await page.locator('.markdown-section a[href="#/docs/108"]').first().click();
+      await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#108'));
+    }
     await page.goto(base+'#/docs/100');
     await page.waitForFunction(()=>document.querySelectorAll('.mermaid svg').length===2);
     await page.locator('.article-toc a').nth(2).click();
@@ -184,7 +210,7 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
     await page.screenshot({path:path.join(shots,'desktop-home.png')});
     for(const width of [390,768,1280]){
       await page.setViewportSize({width,height:844});
-      for(const route of ['#/README','#/docs/100','#/docs/101','#/docs/102','#/docs/103','#/docs/104','#/docs/105','#/docs/106','#/docs/107']){
+      for(const route of ['#/README','#/docs/100','#/docs/101','#/docs/102','#/docs/103','#/docs/104','#/docs/105','#/docs/106','#/docs/107','#/docs/108']){
         await page.goto(base+route);
         if(route.includes('/docs/')) {
           await page.waitForFunction(id=>document.querySelector('.article-kicker')?.textContent.endsWith('#'+id),route.split('/').pop());
@@ -207,12 +233,12 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
           await page.locator('.table-scroll').first().scrollIntoViewIfNeeded();
           await page.screenshot({path:path.join(shots,`${width}-101-table-dark.png`)});
         }
-        if(route.includes('/105') || route.includes('/106') || route.includes('/107')) {
+        if(route.includes('/105') || route.includes('/106') || route.includes('/107') || route.includes('/108')) {
           await page.waitForFunction(()=>document.querySelector('.mermaid svg'));
           await page.locator('.mermaid').scrollIntoViewIfNeeded();
           await page.screenshot({path:path.join(shots,`${width}-${route.split('/').pop()}-diagram-dark.png`)});
         }
-        if(route.includes('/102') || route.includes('/103') || route.includes('/104') || route.includes('/105') || route.includes('/106') || route.includes('/107')) {
+        if(route.includes('/102') || route.includes('/103') || route.includes('/104') || route.includes('/105') || route.includes('/106') || route.includes('/107') || route.includes('/108')) {
           const articleId=route.split('/').pop();
           const table=page.locator('.table-scroll').first();
           await table.scrollIntoViewIfNeeded();
@@ -228,6 +254,12 @@ const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
             const membersOutput=page.locator('.markdown-section pre[data-lang="text"]').filter({hasText:'keysh'}).last();
             await membersOutput.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));
             await page.screenshot({path:path.join(shots,`${width}-107-members-dark.png`)});
+            assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+          }
+          if(articleId==='108') {
+            const memoryOutput=page.locator('.markdown-section pre[data-lang="text"]').filter({hasText:'dedup_allocated_mb'});
+            await memoryOutput.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));
+            await page.screenshot({path:path.join(shots,`${width}-108-memory-dark.png`)});
             assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
           }
           await page.locator('.markdown-section pre[data-lang="sql"]').first().scrollIntoViewIfNeeded();

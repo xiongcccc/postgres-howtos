@@ -31,10 +31,10 @@
 精选社区材料，梳理原理、诊断思路与工程取舍。
 
 - [外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务](/docs/107.md) · 技术博客
+- [一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离](/docs/108.md) · 技术博客
 - [PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化](/docs/106.md) · 会议材料
 - [PostgreSQL 排序规则：文本比较、索引与升级风险](/docs/103.md) · 会议材料
 - [SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争](/docs/104.md) · 会议材料
 - [深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复](/docs/105.md) · 会议材料
-- [PostgreSQL 性能排查：规划开销、分区锁与表膨胀](/docs/101.md) · 会议材料
 
-[全部 7 篇](/docs/find.md?series=interpretation)
+[全部 8 篇](/docs/find.md?series=interpretation)

@@ -158,13 +158,35 @@
     }
   ],
   "featured": [
+    108,
     107,
     106,
     105,
-    104,
-    103
+    104
   ],
   "articles": [
+    {
+      "id": 108,
+      "title": "一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离",
+      "originalTitle": "Can your Postgres survive a bad query?",
+      "topics": ["performance", "ops"],
+      "aliases": ["坏查询", "坏 SQL", "OOM", "out of memory", "查询内存", "内存隔离", "递归去重", "RecursiveUnion", "work_mem", "temp_file_limit", "statement_timeout", "overcommit", "pg_backend_memory_contexts", "pg_log_backend_memory_contexts", "ClickHouse", "Kevin Biju Kizhake Kanichery"],
+      "type": "blog",
+      "series": "interpretation",
+      "addedOn": "2026-10-09",
+      "source": {
+        "label": "Kevin Biju Kizhake Kanichery / ClickHouse Blog",
+        "url": "https://clickhouse.com/blog/can-your-postgres-survive-a-bad-query",
+        "date": "2026-09-28"
+      },
+      "versionNote": "机制按 PostgreSQL 18 核对；最小实验使用 18.4，内存采样依赖 18 的 path 列。Linux 内存策略单独说明。",
+      "validation": {
+        "status": "tested",
+        "date": "2026-10-09",
+        "record": "/maintenance/108-review.md",
+        "note": "实测十万节点、排序落盘与递归去重内存、临时文件超限和超时后的连接复用；未制造 OOM 或复现云服务压测。"
+      }
+    },
     {
       "id": 107,
       "title": "外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务",

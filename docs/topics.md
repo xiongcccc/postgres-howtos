@@ -5,8 +5,8 @@
 按技术问题组织文章；同一篇可以属于多个专题。
 
 <div class="topic-grid">
-<a class="topic-card" href="#/docs/topics?id=topic-performance" data-docs-route="/docs/topics?id=topic-performance"><strong>查询性能与观测 · 21</strong><span>执行计划、慢 SQL、统计信息与基准测试。</span></a>
-<a class="topic-card" href="#/docs/topics?id=topic-ops" data-docs-route="/docs/topics?id=topic-ops"><strong>运维排障与日常工具 · 25</strong><span>备份恢复、psql、Docker 和日常运维。</span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-performance" data-docs-route="/docs/topics?id=topic-performance"><strong>查询性能与观测 · 22</strong><span>执行计划、慢 SQL、统计信息与基准测试。</span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-ops" data-docs-route="/docs/topics?id=topic-ops"><strong>运维排障与日常工具 · 26</strong><span>备份恢复、psql、Docker 和日常运维。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-locks" data-docs-route="/docs/topics?id=topic-locks"><strong>锁、事务与在线变更 · 19</strong><span>长事务、锁等待、DDL 与在线变更。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-indexes" data-docs-route="/docs/topics?id=topic-indexes"><strong>索引治理 · 11</strong><span>索引创建、维护、清理和损坏检查。</span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-storage" data-docs-route="/docs/topics?id=topic-storage"><strong>存储、WAL 与 Vacuum · 23</strong><span>WAL、膨胀、Vacuum 与存储布局。</span></a>
@@ -22,6 +22,7 @@
 
 执行计划、慢 SQL、统计信息与基准测试。
 
+- [一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离](/docs/108.md) · 技术博客
 - [外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务](/docs/107.md) · 技术博客
 - [PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化](/docs/106.md) · 会议材料
 - [SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争](/docs/104.md) · 会议材料
@@ -50,6 +51,7 @@
 
 备份恢复、psql、Docker 和日常运维。
 
+- [一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离](/docs/108.md) · 技术博客
 - [PostgreSQL 排序规则：文本比较、索引与升级风险](/docs/103.md) · 会议材料
 - [Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢](/docs/102.md) · 会议材料
 - [排查并加速 Postgres 停止和重启](/docs/2.md) · 上游译文

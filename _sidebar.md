@@ -9,6 +9,7 @@
   * [会议精选](/docs/conferences.md)
 
 * **查询性能与观测**
+  * [108. 一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离](/docs/108.md)
   * [101. PostgreSQL 性能排查：规划开销、分区锁与表膨胀](/docs/101.md)
   * [1. EXPLAIN 为什么应该带 BUFFERS](/docs/1.md)
   * [5. pg_stat_statements 入门](/docs/5.md)
