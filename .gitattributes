@@ -1,0 +1,2 @@
+# Preserve the pinned upstream bundle byte-for-byte for checksum verification.
+vendor/mermaid.min.js -whitespace

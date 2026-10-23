@@ -1,243 +1,75 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
   <meta charset="UTF-8">
-  <title>PostgreSQL Howto 中文版 | postgres-howto</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="description" content="PostgreSQL Howto 中文版：面向 DBA、DBRE 和后端工程师的 PostgreSQL 工程实践知识库，涵盖性能诊断、索引、锁、复制、运维和调优。">
-  <meta name="keywords" content="PostgreSQL, Postgres, 数据库, DBA, DBRE, SQL, 性能优化, 中文教程">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#336791">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PostgreSQL Howto 中文版</title>
+  <meta name="description" content="面向真实工程问题的 PostgreSQL 中文实践知识库。查询性能、索引、锁、WAL、Vacuum、复制与日常运维。">
+  <meta name="theme-color" content="#ffffff">
   <meta property="og:type" content="website">
   <meta property="og:title" content="PostgreSQL Howto 中文版">
-  <meta property="og:description" content="面向 DBA、DBRE 和后端工程师的 PostgreSQL 工程实践知识库。">
+  <meta property="og:description" content="面向真实工程问题的 PostgreSQL 中文实践知识库。">
   <meta property="og:url" content="https://postgres-howto.cn/">
   <meta property="og:image" content="https://postgres-howto.cn/images/logo.png">
   <link rel="canonical" href="https://postgres-howto.cn/">
   <link rel="icon" type="image/png" href="./images/favicon.png">
   <link rel="apple-touch-icon" href="./images/favicon.png">
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
-  <link rel="preconnect" href="https://unpkg.com">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
-  <link id="docsify-dark-theme" rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/dark.css" disabled>
-  <link rel="stylesheet" href="./styles/custom.css?v=0422363ecc1f3fbd">
-  <link rel="stylesheet" href="./styles/reading.css?v=9a304ebff623fb5c">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css" />
+  <script>
+    (function () {
+      var mode = 'auto';
+      try { mode = localStorage.getItem('howto-theme') || 'auto'; } catch (_) {}
+      var dark = mode === 'dark' || (mode === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+    })();
+  </script>
+  <link rel="stylesheet" href="./styles/custom.css?v=1ac8f4ba232d28b9">
+  <link rel="stylesheet" href="./styles/reading.css?v=33a89641025d54b6">
 </head>
-
 <body>
-  <div id="app">别急,你也即将成为一名PostgreSQL高手!</div>
-
-  <div id="coffee-btn" class="coffee-btn">
-    <button type="button" aria-haspopup="dialog" aria-controls="imageModal">
-      <span aria-hidden="true">☕</span>
-      支持作者
-    </button>
-  </div>
-
-  <div class="site-stats" aria-label="站点访问统计">
-    <span id="busuanzi_container_site_pv">
-      访问 <strong id="busuanzi_value_site_pv">--</strong> 次
-    </span>
-    <span id="busuanzi_container_site_uv">
-      访客 <strong id="busuanzi_value_site_uv">--</strong> 人
-    </span>
-  </div>
-
-  <div id="imageModal" class="support-modal" role="dialog" aria-modal="true" aria-labelledby="support-title" hidden>
-    <div class="support-modal__panel">
-      <button type="button" class="support-modal__close" aria-label="关闭支持作者弹窗">&times;</button>
-      <img src="images/wechat_pay.png" alt="微信赞赏码" loading="lazy">
-      <p id="support-title">维护不易，多谢你的资瓷！一分也是爱 ❤️</p>
+  <a class="skip-link" href="#main" data-skip>跳至正文</a>
+  <header class="site-header">
+    <button id="sidebar-toggle" class="icon-button mobile-menu" type="button" aria-label="打开导航" aria-controls="site-sidebar" aria-expanded="false" title="打开导航"><span class="icon icon-menu" aria-hidden="true"></span></button>
+    <a class="site-brand" href="#/README"><img src="./images/favicon.png" width="36" height="36" alt=""><span>PostgreSQL <strong>Howto</strong><small>中文版</small></span></a>
+    <nav class="app-nav" aria-label="主导航">
+      <a href="#/README">首页</a><a href="#/docs/topics">专题</a><a href="#/docs/paths">学习路径</a><a href="#/docs/find">全部文章</a><a href="https://github.com/xiongcccc/postgres-howto" target="_blank" rel="noopener">GitHub<span class="icon icon-arrow-up-right" aria-hidden="true"></span></a>
+    </nav>
+    <div class="header-tools">
+      <button type="button" class="icon-button" data-open-search aria-label="搜索文章" aria-keyshortcuts="Control+K Meta+K" title="搜索文章 (Ctrl / Cmd + K)"><span class="icon icon-search" aria-hidden="true"></span></button>
+      <button type="button" class="icon-button theme-toggle" aria-label="切换阅读主题" title="切换阅读主题"><span class="icon icon-monitor" aria-hidden="true"></span></button>
     </div>
-  </div>
-
+  </header>
+  <button class="sidebar-backdrop" type="button" aria-label="关闭导航" tabindex="-1" hidden></button>
+  <div id="app"><p class="loading-message">PostgreSQL Howto · 正在载入文章</p></div>
+  <noscript><p>阅读本站需要 JavaScript，也可以在 <a href="https://github.com/xiongcccc/postgres-howto">GitHub 仓库</a>查看文章源文件。</p></noscript>
+  <footer class="site-footer">
+    <div><a href="#/docs/about">关于项目</a><a href="https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos" target="_blank" rel="noopener">上游来源</a><a href="https://xiongcc.cn/" target="_blank" rel="noopener">xiongcc</a></div>
+    <div><button type="button" data-dialog="communityModal">读者交流</button><button type="button" data-dialog="imageModal">支持作者</button><span class="site-stats" aria-label="站点访问统计"><span id="busuanzi_container_site_pv">访问 <strong id="busuanzi_value_site_pv">--</strong> 次</span><span id="busuanzi_container_site_uv">访客 <strong id="busuanzi_value_site_uv">--</strong> 人</span></span></div>
+  </footer>
+  <dialog id="imageModal" class="support-modal" aria-labelledby="support-title"><div class="dialog-heading"><h2 id="support-title">支持作者</h2><button class="icon-button" type="button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>感谢支持 PostgreSQL Howto 的长期维护。</p><img data-src="./images/wechat_pay.png" width="280" height="280" alt="微信赞赏码"></dialog>
+  <dialog id="communityModal" class="support-modal" aria-labelledby="community-title"><div class="dialog-heading"><h2 id="community-title">读者交流群</h2><button class="icon-button" type="button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>二维码若已过期，可通过公众号 PostgreSQL 学徒或邮件联系。</p><img data-src="./images/wechatgroup.jpeg" width="280" height="427" alt="PostgreSQL 学徒读者交流群二维码"></dialog>
   <script>
-    (function () {
-      var trigger = document.querySelector('#coffee-btn button');
-      var modal = document.getElementById('imageModal');
-      var closeButton = document.querySelector('.support-modal__close');
-
-      function showSupportModal() {
-        modal.hidden = false;
-        closeButton.focus();
-      }
-
-      function closeSupportModal() {
-        modal.hidden = true;
-        trigger.focus();
-      }
-
-      trigger.addEventListener('click', showSupportModal);
-      closeButton.addEventListener('click', closeSupportModal);
-      modal.addEventListener('click', function (event) {
-        if (event.target === modal) {
-          closeSupportModal();
-        }
-      });
-      window.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape' && !modal.hidden) {
-          closeSupportModal();
-        }
-      });
-    })();
-
-    function toDocsifyRoute(href) {
-      if (!href || href.indexOf('http://') === 0 || href.indexOf('https://') === 0 || href.indexOf('mailto:') === 0) {
-        return '';
-      }
-
-      var cleanHref = href.split('#')[0].split('?')[0];
-      cleanHref = cleanHref.replace(/^\.\//, '').replace(/^\//, '');
-
-      if (cleanHref === 'README.md') {
-        return '/README';
-      }
-
-      if (cleanHref.indexOf('docs/') === 0 && cleanHref.slice(-3) === '.md') {
-        return '/' + cleanHref.slice(0, -3);
-      }
-
-      return '';
-    }
-
-    document.addEventListener('click', function (event) {
-      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-      var link = event.target.closest('a');
-      if (!link || link.target === '_blank' || link.hasAttribute('download')) {
-        return;
-      }
-
-      var route = link.getAttribute('data-docs-route') || toDocsifyRoute(link.getAttribute('href'));
-      if (route) {
-        event.preventDefault();
-        window.location.hash = route;
-      }
-    }, true);
-
-    (function () {
-      function syncDarkClass() {
-        var darkTheme = document.getElementById('docsify-dark-theme');
-        document.body.classList.toggle('dark', Boolean(darkTheme && !darkTheme.disabled));
-      }
-
-      window.addEventListener('DOMContentLoaded', function () {
-        var darkTheme = document.getElementById('docsify-dark-theme');
-        syncDarkClass();
-
-        if (darkTheme && window.MutationObserver) {
-          new MutationObserver(syncDarkClass).observe(darkTheme, {
-            attributes: true,
-            attributeFilter: ['disabled']
-          });
-        }
-
-        window.setInterval(syncDarkClass, 500);
-      });
-    })();
-
     window.$docsify = {
-      name: 'postgres-howto in chinese',
-      repo: 'https://github.com/xiongcccc',
-      maxLevel: 5, // 最大支持渲染的标题层级
-      subMaxLevel: 0,
-      homepage: 'README.md',
-      coverpage: { '/': '_coverpage.md' },
-      loadSidebar: true,
-      loadNavbar: true,
-      auto2top: true, // 切换页面后是否自动跳转到页面顶部
-      onlyCover: false,
-      pagination: {
-        previousText: '上一章节',
-        nextText: {
-          '/en/': 'NEXT',
-          '/': '下一章节'
-        },
-        crossChapter: true,
-        crossChapterText: true,
-      },
-      mermaidConfig: {
-        querySelector: '.mermaid'
-      },
-      plugins: [
-        function (hook) {
-          hook.doneEach(function () {
-            document.querySelectorAll('.markdown-section table').forEach(function (table) {
-              if (table.parentElement && table.parentElement.classList.contains('table-scroll')) {
-                return;
-              }
-
-              var wrapper = document.createElement('div');
-              wrapper.className = 'table-scroll';
-              table.parentNode.insertBefore(wrapper, table);
-              wrapper.appendChild(table);
-            });
-          });
-        }
-      ],
-      gitalkWithFooter: {
-        //footerInnerHtml: "<p>到底了,别再划了!</p>",
-        gitalkConfig: {
-          clientID: 'Ov23liQBwmxWjc0oPeFw', // Your Client Id
-          clientSecret: 'c71a6283d1190656fe158e02b16f1ca9d08e3e61', // Your Client secret
-          repo: 'gitalk-comment',
-          owner: 'xiongcccc',
-          admin: ['xiongcccc'],
-          // facebook-like distraction free mode
-          distractionFreeMode: false,
-        }
-      },
-      switchLightDarkMode: {
-        useSwitchMode: true,
-        top: 130,
-        right: 26,
-        svgColor: '#7d7b75',
-      },
-    }
+      name: 'PostgreSQL Howto', repo: false, maxLevel: 5, subMaxLevel: 0,
+      homepage: 'README.md', coverpage: false, loadSidebar: true, loadNavbar: false,
+      auto2top: true, notFoundPage: 'docs/not-found.md'
+    };
   </script>
-
-  <script src="./scripts/catalog-data.js?v=adb48f4685751328"></script>
-  <script src="./scripts/search-core.js?v=ccc4b8a6ff42a042"></script>
-  <script src="./scripts/reading.js?v=7ab36b4a4d9ada6c"></script>
-
-  <!-- docsify-edit-on-github -->
-  <script src="//unpkg.com/docsify-edit-on-github/index.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
-
-  <!-- Mermaid diagrams -->
-  <script src="//cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-  <script>
-    mermaid.initialize({
-      startOnLoad: false,
-      securityLevel: 'loose',
-      theme: 'default'
-    });
-  </script>
-  <script src="//cdn.jsdelivr.net/npm/docsify-mermaid@2/dist/docsify-mermaid.js"></script>
-
-  <!--Java代码高亮-->
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
-  <!-- Search uses the shared article catalog and generated local full-text index. -->
-  <!-- 复制到剪贴板 -->
-  <script src="//unpkg.com/docsify-copy-code"></script>
-  <!-- 图片缩放 -->
-  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/zoom-image.min.js"></script>
-  <!-- 字数统计 -->
-  <script src="//unpkg.com/docsify-count/dist/countable.js"></script>
-  <!-- 分页 -->
-  <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
-
-  <!-- gitalk --> 
-  <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
-  <script src="./scripts/comments.js?v=c7a0ee80454ed8f3"></script>
-
-  <!-- docsify-simple-dark-mode plugin -->
-  <script src="https://cdn.jsdelivr.net/gh/pikapikapikaori/docsify-simple-dark-mode@latest/src/switchLightDarkMode.js"></script>
-
-  <!-- page views -->
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  
+  <script src="./scripts/catalog-data.js?v=407d2a61721a9d67"></script>
+  <script src="./scripts/search-core.js?v=6e4ff33700ab76b7"></script>
+  <script src="./scripts/site.js?v=8bd6e789a14ef289"></script>
+  <script src="./scripts/finder.js?v=04cf6edbbfac5df2"></script>
+  <script src="./scripts/diagrams.js?v=2277fa2b06c40a94"></script>
+  <script src="./scripts/reading.js?v=b9a6169290147579"></script>
+  <script src="./scripts/comments.js?v=c8b87fcdfd828c7c"></script>
+  <script src="./vendor/docsify.min.js"></script>
+  <script src="./vendor/prism-sql.min.js"></script>
+  <script src="./vendor/prism-bash.min.js"></script>
+  <script src="./vendor/prism-python.min.js"></script>
+  <script src="./vendor/prism-json.min.js"></script>
+  <script src="./vendor/prism-java.min.js"></script>
+  <script src="./vendor/prism-c.min.js"></script>
+  <script src="./vendor/prism-ini.min.js"></script>
+  <script src="./vendor/prism-yaml.min.js"></script>
 </body>
-
 </html>

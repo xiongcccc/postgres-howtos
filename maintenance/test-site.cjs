@@ -1,343 +1,213 @@
-// Optional browser smoke test: PLAYWRIGHT_PACKAGE points to an installed playwright.
-const {chromium}=require(process.env.PLAYWRIGHT_PACKAGE || 'playwright');
+// Browser regression. Uses an independent profile; no user browser/account state.
+const {chromium}=require(process.env.PLAYWRIGHT_PACKAGE||'playwright');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
 const catalog=require('../data/articles.json');
-const base=process.env.HOWTO_URL || 'http://127.0.0.1:4175/';
-const shots=process.env.HOWTO_SCREENSHOTS || '/tmp/howto-reading-checks';
+const base=process.env.HOWTO_URL||'http://127.0.0.1:4176/';
+const shots=path.resolve(process.env.HOWTO_SCREENSHOTS||path.join(__dirname,'../docs/redesign/after'));
 (async()=>{
   fs.mkdirSync(shots,{recursive:true});
   const browser=await chromium.launch({headless:true,...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{})});
-  try {
-    const context=await browser.newContext({viewport:{width:1536,height:960}});
-    await context.route(/busuanzi|gitalk|api\.github\.com/,r=>r.abort());
-    await context.addInitScript(()=>{
-      window.commentRenders=[];
-      window.Gitalk=function(config){this.render=function(id){window.commentRenders.push(config.id);document.getElementById(id).textContent='Test discussion';};};
-    });
+  const errors=[],metrics={viewports:[1440,1280,1024,768,390,360],articles:catalog.articles.length};
+  try{
+    const context=await browser.newContext({viewport:{width:1440,height:1000},permissions:['clipboard-read','clipboard-write']});
+    await context.route(/busuanzi/,route=>route.abort());
     const page=await context.newPage();
-    const errors=[];
-    page.on('pageerror',e=>errors.push(e.message));
-    await page.goto(base,{waitUntil:'networkidle'});
-    await page.locator('.cover.show .cover-actions').waitFor();
-    await page.screenshot({path:path.join(shots,'restored-cover.png')});
-    await page.locator('.cover-actions a').first().click();
-    await page.locator('#article-query').waitFor();
-    await page.waitForFunction(()=>location.hash==='#/README' && document.body.classList.contains('reading-home') && !document.querySelector('#gitalk-container'));
-    assert.equal(await page.locator('.cover.show').count(),0);
-    assert.equal(await page.locator('#gitalk-container').count(),0);
-    assert.equal(await page.locator('select[name=type] option[value=editorial]').count(),0);
+    page.on('pageerror',error=>errors.push(error.message));
+    async function go(route){await page.goto(base+route);await page.locator('.markdown-section h1').first().waitFor();await page.waitForFunction(()=>document.querySelector('.markdown-section')?.dataset.renderedRoute===location.hash);}
+    async function article(id){
+      await go('#/docs/'+id);
+      await page.waitForFunction(record=>document.querySelector('.markdown-section h1')?.textContent===record.title && document.querySelector('.article-id')?.textContent==='#'+record.id && document.querySelector('#gitalk-container'),catalog.articles.find(a=>a.id===id));
+    }
+    async function theme(mode){
+      for(let n=0;n<3 && await page.locator('.theme-toggle').getAttribute('data-mode')!==mode;n++)await page.locator('.theme-toggle').click();
+      assert.equal(await page.locator('.theme-toggle').getAttribute('data-mode'),mode);
+    }
+    async function noOverflow(label){
+      assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Page overflow: '+label);
+    }
+    for(const route of ['','#/','#/README']){
+      await go(route);await page.locator('#article-query').waitFor();
+      assert.equal(await page.locator('.home-hero h1').textContent(),'PostgreSQL Howto');
+      assert.equal(await page.locator('.cover.show').count(),0);
+      assert.equal(await page.locator('#gitalk-container').count(),0);
+      assert.equal(await page.locator('.topic-card').count(),catalog.topics.length);
+      assert.equal(await page.locator('.problem-links a').count(),catalog.problems.length);
+    }
     assert.deepEqual(await page.locator('.recent-articles time').allTextContents(),catalog.featured.map(id=>catalog.articles.find(a=>a.id===id)).sort((a,b)=>b.addedOn.localeCompare(a.addedOn)||b.id-a.id).map(a=>a.addedOn));
-    await page.locator('.author-profile').scrollIntoViewIfNeeded();
-    await page.screenshot({path:path.join(shots,'author-profile.png')});
-    assert.equal(await page.locator('.home-hero h1').textContent(),'PostgreSQL Howto 中文版');
-    const homeLinks=await page.locator('.home-actions a[href^="#"],.problem-links a').evaluateAll(as=>as.map(a=>a.getAttribute('href')));
-    for(const href of homeLinks){
-      await page.goto(base+href);
+    await page.locator('[data-skip]').focus();await page.keyboard.press('Enter');
+    assert.ok(await page.evaluate(()=>document.activeElement.id==='main'));
+    assert.ok(await page.evaluate(()=>location.hash==='#/README'));
+    metrics.homeResources=await page.evaluate(()=>performance.getEntriesByType('resource').filter(r=>r.name.startsWith(location.origin)).map(r=>({name:new URL(r.name).pathname,bytes:r.encodedBodySize})));
+    assert.ok(!metrics.homeResources.some(r=>r.name.endsWith('/mermaid.min.js')),'Homepage must not load Mermaid');
+    await page.screenshot({path:path.join(shots,'home-desktop.png'),fullPage:true});
+    for(const href of await page.locator('.problem-links a,.topic-card,.home-paths>a').evaluateAll(links=>links.map(a=>a.getAttribute('href')))){
+      await go(href);assert.ok(!(await page.locator('.markdown-section h1').textContent()).includes('没有找到'));
       if(href.includes('/find'))await page.waitForFunction(()=>document.querySelector('.finder-results a'));
-      else await page.waitForFunction(()=>document.querySelector('.markdown-section')?.textContent && !document.querySelector('.markdown-section')?.textContent.includes('404 - Not found'));
     }
+    console.log('PASS: root/home, generated counts, dates, all problem/topic/path entry links');
     for(const a of catalog.articles){
-      await page.goto(base+'#/docs/'+a.id);
-      await page.waitForFunction(title=>document.querySelector('.markdown-section h1')?.textContent===title && document.title.includes(title) && document.querySelector('.article-meta'),a.title);
-      await page.locator('#gitalk-container').waitFor({state:'attached'});
-      assert.ok((await page.title()).includes(a.title),'Browser title: '+a.id);
+      await article(a.id);
       assert.equal(await page.locator('.article-meta').count(),1);
+      assert.equal(await page.locator('.markdown-section h1').count(),1);
       assert.equal(await page.locator('#gitalk-container').count(),1);
-      await page.waitForFunction(()=>Array.from(document.querySelectorAll('.mermaid')).every(el=>el.querySelector('svg')));
+      assert.equal(await page.locator('.catalog-navigation>details[open]').count(),1);
+      assert.equal(await page.locator('.catalog-navigation details a[aria-current]').getAttribute('href'),'#/docs/'+a.id);
+      assert.equal(await page.locator('.breadcrumbs a').last().getAttribute('href'),'#/docs/topics?id=topic-'+a.topics[0]);
+      assert.ok((await page.title()).includes(a.title));
+      const source=fs.readFileSync(path.join(__dirname,'../docs/'+a.id+'.md'),'utf8');
+      const diagrams=[...source.matchAll(/^```mermaid\s*$/gm)].length;
+      if(diagrams)await page.waitForFunction(count=>document.querySelectorAll('.mermaid svg').length===count,diagrams);
+      assert.equal(await page.locator('#article-schema').count(),1);
+      await noOverflow('article '+a.id);
     }
-    console.log(`PASS: all ${catalog.articles.length} article routes, Chinese headings and metadata; homepage entry routes`);
-    await page.goto(base+'#/docs/101');
-    await page.waitForFunction(()=>document.querySelectorAll('.mermaid svg').length===1);
-    assert.equal(await page.locator('.article-kicker a').textContent(),'专题解读');
-    await page.screenshot({path:path.join(shots,'101-desktop.png')});
-    await page.locator('.article-kicker a').click();
-    await page.waitForFunction(()=>document.querySelector('[name=series]')?.value==='interpretation');
-    assert.equal(await page.locator('.finder-results a').count(),catalog.articles.filter(a=>a.series==='interpretation').length);
-    await page.locator('[name=type]').selectOption('conference');
-    await page.reload();
-    await page.waitForFunction(()=>document.querySelector('[name=series]')?.value==='interpretation' && document.querySelector('[name=type]')?.value==='conference');
-    assert.equal(await page.locator('.finder-results a').first().getAttribute('href'),'#/docs/101');
-    for(const route of ['conferences']) {
-      await page.goto(base+'#/docs/'+route);
-      await page.locator('.markdown-section a[href="#/docs/101"]').first().click();
-      await page.waitForFunction(()=>location.hash==='#/docs/101' && document.querySelector('.article-meta'));
-    }
-    await page.goto(base+'#/docs/102');
-    await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#102'));
-    assert.equal(await page.locator('.article-kicker a').textContent(),'专题解读');
-    assert.equal(await page.locator('.markdown-section pre[data-lang="sql"]').count(),3);
-    await page.screenshot({path:path.join(shots,'102-desktop.png')});
-    await page.locator('.article-toc a').nth(2).click();
-    await page.waitForFunction(()=>location.hash.includes('?id='));
-    await page.goto(base+'#/docs/find?q=清理不掉');
-    await page.waitForFunction(()=>document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/102');
-    for(const route of ['conferences','topics']) {
-      await page.goto(base+'#/docs/'+route);
-      await page.locator('.markdown-section a[href="#/docs/102"]').first().click();
-      await page.waitForFunction(()=>location.hash==='#/docs/102' && document.querySelector('.article-meta'));
-    }
-    await page.goto(base+'#/docs/103');
-    await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#103'));
-    assert.equal(await page.locator('.article-kicker a').textContent(),'专题解读');
-    assert.equal(await page.locator('.markdown-section pre[data-lang="sql"]').count(),9);
-    await page.locator('.article-toc a').nth(2).click();
-    await page.waitForFunction(()=>location.hash.includes('?id='));
-    await page.goto(base+'#/docs/find?q=排序版本不匹配');
-    await page.waitForFunction(()=>document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/103');
-    for(const route of ['series','conferences','topics']) {
-      await page.goto(base+'#/docs/'+route);
-      await page.locator('.markdown-section a[href="#/docs/103"]').first().click();
-      await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#103'));
-    }
-    await page.goto(base+'#/docs/104');
-    await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#104'));
-    assert.equal(await page.locator('.article-kicker a').textContent(),'专题解读');
-    assert.equal(await page.locator('.markdown-section pre[data-lang="sql"]').count(),8);
-    await page.locator('.article-toc a').nth(2).click();
-    await page.waitForFunction(()=>location.hash.includes('?id='));
-    await page.goto(base+'#/docs/find?q=热点账户');
-    await page.waitForFunction(()=>document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/104');
-    for(const route of ['series','conferences','topics']) {
-      await page.goto(base+'#/docs/'+route);
-      await page.locator('.markdown-section a[href="#/docs/104"]').first().click();
-      await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#104'));
-    }
-    await page.goto(base+'#/docs/105');
-    await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#105'));
-    assert.equal(await page.locator('.article-kicker a').textContent(),'专题解读');
-    assert.equal(await page.locator('.markdown-section pre[data-lang="sql"]').count(),3);
-    assert.equal(await page.locator('.markdown-section pre[data-lang="bash"]').count(),1);
-    await page.waitForFunction(()=>document.querySelectorAll('.mermaid svg').length===1);
-    await page.locator('.article-toc a').nth(2).click();
-    await page.waitForFunction(()=>location.hash.includes('?id='));
-    await page.goto(base+'#/docs/find?q=逻辑复制开发');
-    await page.waitForFunction(()=>document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/105');
-    for(const route of ['conferences','topics']) {
-      await page.goto(base+'#/docs/'+route);
-      await page.locator('.markdown-section a[href="#/docs/105"]').first().click();
-      await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#105'));
-    }
-    await page.goto(base+'#/docs/106');
-    await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#106'));
-    assert.equal(await page.locator('.article-kicker a').textContent(),'专题解读');
-    assert.equal(await page.locator('.markdown-section pre[data-lang="sql"]').count(),6);
-    await page.waitForFunction(()=>document.querySelectorAll('.mermaid svg').length===1);
-    assert.ok((await page.locator('.article-meta').textContent()).includes('Beta 4'));
-    await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
-    await page.screenshot({path:path.join(shots,'106-desktop.png')});
-    await page.locator('.article-toc a').nth(2).click();
-    await page.waitForFunction(()=>location.hash.includes('?id='));
-    await page.goto(base+'#/docs/find?q=PG19');
-    await page.waitForFunction(()=>document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/106');
-    for(const route of ['series','conferences','topics']) {
-      await page.goto(base+'#/docs/'+route);
-      await page.locator('.markdown-section a[href="#/docs/106"]').first().click();
-      await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#106'));
-    }
-    await page.goto(base+'#/docs/107');
-    await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#107'));
-    assert.equal(await page.locator('.article-kicker a').textContent(),'专题解读');
-    assert.equal(await page.locator('.markdown-section pre[data-lang="sql"]').count(),13);
-    assert.equal(await page.locator('.markdown-section pre[data-lang="text"]').count(),8);
-    await page.waitForFunction(()=>document.querySelectorAll('.mermaid svg').length===1);
-    assert.ok((await page.locator('.article-meta').textContent()).includes('技术博客'));
-    assert.equal(await page.locator('.article-meta a[href="https://thebuild.com/blog/all-your-gucs-in-a-row-multixact_member_buffers-and-multixact_offset_buffers/"]').count(),1);
-    await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
-    await page.screenshot({path:path.join(shots,'107-desktop.png')});
-    await page.locator('.article-toc a').nth(2).click();
-    await page.waitForFunction(()=>location.hash.includes('?id='));
-    await page.goto(base+'#/docs/find?q=multixact_offset_buffers');
-    await page.waitForFunction(()=>document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/107');
-    await page.locator('[name=series]').selectOption('interpretation');
-    await page.locator('[name=type]').selectOption('blog');
-    await page.reload();
-    await page.waitForFunction(()=>document.querySelector('[name=series]')?.value==='interpretation' && document.querySelector('[name=type]')?.value==='blog');
-    assert.equal(await page.locator('.finder-results a').count(),1);
-    assert.equal(await page.locator('.finder-results a').first().getAttribute('href'),'#/docs/107');
-    for(const route of ['series','topics']) {
-      await page.goto(base+'#/docs/'+route);
-      await page.locator('.markdown-section a[href="#/docs/107"]').first().click();
-      await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#107'));
-    }
-    await page.goto(base+'#/docs/conferences');
-    await page.waitForFunction(()=>document.querySelector('.markdown-section h1')?.textContent==='会议精选');
-    assert.equal(await page.locator('.markdown-section h3 a[href="#/docs/107"]').count(),0);
-    assert.equal(await page.locator('.markdown-section h3 a[href="#/docs/108"]').count(),0);
-    assert.equal(await page.locator('.markdown-section h3 a[href="#/docs/109"]').count(),0);
-    await page.goto(base+'#/docs/108');
-    await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#108'));
-    assert.equal(await page.locator('.article-kicker a').textContent(),'专题解读');
-    assert.equal(await page.locator('.markdown-section pre[data-lang="sql"]').count(),13);
-    assert.equal(await page.locator('.markdown-section pre[data-lang="text"]').count(),9);
-    await page.waitForFunction(()=>document.querySelectorAll('.mermaid svg').length===1);
-    assert.ok((await page.locator('.article-meta').textContent()).includes('技术博客'));
-    assert.equal(await page.locator('.article-meta a[href="https://clickhouse.com/blog/can-your-postgres-survive-a-bad-query"]').count(),1);
-    await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
-    await page.screenshot({path:path.join(shots,'108-desktop.png')});
-    await page.locator('.article-toc a').nth(2).click();
-    await page.waitForFunction(()=>location.hash.includes('?id='));
-    await page.goto(base+'#/docs/find?q=Can%20your%20Postgres%20survive');
-    await page.waitForFunction(()=>document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/108');
-    await page.locator('[name=series]').selectOption('interpretation');
-    await page.locator('[name=type]').selectOption('blog');
-    await page.reload();
-    await page.waitForFunction(()=>document.querySelector('[name=series]')?.value==='interpretation' && document.querySelector('[name=type]')?.value==='blog');
-    assert.equal(await page.locator('.finder-results a').count(),1);
-    for(const route of ['series','topics']) {
-      await page.goto(base+'#/docs/'+route);
-      await page.locator('.markdown-section a[href="#/docs/108"]').first().click();
-      await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#108'));
-    }
-    await page.goto(base+'#/docs/109');
-    await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#109'));
-    assert.equal(await page.locator('.article-kicker a').textContent(),'专题解读');
-    assert.equal(await page.locator('.markdown-section pre[data-lang="sql"]').count(),20);
-    assert.equal(await page.locator('.markdown-section pre[data-lang="text"]').count(),10);
-    await page.waitForFunction(()=>document.querySelectorAll('.mermaid svg').length===1);
-    assert.ok((await page.locator('.article-meta').textContent()).includes('技术博客'));
-    assert.ok((await page.locator('.article-meta').textContent()).includes('归档路径按文档和源码核对'));
-    await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
-    await page.screenshot({path:path.join(shots,'109-desktop.png')});
-    await page.locator('.article-toc a').nth(2).click();
-    await page.waitForFunction(()=>location.hash.includes('?id='));
-    await page.goto(base+'#/docs/find?q='+encodeURIComponent('备库查询取消'));
-    await page.waitForFunction(()=>document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/109');
-    await page.locator('[name=series]').selectOption('interpretation');
-    await page.locator('[name=type]').selectOption('blog');
-    await page.reload();
-    await page.waitForFunction(()=>document.querySelector('[name=series]')?.value==='interpretation' && document.querySelector('[name=type]')?.value==='blog');
-    assert.equal(await page.locator('.finder-results a').count(),1);
-    for(const route of ['series','topics']) {
-      await page.goto(base+'#/docs/'+route);
-      await page.locator('.markdown-section a[href="#/docs/109"]').first().click();
-      await page.waitForFunction(()=>document.querySelector('.article-kicker')?.textContent.endsWith('#109'));
-    }
-    await page.goto(base+'#/docs/100');
-    await page.waitForFunction(()=>document.querySelectorAll('.mermaid svg').length===2);
-    await page.locator('.article-toc a').nth(2).click();
-    await page.waitForFunction(()=>location.hash.includes('?id='));
-    assert.ok(await page.locator('.article-toc').isVisible());
-    await page.screenshot({path:path.join(shots,'desktop-article.png')});
-    await page.goto(base+'#/docs/find?q=WAL暴涨');
+    console.log('PASS: all numbered routes, Chinese headings, attribution, primary categories and diagrams');
+    await go('#/docs/12.md');assert.equal(await page.locator('.article-id').textContent(),'#12');
+    await go('#/README?id=about-author');assert.equal(await page.locator('#about-author').count(),1);
+    assert.ok(await page.evaluate(()=>location.hash.includes('id=about-author')));
+    await go('#/docs/find?q=WAL暴涨');
     await page.waitForFunction(()=>document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/31');
-    await page.reload();
-    await page.waitForFunction(()=>document.querySelector('#article-query')?.value==='WAL暴涨');
-    await page.locator('#article-query').fill('PreCommit_Notify');
-    await page.waitForFunction(()=>document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/100');
-    await page.locator('#article-query').fill('NoMatchxyz987654321');
+    await go('#/docs/find?q='+encodeURIComponent('清理不掉'));
+    await page.waitForFunction(()=>document.querySelector('#article-query')?.value==='清理不掉'&&document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/102');
+    await go('#/docs/find?q=WAL暴涨');
+    await page.waitForFunction(()=>document.querySelector('#article-query')?.value==='WAL暴涨'&&document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/31');
+    await page.locator('.finder-results a').first().click();await page.locator('.article-meta').waitFor();
+    await page.goBack();await page.waitForFunction(()=>document.querySelector('#article-query')?.value==='WAL暴涨');
+    await page.reload();await page.waitForFunction(()=>document.querySelector('#article-query')?.value==='WAL暴涨');
+    await page.locator('.finder-clear').click();
+    assert.equal(await page.locator('.finder-results a').count(),20);
+    await page.locator('.finder-more').click();assert.equal(await page.locator('.finder-results a').count(),40);
+    await page.locator('.finder-advanced summary').click();
+    await page.locator('[name=series]').selectOption('interpretation');
+    await page.locator('[name=type]').selectOption('blog');
+    await page.reload();await page.waitForFunction(()=>document.querySelector('[name=type]')?.value==='blog');
+    assert.ok(await page.locator('.finder-advanced').getAttribute('open')!==null);
+    assert.equal(await page.locator('.finder-results a').count(),catalog.articles.filter(a=>a.series==='interpretation'&&a.type==='blog').length);
+    await page.locator('[name=topic]').selectOption('replication');
+    assert.equal(await page.locator('.finder-results a').count(),1);
+    assert.equal(await page.locator('.finder-results a').getAttribute('href'),'#/docs/109');
+    await page.locator('.finder-clear').click();
+    const times=[];
+    for(const [query,id] of [['清理不掉',102],['备库查询取消',109],['递归去重',108],['热点账户',104],['WAL暴涨',31]]){
+      const start=Date.now();await page.locator('#article-query').fill(query);
+      await page.waitForFunction(id=>document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/'+id,id);
+      times.push(Date.now()-start);
+    }
+    metrics.localSearchUiMilliseconds=times;
+    await page.locator('#article-query').fill('work mem');
+    await page.waitForFunction(()=>document.querySelector('.finder-results mark'));
+    assert.ok((await page.locator('.finder-results').textContent()).toLowerCase().includes('work_mem'));
+    await page.locator('#article-query').focus();await page.keyboard.press('ArrowDown');
+    assert.ok(await page.evaluate(()=>document.activeElement.matches('.finder-results a')));
+    await page.keyboard.press('Escape');assert.equal(await page.locator('#article-query').evaluate(e=>e===document.activeElement),true);
+    await page.screenshot({path:path.join(shots,'search.png')});
+    await page.locator('#article-query').fill('<img src=x onerror=alert(1)>');
     await page.waitForFunction(()=>document.querySelector('.finder-status')?.textContent.includes('没有找到'));
-    console.log('PASS: alias/full-text search, reload query, empty results and TOC navigation');
-    await page.goto(base+'#/README');
-    await page.waitForFunction(()=>document.querySelector('.home-hero'));
-    assert.equal(await page.locator('#gitalk-container').count(),0);
-    await page.screenshot({path:path.join(shots,'desktop-home.png')});
-    for(const width of [390,768,1280]){
-      await page.setViewportSize({width,height:844});
-      for(const route of ['#/README','#/docs/100','#/docs/101','#/docs/102','#/docs/103','#/docs/104','#/docs/105','#/docs/106','#/docs/107','#/docs/108','#/docs/109']){
-        await page.goto(base+route);
-        if(route.includes('/docs/')) {
-          await page.waitForFunction(id=>document.querySelector('.article-kicker')?.textContent.endsWith('#'+id),route.split('/').pop());
-        } else {
-          await page.locator('.home-hero').waitFor();
-        }
-        await page.waitForFunction(()=>document.querySelector('.reading-controls #switchLightDarkModeDivBeforeArticle'));
-        // The existing theme control cycles auto -> light -> dark.
-        for(let n=0;n<3 && !(await page.locator('body').evaluate(b=>b.classList.contains('dark')));n++){
-          await page.locator('#switchLightDarkModeDivBeforeArticle').click();
-          await page.waitForTimeout(650);
-        }
-        assert.ok(await page.locator('body').evaluate(b=>b.classList.contains('dark')));
-        assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
-        if(route.includes('/101')) {
-          await page.waitForFunction(()=>document.querySelector('.mermaid svg'));
-          const diagram=page.locator('.mermaid');
-          await diagram.scrollIntoViewIfNeeded();
-          await page.screenshot({path:path.join(shots,`${width}-101-diagram-dark.png`)});
-          await page.locator('.table-scroll').first().scrollIntoViewIfNeeded();
-          await page.screenshot({path:path.join(shots,`${width}-101-table-dark.png`)});
-        }
-        if(route.includes('/105') || route.includes('/106') || route.includes('/107') || route.includes('/108') || route.includes('/109')) {
-          await page.waitForFunction(()=>document.querySelector('.mermaid svg'));
-          await page.locator('.mermaid').scrollIntoViewIfNeeded();
-          await page.screenshot({path:path.join(shots,`${width}-${route.split('/').pop()}-diagram-dark.png`)});
-        }
-        if(route.includes('/102') || route.includes('/103') || route.includes('/104') || route.includes('/105') || route.includes('/106') || route.includes('/107') || route.includes('/108') || route.includes('/109')) {
-          const articleId=route.split('/').pop();
-          const table=page.locator('.table-scroll').first();
-          await table.scrollIntoViewIfNeeded();
-          if(articleId==='107') await table.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));
-          if(width===390) {
-            assert.ok(await table.evaluate(e=>e.scrollWidth>e.clientWidth));
-            await table.evaluate(e=>{e.scrollLeft=120;});
-            assert.ok(await table.evaluate(e=>e.scrollLeft>0));
-            await table.evaluate(e=>{e.scrollLeft=0;});
-          }
-          await page.screenshot({path:path.join(shots,`${width}-${articleId}-table-dark.png`)});
-          if(articleId==='107') {
-            const membersOutput=page.locator('.markdown-section pre[data-lang="text"]').filter({hasText:'keysh'}).last();
-            await membersOutput.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));
-            await page.screenshot({path:path.join(shots,`${width}-107-members-dark.png`)});
-            assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
-          }
-          if(articleId==='108') {
-            const memoryOutput=page.locator('.markdown-section pre[data-lang="text"]').filter({hasText:'dedup_allocated_mb'});
-            await memoryOutput.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));
-            await page.screenshot({path:path.join(shots,`${width}-108-memory-dark.png`)});
-            assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
-          }
-          if(articleId==='109') {
-            const retained=page.locator('.markdown-section pre[data-lang="text"]').filter({hasText:'0 removed, 10000 remain'});
-            await retained.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));
-            await page.screenshot({path:path.join(shots,`${width}-109-feedback-dark.png`)});
-            assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
-          }
-          await page.locator('.markdown-section pre[data-lang="sql"]').first().scrollIntoViewIfNeeded();
-          assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
-          await page.screenshot({path:path.join(shots,`${width}-${articleId}-sql-dark.png`)});
-          if(articleId==='106') {
-            const summaryTable=page.locator('.table-scroll').nth(1);
-            await summaryTable.scrollIntoViewIfNeeded();
-            if(width===390) {
-              assert.ok(await summaryTable.evaluate(e=>e.scrollWidth>e.clientWidth));
-              await summaryTable.evaluate(e=>{e.scrollLeft=120;});
-              assert.ok(await summaryTable.evaluate(e=>e.scrollLeft>0));
-              await summaryTable.evaluate(e=>{e.scrollLeft=0;});
+    assert.equal(await page.locator('.finder-results img,.finder-results script').count(),0);
+    await page.screenshot({path:path.join(shots,'search-empty.png')});
+    console.log('PASS: normalized highlights, excerpts, keyboard navigation, pagination, filters and history restoration');
+    await article(109);
+    await page.locator('.article-toc a').nth(2).click();
+    await page.waitForFunction(()=>location.hash.includes('?id='));
+    await page.waitForTimeout(100);
+    assert.equal(await page.locator('.article-meta').count(),1);
+    assert.equal(await page.locator('.article-footer').count(),1);
+    const target=await page.locator('.article-toc a').nth(2).getAttribute('data-heading');
+    assert.ok(await page.locator('[id="'+target+'"]').evaluate(e=>e.getBoundingClientRect().top>=64),'Anchor behind header');
+    const pre=page.locator('.code-block').first();
+    const original=await pre.locator('pre code').textContent();
+    await pre.locator('.code-copy').click();
+    assert.equal(await page.evaluate(()=>navigator.clipboard.readText()),original);
+    await page.locator('.reading-settings summary').click();
+    await page.locator('[data-font="1"]').click();
+    assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).getPropertyValue('--reading-size').trim()),'17px');
+    await page.locator('[data-font="reset"]').click();
+    await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:path.join(shots,'article.png')});
+    await go('#/docs/topics');await page.screenshot({path:path.join(shots,'topics.png')});
+    await go('#/docs/does-not-exist');
+    assert.equal(await page.locator('.markdown-section h1').textContent(),'没有找到这篇文章');
+    assert.equal(await page.locator('.article-meta').count(),0);
+    await page.screenshot({path:path.join(shots,'not-found.png')});
+    console.log('PASS: TOC offsets, copy fidelity, font settings and recoverable 404');
+    for(const width of metrics.viewports){
+      await page.setViewportSize({width,height:900});
+      for(const mode of ['light','dark']){
+        await theme(mode);
+        for(const route of ['#/README','#/docs/topics','#/docs/find?q=work_mem','#/docs/1','#/docs/5','#/docs/22','#/docs/98','#/docs/102','#/docs/109','#/docs/25']){
+          await go(route);await noOverflow(width+' '+mode+' '+route);
+          if(route.includes('/109')){
+            await page.locator('.mermaid svg').waitFor();
+            const table=page.locator('.table-scroll').first();
+            if(width<768){
+              await table.scrollIntoViewIfNeeded();
+              assert.ok(await table.evaluate(e=>e.scrollWidth>e.clientWidth));
+              await table.evaluate(e=>{e.scrollLeft=120;});assert.ok(await table.evaluate(e=>e.scrollLeft>0));await table.evaluate(e=>{e.scrollLeft=0;});
+              const code=page.locator('pre[data-lang="sql"]').first();
+              assert.ok(await code.evaluate(e=>e.scrollWidth>e.clientWidth));
+              await code.evaluate(e=>{e.scrollLeft=100;});assert.ok(await code.evaluate(e=>e.scrollLeft>0));
             }
-            await page.screenshot({path:path.join(shots,`${width}-106-priorities-dark.png`)});
-            await page.locator('.markdown-section pre[data-lang="text"]').first().scrollIntoViewIfNeeded();
-            assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
-            await page.screenshot({path:path.join(shots,`${width}-106-advice-dark.png`)});
+            if(width===390&&mode==='dark'){await table.scrollIntoViewIfNeeded();await page.screenshot({path:path.join(shots,'article-mobile-dark.png')});}
           }
+          if(route==='#/README'&&width===390){await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:path.join(shots,mode==='light'?'home-mobile.png':'home-mobile-dark.png')});}
         }
-        if(width<=768)assert.ok(await page.evaluate(()=>document.querySelector('.app-nav').getBoundingClientRect().bottom<=document.querySelector('.reading-controls').getBoundingClientRect().top),'Mobile navigation overlaps controls');
-        if(route.includes('/100')){
-          const scroller=page.locator('.table-scroll').first();
-          await scroller.scrollIntoViewIfNeeded();
-          if(width===390){
-            assert.ok(await scroller.evaluate(e=>e.scrollWidth>e.clientWidth));
-            await scroller.evaluate(e=>{e.scrollLeft=150;});
-            assert.ok(await scroller.evaluate(e=>e.scrollLeft>0));
-          }
-        }
-        await page.screenshot({path:path.join(shots,`${width}-${route.includes('100')?'table':'home'}-dark.png`)});
+      }
+      if(width<1024){
+        await go('#/README');
+        await page.locator('#sidebar-toggle').click();
+        await page.waitForFunction(()=>document.body.classList.contains('nav-open'));
+        assert.ok(await page.locator('.sidebar').isVisible());
+        assert.equal(await page.locator('.content').getAttribute('inert'),'');
+        assert.ok(await page.evaluate(()=>document.activeElement.closest('.sidebar')));
+        await page.locator('.sidebar-resources a').last().focus();await page.keyboard.press('Tab');
+        assert.ok(await page.evaluate(()=>document.activeElement.matches('[data-close-nav]')));
+        if(width===390)await page.screenshot({path:path.join(shots,'navigation-mobile.png')});
+        await page.keyboard.press('Escape');
+        assert.equal(await page.locator('#sidebar-toggle').getAttribute('aria-expanded'),'false');
+        assert.ok(await page.evaluate(()=>document.activeElement.id==='sidebar-toggle'));
+        await page.locator('#sidebar-toggle').click();await page.locator('.sidebar a[href="#/docs/find"]').click();
+        await page.waitForFunction(()=>document.querySelector('.markdown-section')?.dataset.renderedRoute==='#/docs/find');
+        assert.equal(await page.locator('#sidebar-toggle').getAttribute('aria-expanded'),'false');
       }
     }
-    console.log('PASS: dark mode, 390/768/1280 widths and mobile table scrolling');
+    console.log('PASS: six viewport widths, both themes, wide SQL/table local scrolling and accessible drawer');
+    await page.setViewportSize({width:1440,height:1000});
+    await go('#/docs/about');await page.locator('.markdown-section [data-dialog="communityModal"]').click();
+    assert.ok(await page.locator('#communityModal').evaluate(e=>e.open));
+    await page.keyboard.press('Escape');
+    assert.ok(await page.locator('.markdown-section [data-dialog="communityModal"]').evaluate(e=>e===document.activeElement));
+    await page.locator('.markdown-section [data-dialog="imageModal"]').click();
+    await page.locator('#imageModal [data-close-dialog]').click();
+    await article(42);
+    const image=page.locator('img[data-zoomable]').first();await image.scrollIntoViewIfNeeded();
+    await page.waitForFunction(()=>document.querySelector('img[data-zoomable]')?.naturalWidth>0);
+    metrics.technicalImage=await image.evaluate(e=>({url:e.currentSrc,width:e.naturalWidth,height:e.naturalHeight}));
+    await image.press('Enter');await page.locator('#image-viewer').waitFor();
+    assert.ok(await page.locator('#image-viewer').evaluate(e=>e.open));
+    assert.equal(await page.locator('#image-viewer img').getAttribute('src'),metrics.technicalImage.url);
+    await page.screenshot({path:path.join(shots,'image-viewer.png')});
+    await page.keyboard.press('Escape');assert.ok(await image.evaluate(e=>e===document.activeElement));
+    await article(109);await page.keyboard.press('Control+k');await page.locator('#article-query').waitFor();
+    assert.ok(await page.locator('#article-query').evaluate(e=>e===document.activeElement));
+    const fallback=await browser.newContext();
+    await fallback.route(/busuanzi/,r=>r.abort());
+    await fallback.route('**/data/search-index.json*',r=>r.abort());
+    const offline=await fallback.newPage();
+    await offline.goto(base+'#/docs/find?q=WAL暴涨');
+    await offline.waitForFunction(()=>document.querySelector('.finder-status')?.textContent.includes('全文索引暂不可用'));
+    assert.equal(await offline.locator('.finder-results a').first().getAttribute('href'),'#/docs/31');
+    await offline.screenshot({path:path.join(shots,'search-failed.png')});
+    await fallback.unroute('**/data/search-index.json*');await offline.locator('.finder-retry').click();
+    await offline.waitForFunction(()=>!document.querySelector('.finder-status')?.textContent.includes('索引'));
+    await fallback.close();
+    const slow=await browser.newContext();await slow.route(/busuanzi/,r=>r.abort());
+    await slow.route('**/data/search-index.json*',async r=>{await new Promise(resolve=>setTimeout(resolve,500));await r.continue();});
+    const loading=await slow.newPage();await loading.goto(base+'#/docs/find?q=work_mem');
+    await loading.waitForFunction(()=>document.querySelector('.finder-status')?.textContent.includes('正在加载全文索引'));
+    await loading.waitForFunction(()=>!document.querySelector('.finder-status')?.textContent.includes('索引'));await slow.close();
     assert.deepEqual(errors,[],'Unexpected page errors');
+    fs.writeFileSync(path.join(shots,'metrics.json'),JSON.stringify(metrics,null,2)+'\n');
     await context.close();
-    const offline=await browser.newContext();
-    await offline.route(/busuanzi|gitalk|api\.github\.com/,r=>r.abort());
-    await offline.route('**/data/search-index.json*',r=>r.abort());
-    const fallback=await offline.newPage();
-    await fallback.goto(base+'#/docs/find?q=WAL暴涨');
-    await fallback.waitForFunction(()=>document.querySelector('.finder-status')?.textContent.includes('全文索引暂不可用'));
-    assert.equal(await fallback.locator('.finder-results a').first().getAttribute('href'),'#/docs/31');
-    await offline.unroute('**/data/search-index.json*');
-    await fallback.locator('.finder-retry').click();
-    await fallback.waitForFunction(()=>!document.querySelector('.finder-status')?.textContent.includes('索引'));
-    console.log('PASS: failed index falls back to metadata search; retry restores full text');
-    await offline.close();
-  } finally { await browser.close(); }
-})().catch(e=>{console.error(e);process.exitCode=1;});
+    console.log('PASS: native dialogs, global search shortcut, index failure fallback/retry; screenshots and measured local metrics saved');
+  }finally{await browser.close();}
+})().catch(error=>{console.error(error);process.exitCode=1;});

@@ -1,96 +1,31 @@
-<div class="home-hero">
-  <div class="home-hero__brand">
-    <img src="./images/logo.png" alt="PostgreSQL Howto 中文版 logo" width="96" height="74" loading="lazy">
-    <div>
-      <p class="home-hero__eyebrow">postgres-howto in chinese</p>
-      <h1>PostgreSQL Howto 中文版</h1>
-    </div>
-  </div>
-  <p class="home-hero__lead">面向 DBA、DBRE 和后端工程师的 PostgreSQL 工程实践知识库。</p>
-  <p class="home-hero__summary">从慢 SQL、锁等待到日常运维，按实际问题查找，也可以沿专题系统阅读。</p>
+<section class="home-hero" aria-labelledby="home-title">
+  <p class="home-hero__eyebrow">POSTGRESQL · 中文工程知识库</p>
+  <h1 id="home-title">PostgreSQL Howto</h1>
+  <p class="home-hero__lead">面向真实工程问题的 PostgreSQL 实践知识库。</p>
+  <p class="home-hero__summary">从慢 SQL、锁等待到索引、WAL 与复制，记录问题背后的机制，也整理可以动手验证的方法。</p>
+  <!-- HOME_STATS -->
+  <!-- HOME_DISCOVERY -->
+</section>
 
-<!-- HOME_DISCOVERY -->
+<section class="home-section" aria-labelledby="home-problems">
+  <div class="section-heading"><h2 id="home-problems">从一个问题开始</h2><a href="#/docs/find">全部文章 <span aria-hidden="true">→</span></a></div>
+  <!-- HOME_PROBLEMS -->
+</section>
 
-<div class="home-actions">
-  <a href="#/docs/topics" class="home-action home-action--primary" data-docs-route="/docs/topics">按专题阅读</a>
-  <a href="#/docs/paths" class="home-action home-action--accent" data-docs-route="/docs/paths">推荐路径</a>
-  <a href="#/docs/1" class="home-action" data-docs-route="/docs/1">从第 1 篇开始</a>
-  <a href="https://github.com/xiongcccc/postgres-howto" class="home-action" target="_blank" rel="noopener">GitHub</a>
-</div>
-</div>
+<section class="home-section" aria-labelledby="home-topics">
+  <div class="section-heading"><div><p class="section-eyebrow">EXPLORE</p><h2 id="home-topics">按专题探索</h2><p class="section-note">含跨专题收录</p></div><a href="#/docs/topics">专题索引 <span aria-hidden="true">→</span></a></div>
+  <!-- HOME_TOPICS -->
+</section>
 
-## 适合谁阅读
-
-<div class="feature-grid">
-  <section>
-    <h3>数据库工程师</h3>
-    <p>快速定位锁、复制、WAL、膨胀、统计信息和参数配置相关问题。</p>
-  </section>
-  <section>
-    <h3>后端工程师</h3>
-    <p>理解 SQL 执行计划、索引代价、事务行为和常见 schema 变更风险。</p>
-  </section>
-  <section>
-    <h3>学习 PostgreSQL 的同学</h3>
-    <p>从真实问题进入 PostgreSQL，而不是只停留在语法和概念层面。</p>
-  </section>
-</div>
+<section class="home-section" aria-labelledby="home-paths">
+  <div class="section-heading"><div><p class="section-eyebrow">LEARN</p><h2 id="home-paths">沿一条路径深入</h2></div><a href="#/docs/paths">学习路径 <span aria-hidden="true">→</span></a></div>
+  <!-- HOME_PATHS -->
+  <p class="home-secondary-links"><a href="#/docs/series">系列阅读</a><a href="#/docs/conferences">会议精选</a><a href="#/docs/find?type=blog">技术博客</a></p>
+</section>
 
 <!-- HOME_FEATURED -->
 
-## 项目来源
-
-除上游译文外，本站也持续整理个人实践、社区会议与优质技术博客。可以从[会议精选](/docs/conferences.md)或[技术博客](/docs/find.md?type=blog)回溯素材，文章同时归入对应技术专题。
-
-原项目由 [@NikolayS](https://twitter.com/samokhvalov) 于 2023-09-26 发起：
-
-> Postgres docs are awesome but often lack practical pieces of advice (howtos).
-
-原始仓库：[postgres-ai/postgresql-consulting/postgres-howtos](https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos)
-
-中文站点：[postgres-howto.cn](https://postgres-howto.cn/)
-
-阅读过程中如果发现错误、过期内容或更好的实践，欢迎通过 GitHub issue、邮件或微信反馈。觉得项目不错，也欢迎点个 Star。
-
-<section class="author-profile" aria-labelledby="about-author">
-  <header class="author-profile__intro">
-    <h2 id="about-author">Hi 👋, I'm xiongcc.</h2>
-    <p><strong>🐘 PostgreSQL · 🔬 Database Internals · ⚙️ AI Infrastructure</strong></p>
-    <p>I'm a PostgreSQL and Greenplum engineer, open-source enthusiast, and technical writer.<br>I focus on database internals, production practices, and data infrastructure in the AI era.</p>
-    <p class="author-profile__tagline">🧭 Exploring internals · 🧰 Building practical tools · ✍️ Writing field notes</p>
-    <p class="author-profile__links"><a href="https://xiongcc.cn">个人主页</a><a href="https://xiongcc.cn">PostgreSQL 学徒</a><a href="mailto:xiongcc_1994@126.com">Email</a><a href="https://github.com/xiongcccc">GitHub</a></p>
-  </header>
-  <h3>👋 About Me</h3>
-  <img class="author-profile__elephant" src="https://raw.githubusercontent.com/xiongcccc/xiongcccc/master/assets/pg-elephant.svg" width="88" height="88" alt="PostgreSQL elephant" loading="lazy">
-  <ul>
-    <li>PostgreSQL ACE / MVP and an active contributor to the Chinese PostgreSQL community</li>
-    <li>Chinese translator of PostgreSQL 14 Internals</li>
-    <li>Author of PostgreSQL DBA Daily</li>
-    <li>Founder and maintainer of PostgreSQL-focused open-source projects, including pg-mastery, pgcheck, and postgres-howto</li>
-    <li>Writer behind <strong>PostgreSQL 学徒</strong>, with 100+ technical articles</li>
-  </ul>
-  <h3>🧭 代表作品</h3>
-  <ul>
-    <li>📖 <a href="https://postgres-internals.cn/"><strong>《PostgreSQL 内参：深入解析运行原理》</strong></a><br>《PostgreSQL 14 Internals》中文版，系统梳理 PostgreSQL 的内部工作机制。</li>
-    <li>🧰 <a href="https://postgres-howto.cn/"><strong>PostgreSQL 中文 HowTo</strong></a><br>面向真实使用场景的 PostgreSQL 中文实践手册。</li>
-    <li>🗺️ <strong>PostgreSQL DBA Daily 5.0</strong><br>覆盖日常巡检、故障排查、性能优化与生产实践的知识图谱。</li>
-    <li>🎓 <a href="https://coding.imooc.com/class/1009.html"><strong>PostgreSQL 入门到进阶实战</strong></a><br>面向 AI 时代数据基础设施的 PostgreSQL 系统课程。</li>
-  </ul>
-  <h3>🛠️ 开源项目</h3>
-  <div class="table-scroll" tabindex="0" role="region" aria-label="开源项目，可横向滚动">
-    <table><thead><tr><th>项目</th><th>我想解决的问题</th></tr></thead><tbody>
-      <tr><td><a href="https://github.com/xiongcccc/pg-mastery">pg-mastery</a></td><td>把内核原理、DBA 实践、性能调优和生产案例整理成可检索的 PostgreSQL 知识库</td></tr>
-      <tr><td><a href="https://github.com/xiongcccc/pgcheck">pgcheck</a></td><td>为 DBA 与 SRE 提供轻量、直接的 PostgreSQL 健康检查工具</td></tr>
-      <tr><td><a href="https://github.com/xiongcccc/postgres-howto">postgres-howto</a></td><td>持续沉淀 PostgreSQL 中文 HowTo 与可复用实践</td></tr>
-      <tr><td><a href="https://github.com/xiongcccc/pg-slide-harvester">pg-slide-harvester</a></td><td>自动收集 PostgreSQL 大会演讲资料，建立本地可搜索的技术档案</td></tr>
-    </tbody></table>
-  </div>
+<section class="home-section home-about" aria-labelledby="about-author">
+  <div><p class="section-eyebrow">ABOUT THE PROJECT</p><h2 id="about-author">从 Howto 出发，持续积累</h2></div>
+  <div><p>项目起步于 Nikolay Samokhvalov 发起的 PostgreSQL Howtos 中文翻译，如今也收录工程实践、社区会议和技术博客解读。文章保留原始来源，经过验证的内容会附上实验记录。</p><p>由 <a href="https://xiongcc.cn/" target="_blank" rel="noopener">xiongcc</a> 维护，PostgreSQL / Greenplum 工程师、技术写作者。</p><p class="home-secondary-links"><a href="#/docs/about">关于项目与贡献</a><a href="https://github.com/xiongcccc/postgres-howto" target="_blank" rel="noopener">GitHub</a><a href="https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos" target="_blank" rel="noopener">上游项目</a></p></div>
 </section>
-
-## 交流群
-
-阅读过程中如果有什么问题，可以加群沟通。群聊二维码会不定期更新，如果过期，可以联系译者。
-
-<p class="wechat-group">
-  <img src="./images/wechatgroup.jpeg" alt="PostgreSQL 学徒交流群二维码" width="280" height="420" loading="lazy">
-</p>

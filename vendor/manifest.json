@@ -1,0 +1,92 @@
+[
+  {
+    "file": "docsify.min.js",
+    "source": "https://cdn.jsdelivr.net/npm/docsify@4.13.1/lib/docsify.min.js",
+    "bytes": 160920,
+    "sha256": "9123f808d3f6ad736b4a8f99944a611f87c5d4f9328030080a5c029ed5f450a5"
+  },
+  {
+    "file": "mermaid.min.js",
+    "source": "https://cdn.jsdelivr.net/npm/mermaid@10.9.3/dist/mermaid.min.js",
+    "bytes": 3336760,
+    "sha256": "5a8ec91820bd55afef049068489369910e5d6ce70c8103952f27e29d3e76e8bc"
+  },
+  {
+    "file": "docsify.LICENSE",
+    "source": "https://cdn.jsdelivr.net/npm/docsify@4.13.1/LICENSE",
+    "bytes": 1146,
+    "sha256": "65a671d4b5bda281aac624bc6901d8a8c494c15dc3e329760e8652aa0d76519a"
+  },
+  {
+    "file": "mermaid.LICENSE",
+    "source": "https://cdn.jsdelivr.net/npm/mermaid@10.9.3/LICENSE",
+    "bytes": 1089,
+    "sha256": "ec9fb67dcb25eccc416ed56e1aab819222c805a2a4bfe4cb19e7556bf2ffde80"
+  },
+  {
+    "file": "prism.LICENSE",
+    "source": "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/LICENSE",
+    "bytes": 1066,
+    "sha256": "2b947f0901a7ffcf08a89957da9783c0e9c6e72cb6ce8e959f501ab5409e4d2b"
+  },
+  {
+    "file": "prism-sql.min.js",
+    "source": "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-sql.min.js",
+    "bytes": 3261,
+    "sha256": "3fc5f8ce69950ec73adc972f061df42aaea78faa4864709134ea2adc083f3a33"
+  },
+  {
+    "file": "prism-bash.min.js",
+    "source": "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js",
+    "bytes": 6143,
+    "sha256": "6260814110e5182f2956e3bd257429548d9dbf2a9b66a63719b26cf9fac966a7"
+  },
+  {
+    "file": "prism-python.min.js",
+    "source": "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js",
+    "bytes": 2113,
+    "sha256": "ed4385685bcf2d4935c8dbbab4bde16603da1329e092d2bf36c3dadd67e9a85c"
+  },
+  {
+    "file": "prism-json.min.js",
+    "source": "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js",
+    "bytes": 449,
+    "sha256": "956d86baa5ae7ec4106758f354ac2d140bdcd7fc103dece02f73ed12b8d663e4"
+  },
+  {
+    "file": "prism-java.min.js",
+    "source": "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-java.min.js",
+    "bytes": 2770,
+    "sha256": "4c2dc81dfc9efa51e38a7573938065288c63c64850f01a32f8a7b20a3e24c5a7"
+  },
+  {
+    "file": "prism-ini.min.js",
+    "source": "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-ini.min.js",
+    "bytes": 607,
+    "sha256": "cf1b61f4a67f0101005c5133e22113e2f3a74f1c7917034e084df688f1735381"
+  },
+  {
+    "file": "prism-yaml.min.js",
+    "source": "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-yaml.min.js",
+    "bytes": 1970,
+    "sha256": "719c8e8b8c344dc9de510c729f65ba840b1502a0a8e7e25e2ad19ee715f65c02"
+  },
+  {
+    "file": "marked.cjs",
+    "source": "https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.cjs",
+    "bytes": 90465,
+    "sha256": "65f9884aa651d5a593962ce87d6919586c4e22ac5a6646067278cfb705d00e9e"
+  },
+  {
+    "file": "marked.LICENSE",
+    "source": "https://cdn.jsdelivr.net/npm/marked@12.0.2/LICENSE.md",
+    "bytes": 2942,
+    "sha256": "8e3a3f82f59a60958f56ca08f445647c32a4733dc7ca6c2c46f6eb898471ab9c"
+  },
+  {
+    "file": "prism-c.min.js",
+    "source": "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-c.min.js",
+    "bytes": 1893,
+    "sha256": "9e05cf21207bff46afbf80cb8f43bb58bc4a4a87b68f28bc0470342f69345209"
+  }
+]

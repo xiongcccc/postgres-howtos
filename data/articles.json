@@ -56,7 +56,9 @@
   ],
   "paths": [
     {
+      "id": "performance",
       "title": "性能优化路径",
+      "goal": "从执行计划与负载统计定位慢 SQL，建立可重复的诊断顺序。",
       "description": "适合正在处理慢 SQL、整体负载升高、索引效果不确定的场景。",
       "articles": [
         1,
@@ -69,7 +71,9 @@
       ]
     },
     {
+      "id": "operations",
       "title": "DBA 排障路径",
+      "goal": "区分启动、锁、WAL 与复制问题，逐步缩小生产故障范围。",
       "description": "适合生产环境值班、处理重启、WAL 增长、复制延迟和锁等待。",
       "articles": [
         2,
@@ -82,7 +86,9 @@
       ]
     },
     {
+      "id": "indexes",
       "title": "索引治理路径",
+      "goal": "从索引设计到维护与清理，判断哪些索引值得保留。",
       "description": "适合做索引评审、清理无效索引、降低写入和规划开销。",
       "articles": [
         18,
@@ -94,7 +100,9 @@
       ]
     },
     {
+      "id": "changes",
       "title": "在线变更路径",
+      "goal": "理解 DDL 的持锁过程，为数据回填与结构变更控制风险。",
       "description": "适合上线 schema 变更、避免锁等待扩大、降低 DDL 风险。",
       "articles": [
         99,
@@ -107,7 +115,9 @@
       ]
     },
     {
+      "id": "storage",
       "title": "存储与 Vacuum 路径",
+      "goal": "把行版本、清理和 WAL 联系起来，理解空间与事务年龄问题。",
       "description": "适合理解膨胀、XID 回卷、WAL、页面布局和 autovacuum 行为。",
       "articles": [
         4,
@@ -119,7 +129,9 @@
       ]
     },
     {
+      "id": "tools",
       "title": "日常工具路径",
+      "goal": "熟悉 psql、备份恢复与脚本工具，完善日常数据库操作。",
       "description": "适合补齐 psql、备份恢复、Docker、脚本化和日常操作手感。",
       "articles": [
         25,

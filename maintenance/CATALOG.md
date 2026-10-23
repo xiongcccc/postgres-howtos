@@ -22,7 +22,11 @@
 
 生成工具也会更新 `index.html` 中本地脚本和样式的内容哈希，避免发布后继续使用旧版资源。修改这些脚本或样式后也应重新运行生成工具。`index.html` 的其余配置仍可直接编辑。
 
-生成工具仅依赖 Node.js 标准库，网站访问不需要 Node.js 或额外服务。网站的全文索引在首次输入关键词时加载；失败时保留标题与别名搜索，显示重试入口。搜索内容不发送给外部搜索服务。
+生成工具使用 Node.js 与仓库内固定版本的 Marked 解析器，不需要 npm install。网站访问不需要 Node.js 或额外服务。网站的全文索引在首次输入关键词时加载；失败时保留标题与别名搜索，显示重试入口。搜索内容不发送给外部搜索服务。
+
+路径记录还需提供稳定的 `id` 和 `goal`；阅读顺序只引用真实文章 ID。首页各区块通过 home-template 中的具名 HOME 标记填充。关于项目文字位于 `maintenance/about-template.md`，生成 `docs/about.md`；`docs/not-found.md`、robots 和 sitemap 同样由生成器维护。
+
+`scripts/site.js` 管理主题、抽屉、对话框与剪贴板，`finder.js` 管理搜索状态，`reading.js` 管理文章导航、目录与元数据，`diagrams.js` 按需加载 Mermaid。基础版式在 custom.css，页面组件在 reading.css；修改后运行生成器更新内容哈希。
 
 ## 验证信息
 
@@ -32,9 +36,9 @@
 
 ## 发布验收
 
-推送前检查：根地址显示封面，`#/README` 直接显示首页内容；首页搜索、6 个问题入口、专题、系列、路径和会议页可用；元数据中的全部编号文档都能打开；系列与来源组合筛选、表格横向滚动、中文标题、目录定位、浏览器前进后退、移动端菜单和暗色模式正常。
+推送前检查：根地址、`#/` 与 `#/README` 均直接显示可搜索首页；旧封面文件保留，但不再增加一次进入步骤。首页搜索、6 个问题入口、专题、系列、路径和会议页可用；元数据中的全部编号文档都能打开；系列与来源组合筛选、表格横向滚动、中文标题、目录定位、浏览器前进后退、移动端菜单和暗色模式正常。
 
-可选浏览器回归：安装 Playwright 及 Chromium 后，执行 `node maintenance/test-site.cjs`。默认连接本机 4175 端口；可用 `HOWTO_URL` 指定预览地址，`PLAYWRIGHT_PACKAGE` 指定已有安装，`CHROME_PATH` 指定本机 Chrome 可执行文件。测试采用独立浏览器配置，并屏蔽统计与评论请求。
+可选浏览器回归：使用已有 Playwright 及 Chromium，执行 `node maintenance/test-site.cjs`。默认连接本机 4176 端口；可用 `HOWTO_URL` 指定预览地址，`PLAYWRIGHT_PACKAGE` 指定已有安装，`CHROME_PATH` 指定本机 Chrome 可执行文件。`HOWTO_SCREENSHOTS` 可指定截图输出位置。测试采用独立浏览器配置，并屏蔽统计请求；网页不再加载 Gitalk OAuth 脚本，历史讨论通过原 GitHub Issues 访问。
 
 提交后仍需待 GitHub Pages 完成部署，在实际域名复查首页、搜索索引版本与代表文章。静态检查通过不等于线上部署已完成；本地验收后不自动推送。
 # 收录日期

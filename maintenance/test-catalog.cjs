@@ -230,10 +230,60 @@ test('standby recovery interpretation includes reproducible physical replication
   }
   assert.doesNotMatch(fs.readFileSync(path.join(root,'docs/conferences.md'),'utf8'),/\/docs\/109(?:\.md|")/);
 });
-test('cover is scoped to root and local assets exist',()=>{
+test('root opens the searchable homepage and local assets exist',()=>{
   const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
-  assert.ok(html.includes("coverpage: { '/': '_coverpage.md' }"));
-  assert.ok(html.includes('onlyCover: false'));
+  assert.ok(html.includes('coverpage: false'));
+  assert.ok(html.includes("homepage: 'README.md'"));
+  assert.ok(!html.includes('clientSecret'));
   assert.ok(!html.includes('lib/plugins/search.min.js'));
   for(const m of html.matchAll(/(?:src|href)="\.\/([^"?]+)(?:\?[^" ]*)?"/g)) assert.ok(fs.existsSync(path.join(root,m[1])),m[1]);
+});
+test('catalog totals distinguish technical articles, editorial records and topic memberships',()=>{
+  const vm=require('node:vm');const context={window:{}};
+  vm.runInNewContext(fs.readFileSync(path.join(root,'scripts/catalog-data.js'),'utf8'),context);
+  const stats=context.window.HowtoCatalog.statistics;
+  assert.equal(stats.total,catalog.articles.length);
+  assert.equal(stats.technical,catalog.articles.filter(a=>a.type!=='editorial').length);
+  assert.equal(stats.editorial,catalog.articles.filter(a=>a.type==='editorial').length);
+  assert.equal(stats.topics,catalog.topics.length);
+  assert.equal(stats.technical+stats.editorial,stats.total);
+  const home=fs.readFileSync(path.join(root,'README.md'),'utf8');
+  assert.equal([...home.matchAll(/class="topic-card"/g)].length,catalog.topics.length);
+  assert.equal([...home.matchAll(/class="path-number"/g)].length,catalog.paths.length);
+  assert.match(home,new RegExp('<strong>'+stats.technical+'</strong> 篇技术文章'));
+  for(const p of catalog.paths){assert.ok(p.id&&p.goal);assert.ok(p.articles.every(id=>catalog.articles.some(a=>a.id===id)));}
+  assert.doesNotMatch(fs.readFileSync(path.join(root,'sitemap.xml'),'utf8'),/#/);
+});
+test('normalized excerpts and highlights use the same matching semantics',()=>{
+  const api=require('../scripts/search-core.js');
+  const text='排序内存：ＷＯＲＫ＿ＭＥＭ / work_mem / Work-Mem';
+  const ranges=api.ranges(text,'work mem');
+  assert.ok(ranges.length>=3);
+  assert.ok(api.snippet('无关内容'.repeat(80)+' pg_stat_statements 查询样例','pg stat statements').includes('pg_stat_statements'));
+  assert.equal(api.normalize('ＰＧ_ＳＴＡＴ-Statements'),'pgstatstatements');
+  assert.deepEqual(api.ranges('abc',''),[]);
+  assert.equal(api.snippet('', 'x'),'');
+  assert.ok(api.snippet('<script>alert(1)</script>','<script>').includes('<script>'));
+});
+test('vendored browser libraries are pinned and match recorded checksums',()=>{
+  const crypto=require('node:crypto');
+  const manifest=JSON.parse(fs.readFileSync(path.join(root,'vendor/manifest.json'),'utf8'));
+  assert.ok(manifest.length>=10);
+  for(const entry of manifest){
+    const data=fs.readFileSync(path.join(root,'vendor',entry.file));
+    assert.equal(crypto.createHash('sha256').update(data).digest('hex'),entry.sha256,entry.file);
+    assert.ok(!entry.source.includes('@latest'));
+  }
+});
+test('text and interactive colors retain AA contrast in both themes',()=>{
+  const css=fs.readFileSync(path.join(root,'styles/custom.css'),'utf8');
+  const blocks=[...css.matchAll(/:root(?:\[data-theme="dark"\])?\s*\{([^}]+)\}/g)].slice(0,2);
+  const luminance=hex=>{const rgb=hex.slice(1).match(/../g).map(v=>parseInt(v,16)/255).map(v=>v<=0.04045?v/12.92:((v+0.055)/1.055)**2.4);return rgb[0]*0.2126+rgb[1]*0.7152+rgb[2]*0.0722;};
+  for(const block of blocks){
+    const tokens=Object.fromEntries([...block[1].matchAll(/--([\w-]+):\s*(#[0-9a-f]{6})/g)].map(m=>[m[1],m[2]]));
+    for(const [text,bg] of [['ink','page'],['muted','page'],['brand','page'],['accent','page'],['code-ink','code']]){
+      const values=[luminance(tokens[text]),luminance(tokens[bg])].sort((a,b)=>b-a);
+      assert.ok((values[0]+.05)/(values[1]+.05)>=4.5,text+' on '+bg);
+    }
+  }
 });
