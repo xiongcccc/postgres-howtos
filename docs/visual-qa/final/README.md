@@ -35,3 +35,7 @@
 部分首页截图是全页长图，查看时应放大到实际像素。不要据缩略图判断字号或对比度。
 
 这些记录不代表 Google 实际收录、Lighthouse 分数、线上 CWV 或真机 Safari 已验收。详见 [审计报告](../../final-review.md) 和 [精修报告](../../final-polish-report.md)。
+
+## 发布后
+
+后续经用户授权，`36c598a` 已推送并完成 Pages 部署。发布后的实际域名结果单独保存于 `production/`，与上面的本地及修改前基线分开。结论见 [正式站验收](../../final-production-check.md)。

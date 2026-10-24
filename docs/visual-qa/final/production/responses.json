@@ -1,0 +1,55 @@
+{
+  "checkedAt": "2026-10-24T14:23:46.228Z",
+  "rows": [
+    {
+      "url": "https://postgres-howto.cn/topics/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "etag": "W/\"6adcbd4c-90df\"",
+      "title": "专题 | PostgreSQL Howto 中文版",
+      "canonical": [
+        "https://postgres-howto.cn/topics/"
+      ],
+      "main": 1,
+      "sha256": "115f115448671c6dc1c69f47812a8a83d79d406d2fb2f6193382be3d9cb52f51",
+      "matchesCommit": true
+    },
+    {
+      "url": "https://postgres-howto.cn/paths/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "etag": "W/\"6adcbd4c-6285\"",
+      "title": "学习路径 | PostgreSQL Howto 中文版",
+      "canonical": [
+        "https://postgres-howto.cn/paths/"
+      ],
+      "main": 1,
+      "sha256": "94c615144dd86b6367a2b44cc0955d14510672a729a856f577deb1cf990ab11c",
+      "matchesCommit": true
+    },
+    {
+      "url": "https://postgres-howto.cn/articles/105/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "etag": "W/\"6adcbd4c-e32c\"",
+      "title": "深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复 | PostgreSQL Howto 中文版",
+      "canonical": [
+        "https://postgres-howto.cn/articles/105/"
+      ],
+      "main": 1,
+      "sha256": "611dddaa4b2e7287f801d439317cc2465578be135b00ddb32a6eed63dee7a0ca",
+      "matchesCommit": true
+    },
+    {
+      "url": "https://postgres-howto.cn/articles/99999/",
+      "status": 404,
+      "contentType": "text/html; charset=utf-8",
+      "etag": "W/\"6abcf5c5-24a3\"",
+      "title": "Page not found · GitHub Pages",
+      "canonical": [],
+      "main": 0,
+      "sha256": "b620507312c5e97566a3c6cfaf99144fefc18a0da7d941401dfa0f5f58fb0368",
+      "matchesCommit": null
+    }
+  ]
+}

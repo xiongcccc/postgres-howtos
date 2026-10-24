@@ -1,6 +1,8 @@
 # 发布后深度精修报告
 
-日期：2026-10-24。工作分支：`codex/site-redesign`。基线及 `origin/master`：`eb067abd83f9b5f5efc25865c6618b4b9a98d3f5`。本轮修改尚未提交、推送或部署。
+日期：2026-10-24。工作分支：`codex/site-redesign`。基线及 `origin/master`：`eb067abd83f9b5f5efc25865c6618b4b9a98d3f5`。下文保留发布前的本地精修与验收记录。
+
+发布补充：后续经用户授权，实现提交 `36c598a` 已推送并完成 Pages 部署。本报告保留本地精修阶段记录，发布后实际域名检查另见 [正式站验收](final-production-check.md)。
 
 ## 本次实际改动
 
@@ -125,7 +127,7 @@ parse5 不进入浏览器下载，不需要网站运行服务或 npm install。�
 - [ ] Google/Bing 实际收录、搜索引擎选择的 canonical：未验证。
 - [ ] 物理手机 Safari/微信浏览器、Android/Windows 字体：未验证。
 - [ ] Lighthouse 分数及线上真实用户 CWV：未验证。
-- [ ] 新版生产部署后验收：未执行，本轮没有发布授权。
+- [x] 后续经用户授权完成发布，正式域名验收单独存档于 [正式站验收](final-production-check.md)。
 
 ## 本地预览
 

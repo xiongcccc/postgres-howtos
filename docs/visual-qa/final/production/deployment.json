@@ -1,0 +1,52 @@
+{
+  "sha": "36c598aaf8a7cca594b9efe8b073da08a0c6e2cf",
+  "records": [
+    {
+      "checkedAt": "2026-10-24T14:14:47.381Z",
+      "runs": [
+        {
+          "id": 40101565802,
+          "name": "pages build and deployment",
+          "sha": "36c598aaf8a7cca594b9efe8b073da08a0c6e2cf",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/xiongcccc/postgres-howtos/actions/runs/40101565802"
+        },
+        {
+          "id": 40101565784,
+          "name": "Validate article catalog",
+          "sha": "36c598aaf8a7cca594b9efe8b073da08a0c6e2cf",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/xiongcccc/postgres-howtos/actions/runs/40101565784"
+        }
+      ],
+      "files": [
+        {
+          "file": "index.html",
+          "status": 200,
+          "sha256": "23b4f6dcdf4487ae02c606e081861fb142b35b8b463e543af8157e2f7107c74e",
+          "matchesLocal": true
+        },
+        {
+          "file": "topics/index.html",
+          "status": 200,
+          "sha256": "115f115448671c6dc1c69f47812a8a83d79d406d2fb2f6193382be3d9cb52f51",
+          "matchesLocal": true
+        },
+        {
+          "file": "paths/index.html",
+          "status": 200,
+          "sha256": "94c615144dd86b6367a2b44cc0955d14510672a729a856f577deb1cf990ab11c",
+          "matchesLocal": true
+        },
+        {
+          "file": "data/search-index.json",
+          "status": 200,
+          "sha256": "7fd6be642d0ad938b4baeb582f2f5f664e6b9df9402e70ac077f02a3f8332ba4",
+          "matchesLocal": true
+        }
+      ]
+    }
+  ]
+}

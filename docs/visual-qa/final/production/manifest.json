@@ -1,0 +1,182 @@
+{
+  "base": "https://postgres-howto.cn/",
+  "implementationCommit": "36c598aaf8a7cca594b9efe8b073da08a0c6e2cf",
+  "phase": "post-deployment public domain verification",
+  "browser": "independent Chrome; mobile viewport and touch emulation, analytics blocked",
+  "files": [
+    {
+      "file": "deployment.json",
+      "source": "/tmp/howto-final-release/deployment.json",
+      "bytes": 1626,
+      "sha256": "4eaebaa80975a436d4c9b08a077503e2bf4c00684caaa62a4c952f600e33e9d1"
+    },
+    {
+      "file": "version.json",
+      "source": "/tmp/howto-final-release/v2.2-final/version.json",
+      "bytes": 26057,
+      "sha256": "0b9f2e9f8fca57a07f217b36ee1c900591bed042289b30a9ba98a2a9914d3454"
+    },
+    {
+      "file": "matrix.json",
+      "source": "/tmp/howto-final-release/v2.2-final/matrix.json",
+      "bytes": 233784,
+      "sha256": "37132efb8bc6daaafb0d654dda9582adea855f53ae3dc08955a22fab9ee519e7"
+    },
+    {
+      "file": "home-1440x900-light.png",
+      "source": "/tmp/howto-final-release/v2.2-final/home-1440x900-light.png",
+      "bytes": 349069,
+      "sha256": "ff7f031acb7c774ed575e2db9976d241ba8d581ea05423cdc44445d067e98f8b"
+    },
+    {
+      "file": "home-1440x900-dark.png",
+      "source": "/tmp/howto-final-release/v2.2-final/home-1440x900-dark.png",
+      "bytes": 349948,
+      "sha256": "f31bf09212f37217cdd6d39e23a5b3d229011b3eb0b961a0349a8a73b087d315"
+    },
+    {
+      "file": "home-390x844-dark.png",
+      "source": "/tmp/howto-final-release/v2.2-final/home-390x844-dark.png",
+      "bytes": 317772,
+      "sha256": "94880fba8d4265fe61dce29530e5c20afa988d41007e81a87ea27dbb50ef9a4b"
+    },
+    {
+      "file": "static-topics-1440x900-light.png",
+      "source": "/tmp/howto-final-release/v2.2-final/static-topics-1440x900-light.png",
+      "bytes": 164171,
+      "sha256": "0a88df17b99da9cd24a5ecccfec7f42fa8ae4564c10fed3df187ad340e3c33fd"
+    },
+    {
+      "file": "static-topics-390x844-dark.png",
+      "source": "/tmp/howto-final-release/v2.2-final/static-topics-390x844-dark.png",
+      "bytes": 70338,
+      "sha256": "705f6f11860c0052946558d2054bd8b05689034dae18c309eedb6d9f22ee01d4"
+    },
+    {
+      "file": "static-paths-1440x900-light.png",
+      "source": "/tmp/howto-final-release/v2.2-final/static-paths-1440x900-light.png",
+      "bytes": 155530,
+      "sha256": "44e1e707079c459589766fc0f12ff03ce785786110dfa5ac8224c06e55fa2447"
+    },
+    {
+      "file": "static-paths-390x844-dark.png",
+      "source": "/tmp/howto-final-release/v2.2-final/static-paths-390x844-dark.png",
+      "bytes": 70893,
+      "sha256": "e25ea447635be765a3531398908ec43ea25f5bbac49c7ced492fe207c7688ac3"
+    },
+    {
+      "file": "search-1440x900-light.png",
+      "source": "/tmp/howto-final-release/v2.2-final/search-1440x900-light.png",
+      "bytes": 545726,
+      "sha256": "bbcf6214745fd797afda903ca05c1b052150ec55bb1b48981c0ddf772ebde971"
+    },
+    {
+      "file": "search-390x844-dark.png",
+      "source": "/tmp/howto-final-release/v2.2-final/search-390x844-dark.png",
+      "bytes": 470041,
+      "sha256": "8c626c864c021e9ee17d9d3fd554919d3813bef5edb8681df85c7cb0d39f3ad8"
+    },
+    {
+      "file": "locks-1440x900-light.png",
+      "source": "/tmp/howto-final-release/v2.2-final/locks-1440x900-light.png",
+      "bytes": 206990,
+      "sha256": "71b751496675634b133983d651e5c742c8744ab237b67c9ef88e69526e1b7273"
+    },
+    {
+      "file": "long-390x844-dark.png",
+      "source": "/tmp/howto-final-release/v2.2-final/long-390x844-dark.png",
+      "bytes": 96958,
+      "sha256": "9b9606270392d143f068afd5f440d27fe0bea9f0978f1b54122e4cd858af925b"
+    },
+    {
+      "file": "static-1440x900-dark.png",
+      "source": "/tmp/howto-final-release/v2.2-final/static-1440x900-dark.png",
+      "bytes": 276368,
+      "sha256": "458d93265eee39199f3dad0dbf669e798b7309185c4634b0c109ed52c28f2875"
+    },
+    {
+      "file": "sql-1440x900-light.png",
+      "source": "/tmp/howto-final-release/v2.2-final/sql-1440x900-light.png",
+      "bytes": 170528,
+      "sha256": "7574923f2e53491af8a90c48d80603989c8bd9b26073a28b9ce42896d858ebc7"
+    },
+    {
+      "file": "table-390x844-dark.png",
+      "source": "/tmp/howto-final-release/v2.2-final/table-390x844-dark.png",
+      "bytes": 75623,
+      "sha256": "7f705100854d753a8d8269e6949bd0aceff5ef971f49bfd1f20f763bb854a91a"
+    },
+    {
+      "file": "anchor-refresh-390x844-dark.png",
+      "source": "/tmp/howto-final-release/v2.2-final/anchor-refresh-390x844-dark.png",
+      "bytes": 122630,
+      "sha256": "908206d9a4a7e516f25c6f76daa8d6c62741eb8ca8276ca83d17f0d02c212a98"
+    },
+    {
+      "file": "focused.json",
+      "source": "/tmp/howto-final-release/final/focused.json",
+      "bytes": 8208,
+      "sha256": "cc7f4af3bcd5e50e259af60c92fa1596a1591dac428d5a9bbd3c6e00a79e97f0"
+    },
+    {
+      "file": "no-js-home-1440.png",
+      "source": "/tmp/howto-final-release/final/no-js-home-1440.png",
+      "bytes": 314350,
+      "sha256": "bb59fd3e51479d87cce35367851ec0decd7ec6786ad505d433326a3ea201b1b3"
+    },
+    {
+      "file": "no-js-home-390.png",
+      "source": "/tmp/howto-final-release/final/no-js-home-390.png",
+      "bytes": 70459,
+      "sha256": "23236c73c49bc70d3abdd658594ebe4709e5b7a8eaabfa7e42d4e0c0d7d78fae"
+    },
+    {
+      "file": "no-js-topics-390.png",
+      "source": "/tmp/howto-final-release/final/no-js-topics-390.png",
+      "bytes": 69358,
+      "sha256": "55d84b94b442720a8e45a20adbc7c5a8e1dec1141aa7d84dfe7f2b84fb5c6949"
+    },
+    {
+      "file": "no-js-paths-390.png",
+      "source": "/tmp/howto-final-release/final/no-js-paths-390.png",
+      "bytes": 70090,
+      "sha256": "89298ee5414b2341304e8cf01496043b89ebab5e05d0226254375a6d604ef168"
+    },
+    {
+      "file": "v2.2-final.log",
+      "source": "/tmp/howto-final-release/v2.2-final.log",
+      "bytes": 405,
+      "sha256": "c9bef8e0d7d26e5c18b2de7e743fc483f8456eda5236898f9161cefb501ba9c6"
+    },
+    {
+      "file": "final.log",
+      "source": "/tmp/howto-final-release/final.log",
+      "bytes": 136,
+      "sha256": "69c706cb4e627ab9e075ad1b1e93bb6989afbe9d4a20f8708976b108ea2fd793"
+    },
+    {
+      "file": "results.json",
+      "source": "/tmp/howto-final-release/results.json",
+      "bytes": 549,
+      "sha256": "fb941825c24ef796a9b701ac32ce64cad811a8431629c1acee85071cabdf308a"
+    },
+    {
+      "file": "site-metrics.json",
+      "source": "/tmp/howto-final-release/site/metrics.json",
+      "bytes": 2285,
+      "sha256": "b07739ca3a3bf7f16cc315aaa0a8e35939748a5f482e46bffa032375cf166b7e"
+    },
+    {
+      "file": "site.log",
+      "source": "/tmp/howto-final-release/site.log",
+      "bytes": 553,
+      "sha256": "4ae2a18a199a8ebf3b13c74ca66d11f49961b2c8ed67bb01c5554946d68ddf6c"
+    },
+    {
+      "file": "responses.json",
+      "source": "/tmp/howto-final-release/responses.json",
+      "bytes": 1807,
+      "sha256": "c1f559d7c43d3a28c425370c141e3dfde4ca434a31ead05205e9fcfa95b6c792"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "sha": "36c598aaf8a7cca594b9efe8b073da08a0c6e2cf",
+  "base": "https://postgres-howto.cn/",
+  "cases": [
+    {
+      "suite": "v2.2-final",
+      "start": "2026-10-24T14:15:40.800Z",
+      "finish": "2026-10-24T14:21:03.898Z",
+      "exitCode": 0
+    },
+    {
+      "suite": "final",
+      "start": "2026-10-24T14:21:03.898Z",
+      "finish": "2026-10-24T14:21:38.210Z",
+      "exitCode": 0
+    },
+    {
+      "suite": "site",
+      "start": "2026-10-24T14:21:38.210Z",
+      "finish": "2026-10-24T14:22:21.037Z",
+      "exitCode": 0
+    }
+  ]
+}
