@@ -1,0 +1,182 @@
+{
+  "phase": "after",
+  "base": "http://127.0.0.1:4176/",
+  "viewports": [
+    1440,
+    1280,
+    1024,
+    768,
+    390,
+    360
+  ],
+  "themes": [
+    {
+      "mode": "light",
+      "decorativeArrows": 0
+    },
+    {
+      "mode": "dark",
+      "decorativeArrows": 0
+    }
+  ],
+  "logo": [
+    {
+      "deviceScaleFactor": 1,
+      "pixels": [
+        {
+          "size": 16,
+          "source": "http://127.0.0.1:4176/images/brand/symbol.svg",
+          "occupied": 71,
+          "total": 256
+        },
+        {
+          "size": 24,
+          "source": "http://127.0.0.1:4176/images/brand/symbol.svg",
+          "occupied": 172,
+          "total": 576
+        },
+        {
+          "size": 32,
+          "source": "http://127.0.0.1:4176/images/brand/symbol.svg",
+          "occupied": 338,
+          "total": 1024
+        },
+        {
+          "size": 48,
+          "source": "http://127.0.0.1:4176/images/brand/symbol.svg",
+          "occupied": 721,
+          "total": 2304
+        },
+        {
+          "size": 64,
+          "source": "http://127.0.0.1:4176/images/brand/symbol.svg",
+          "occupied": 1356,
+          "total": 4096
+        },
+        {
+          "size": 16,
+          "source": "http://127.0.0.1:4176/images/brand/symbol-dark.svg",
+          "occupied": 71,
+          "total": 256
+        },
+        {
+          "size": 24,
+          "source": "http://127.0.0.1:4176/images/brand/symbol-dark.svg",
+          "occupied": 172,
+          "total": 576
+        },
+        {
+          "size": 32,
+          "source": "http://127.0.0.1:4176/images/brand/symbol-dark.svg",
+          "occupied": 338,
+          "total": 1024
+        },
+        {
+          "size": 48,
+          "source": "http://127.0.0.1:4176/images/brand/symbol-dark.svg",
+          "occupied": 721,
+          "total": 2304
+        },
+        {
+          "size": 64,
+          "source": "http://127.0.0.1:4176/images/brand/symbol-dark.svg",
+          "occupied": 1356,
+          "total": 4096
+        }
+      ]
+    },
+    {
+      "deviceScaleFactor": 2,
+      "pixels": [
+        {
+          "size": 16,
+          "source": "http://127.0.0.1:4176/images/brand/symbol.svg",
+          "occupied": 71,
+          "total": 256
+        },
+        {
+          "size": 24,
+          "source": "http://127.0.0.1:4176/images/brand/symbol.svg",
+          "occupied": 172,
+          "total": 576
+        },
+        {
+          "size": 32,
+          "source": "http://127.0.0.1:4176/images/brand/symbol.svg",
+          "occupied": 338,
+          "total": 1024
+        },
+        {
+          "size": 48,
+          "source": "http://127.0.0.1:4176/images/brand/symbol.svg",
+          "occupied": 721,
+          "total": 2304
+        },
+        {
+          "size": 64,
+          "source": "http://127.0.0.1:4176/images/brand/symbol.svg",
+          "occupied": 1356,
+          "total": 4096
+        },
+        {
+          "size": 16,
+          "source": "http://127.0.0.1:4176/images/brand/symbol-dark.svg",
+          "occupied": 71,
+          "total": 256
+        },
+        {
+          "size": 24,
+          "source": "http://127.0.0.1:4176/images/brand/symbol-dark.svg",
+          "occupied": 172,
+          "total": 576
+        },
+        {
+          "size": 32,
+          "source": "http://127.0.0.1:4176/images/brand/symbol-dark.svg",
+          "occupied": 338,
+          "total": 1024
+        },
+        {
+          "size": 48,
+          "source": "http://127.0.0.1:4176/images/brand/symbol-dark.svg",
+          "occupied": 721,
+          "total": 2304
+        },
+        {
+          "size": 64,
+          "source": "http://127.0.0.1:4176/images/brand/symbol-dark.svg",
+          "occupied": 1356,
+          "total": 4096
+        }
+      ]
+    }
+  ],
+  "codeFonts": [
+    {
+      "mode": "light",
+      "fonts": [
+        {
+          "familyName": "Menlo",
+          "postScriptName": "Menlo-Regular",
+          "isCustomFont": false,
+          "glyphCount": 35
+        }
+      ]
+    },
+    {
+      "mode": "dark",
+      "fonts": [
+        {
+          "familyName": "Menlo",
+          "postScriptName": "Menlo-Regular",
+          "isCustomFont": false,
+          "glyphCount": 35
+        }
+      ]
+    }
+  ],
+  "reducedMotion": {
+    "anchorAndRefresh": true,
+    "javascriptTweenCalls": 0
+  }
+}

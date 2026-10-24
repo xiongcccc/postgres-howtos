@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">PostgreSQL Howto 中文版</title>
+  <desc id="desc">面向真实工程问题的 PostgreSQL 实践知识库。</desc>
+  <rect width="1200" height="630" fill="#ffffff"/>
+  <path transform="translate(78 92) scale(2.5)" fill="#21476b" d="M4 5h7v9h10V5h3l4 4v18h-7v-9H11v9H4Z"/>
+  <g font-family="Inter,Noto Sans SC,PingFang SC,Arial,sans-serif">
+    <text x="88" y="306" fill="#262b33" font-size="66" font-weight="600">PostgreSQL Howto</text>
+    <text x="88" y="376" fill="#616b78" font-size="28">面向真实工程问题的 PostgreSQL 实践知识库。</text>
+    <text x="88" y="538" fill="#226b70" font-size="23">postgres-howto.cn</text>
+  </g>
+  <path d="M88 480H1112" stroke="#e3e6e9"/>
+</svg>

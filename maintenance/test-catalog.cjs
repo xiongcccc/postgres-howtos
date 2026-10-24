@@ -250,7 +250,7 @@ test('catalog totals distinguish technical articles, editorial records and topic
   assert.equal(stats.technical+stats.editorial,stats.total);
   const home=fs.readFileSync(path.join(root,'docs/home.md'),'utf8');
   assert.equal([...home.matchAll(/class="topic-card"/g)].length,catalog.topics.length);
-  assert.equal([...home.matchAll(/class="path-number"/g)].length,catalog.paths.length);
+  assert.equal([...home.matchAll(/class="path-copy"/g)].length,catalog.paths.length);
   assert.equal(stats.paths,catalog.paths.length);
   assert.match(home,new RegExp('<strong>'+catalog.paths.length+'</strong> 条学习路径'));
   assert.match(home,new RegExp('<strong>'+stats.technical+'</strong> 篇技术文章'));
@@ -342,4 +342,37 @@ test('text and interactive colors retain AA contrast in both themes',()=>{
       assert.ok((values[0]+.05)/(values[1]+.05)>=4.5,text+' on '+bg);
     }
   }
+});
+test('brand SVGs and raster exports share one original symbol',()=>{
+  const crypto=require('node:crypto');
+  const directory=path.join(root,'images/brand');
+  const symbol=fs.readFileSync(path.join(directory,'symbol.svg'),'utf8').match(/<path[^>]* d="([^"]+)"/)[1];
+  for(const name of ['symbol.svg','symbol-dark.svg','favicon.svg','logo.svg','logo-dark.svg','social.svg']){
+    const svg=fs.readFileSync(path.join(directory,name),'utf8');
+    assert.match(svg,/viewBox="0 0 \d+ \d+"/);
+    assert.ok(svg.includes('d="'+symbol+'"'),name+' must use the same core geometry');
+    assert.doesNotMatch(svg,/<image|data:image|@font-face|https?:\/\/(?!www\.w3\.org)/);
+  }
+  const hash=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
+  for(const item of JSON.parse(fs.readFileSync(path.join(directory,'raster-manifest.json'),'utf8')).assets){
+    const bytes=fs.readFileSync(path.join(directory,item.output));
+    assert.equal(hash(bytes),item.sha256,item.output);
+    assert.equal(hash(fs.readFileSync(path.join(directory,item.source))),item.sourceSha256,item.source);
+    assert.equal(bytes.readUInt32BE(16),item.width);assert.equal(bytes.readUInt32BE(20),item.height);
+  }
+});
+test('ordinary homepage links are quiet, while real navigation states remain explicit',()=>{
+  const home=fs.readFileSync(path.join(root,'docs/home.md'),'utf8');
+  assert.doesNotMatch(home,/icon-arrow|[→↗]|class="(?:section-eyebrow|topic-index|path-number)"/);
+  const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
+  assert.doesNotMatch(index,/images\/(?:favicon|logo)\.png|icon-arrow-up-right/);
+  assert.match(index,/images\/brand\/favicon\.svg\?v=[a-f0-9]+/);
+  for(const file of ['index.html','articles/1/index.html','articles/index.html']){
+    const html=fs.readFileSync(path.join(root,file),'utf8');
+    assert.match(html,/class="brand-light"/);assert.match(html,/class="brand-dark"/);
+    assert.match(html,/og:image:width" content="1200"/);
+  }
+  const footer=require('../scripts/article-view.js').footer(catalog,catalog.articles.find(a=>a.id===5),id=>'#/docs/'+id);
+  assert.match(footer,/rel="prev"/);assert.match(footer,/rel="next"/);
+  assert.match(footer,/icon-arrow-left/);assert.match(footer,/icon-arrow-right/);
 });

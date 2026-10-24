@@ -1,0 +1,29 @@
+{
+  "renderer": "Independent Chrome via Playwright; rerun when source SVGs change",
+  "assets": [
+    {
+      "source": "symbol.svg",
+      "output": "favicon-32.png",
+      "width": 32,
+      "height": 32,
+      "sourceSha256": "2e286b3c74e47be80bcd9bdc9bd1d94f119d75e8e5d96fc1cc6d8b6e535a63b5",
+      "sha256": "71e3e852dec3854533d32c511864110298422f51f79f65d2741fbfb8ff0ef851"
+    },
+    {
+      "source": "symbol.svg",
+      "output": "touch-180.png",
+      "width": 180,
+      "height": 180,
+      "sourceSha256": "2e286b3c74e47be80bcd9bdc9bd1d94f119d75e8e5d96fc1cc6d8b6e535a63b5",
+      "sha256": "c1cd2d1a7eb1274937c31962513292f143d2c1d62fede48d987eb009a174c8c2"
+    },
+    {
+      "source": "social.svg",
+      "output": "social.png",
+      "width": 1200,
+      "height": 630,
+      "sourceSha256": "7ebf91cb4bced5591dc321c3b3917dd69be3fb677226b19baa99504c489a1eb7",
+      "sha256": "13a2415c3863121940e6349451ce56f0e2b57683e2aae456075884ecb7490aff"
+    }
+  ]
+}

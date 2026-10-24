@@ -11,8 +11,13 @@
   <meta property="og:description" content="{{DESCRIPTION}}">
   <meta property="og:url" content="{{CANONICAL}}">
   <meta property="og:type" content="{{OG_TYPE}}">
-  <meta property="og:image" content="https://postgres-howto.cn/images/logo.png">
-  <link rel="icon" href="/images/favicon.png" type="image/png">
+  <meta property="og:image" content="{{SOCIAL_IMAGE}}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="PostgreSQL Howto 中文版">
+  <link rel="icon" href="{{FAVICON_PNG}}" sizes="32x32" type="image/png">
+  <link rel="icon" href="{{FAVICON_SVG}}" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="{{TOUCH_ICON}}" sizes="180x180">
   <script>(function(){var m='auto';try{m=localStorage.getItem('howto-theme')||'auto';}catch(_){}var d=m==='dark'||(m==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light';document.documentElement.style.colorScheme=d?'dark':'light';})();</script>
   <link rel="stylesheet" href="{{BASE_CSS}}">
   <link rel="stylesheet" href="{{READING_CSS}}">
@@ -22,8 +27,8 @@
   <a class="skip-link" href="#main" data-skip>跳至正文</a>
   <header class="site-header">
     <button id="sidebar-toggle" class="icon-button mobile-menu js-only" type="button" aria-label="打开导航" aria-controls="site-sidebar" aria-expanded="false" title="打开导航"><span class="icon icon-menu" aria-hidden="true"></span></button>
-    <a class="site-brand" href="/"><img src="/images/favicon.png" width="36" height="36" alt=""><span>PostgreSQL <strong>Howto</strong><small>中文版</small></span></a>
-    <nav class="app-nav" aria-label="主导航"><a href="/">首页</a><a href="/#/docs/topics">专题</a><a href="/#/docs/paths">学习路径</a><a href="/articles/">全部文章</a><a href="https://github.com/xiongcccc/postgres-howto" target="_blank" rel="noopener">GitHub<span class="icon icon-arrow-up-right" aria-hidden="true"></span></a></nav>
+    <a class="site-brand" href="/" aria-label="PostgreSQL Howto 中文版首页"><span class="brand-icon" aria-hidden="true"><img class="brand-light" src="{{SYMBOL_LIGHT}}" width="32" height="32" alt=""><img class="brand-dark" src="{{SYMBOL_DARK}}" width="32" height="32" alt=""></span><span class="brand-wordmark">PostgreSQL <strong>Howto</strong><small>中文版</small></span></a>
+    <nav class="app-nav" aria-label="主导航"><a href="/">首页</a><a href="/#/docs/topics">专题</a><a href="/#/docs/paths">学习路径</a><a href="/articles/">全部文章</a><a href="https://github.com/xiongcccc/postgres-howto" target="_blank" rel="noopener">GitHub</a></nav>
     <div class="header-tools js-only"><button class="icon-button" type="button" data-open-search aria-label="搜索文章" aria-keyshortcuts="Control+K Meta+K" title="搜索文章 (Ctrl / Cmd + K)"><span class="icon icon-search" aria-hidden="true"></span></button><button class="icon-button theme-toggle" aria-label="切换阅读主题" title="切换阅读主题"><span class="icon icon-monitor" aria-hidden="true"></span></button></div>
   </header>
   <button class="sidebar-backdrop" type="button" aria-label="关闭导航" tabindex="-1" hidden></button>

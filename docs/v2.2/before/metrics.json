@@ -1,0 +1,154 @@
+{
+  "phase": "before",
+  "base": "http://127.0.0.1:4176/",
+  "viewports": [
+    1440,
+    1280,
+    1024,
+    768,
+    390,
+    360
+  ],
+  "themes": [
+    {
+      "mode": "light",
+      "decorativeArrows": 26
+    },
+    {
+      "mode": "dark",
+      "decorativeArrows": 26
+    }
+  ],
+  "logo": [
+    {
+      "deviceScaleFactor": 1,
+      "pixels": [
+        {
+          "size": 16,
+          "source": "http://127.0.0.1:4176/images/favicon.png",
+          "occupied": 256,
+          "total": 256
+        },
+        {
+          "size": 24,
+          "source": "http://127.0.0.1:4176/images/favicon.png",
+          "occupied": 576,
+          "total": 576
+        },
+        {
+          "size": 32,
+          "source": "http://127.0.0.1:4176/images/favicon.png",
+          "occupied": 1024,
+          "total": 1024
+        },
+        {
+          "size": 48,
+          "source": "http://127.0.0.1:4176/images/favicon.png",
+          "occupied": 2304,
+          "total": 2304
+        },
+        {
+          "size": 64,
+          "source": "http://127.0.0.1:4176/images/favicon.png",
+          "occupied": 4096,
+          "total": 4096
+        },
+        {
+          "size": 16,
+          "source": "http://127.0.0.1:4176/images/favicon.png",
+          "occupied": 256,
+          "total": 256
+        },
+        {
+          "size": 24,
+          "source": "http://127.0.0.1:4176/images/favicon.png",
+          "occupied": 576,
+          "total": 576
+        },
+        {
+          "size": 32,
+          "source": "http://127.0.0.1:4176/images/favicon.png",
+          "occupied": 1024,
+          "total": 1024
+        },
+        {
+          "size": 48,
+          "source": "http://127.0.0.1:4176/images/favicon.png",
+          "occupied": 2304,
+          "total": 2304
+        },
+        {
+          "size": 64,
+          "source": "http://127.0.0.1:4176/images/favicon.png",
+          "occupied": 4096,
+          "total": 4096
+        }
+      ]
+    },
+    {
+      "deviceScaleFactor": 2,
+      "pixels": [
+        {
+          "size": 16,
+          "source": "http://127.0.0.1:4176/images/favicon.png",
+          "occupied": 256,
+          "total": 256
+        },
+        {
+          "size": 24,
+          "source": "http://127.0.0.1:4176/images/favicon.png",
+          "occupied": 576,
+          "total": 576
+        },
+        {
+          "size": 32,
+          "source": "http://127.0.0.1:4176/images/favicon.png",
+          "occupied": 1024,
+          "total": 1024
+        },
+        {
+          "size": 48,
+          "source": "http://127.0.0.1:4176/images/favicon.png",
+          "occupied": 2304,
+          "total": 2304
+        },
+        {
+          "size": 64,
+          "source": "http://127.0.0.1:4176/images/favicon.png",
+          "occupied": 4096,
+          "total": 4096
+        },
+        {
+          "size": 16,
+          "source": "http://127.0.0.1:4176/images/favicon.png",
+          "occupied": 256,
+          "total": 256
+        },
+        {
+          "size": 24,
+          "source": "http://127.0.0.1:4176/images/favicon.png",
+          "occupied": 576,
+          "total": 576
+        },
+        {
+          "size": 32,
+          "source": "http://127.0.0.1:4176/images/favicon.png",
+          "occupied": 1024,
+          "total": 1024
+        },
+        {
+          "size": 48,
+          "source": "http://127.0.0.1:4176/images/favicon.png",
+          "occupied": 2304,
+          "total": 2304
+        },
+        {
+          "size": 64,
+          "source": "http://127.0.0.1:4176/images/favicon.png",
+          "occupied": 4096,
+          "total": 4096
+        }
+      ]
+    }
+  ]
+}

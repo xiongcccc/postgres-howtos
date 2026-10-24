@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 316 48" role="img" aria-labelledby="title">
+  <title id="title">PostgreSQL Howto</title>
+  <path fill="#b6d6ee" transform="translate(0 8)" d="M4 5h7v9h10V5h3l4 4v18h-7v-9H11v9H4Z"/>
+  <text x="45" y="32" fill="#e8ebee" font-family="Inter,Arial,sans-serif" font-size="25" font-weight="600">PostgreSQL Howto</text>
+</svg>

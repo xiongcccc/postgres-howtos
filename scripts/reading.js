@@ -152,6 +152,15 @@
   }
   if(staticArticle){enhance();return;}
   window.$docsify.plugins=(window.$docsify.plugins||[]).concat(function(hook,vm){
+    var resetEvents=vm.$resetEvents;
+    vm.$resetEvents=function(type){
+      var query=this.route.query,id=query.id;
+      if(!matchMedia('(prefers-reduced-motion: reduce)').matches||!id||type==='history')return resetEvents.apply(this,arguments);
+      // Docsify 4.13.1 otherwise always starts a 500ms JavaScript anchor tween.
+      query.id=null;
+      try{resetEvents.apply(this,arguments);}finally{query.id=id;}
+      restoreAnchor();
+    };
     hook.beforeEach(function(content){syncPage();toc=null;tocHeadings=[];return content;});
     hook.doneEach(function(){
       enhance();

@@ -35,6 +35,8 @@ export function staticPages(catalog, read, outputs) {
       BODY_CLASS:a?'reading-article':'reading-home',ARTICLE_ATTRIBUTE:a?`data-static-article="${a.id}"`:'',BODY:body,SIDEBAR:sidebar(a),
       OG_TYPE:a?'article':'website',
       BASE_CSS:asset('styles/custom.css'),READING_CSS:asset('styles/reading.css'),
+      SYMBOL_LIGHT:asset('images/brand/symbol.svg'),SYMBOL_DARK:asset('images/brand/symbol-dark.svg'),
+      FAVICON_PNG:asset('images/brand/favicon-32.png'),FAVICON_SVG:asset('images/brand/favicon.svg'),TOUCH_ICON:asset('images/brand/touch-180.png'),SOCIAL_IMAGE:origin+asset('images/brand/social.png'),
       SCHEMA:a?'<script id="article-schema" type="application/ld+json">'+JSON.stringify(view.schema(a)).replaceAll('<','\\u003c')+'</script>':'',
       SCRIPTS:(a?scripts:['scripts/site.js']).map(file=>`<script src="${asset(file)}" defer></script>`).join('\n')};
     return template.replace(/\{\{([A-Z_]+)\}\}/g,(_,key)=>{if(!(key in replacements))throw new Error('Unknown static template field '+key);return replacements[key];});

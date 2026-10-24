@@ -52,6 +52,10 @@ Sitemap 不填 fragment 地址，也不编造 lastmod。独立入口、可抓取
 
 V2.1 专项运行 `node maintenance/test-v2.1.cjs`：新增无 JavaScript 的全部静态文章、逐块代码保真、目录跨断点/刷新、九组检索、静态 URL、真实二维码图片加载和本地性能记录。环境变量与旧回归相同，默认截图输出 `docs/v2.1/after`。这些脚本不替代真机 Safari 与真实网络测试。
 
+V2.2 视觉回归运行 `node maintenance/test-v2.2.cjs`，默认输出 `docs/v2.2/after`；`HOWTO_PHASE=before` 可记录修改前基线。它覆盖六种宽度、两种主题、页头对齐、装饰箭头数量、16–64px 的 1x/2x 符号截图和像素检查，以及 reduced motion 下的旧文章锚点与刷新。品牌资源位于 `images/brand`；修改 SVG 后先用 `node maintenance/render-brand.cjs` 导出 favicon、Apple 图标和社交预览，再运行目录构建。两条命令使用相同的 Playwright / Chrome 环境变量，不引入网站运行时依赖。
+
+Docsify 4.13.1 的旧 Hash 锚点会自行启动 500ms JavaScript 动画；阅读插件在 reduced motion 下保留原事件重置流程，仅跳过该动画，改用原生即时定位。默认模式不变，后续升级框架须同时回归两种行为。
+
 提交后仍需待 GitHub Pages 完成部署，在实际域名复查首页、搜索索引版本与代表文章。静态检查通过不等于线上部署已完成；本地验收后不自动推送。
 # 收录日期
 
