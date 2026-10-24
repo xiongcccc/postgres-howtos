@@ -1,0 +1,33 @@
+{
+  "base": "https://postgres-howto.cn/",
+  "commit": "7ea9ced46cc1b8de8b219a7bfbb6237ced97aeff",
+  "checkedAt": "2026-10-24T07:37:22.160Z",
+  "cases": [
+    {
+      "width": 1440,
+      "requests": [
+        {
+          "url": "https://postgres-howto.cn/_sidebar.md",
+          "status": 200
+        },
+        {
+          "url": "https://postgres-howto.cn/_sidebar.md?q=work_mem",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "requests": [
+        {
+          "url": "https://postgres-howto.cn/_sidebar.md",
+          "status": 200
+        },
+        {
+          "url": "https://postgres-howto.cn/_sidebar.md?q=work_mem",
+          "status": 200
+        }
+      ]
+    }
+  ]
+}

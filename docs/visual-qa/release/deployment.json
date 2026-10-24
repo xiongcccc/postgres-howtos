@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-10-24T07:34:48.826Z",
+  "base": "https://postgres-howto.cn/",
+  "commit": "7ea9ced46cc1b8de8b219a7bfbb6237ced97aeff",
+  "files": [
+    {
+      "file": "index.html",
+      "status": 200,
+      "sha256": "1daab06a0afe6b967d37c70305475717ed900835c9769b9b6afd5faf394e1c09",
+      "matchesLocal": true,
+      "etag": "W/\"6adc5f96-1d75\"",
+      "lastModified": "Sat, 24 Oct 2026 07:34:46 GMT"
+    },
+    {
+      "file": "scripts/reading.js",
+      "status": 200,
+      "sha256": "2bf8ff8f831421a255a66f3b0491cc7c3b6a83ca843a54e7b81bdbf77fd28fa5",
+      "matchesLocal": true,
+      "etag": "W/\"6adc5f96-3c86\"",
+      "lastModified": "Sat, 24 Oct 2026 07:34:46 GMT"
+    },
+    {
+      "file": "scripts/diagrams.js",
+      "status": 200,
+      "sha256": "b6991107c7eeb48dc336f9756d962122760ffaaaa94dffea9a85d8a6529280fd",
+      "matchesLocal": true,
+      "etag": "W/\"6adc5f96-8e9\"",
+      "lastModified": "Sat, 24 Oct 2026 07:34:46 GMT"
+    },
+    {
+      "file": "articles/105/index.html",
+      "status": 200,
+      "sha256": "7f644ff56e7e61152546e98af3f7b7848e5d32eed8f5a40234550c92b55fee2f",
+      "matchesLocal": true,
+      "etag": "W/\"6adc5f96-e341\"",
+      "lastModified": "Sat, 24 Oct 2026 07:34:46 GMT"
+    }
+  ]
+}

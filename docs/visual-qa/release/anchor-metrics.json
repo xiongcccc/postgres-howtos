@@ -1,0 +1,151 @@
+{
+  "base": "https://postgres-howto.cn/",
+  "browser": "155.0.8059.86",
+  "cases": [
+    {
+      "width": 1440,
+      "kind": "legacy",
+      "reduced": false,
+      "interrupt": false,
+      "before": 88.453125,
+      "after": 87.578125,
+      "restoresAfterInput": 1
+    },
+    {
+      "width": 1440,
+      "kind": "legacy",
+      "reduced": false,
+      "interrupt": true,
+      "before": 88.453125,
+      "after": -311.421875,
+      "restoresAfterInput": 0
+    },
+    {
+      "width": 1440,
+      "kind": "legacy",
+      "reduced": true,
+      "interrupt": false,
+      "before": 88.453125,
+      "after": 87.578125,
+      "restoresAfterInput": 1
+    },
+    {
+      "width": 1440,
+      "kind": "legacy",
+      "reduced": true,
+      "interrupt": true,
+      "before": 88.453125,
+      "after": -311.421875,
+      "restoresAfterInput": 0
+    },
+    {
+      "width": 1440,
+      "kind": "static",
+      "reduced": false,
+      "interrupt": false,
+      "before": 88.453125,
+      "after": 87.578125,
+      "restoresAfterInput": 1
+    },
+    {
+      "width": 1440,
+      "kind": "static",
+      "reduced": false,
+      "interrupt": true,
+      "before": 88.453125,
+      "after": -311.421875,
+      "restoresAfterInput": 0
+    },
+    {
+      "width": 1440,
+      "kind": "static",
+      "reduced": true,
+      "interrupt": false,
+      "before": 88.453125,
+      "after": 87.578125,
+      "restoresAfterInput": 1
+    },
+    {
+      "width": 1440,
+      "kind": "static",
+      "reduced": true,
+      "interrupt": true,
+      "before": 88.453125,
+      "after": -311.421875,
+      "restoresAfterInput": 0
+    },
+    {
+      "width": 390,
+      "kind": "legacy",
+      "reduced": false,
+      "interrupt": false,
+      "before": 87.5625,
+      "after": 87.5,
+      "restoresAfterInput": 1
+    },
+    {
+      "width": 390,
+      "kind": "legacy",
+      "reduced": false,
+      "interrupt": true,
+      "before": 87.5625,
+      "after": -312.5,
+      "restoresAfterInput": 0
+    },
+    {
+      "width": 390,
+      "kind": "legacy",
+      "reduced": true,
+      "interrupt": false,
+      "before": 87.5625,
+      "after": 87.5,
+      "restoresAfterInput": 1
+    },
+    {
+      "width": 390,
+      "kind": "legacy",
+      "reduced": true,
+      "interrupt": true,
+      "before": 87.5625,
+      "after": -312.5,
+      "restoresAfterInput": 0
+    },
+    {
+      "width": 390,
+      "kind": "static",
+      "reduced": false,
+      "interrupt": false,
+      "before": 87.5625,
+      "after": 87.5,
+      "restoresAfterInput": 1
+    },
+    {
+      "width": 390,
+      "kind": "static",
+      "reduced": false,
+      "interrupt": true,
+      "before": 87.5625,
+      "after": -312.5,
+      "restoresAfterInput": 0
+    },
+    {
+      "width": 390,
+      "kind": "static",
+      "reduced": true,
+      "interrupt": false,
+      "before": 87.5625,
+      "after": 87.5,
+      "restoresAfterInput": 1
+    },
+    {
+      "width": 390,
+      "kind": "static",
+      "reduced": true,
+      "interrupt": true,
+      "before": 87.5625,
+      "after": -312.5,
+      "restoresAfterInput": 0
+    }
+  ],
+  "errors": []
+}
