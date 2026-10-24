@@ -33,6 +33,7 @@
     document.getElementById('sidebar-toggle').setAttribute('aria-label', '打开导航');
     document.querySelector('.content')?.removeAttribute('inert');
     document.querySelector('.site-footer')?.removeAttribute('inert');
+    document.querySelector('.site-header')?.removeAttribute('inert');
     var sidebar = document.querySelector('.sidebar');
     if (sidebar) { sidebar.inert = compact.matches; sidebar.removeAttribute('aria-modal'); sidebar.setAttribute('role', 'navigation'); }
     if (restore && menuFocus?.isConnected) menuFocus.focus();
@@ -47,6 +48,7 @@
     document.getElementById('sidebar-toggle').setAttribute('aria-label', '关闭导航');
     document.querySelector('.content')?.setAttribute('inert', '');
     document.querySelector('.site-footer')?.setAttribute('inert', '');
+    document.querySelector('.site-header')?.setAttribute('inert', '');
     sidebar.inert = false;
     sidebar.setAttribute('role', 'dialog');
     sidebar.setAttribute('aria-modal', 'true');
@@ -56,6 +58,7 @@
     closeNavigation(false);
     var input = document.querySelector('#article-query');
     if (input) { input.focus(); input.select(); input.scrollIntoView({block: 'center'}); }
+    else if(document.body.hasAttribute('data-static-page'))location.href='/#/docs/find?focus=search';
     else { pendingSearch = true; location.hash = '/docs/find'; }
   }
   function finishNavigation() {
@@ -115,11 +118,15 @@
       var href = target.getAttribute('href') || '';
       var match = href.match(/^\/?(?:\.\/)?(README|docs\/[\w-]+|maintenance\/[\w-]+)\.md(\?[^#]*)?$/);
       var route = target.dataset.docsRoute || (match ? '/' + match[1] + (match[2] || '') : '');
-      if (route) { event.preventDefault(); location.hash = route; }
+      if (route) { event.preventDefault(); if(document.body.hasAttribute('data-static-page'))location.href='/#'+route;else location.hash = route; }
     }
   });
   document.addEventListener('keydown', function (event) {
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k' && !document.querySelector('dialog[open]')) { event.preventDefault(); search(); }
+    if(event.key==='Escape'&&!document.querySelector('dialog[open]')){
+      var settings=document.querySelector('.reading-settings[open]');
+      if(settings){settings.open=false;settings.querySelector('summary').focus();event.preventDefault();}
+    }
     if (!document.body.classList.contains('nav-open')) return;
     if (event.key === 'Escape') { event.preventDefault(); closeNavigation(true); }
     if (event.key === 'Tab') {
@@ -151,6 +158,7 @@
   document.documentElement.style.setProperty('--reading-size', Math.min(20, Math.max(14, Number(getSaved('howto-font', '16')) || 16)) + 'px');
   var status = document.createElement('span'); status.id = 'copy-status'; status.className = 'sr-only'; status.setAttribute('role', 'status'); document.body.append(status);
   applyTheme();
+  document.documentElement.classList.add('has-js');
   window.HowtoUI = {icon: icon, finishNavigation: finishNavigation};
   // Statistics are non-blocking and never add fixed UI over the article.
   setTimeout(function () {

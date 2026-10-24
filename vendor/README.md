@@ -3,9 +3,9 @@
 这些文件是开源上游发布的原始文件，不作手工修改。`manifest.json` 记录精确来源、体积和 SHA-256，目录测试会验证文件完整性。
 
 - Docsify 4.13.1：现有 Hash 路由与 Markdown 阅读框架。
-- Prism 1.29.0 组件：复用 Docsify 提供的 Prism 核心，补充 SQL、Shell、Python、JSON、Java、C、INI 与 YAML。
+- Prism 1.29.0 组件：旧路由复用 Docsify 提供的核心，补充 SQL、Shell、Python、JSON、Java、C、INI 与 YAML。静态构建使用同版本独立 core + clike，浏览器无需再次下载高亮引擎。
 - Mermaid 10.9.3：仅含图表的文章按需加载，不参与首页首屏。
-- Marked 12.0.2：仅构建目录时使用 lexer，生成纯文本全文索引；不会作为额外浏览器依赖加载。
+- Marked 12.0.2：构建纯文本全文索引与独立静态文章；不会作为额外浏览器依赖加载。
 
 相应许可证与原始文件一并保留。图标使用 `images/icons` 内的 Lucide 0.468.0 子集与许可证。
 

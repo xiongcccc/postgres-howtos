@@ -1,0 +1,262 @@
+{
+  "base": "http://127.0.0.1:4176/",
+  "articles": 109,
+  "viewports": [
+    1440,
+    1280,
+    1024,
+    768,
+    390,
+    360
+  ],
+  "staticCodeBlocks": 650,
+  "search": [
+    {
+      "query": "work_mem",
+      "id": 92,
+      "milliseconds": 145
+    },
+    {
+      "query": "pg_stat_statements",
+      "id": 5,
+      "milliseconds": 148
+    },
+    {
+      "query": "EXPLAIN BUFFERS",
+      "id": 1,
+      "milliseconds": 154
+    },
+    {
+      "query": "autovacuum",
+      "id": 102,
+      "milliseconds": 147
+    },
+    {
+      "query": "xmin",
+      "id": 45,
+      "milliseconds": 140
+    },
+    {
+      "query": "replication lag",
+      "id": 93,
+      "milliseconds": 142
+    },
+    {
+      "query": "锁等待",
+      "id": 42,
+      "milliseconds": 149
+    },
+    {
+      "query": "索引膨胀",
+      "id": 46,
+      "milliseconds": 133
+    },
+    {
+      "query": "WAL",
+      "id": 31,
+      "milliseconds": 150
+    }
+  ],
+  "lab": [
+    {
+      "path": "/",
+      "lcp": 108,
+      "cls": 1.131812037037037,
+      "resources": [
+        {
+          "path": "/styles/custom.css",
+          "bytes": 17592
+        },
+        {
+          "path": "/styles/reading.css",
+          "bytes": 14096
+        },
+        {
+          "path": "/images/favicon.png",
+          "bytes": 7936
+        },
+        {
+          "path": "/scripts/search-core.js",
+          "bytes": 3049
+        },
+        {
+          "path": "/scripts/catalog-data.js",
+          "bytes": 80896
+        },
+        {
+          "path": "/scripts/site.js",
+          "bytes": 11825
+        },
+        {
+          "path": "/scripts/article-view.js",
+          "bytes": 4170
+        },
+        {
+          "path": "/scripts/finder.js",
+          "bytes": 9465
+        },
+        {
+          "path": "/scripts/diagrams.js",
+          "bytes": 2274
+        },
+        {
+          "path": "/scripts/comments.js",
+          "bytes": 1088
+        },
+        {
+          "path": "/scripts/reading.js",
+          "bytes": 13992
+        },
+        {
+          "path": "/vendor/docsify.min.js",
+          "bytes": 160920
+        },
+        {
+          "path": "/vendor/prism-sql.min.js",
+          "bytes": 3261
+        },
+        {
+          "path": "/vendor/prism-python.min.js",
+          "bytes": 2113
+        },
+        {
+          "path": "/vendor/prism-json.min.js",
+          "bytes": 449
+        },
+        {
+          "path": "/vendor/prism-java.min.js",
+          "bytes": 2770
+        },
+        {
+          "path": "/vendor/prism-bash.min.js",
+          "bytes": 6143
+        },
+        {
+          "path": "/vendor/prism-c.min.js",
+          "bytes": 1893
+        },
+        {
+          "path": "/vendor/prism-ini.min.js",
+          "bytes": 607
+        },
+        {
+          "path": "/vendor/prism-yaml.min.js",
+          "bytes": 1970
+        },
+        {
+          "path": "/images/icons/arrow-up-right.svg",
+          "bytes": 260
+        },
+        {
+          "path": "/images/icons/search.svg",
+          "bytes": 273
+        },
+        {
+          "path": "/images/icons/monitor.svg",
+          "bytes": 346
+        },
+        {
+          "path": "/docs/home.md",
+          "bytes": 11208
+        },
+        {
+          "path": "/_sidebar.md",
+          "bytes": 6806
+        },
+        {
+          "path": "/images/icons/sliders-horizontal.svg",
+          "bytes": 583
+        },
+        {
+          "path": "/images/favicon.png",
+          "bytes": 7936
+        },
+        {
+          "path": "/images/favicon.png",
+          "bytes": 7936
+        }
+      ],
+      "conditions": "Local Chrome 1440x1000, no throttling, independent profile, 1s after content, analytics blocked; not field CWV"
+    },
+    {
+      "path": "/articles/105/",
+      "lcp": 92,
+      "cls": 0.0120852237654321,
+      "resources": [
+        {
+          "path": "/styles/custom.css",
+          "bytes": 17592
+        },
+        {
+          "path": "/styles/reading.css",
+          "bytes": 14096
+        },
+        {
+          "path": "/images/favicon.png",
+          "bytes": 7936
+        },
+        {
+          "path": "/scripts/catalog-data.js",
+          "bytes": 80896
+        },
+        {
+          "path": "/scripts/article-view.js",
+          "bytes": 4170
+        },
+        {
+          "path": "/scripts/site.js",
+          "bytes": 11825
+        },
+        {
+          "path": "/scripts/diagrams.js",
+          "bytes": 2274
+        },
+        {
+          "path": "/scripts/reading.js",
+          "bytes": 13992
+        },
+        {
+          "path": "/images/icons/arrow-up-right.svg",
+          "bytes": 260
+        },
+        {
+          "path": "/images/icons/chevron-down.svg",
+          "bytes": 236
+        },
+        {
+          "path": "/images/icons/search.svg",
+          "bytes": 273
+        },
+        {
+          "path": "/images/icons/monitor.svg",
+          "bytes": 346
+        },
+        {
+          "path": "/images/icons/copy.svg",
+          "bytes": 339
+        },
+        {
+          "path": "/images/icons/sliders-horizontal.svg",
+          "bytes": 583
+        },
+        {
+          "path": "/vendor/mermaid.min.js",
+          "bytes": 3336760
+        },
+        {
+          "path": "/images/favicon.png",
+          "bytes": 7936
+        }
+      ],
+      "conditions": "Local Chrome 1440x1000, no throttling, independent profile, 1s after content, analytics blocked; not field CWV"
+    }
+  ],
+  "communityModal": {
+    "width": 1050,
+    "height": 1602
+  },
+  "imageModal": {
+    "width": 828,
+    "height": 1124
+  }
+}

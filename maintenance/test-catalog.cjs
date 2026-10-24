@@ -78,7 +78,7 @@ test('collation interpretation is discoverable and has verification evidence',()
   }
 });
 test('generated internal article links exist and titles come from metadata',()=>{
-  const files=['README.md','_sidebar.md','docs/topics.md','docs/paths.md','docs/conferences.md','docs/series.md','docs/101.md','docs/102.md','docs/103.md','docs/104.md','docs/105.md','docs/106.md','docs/107.md','docs/108.md','docs/109.md'];
+  const files=['README.md','docs/home.md','_sidebar.md','docs/topics.md','docs/paths.md','docs/conferences.md','docs/series.md','docs/101.md','docs/102.md','docs/103.md','docs/104.md','docs/105.md','docs/106.md','docs/107.md','docs/108.md','docs/109.md'];
   const map=new Map(catalog.articles.map(a=>[a.id,a]));
   for(const file of files){
     const text=fs.readFileSync(path.join(root,file),'utf8');
@@ -116,7 +116,7 @@ test('logical replication interpretation is discoverable and has verification ev
   assert.equal([...article.matchAll(/```mermaid\n/g)].length,1);
   assert.doesNotMatch(article.split('## 参考资料')[0],/https:\/\/www\.postgresql\.org/);
   assert.doesNotMatch(article,/先把.+说具体|材料没有提供可供复现|反人类|反直觉|讲者/);
-  for(const file of ['README.md','docs/conferences.md','docs/topics.md']) {
+  for(const file of ['docs/home.md','docs/conferences.md','docs/topics.md']) {
     assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/105(?:\.md|")/);
   }
 });
@@ -138,7 +138,7 @@ test('PG19 preview is discoverable and distinguishes documentation checks from e
   assert.match(article,/REPACK \(CONCURRENTLY\)/);
   assert.doesNotMatch(article.split('## 参考资料')[0],/https:\/\/www\.postgresql\.org/);
   assert.doesNotMatch(article,/先把.+说具体|材料没有提供可供复现|反人类|反直觉|讲者/);
-  for(const file of ['README.md','docs/series.md','docs/conferences.md','docs/topics.md']) {
+  for(const file of ['docs/home.md','docs/series.md','docs/conferences.md','docs/topics.md']) {
     assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/106(?:\.md|")/);
   }
 });
@@ -163,7 +163,7 @@ test('technical blog interpretation has its own source filter and verification e
   assert.equal([...article.matchAll(/<!-- result:([a-z-]+) -->\s*```text\n/g)].length,8);
   assert.equal([...article.matchAll(/```mermaid\n/g)].length,1);
   assert.doesNotMatch(article.split('## 参考资料')[0],/https:\/\/www\.postgresql\.org/);
-  for(const file of ['README.md','docs/series.md','docs/topics.md']) {
+  for(const file of ['docs/home.md','docs/series.md','docs/topics.md']) {
     assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/107(?:\.md|")/);
   }
   assert.doesNotMatch(fs.readFileSync(path.join(root,'docs/conferences.md'),'utf8'),/\/docs\/107(?:\.md|")/);
@@ -193,7 +193,7 @@ test('query memory interpretation includes bounded experiments and accurate fail
   assert.match(article,/53400/);
   assert.doesNotMatch(article.split('## 参考资料')[0],/https:\/\/www\.postgresql\.org/);
   assert.doesNotMatch(article,/先把.+说具体|材料没有提供可供复现|反人类|反直觉|讲者/);
-  for(const file of ['README.md','docs/series.md','docs/topics.md']) {
+  for(const file of ['docs/home.md','docs/series.md','docs/topics.md']) {
     assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/108(?:\.md|")/);
   }
   assert.doesNotMatch(fs.readFileSync(path.join(root,'docs/conferences.md'),'utf8'),/\/docs\/108(?:\.md|")/);
@@ -225,7 +225,7 @@ test('standby recovery interpretation includes reproducible physical replication
   assert.match(article,/预算.*硬上限|参数.*硬上限/);
   assert.doesNotMatch(article.split('## 参考资料')[0],/https:\/\/www\.postgresql\.org/);
   assert.doesNotMatch(article,/先把.+说具体|材料没有提供可供复现|反人类|反直觉|讲者/);
-  for(const file of ['README.md','docs/series.md','docs/topics.md']) {
+  for(const file of ['docs/home.md','docs/series.md','docs/topics.md']) {
     assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/109(?:\.md|")/);
   }
   assert.doesNotMatch(fs.readFileSync(path.join(root,'docs/conferences.md'),'utf8'),/\/docs\/109(?:\.md|")/);
@@ -233,7 +233,8 @@ test('standby recovery interpretation includes reproducible physical replication
 test('root opens the searchable homepage and local assets exist',()=>{
   const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
   assert.ok(html.includes('coverpage: false'));
-  assert.ok(html.includes("homepage: 'README.md'"));
+  assert.ok(html.includes("homepage: 'docs/home.md'"));
+  assert.ok(html.includes("'/README"));
   assert.ok(!html.includes('clientSecret'));
   assert.ok(!html.includes('lib/plugins/search.min.js'));
   for(const m of html.matchAll(/(?:src|href)="\.\/([^"?]+)(?:\?[^" ]*)?"/g)) assert.ok(fs.existsSync(path.join(root,m[1])),m[1]);
@@ -247,9 +248,11 @@ test('catalog totals distinguish technical articles, editorial records and topic
   assert.equal(stats.editorial,catalog.articles.filter(a=>a.type==='editorial').length);
   assert.equal(stats.topics,catalog.topics.length);
   assert.equal(stats.technical+stats.editorial,stats.total);
-  const home=fs.readFileSync(path.join(root,'README.md'),'utf8');
+  const home=fs.readFileSync(path.join(root,'docs/home.md'),'utf8');
   assert.equal([...home.matchAll(/class="topic-card"/g)].length,catalog.topics.length);
   assert.equal([...home.matchAll(/class="path-number"/g)].length,catalog.paths.length);
+  assert.equal(stats.paths,catalog.paths.length);
+  assert.match(home,new RegExp('<strong>'+catalog.paths.length+'</strong> 条学习路径'));
   assert.match(home,new RegExp('<strong>'+stats.technical+'</strong> 篇技术文章'));
   for(const p of catalog.paths){assert.ok(p.id&&p.goal);assert.ok(p.articles.every(id=>catalog.articles.some(a=>a.id===id)));}
   assert.doesNotMatch(fs.readFileSync(path.join(root,'sitemap.xml'),'utf8'),/#/);
@@ -264,6 +267,59 @@ test('normalized excerpts and highlights use the same matching semantics',()=>{
   assert.deepEqual(api.ranges('abc',''),[]);
   assert.equal(api.snippet('', 'x'),'');
   assert.ok(api.snippet('<script>alert(1)</script>','<script>').includes('<script>'));
+});
+test('all static articles have initial content and canonical metadata without fragment URLs',()=>{
+  const view=require('../scripts/article-view.js');
+  const sitemap=fs.readFileSync(path.join(root,'sitemap.xml'),'utf8');
+  const locations=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);
+  assert.equal(locations.length,catalog.articles.length+2);
+  assert.equal(new Set(locations).size,locations.length);
+  for(const a of catalog.articles){
+    const html=fs.readFileSync(path.join(root,'articles',String(a.id),'index.html'),'utf8');
+    assert.ok(locations.includes(view.canonical(a.id)));
+    assert.ok(html.includes('<link rel="canonical" href="'+view.canonical(a.id)+'">'));
+    assert.match(html,/<article id="main"[^>]*>[\s\S]+<\/article>/);
+    assert.ok(html.includes(view.escape(a.title)));
+    assert.equal([...html.matchAll(/<h1(?:\s[^>]*)?>/g)].length,1);
+    const schema=JSON.parse(html.match(/<script id="article-schema" type="application\/ld\+json">([^]*?)<\/script>/)[1]);
+    assert.equal(schema.headline,a.title);assert.equal(schema.citation,a.source.url);
+    assert.equal(schema.url,view.canonical(a.id));
+    for(const m of html.matchAll(/href="\/articles\/(\d+)\//g))assert.ok(catalog.articles.some(a=>a.id===Number(m[1])));
+    for(const m of html.matchAll(/href="\/articles\/(\d+)\/#([^"]+)"/g)){
+      const target=fs.readFileSync(path.join(root,'articles',m[1],'index.html'),'utf8');
+      assert.ok(target.includes('id="'+view.escape(decodeURIComponent(m[2]))+'"'),a.id+': cross-article anchor '+m[0]);
+    }
+    assert.doesNotMatch(html,/<script[^>]+src="[^">]*docsify/);
+    assert.doesNotMatch(html,/href="\/docs\/\d+\.md/);
+  }
+});
+test('static directory discovers every document and README is separate from the website homepage',()=>{
+  const directory=fs.readFileSync(path.join(root,'articles/index.html'),'utf8');
+  for(const a of catalog.articles)assert.ok(directory.includes('href="/articles/'+a.id+'/"'));
+  const readme=fs.readFileSync(path.join(root,'README.md'),'utf8');
+  assert.ok(readme.length<6000);assert.doesNotMatch(readme,/class="home-/);
+  assert.match(readme,/来源与致谢/);assert.match(readme,/贡献与反馈/);
+  const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
+  assert.ok(html.includes('href="/articles/"'));
+  assert.doesNotMatch(html,/<link rel="canonical"/,'Hash views must not inherit a hardcoded homepage canonical');
+});
+test('search quality matrix and topic count semantics are derived from actual metadata',()=>{
+  for(const [query,id] of [['work_mem',92],['pg_stat_statements',5],['EXPLAIN BUFFERS',1],['autovacuum',102],['xmin',45],['replication lag',93],['锁等待',42],['索引膨胀',46],['WAL',31]])assert.ok(find(query).includes(id),query);
+  const topics=fs.readFileSync(path.join(root,'docs/topics.md'),'utf8');
+  for(const t of catalog.topics){
+    const all=catalog.articles.filter(a=>a.topics.includes(t.id)).length,primary=catalog.articles.filter(a=>a.topics[0]===t.id).length;
+    assert.match(topics,new RegExp('收录 '+all+' 篇 · 主归属 '+primary+' 篇'));
+    assert.equal(find('',{topic:t.id}).length,all);
+  }
+  for(const p of catalog.paths)assert.equal(new Set(p.articles).size,p.articles.length);
+});
+test('code language aliases and execution plans preserve their display semantics',()=>{
+  const view=require('../scripts/article-view.js');
+  assert.equal(view.codeInfo('SQL','select 1').language,'sql');
+  assert.equal(view.codeInfo('shell','echo hello').language,'bash');
+  assert.equal(view.codeInfo('conf','shared_buffers=128MB').language,'ini');
+  assert.equal(view.codeInfo('sql','QUERY PLAN\nSeq Scan (cost=0.00..5.00)').kind,'plan');
+  assert.equal(view.codeInfo('sql','test=# select 1;').kind,'terminal');
 });
 test('vendored browser libraries are pinned and match recorded checksums',()=>{
   const crypto=require('node:crypto');

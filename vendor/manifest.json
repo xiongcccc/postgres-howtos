@@ -1,5 +1,17 @@
 [
   {
+    "file": "prism-clike.min.js",
+    "source": "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-clike.min.js",
+    "bytes": 708,
+    "sha256": "c76ba4e240932bdc75546be30e550f5ba5e13815ff71511c76e9e27ac3072444"
+  },
+  {
+    "file": "prism-core.min.js",
+    "source": "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js",
+    "bytes": 7422,
+    "sha256": "e2624d4f66cc5f171cd460896b106630f7666a1e638b42dd9ddefd0ca7758683"
+  },
+  {
     "file": "docsify.min.js",
     "source": "https://cdn.jsdelivr.net/npm/docsify@4.13.1/lib/docsify.min.js",
     "bytes": 160920,

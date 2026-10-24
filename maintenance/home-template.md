@@ -13,7 +13,7 @@
 </section>
 
 <section class="home-section" aria-labelledby="home-topics">
-  <div class="section-heading"><div><p class="section-eyebrow">EXPLORE</p><h2 id="home-topics">按专题探索</h2><p class="section-note">含跨专题收录</p></div><a href="#/docs/topics">专题索引 <span aria-hidden="true">→</span></a></div>
+  <div class="section-heading"><div><p class="section-eyebrow">EXPLORE</p><h2 id="home-topics">按专题探索</h2><p class="section-note">含跨专题收录</p></div><a href="#/docs/topics">全部专题 <span aria-hidden="true">→</span></a></div>
   <!-- HOME_TOPICS -->
 </section>
 

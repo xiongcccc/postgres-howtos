@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PostgreSQL 性能排查：规划开销、分区锁与表膨胀 | PostgreSQL Howto 中文版</title>
+  <meta name="description" content="PostgreSQL 性能排查：规划开销、分区锁与表膨胀。原理说明以 PostgreSQL 18 为准；补充实验使用 PostgreSQL 18.4。">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="canonical" href="https://postgres-howto.cn/articles/101/">
+  <meta property="og:title" content="PostgreSQL 性能排查：规划开销、分区锁与表膨胀 | PostgreSQL Howto 中文版">
+  <meta property="og:description" content="PostgreSQL 性能排查：规划开销、分区锁与表膨胀。原理说明以 PostgreSQL 18 为准；补充实验使用 PostgreSQL 18.4。">
+  <meta property="og:url" content="https://postgres-howto.cn/articles/101/">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://postgres-howto.cn/images/logo.png">
+  <link rel="icon" href="/images/favicon.png" type="image/png">
+  <script>(function(){var m='auto';try{m=localStorage.getItem('howto-theme')||'auto';}catch(_){}var d=m==='dark'||(m==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light';document.documentElement.style.colorScheme=d?'dark':'light';})();</script>
+  <link rel="stylesheet" href="/styles/custom.css?v=0671959df3115f7d">
+  <link rel="stylesheet" href="/styles/reading.css?v=701d1b6c5807eeb4">
+<script id="article-schema" type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"PostgreSQL 性能排查：规划开销、分区锁与表膨胀","inLanguage":"zh-CN","url":"https://postgres-howto.cn/articles/101/","mainEntityOfPage":"https://postgres-howto.cn/articles/101/","citation":"https://postgresconf.org/conferences/postgresconf_2026/program/proposals/postgresql-statistics-unleashed-mastering-query-optimization-through-data-driven-insights","keywords":["性能排查","性能诊断","Stop Guessing","TOAST 膨胀","规划时间","通用计划","generic plan","custom plan","分区锁","LockManager"],"datePublished":"2026-09-23"}</script>
+</head>
+<body class="reading-article" data-static-page data-static-article="101">
+  <a class="skip-link" href="#main" data-skip>跳至正文</a>
+  <header class="site-header">
+    <button id="sidebar-toggle" class="icon-button mobile-menu js-only" type="button" aria-label="打开导航" aria-controls="site-sidebar" aria-expanded="false" title="打开导航"><span class="icon icon-menu" aria-hidden="true"></span></button>
+    <a class="site-brand" href="/"><img src="/images/favicon.png" width="36" height="36" alt=""><span>PostgreSQL <strong>Howto</strong><small>中文版</small></span></a>
+    <nav class="app-nav" aria-label="主导航"><a href="/">首页</a><a href="/#/docs/topics">专题</a><a href="/#/docs/paths">学习路径</a><a href="/articles/">全部文章</a><a href="https://github.com/xiongcccc/postgres-howto" target="_blank" rel="noopener">GitHub<span class="icon icon-arrow-up-right" aria-hidden="true"></span></a></nav>
+    <div class="header-tools js-only"><button class="icon-button" type="button" data-open-search aria-label="搜索文章" aria-keyshortcuts="Control+K Meta+K" title="搜索文章 (Ctrl / Cmd + K)"><span class="icon icon-search" aria-hidden="true"></span></button><button class="icon-button theme-toggle" aria-label="切换阅读主题" title="切换阅读主题"><span class="icon icon-monitor" aria-hidden="true"></span></button></div>
+  </header>
+  <button class="sidebar-backdrop" type="button" aria-label="关闭导航" tabindex="-1" hidden></button>
+  <aside class="sidebar" id="site-sidebar" aria-label="文章导航"><div class="sidebar-nav"><div class="sidebar-heading"><span>知识导航</span><button class="icon-button" data-close-nav aria-label="关闭导航" title="关闭导航"><span class="icon icon-x" aria-hidden="true"></span></button></div><nav class="catalog-navigation" aria-label="文章分类"><ul class="catalog-pages"><li><a href="/#/README">首页</a></li><li><a href="/#/docs/topics">专题</a></li><li><a href="/#/docs/paths">学习路径</a></li><li><a href="/articles/">全部文章</a></li></ul><p class="sidebar-label">技术专题 <span>主归属文章</span></p><details data-topic="performance" open data-current-topic="true"><summary><span>查询性能与观测</span><small>16</small></summary><ul><li><a href="/articles/108/"><span class="article-number">108</span><span>一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离</span></a></li><li><a href="/articles/101/" aria-current="page"><span class="article-number">101</span><span>PostgreSQL 性能排查：规划开销、分区锁与表膨胀</span></a></li><li><a href="/articles/1/"><span class="article-number">1</span><span>EXPLAIN 为什么应该带 BUFFERS</span></a></li><li><a href="/articles/5/"><span class="article-number">5</span><span>pg_stat_statements 入门</span></a></li><li><a href="/articles/6/"><span class="article-number">6</span><span>pg_stat_statements 进阶</span></a></li><li><a href="/articles/7/"><span class="article-number">7</span><span>pg_stat_statements 深入使用</span></a></li><li><a href="/articles/10/"><span class="article-number">10</span><span>使用 FlameGraph 和 eBPF/perf 排查性能</span></a></li><li><a href="/articles/11/"><span class="article-number">11</span><span>临时监控方法</span></a></li><li><a href="/articles/12/"><span class="article-number">12</span><span>为 pg_stat_statements 找到真实 SQL 样例</span></a></li><li><a href="/articles/13/"><span class="article-number">13</span><span>如何做基准测试</span></a></li><li><a href="/articles/14/"><span class="article-number">14</span><span>如何判断一个查询是否太慢</span></a></li><li><a href="/articles/50/"><span class="article-number">50</span><span>基准测试迭代前后的准备工作</span></a></li><li><a href="/articles/56/"><span class="article-number">56</span><span>让非生产环境 Planner 更像生产环境</span></a></li><li><a href="/articles/89/"><span class="article-number">89</span><span>OLTP 粗略配置调优</span></a></li><li><a href="/articles/92/"><span class="article-number">92</span><span>work_mem 调优</span></a></li><li><a href="/articles/94/"><span class="article-number">94</span><span>运行 ANALYZE 收集统计信息</span></a></li></ul></details><details data-topic="ops"><summary><span>运维排障与日常工具</span><small>21</small></summary><ul><li><a href="/articles/2/"><span class="article-number">2</span><span>排查并加速 Postgres 停止和重启</span></a></li><li><a href="/articles/3/"><span class="article-number">3</span><span>排查 Postgres 启动缓慢</span></a></li><li><a href="/articles/8/"><span class="article-number">8</span><span>加速大库 pg_dump</span></a></li><li><a href="/articles/19/"><span class="article-number">19</span><span>导入 CSV 到 Postgres</span></a></li><li><a href="/articles/20/"><span class="article-number">20</span><span>使用 pg_restore</span></a></li><li><a href="/articles/21/"><span class="article-number">21</span><span>不发额外查询设置 application_name</span></a></li><li><a href="/articles/25/"><span class="article-number">25</span><span>如何退出 psql</span></a></li><li><a href="/articles/27/"><span class="article-number">27</span><span>在 Ubuntu 22.04 编译 Postgres</span></a></li><li><a href="/articles/34/"><span class="article-number">34</span><span>初步配置调优</span></a></li><li><a href="/articles/47/"><span class="article-number">47</span><span>安装带 plpython3u 的 Postgres 16</span></a></li><li><a href="/articles/49/"><span class="article-number">49</span><span>在 psql 脚本中使用变量</span></a></li><li><a href="/articles/51/"><span class="article-number">51</span><span>通过观察 psql 学习元数据</span></a></li><li><a href="/articles/58/"><span class="article-number">58</span><span>使用 Docker 运行 Postgres</span></a></li><li><a href="/articles/59/"><span class="article-number">59</span><span>psql 调优</span></a></li><li><a href="/articles/68/"><span class="article-number">68</span><span>psql 快捷操作</span></a></li><li><a href="/articles/81/"><span class="article-number">81</span><span>在 psql 中绘图</span></a></li><li><a href="/articles/86/"><span class="article-number">86</span><span>修复 psql 中的 \\e 编辑器问题</span></a></li><li><a href="/articles/87/"><span class="article-number">87</span><span>修改数据库中所有对象所有者</span></a></li><li><a href="/articles/88/"><span class="article-number">88</span><span>面向 OLTP 的 Linux 参数调优</span></a></li><li><a href="/articles/90/"><span class="article-number">90</span><span>使用 lib_pgquery 归一化和匹配查询</span></a></li><li><a href="/articles/91/"><span class="article-number">91</span><span>格式化 psql 脚本文本输出</span></a></li></ul></details><details data-topic="locks"><summary><span>锁、事务与在线变更</span><small>19</small></summary><ul><li><a href="/articles/107/"><span class="article-number">107</span><span>外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务</span></a></li><li><a href="/articles/104/"><span class="article-number">104</span><span>SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争</span></a></li><li><a href="/articles/99/"><span class="article-number">99</span><span>如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除</span></a></li><li><a href="/articles/100/"><span class="article-number">100</span><span>如何排查 LISTEN／NOTIFY 引起的提交阻塞</span></a></li><li><a href="/articles/22/"><span class="article-number">22</span><span>heavyweight locks 分析：基础</span></a></li><li><a href="/articles/30/"><span class="article-number">30</span><span>处理 OLTP 长事务</span></a></li><li><a href="/articles/33/"><span class="article-number">33</span><span>无停机重定义主键</span></a></li><li><a href="/articles/35/"><span class="article-number">35</span><span>使用子事务</span></a></li><li><a href="/articles/36/"><span class="article-number">36</span><span>单条查询实现 find-or-insert</span></a></li><li><a href="/articles/37/"><span class="article-number">37</span><span>无停机启用 data checksums</span></a></li><li><a href="/articles/42/"><span class="article-number">42</span><span>heavyweight locks 分析：锁树</span></a></li><li><a href="/articles/55/"><span class="article-number">55</span><span>删除列</span></a></li><li><a href="/articles/60/"><span class="article-number">60</span><span>添加列</span></a></li><li><a href="/articles/69/"><span class="article-number">69</span><span>无停机添加 CHECK 约束</span></a></li><li><a href="/articles/70/"><span class="article-number">70</span><span>添加外键</span></a></li><li><a href="/articles/71/"><span class="article-number">71</span><span>理解 DDL 被什么阻塞</span></a></li><li><a href="/articles/72/"><span class="article-number">72</span><span>移除外键</span></a></li><li><a href="/articles/73/"><span class="article-number">73</span><span>heavyweight locks 分析：持久监控</span></a></li><li><a href="/articles/83/"><span class="article-number">83</span><span>修改 Postgres 参数</span></a></li></ul></details><details data-topic="indexes"><summary><span>索引治理</span><small>9</small></summary><ul><li><a href="/articles/15/"><span class="article-number">15</span><span>监控 CREATE INDEX / REINDEX 进度</span></a></li><li><a href="/articles/18/"><span class="article-number">18</span><span>过度索引</span></a></li><li><a href="/articles/53/"><span class="article-number">53</span><span>索引维护</span></a></li><li><a href="/articles/54/"><span class="article-number">54</span><span>使用 pg_amcheck 检查 btree 索引损坏</span></a></li><li><a href="/articles/61/"><span class="article-number">61</span><span>创建索引：基础</span></a></li><li><a href="/articles/62/"><span class="article-number">62</span><span>创建索引：进阶</span></a></li><li><a href="/articles/75/"><span class="article-number">75</span><span>查找未使用索引</span></a></li><li><a href="/articles/76/"><span class="article-number">76</span><span>查找冗余索引</span></a></li><li><a href="/articles/79/"><span class="article-number">79</span><span>并行重建大量索引并避免死锁</span></a></li></ul></details><details data-topic="storage"><summary><span>存储、WAL 与 Vacuum</span><small>19</small></summary><ul><li><a href="/articles/102/"><span class="article-number">102</span><span>Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢</span></a></li><li><a href="/articles/4/"><span class="article-number">4</span><span>理解 tuple 在表中的稀疏存储</span></a></li><li><a href="/articles/9/"><span class="article-number">9</span><span>理解 LSN 和 WAL 文件名</span></a></li><li><a href="/articles/16/"><span class="article-number">16</span><span>容易踩坑的 Postgres 特性</span></a></li><li><a href="/articles/26/"><span class="article-number">26</span><span>检查 btree 索引损坏</span></a></li><li><a href="/articles/31/"><span class="article-number">31</span><span>排查 pg_wal 目录增长</span></a></li><li><a href="/articles/39/"><span class="article-number">39</span><span>如何破坏数据库：制造损坏</span></a></li><li><a href="/articles/40/"><span class="article-number">40</span><span>如何破坏数据库：模拟 XID 回卷</span></a></li><li><a href="/articles/41/"><span class="article-number">41</span><span>如何破坏数据库：有害负载</span></a></li><li><a href="/articles/44/"><span class="article-number">44</span><span>监控 XID 回卷风险</span></a></li><li><a href="/articles/45/"><span class="article-number">45</span><span>监控 xmin horizon 避免回卷和膨胀</span></a></li><li><a href="/articles/46/"><span class="article-number">46</span><span>处理 bloat</span></a></li><li><a href="/articles/52/"><span class="article-number">52</span><span>降低 WAL 生成速率</span></a></li><li><a href="/articles/66/"><span class="article-number">66</span><span>一个 page 能插入多少 tuple</span></a></li><li><a href="/articles/67/"><span class="article-number">67</span><span>Autovacuum 队列和进度</span></a></li><li><a href="/articles/74/"><span class="article-number">74</span><span>刷新 OS page cache 和 Postgres buffer pool</span></a></li><li><a href="/articles/80/"><span class="article-number">80</span><span>查找有 int4 主键溢出风险的表</span></a></li><li><a href="/articles/84/"><span class="article-number">84</span><span>列顺序与存储优化：Column Tetris</span></a></li><li><a href="/articles/85/"><span class="article-number">85</span><span>快速检查值的数据类型和存储大小</span></a></li></ul></details><details data-topic="sql"><summary><span>SQL、数据建模与扩展玩法</span><small>12</small></summary><ul><li><a href="/articles/103/"><span class="article-number">103</span><span>PostgreSQL 排序规则：文本比较、索引与升级风险</span></a></li><li><a href="/articles/23/"><span class="article-number">23</span><span>在 Postgres 中调用 OpenAI API 实现语义搜索和 GPT Chat</span></a></li><li><a href="/articles/24/"><span class="article-number">24</span><span>使用元数据</span></a></li><li><a href="/articles/28/"><span class="article-number">28</span><span>数组使用：基础</span></a></li><li><a href="/articles/29/"><span class="article-number">29</span><span>数组使用：进阶</span></a></li><li><a href="/articles/32/"><span class="article-number">32</span><span>加速批量加载</span></a></li><li><a href="/articles/43/"><span class="article-number">43</span><span>SQL 格式化与风格指南</span></a></li><li><a href="/articles/48/"><span class="article-number">48</span><span>生成测试数据</span></a></li><li><a href="/articles/64/"><span class="article-number">64</span><span>使用 UUID</span></a></li><li><a href="/articles/65/"><span class="article-number">65</span><span>UUID v7 与分区</span></a></li><li><a href="/articles/78/"><span class="article-number">78</span><span>使用创建时间和统计信息估算大表同比增长</span></a></li><li><a href="/articles/82/"><span class="article-number">82</span><span>用 SQL 绘制霜花图案</span></a></li></ul></details><details data-topic="replication"><summary><span>复制、校验与升级</span><small>7</small></summary><ul><li><a href="/articles/109/"><span class="article-number">109</span><span>备库查询为什么被取消：WAL 回放冲突与等待预算</span></a></li><li><a href="/articles/106/"><span class="article-number">106</span><span>PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化</span></a></li><li><a href="/articles/105/"><span class="article-number">105</span><span>深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复</span></a></li><li><a href="/articles/17/"><span class="article-number">17</span><span>判断复制延迟</span></a></li><li><a href="/articles/57/"><span class="article-number">57</span><span>将物理副本转换为逻辑副本</span></a></li><li><a href="/articles/77/"><span class="article-number">77</span><span>大型高负载集群的无停机大版本升级</span></a></li><li><a href="/articles/93/"><span class="article-number">93</span><span>排查流复制延迟</span></a></li></ul></details><details data-topic="practice"><summary><span>实践剖析</span><small>3</small></summary><ul><li><a href="/articles/96/"><span class="article-number">96</span><span>为什么 actual time 和 Execution Time 有很大差异？</span></a></li><li><a href="/articles/97/"><span class="article-number">97</span><span>深入浅出 bpftrace 分析 PostgreSQL</span></a></li><li><a href="/articles/98/"><span class="article-number">98</span><span>当 PostgreSQL 慢在数据库之外：用 bpftrace 打通 SQL 与内核观测</span></a></li></ul></details><details data-topic="engineering"><summary><span>工程实践与后记</span><small>3</small></summary><ul><li><a href="/articles/38/"><span class="article-number">38</span><span>如何不把 DBA/DBRE 工作搞砸</span></a></li><li><a href="/articles/63/"><span class="article-number">63</span><span>如何帮助别人</span></a></li><li><a href="/articles/95/"><span class="article-number">95</span><span>后记</span></a></li></ul></details><div class="sidebar-resources"><a href="/#/docs/series">系列阅读</a><a href="/#/docs/conferences">会议精选</a><a href="/#/docs/about">关于项目</a></div></nav></div></aside>
+  <main class="content"><article id="main" class="markdown-section" tabindex="-1"><div class="article-topline"><nav class="breadcrumbs" aria-label="面包屑"><a href="/">首页</a><span aria-hidden="true">/</span><a href="/#/docs/topics?id=topic-performance">查询性能与观测</a></nav></div><h1 id="postgresql-性能排查：规划开销、分区锁与表膨胀">PostgreSQL 性能排查：规划开销、分区锁与表膨胀</h1><div class="article-meta"><p class="article-kicker"><a href="/#/docs/find?series=interpretation">专题解读</a> · 会议材料 <span class="article-id">#101</span> <time datetime="2026-09-23">收录于 2026-09-23</time></p><p class="article-version">原理说明以 PostgreSQL 18 为准；补充实验使用 PostgreSQL 18.4。</p><details><summary>来源与验证说明</summary><dl><dt>原题</dt><dd>Stop Guessing: How to Actually Fix PostgreSQL Performance</dd><dt>来源</dt><dd><a href="https://postgresconf.org/conferences/postgresconf_2026/program/proposals/postgresql-statistics-unleashed-mastering-query-optimization-through-data-driven-insights" target="_blank" rel="noopener">Anita Singh、Ranjan Burman · Stop Guessing: How to Actually Fix PostgreSQL Performance</a></dd><dt>中文翻译与校订</dt><dd>xiongcc</dd><dt>验证状态</dt><dd>PostgreSQL 18.4：已验证计划选择、分区锁范围、TOAST 清理及对象大小查询。（2026-09-23） <a href="/#/maintenance/101-review">验证记录</a></dd></dl><blockquote>
+<p>专题解读 · Postgres Conference 2026 · 查询性能与观测<br>
+基于 Anita Singh、Ranjan Burman（AWS）的 <em>Stop Guessing: How to Actually Fix PostgreSQL Performance</em> 整理，分享于 2026-04-22，San Jose。<br>
+中文整理与技术校订：xiongcc。</p>
+</blockquote>
+</details></div><details class="article-toc"><summary>本页目录<span class="icon icon-chevron-down" aria-hidden="true"></span></summary><nav aria-label="本页目录"><ol><li class="toc-level-2"><a data-heading="确认变慢的环节" href="#%E7%A1%AE%E8%AE%A4%E5%8F%98%E6%85%A2%E7%9A%84%E7%8E%AF%E8%8A%82">确认变慢的环节</a></li><li class="toc-level-2"><a data-heading="统计信息与规划开销" href="#%E7%BB%9F%E8%AE%A1%E4%BF%A1%E6%81%AF%E4%B8%8E%E8%A7%84%E5%88%92%E5%BC%80%E9%94%80">统计信息与规划开销</a></li><li class="toc-level-2"><a data-heading="分区表上的预备语句" href="#%E5%88%86%E5%8C%BA%E8%A1%A8%E4%B8%8A%E7%9A%84%E9%A2%84%E5%A4%87%E8%AF%AD%E5%8F%A5">分区表上的预备语句</a></li><li class="toc-level-2"><a data-heading="长事务拖延-vacuum-清理" href="#%E9%95%BF%E4%BA%8B%E5%8A%A1%E6%8B%96%E5%BB%B6-vacuum-%E6%B8%85%E7%90%86">长事务拖延 Vacuum 清理</a></li><li class="toc-level-2"><a data-heading="单独检查-toast-的大小和清理情况" href="#%E5%8D%95%E7%8B%AC%E6%A3%80%E6%9F%A5-toast-%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%92%8C%E6%B8%85%E7%90%86%E6%83%85%E5%86%B5">单独检查 TOAST 的大小和清理情况</a></li><li class="toc-level-2"><a data-heading="连接数与内存预算" href="#%E8%BF%9E%E6%8E%A5%E6%95%B0%E4%B8%8E%E5%86%85%E5%AD%98%E9%A2%84%E7%AE%97">连接数与内存预算</a></li><li class="toc-level-2"><a data-heading="调整后的验证" href="#%E8%B0%83%E6%95%B4%E5%90%8E%E7%9A%84%E9%AA%8C%E8%AF%81">调整后的验证</a></li><li class="toc-level-2"><a data-heading="参考资料" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99">参考资料</a></li><li class="toc-level-2"><a data-heading="相关阅读" href="#%E7%9B%B8%E5%85%B3%E9%98%85%E8%AF%BB">相关阅读</a></li></ol></nav></details>
+<p>一条 SQL 执行得慢，通常会从执行计划查起。但实际排查中，有些查询执行只花了几毫秒，规划却用了几百毫秒；有些查询只扫描一个分区，并发上来后却出现了锁管理器等待。还有一些数据库，业务量没变，读 I/O 却随着表膨胀持续增加。</p>
+<p>Anita Singh 和 Ranjan Burman 在这次分享中讨论了几类常见的性能问题。本文选取其中的规划开销、分区锁、Vacuum 和连接管理展开，并补充几组 PostgreSQL 18.4 实验。</p>
+<h2 id="确认变慢的环节">确认变慢的环节</h2>
+<p>接口响应时间、数据库执行时间和 CPU 使用率描述的是不同的事情。接口可能在等连接，SQL 可能在等锁，数据库也可能只是收到了更多请求。排查时，需要把业务延迟、请求量、活跃连接和系统资源放在同一个时间段里比较。</p>
+<p>应用发布、连接池调整、数据库参数变更，以及批处理任务的开始时间，也值得一起记录。很多突发退化都能从这些变化中找到线索。</p>
+<div class="table-scroll" role="region" aria-label="表格，可横向滚动" tabindex="0"><table>
+<thead>
+<tr>
+<th>现象</th>
+<th>优先检查</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>接口变慢，SQL 执行时间变化不大</td>
+<td>连接池等待、网络往返、结果传输、事务提交，以及应用的计时范围</td>
+</tr>
+<tr>
+<td>CPU 升高</td>
+<td>调用量、活跃会话、具体 backend 的 CPU、执行计划和并行 worker</td>
+</tr>
+<tr>
+<td>可用内存减少</td>
+<td>连接数与会话状态、进程私有内存、排序/哈希操作和临时文件</td>
+</tr>
+<tr>
+<td>I/O 增加，业务量没有明显变化</td>
+<td>单次查询读块数、表与索引大小、临时读写、checkpoint 和清理进度</td>
+</tr>
+<tr>
+<td>查询出现明显等待</td>
+<td>等待类型、涉及会话和发生时段；重量级锁等待还需检查阻塞链</td>
+</tr>
+</tbody></table>
+</div>
+<p><code>pg_stat_activity</code> 用来看当前会话，<code>pg_stat_statements</code> 用来找一段时间内消耗较大的 SQL。后者的总执行时间包含等待，不能直接当作 CPU 时间。分析一次刚发生的故障时，应比较故障前后的统计增量，避免被长期累计值干扰。</p>
+<p>找到 SQL 后，再用 <code>EXPLAIN (ANALYZE, BUFFERS)</code> 看实际行数、循环次数、读块情况和耗时。注意，<code>ANALYZE</code> 会真正执行语句；昂贵查询和写操作需要先评估负载与副作用。计划节点的耗时有包含关系，也不能直接相加。</p>
+<h2 id="统计信息与规划开销">统计信息与规划开销</h2>
+<p>原分享有一个案例：数据库级 <code>default_statistics_target</code> 从 300 提高到 8000 后，CPU 上升，查询性能下降。展示的计划中，规划时间约 598 ms，执行时间却只有约 1.5 ms。后来缩小了统计信息调整的范围，改为按需要设置列级统计目标，规划时间降到了约 0.203 ms。</p>
+<p>这类查询的主要开销发生在规划阶段。继续优化执行算子，即使把那 1.5 ms 全部省掉，对总耗时的帮助也很有限。</p>
+<p>提高统计目标会允许更详细的统计信息，同时增加采集和处理成本。实际调整时，可以先看估算行数与实际行数从哪个节点开始偏离，再检查相关列的数据分布。少数列有明显倾斜，就针对这些列处理；如果偏差来自多列之间的关联关系，则需要考虑扩展统计信息。</p>
+<p>规划时间还受分区数量、连接关系复杂度和计划复用等因素影响。尤其对于执行很快、调用频繁的短 SQL，规划开销很容易积累。只比较 Planning Time 与 Execution Time 的比例还不够，还要看绝对耗时和调用次数。</p>
+<p>索引也需要结合访问量判断。顺序扫描可能是合理选择，关键在于查询要读取多少数据，以及索引能减少多少访问。复合 B-tree 索引缺少前导列条件时仍可能被使用，只是扫描范围往往更大；PostgreSQL 18 的 skip scan 可以改善其中一些情况，效果取决于前导列的不同值数量和整体成本。</p>
+<h2 id="分区表上的预备语句">分区表上的预备语句</h2>
+<p>预备语句可以使用自定义计划（custom plan）或通用计划（generic plan）。自定义计划根据本次参数生成；通用计划可以复用，省去重复规划的开销。参数分布比较均匀时，复用通常更有利；不同参数对应的数据量相差很大时，就需要留意通用计划的执行效果。</p>
+<p>对带参数的预备语句，<code>plan_cache_mode = auto</code> 会在前五次执行时使用自定义计划，随后比较通用计划与此前自定义计划的平均估算成本，再决定是否切换。</p>
+<p>本次实验创建了一张 10 万行的表，其中 99,900 行具有相同的键值，其余 100 行各自不同。针对一个稀有值连续执行 10 次后，<code>pg_prepared_statements</code> 中的计数为 <code>custom_plans = 10</code>、<code>generic_plans = 0</code>。因此，排查计划变化时应检查实际选择，不能仅凭“执行到了第六次”判断已经切换。<code>EXPLAIN EXECUTE</code> 和会话内的 <code>pg_prepared_statements</code> 都可以帮助确认。</p>
+<p>原分享还讨论了分区表的锁开销。参数在规划时已知，可以提前裁剪分区；通用计划可能要等到执行初始化时才能完成裁剪，而此时相关分区已经被锁住。</p>
+<p>为了观察这一点，本次在 PostgreSQL 18.4 中建立了 12 个范围分区，每个分区 1,000 行。用同一个参数查询一个分区，分别强制两种计划模式，得到以下结果：</p>
+<div class="table-scroll" role="region" aria-label="表格，可横向滚动" tabindex="0"><table>
+<thead>
+<tr>
+<th>计划模式</th>
+<th>实际扫描的叶子分区</th>
+<th>持有 AccessShareLock 的叶子分区数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>force_custom_plan</code></td>
+<td><code>events_0</code></td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>force_generic_plan</code></td>
+<td><code>events_0</code></td>
+<td>12</td>
+</tr>
+</tbody></table>
+</div>
+<p>通用计划的执行计划中显示 <code>Subplans Removed: 11</code>，最后只扫描了 <code>events_0</code>，但查询所在事务仍持有全部 12 个叶子分区的锁。表中只统计叶子分区，未计入父表和系统目录。</p>
+<pre data-lang="mermaid"><code>flowchart TB
+    A[&quot;带参数的分区表查询&quot;] --&gt; B[&quot;自定义计划&quot;]
+    A --&gt; C[&quot;通用计划&quot;]
+    B --&gt; D[&quot;利用参数在规划时裁剪&quot;]
+    C --&gt; E[&quot;在执行初始化时裁剪&lt;br/&gt;被裁剪的分区仍已加锁&quot;]
+    D --&gt; F[&quot;比较实际扫描范围与分区锁数量&quot;]
+    E --&gt; F</code></pre>
+<p>当分区和并发会话都很多时，频繁申请关系锁可能带来锁管理器争用。遇到 <code>LWLock:LockManager</code> 等待，可以沿着计划模式、分区数量、索引数量和并发量继续检查。上面的实验说明了锁范围的差异，等待是否会成为瓶颈，还要看实际并发负载。</p>
+<p>可以在受控会话中比较两种计划模式的规划时间、执行时间和等待变化。全局强制自定义计划会增加重复规划的成本，不宜直接作为默认修复。分区粒度的调整也应结合数据保留、查询方式和维护需求一起考虑。</p>
+<h2 id="长事务拖延-vacuum-清理">长事务拖延 Vacuum 清理</h2>
+<p>另一个案例中，业务量没有明显变化，读 IOPS 却大幅增加。原因与只读实例上的长查询有关：开启 <code>hot_standby_feedback</code> 后，备库把旧快照的回收边界反馈给主库，主库因此需要继续保留相关行版本。</p>
+<p>这种情况下，Vacuum 可以正常运行，却无法删除仍被快照需要的旧版本。它们长期积累后，表和索引体积增大，同样的查询就可能读取更多页面。</p>
+<p>所以，看到清理跟不上时，除了检查 autovacuum 的资源和触发条件，还要检查长事务、备库反馈和复制槽保留的回收边界。如果旧快照一直存在，仅增加 worker 或提高清理频率，效果会很有限。</p>
+<p><code>hot_standby_feedback</code> 能减少备库查询因清理冲突而被取消的情况，代价是主库可能积累更多旧版本。报表查询允许运行多久、能否取消重试、主库能接受多少清理延迟，都需要结合业务确定。</p>
+<p>这里要注意两个超时参数的作用范围：<code>max_standby_streaming_delay</code> 控制的是 WAL 回放遇到冲突时允许的等待，并非所有备库查询的运行时长上限。需要限制查询执行时间时，应另行考虑 <code>statement_timeout</code>。</p>
+<p>普通 Vacuum 回收的空间主要供关系内部复用，文件大小通常不会明显下降。需要重写文件时，<code>VACUUM FULL</code> 会取得 <code>ACCESS EXCLUSIVE</code> 锁，阻塞对该表的正常访问，必须安排合适的维护窗口。即使决定重写，也应先处理旧版本持续积累的原因。</p>
+<h2 id="单独检查-toast-的大小和清理情况">单独检查 TOAST 的大小和清理情况</h2>
+<p>业务表包含较大的 <code>text</code>、<code>jsonb</code> 或 <code>bytea</code> 值时，部分数据可能存放在关联的 TOAST 表中。只看主表大小或主表的死元组统计，容易漏掉这部分空间的变化。</p>
+<p>TOAST 是否使用行外存储，取决于行大小、列存储策略和压缩结果，并没有“某列超过 2 KB 就一定外置”的固定规则。默认对主表执行 Vacuum 时，也会处理它的 TOAST 表。</p>
+<p>本次实验对一张含大文本的表进行更新，用 <code>pgstattuple</code> 检查关联 TOAST 表，得到 850 个死元组。随后只对主表执行 <code>VACUUM</code>，TOAST 的死元组数降到了 0。检查 TOAST 时，应分别观察旧版本是否被清理，以及清理后的空间是留在文件内部复用，还是已经归还给操作系统。</p>
+<p>下面的查询可以查看主表、索引与 TOAST 的大小。它按普通表列出数据，分区表按叶子分区显示，不汇总父表，并排除了系统 schema 和临时表。</p>
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SELECT</span> n<span class="token punctuation">.</span>nspname <span class="token keyword">AS</span> schema_name<span class="token punctuation">,</span>
+       c<span class="token punctuation">.</span>relname <span class="token keyword">AS</span> table_name<span class="token punctuation">,</span>
+       pg_size_pretty<span class="token punctuation">(</span>pg_relation_size<span class="token punctuation">(</span>c<span class="token punctuation">.</span>oid<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> heap_main_size<span class="token punctuation">,</span>
+       pg_size_pretty<span class="token punctuation">(</span>pg_indexes_size<span class="token punctuation">(</span>c<span class="token punctuation">.</span>oid<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> table_indexes_size<span class="token punctuation">,</span>
+       pg_size_pretty<span class="token punctuation">(</span>pg_total_relation_size<span class="token punctuation">(</span>c<span class="token punctuation">.</span>reltoastrelid<span class="token punctuation">)</span><span class="token punctuation">)</span>
+           <span class="token keyword">AS</span> toast_total_size<span class="token punctuation">,</span>
+       pg_size_pretty<span class="token punctuation">(</span>pg_total_relation_size<span class="token punctuation">(</span>c<span class="token punctuation">.</span>oid<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> total_size
+<span class="token keyword">FROM</span> pg_class <span class="token keyword">AS</span> c
+<span class="token keyword">JOIN</span> pg_namespace <span class="token keyword">AS</span> n <span class="token keyword">ON</span> n<span class="token punctuation">.</span>oid <span class="token operator">=</span> c<span class="token punctuation">.</span>relnamespace
+<span class="token keyword">WHERE</span> c<span class="token punctuation">.</span>relkind <span class="token operator">=</span> <span class="token string">'r'</span>
+  <span class="token operator">AND</span> c<span class="token punctuation">.</span>relpersistence <span class="token operator">&lt;></span> <span class="token string">'t'</span>
+  <span class="token operator">AND</span> c<span class="token punctuation">.</span>reltoastrelid <span class="token operator">&lt;></span> <span class="token number">0</span>
+  <span class="token operator">AND</span> n<span class="token punctuation">.</span>nspname <span class="token operator">&lt;></span> <span class="token string">'information_schema'</span>
+  <span class="token operator">AND</span> n<span class="token punctuation">.</span>nspname <span class="token operator">!</span><span class="token operator">~</span> <span class="token string">'^pg_'</span>
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> pg_total_relation_size<span class="token punctuation">(</span>c<span class="token punctuation">.</span>reltoastrelid<span class="token punctuation">)</span> <span class="token keyword">DESC</span>
+<span class="token keyword">LIMIT</span> <span class="token number">20</span><span class="token punctuation">;</span>
+</code></pre></div>
+<p><code>heap_main_size</code> 仅统计主表的主 fork；<code>toast_total_size</code> 包含 TOAST 自身的索引和辅助 fork；<code>total_size</code> 已包含主表索引及 TOAST，不能再次相加。</p>
+<p>这些数值反映的是对象大小，不是膨胀率。对于大文档，TOAST 本身就可能占用主要空间。是否需要处理膨胀，还要结合实际数据量、更新频率、死元组和清理情况判断。</p>
+<h2 id="连接数与内存预算">连接数与内存预算</h2>
+<p>分享中还有一个低负载、只读业务出现内存压力的案例，最终通过连接管理缓解。大量空闲连接仍会占用内存，而会话用过的查询、缓存的状态和扩展，也会影响它的实际占用。</p>
+<p>评估内存时，<code>work_mem</code> 尤其容易被误用。它限制的是排序、哈希等查询操作的内存使用，不是连接建立后预先分配的固定额度。一条复杂 SQL 可能同时运行多个这样的操作，多个会话和并行 worker 也可能同时消耗内存。哈希操作还受 <code>hash_mem_multiplier</code> 影响。</p>
+<p>因此，内存预算需要估计高峰期有多少活跃查询、每条查询有哪些主要操作，以及是否启用并行。单纯用 <code>max_connections × work_mem</code>，无法得到完整的内存上限。</p>
+<p>如果发现排序落盘，可以先针对该查询调整 <code>work_mem</code>，比较耗时和临时 I/O，再放到有代表性的并发下测试。直接提高全局配置，可能让单条查询变快，却让高峰期的内存更紧张。</p>
+<p>连接池也需要同时观察应用和数据库两端。数据库连接数降下来了，但应用等待连接的时间大幅增加，接口延迟未必改善。池的大小应与实例能够承担的活跃并发相匹配；选用事务池等模式前，还要检查应用是否依赖会话状态。</p>
+<h2 id="调整后的验证">调整后的验证</h2>
+<p>验证指标应与调整目标对应。统计信息调整后，要比较规划时间、行数估算和执行计划；计划模式调整后，要看规划成本、执行耗时与并发等待；清理策略调整后，要继续观察死元组、对象大小和读 I/O 的变化。</p>
+<p>保留调整前的参数和观测结果，每次尽量只改变一个因素，方便比较和回退。复测时使用相近的数据量、参数分布与并发，除了平均耗时，也关注尾延迟、吞吐量和资源余量。</p>
+<p>如果一次改动同时包含加索引、改参数和扩容，即使性能恢复，也很难确定是哪一项起了作用。紧急处置可以优先恢复业务，之后仍值得把几项变化分别验证，留下可供下次排查使用的记录。</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li>Anita Singh、Ranjan Burman：<a href="https://postgresconf.org/conferences/postgresconf_2026/program/proposals/postgresql-statistics-unleashed-mastering-query-optimization-through-data-driven-insights">Stop Guessing: How to Actually Fix PostgreSQL Performance</a>，Postgres Conference 2026，2026-04-22。</li>
+<li>性能观测：<a href="https://www.postgresql.org/docs/18/monitoring-stats.html">统计视图</a>、<a href="https://www.postgresql.org/docs/18/pgstatstatements.html">pg_stat_statements</a>、<a href="https://www.postgresql.org/docs/18/sql-explain.html">EXPLAIN</a>。</li>
+<li>执行计划：<a href="https://www.postgresql.org/docs/18/planner-stats.html">规划器统计信息</a>、<a href="https://www.postgresql.org/docs/18/indexes-multicolumn.html">多列索引</a>、<a href="https://www.postgresql.org/docs/18/sql-prepare.html">PREPARE</a>、<a href="https://www.postgresql.org/docs/18/ddl-partitioning.html#DDL-PARTITION-PRUNING">分区裁剪</a>。</li>
+<li>存储维护：<a href="https://www.postgresql.org/docs/18/routine-vacuuming.html">日常清理</a>、<a href="https://www.postgresql.org/docs/18/runtime-config-replication.html">复制参数</a>、<a href="https://www.postgresql.org/docs/18/sql-vacuum.html">VACUUM</a>、<a href="https://www.postgresql.org/docs/18/storage-toast.html">TOAST</a>、<a href="https://www.postgresql.org/docs/18/functions-admin.html#FUNCTIONS-ADMIN-DBSIZE">对象大小函数</a>。</li>
+<li>内存：<a href="https://www.postgresql.org/docs/18/runtime-config-resource.html">资源参数</a>。</li>
+<li>本文补充实验使用 PostgreSQL 18.4，详见<a href="/#/maintenance/101-review">实验记录</a>。</li>
+</ul>
+<h2 id="相关阅读">相关阅读</h2>
+<ul>
+<li><a href="/articles/1/">EXPLAIN 为什么应该带 BUFFERS</a></li>
+<li><a href="/articles/12/">为 pg_stat_statements 找到真实 SQL 样例</a></li>
+<li><a href="/articles/46/">处理 bloat</a></li>
+<li><a href="/articles/92/">work_mem 调优</a></li>
+<li><a href="/#/docs/paths">性能优化推荐路径</a></li>
+</ul>
+<footer class="article-footer"><p class="article-topic-label">所属专题：<a href="/#/docs/topics?id=topic-performance">查询性能与观测</a></p><div class="article-neighbors"><a rel="prev" href="/articles/94/"><small>同专题上一篇</small><strong>运行 ANALYZE 收集统计信息</strong></a><a rel="next" href="/articles/108/"><small>同专题下一篇</small><strong>一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离</strong></a></div><h2>继续阅读</h2><ul><li><a href="/articles/107/">外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务</a></li><li><a href="/articles/106/">PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化</a></li><li><a href="/articles/109/">备库查询为什么被取消：WAL 回放冲突与等待预算</a></li></ul><div class="article-source-links"><a href="https://github.com/xiongcccc/postgres-howto/blob/master/docs/101.md" target="_blank" rel="noopener">查看源文件</a><a href="https://github.com/xiongcccc/postgres-howto/issues/new?title=%E6%96%87%E7%AB%A0%20%23101%EF%BC%9APostgreSQL%20%E6%80%A7%E8%83%BD%E6%8E%92%E6%9F%A5%EF%BC%9A%E8%A7%84%E5%88%92%E5%BC%80%E9%94%80%E3%80%81%E5%88%86%E5%8C%BA%E9%94%81%E4%B8%8E%E8%A1%A8%E8%86%A8%E8%83%80" target="_blank" rel="noopener">反馈与纠错</a></div></footer><section id="gitalk-container" class="article-discussion"><h2>讨论与补充</h2><a target="_blank" rel="noopener" href="https://github.com/xiongcccc/gitalk-comment/issues?q=is%3Aissue%20%22%2Fdocs%2F101%22">查看与参与 GitHub 讨论</a></section></article></main>
+  <footer class="site-footer"><div><a href="/articles/">文章目录</a><a href="/#/docs/about">关于项目</a><a href="https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos">上游来源</a><a href="https://xiongcc.cn/">xiongcc</a></div><div class="js-only"><button type="button" data-dialog="communityModal">读者交流</button><button type="button" data-dialog="imageModal">支持作者</button><span class="site-stats"><span id="busuanzi_container_site_pv">访问 <strong id="busuanzi_value_site_pv">--</strong> 次</span><span id="busuanzi_container_site_uv">访客 <strong id="busuanzi_value_site_uv">--</strong> 人</span></span></div></footer>
+  <dialog id="imageModal" class="support-modal" aria-labelledby="support-title"><div class="dialog-heading"><h2 id="support-title">支持作者</h2><button class="icon-button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>感谢支持 PostgreSQL Howto 的长期维护。</p><img data-src="/images/wechat_pay.png" width="280" height="280" alt="微信赞赏码"></dialog>
+  <dialog id="communityModal" class="support-modal" aria-labelledby="community-title"><div class="dialog-heading"><h2 id="community-title">读者交流群</h2><button class="icon-button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>二维码若已过期，可通过公众号 PostgreSQL 学徒或邮件联系。</p><img data-src="/images/wechatgroup.jpeg" width="280" height="427" alt="PostgreSQL 学徒读者交流群二维码"></dialog>
+  <script src="/scripts/catalog-data.js?v=beaba606436c9ec0" defer></script>
+<script src="/scripts/article-view.js?v=926830a13df34c2c" defer></script>
+<script src="/scripts/site.js?v=f2e6d95ee157b4fe" defer></script>
+<script src="/scripts/diagrams.js?v=45d556fe0c9de5ef" defer></script>
+<script src="/scripts/reading.js?v=abf3dfc7db08ddc8" defer></script>
+</body>
+</html>

@@ -68,9 +68,10 @@
         if(bodies&&query){var snippet=document.createElement('p');highlighted(snippet,search.snippet(bodies[a.id],query),query);li.append(snippet);}
         results.append(li);
       });
-      more.hidden=matches.length<=limit;retry.hidden=!failed;
+      more.hidden=matches.length<=limit;retry.hidden=!query||!failed;
     }
     function update() {
+      if(!input.value.trim())failed=false;
       limit=home?5:20;history.replaceState(null,'',url(home));render();
       el.closest('.markdown-section').dataset.renderedRoute=location.hash;
       if(input.value.trim()&&!bodies)loadIndex().then(function(){failed=false;render();}).catch(function(){failed=true;render();});
@@ -83,6 +84,7 @@
     more.addEventListener('click',function(){var previous=limit;limit+=20;render();results.children[previous]?.querySelector('a').focus();});
     retry.addEventListener('click',function(){failed=false;update();});
     input.addEventListener('keydown',function(event){if(event.key==='ArrowDown'){var link=results.querySelector('a');if(link){event.preventDefault();link.focus();}}});
+    input.addEventListener('keydown',function(event){if(event.key==='Escape'&&advanced.open){advanced.open=false;event.preventDefault();}});
     results.addEventListener('keydown',function(event){
       var links=Array.from(results.querySelectorAll('a')),index=links.indexOf(document.activeElement);
       if(index<0)return;
@@ -99,6 +101,7 @@
       type.value=state.get('type')||'';advanced.open=Boolean(series.value||type.value);update();
     };
     update();
+    if(params.get('focus')==='search')input.focus();
   }
   window.addEventListener('hashchange',function(){document.querySelectorAll('[data-finder]').forEach(function(el){el.restoreFromUrl?.();});});
   window.HowtoFinder={mount:mount};

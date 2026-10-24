@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>如何排查 LISTEN／NOTIFY 引起的提交阻塞 | PostgreSQL Howto 中文版</title>
+  <meta name="description" content="如何排查 LISTEN／NOTIFY 引起的提交阻塞。源码与实测基线：PostgreSQL 16.14。">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="canonical" href="https://postgres-howto.cn/articles/100/">
+  <meta property="og:title" content="如何排查 LISTEN／NOTIFY 引起的提交阻塞 | PostgreSQL Howto 中文版">
+  <meta property="og:description" content="如何排查 LISTEN／NOTIFY 引起的提交阻塞。源码与实测基线：PostgreSQL 16.14。">
+  <meta property="og:url" content="https://postgres-howto.cn/articles/100/">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://postgres-howto.cn/images/logo.png">
+  <link rel="icon" href="/images/favicon.png" type="image/png">
+  <script>(function(){var m='auto';try{m=localStorage.getItem('howto-theme')||'auto';}catch(_){}var d=m==='dark'||(m==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light';document.documentElement.style.colorScheme=d?'dark':'light';})();</script>
+  <link rel="stylesheet" href="/styles/custom.css?v=0671959df3115f7d">
+  <link rel="stylesheet" href="/styles/reading.css?v=701d1b6c5807eeb4">
+<script id="article-schema" type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"如何排查 LISTEN／NOTIFY 引起的提交阻塞","inLanguage":"zh-CN","url":"https://postgres-howto.cn/articles/100/","mainEntityOfPage":"https://postgres-howto.cn/articles/100/","citation":"https://vyruss.org/computing/slides/pgdata2026_listen_carefully.pdf","keywords":["通知","提交慢","提交阻塞","listen notify","锁等待"],"datePublished":"2026-09-10"}</script>
+</head>
+<body class="reading-article" data-static-page data-static-article="100">
+  <a class="skip-link" href="#main" data-skip>跳至正文</a>
+  <header class="site-header">
+    <button id="sidebar-toggle" class="icon-button mobile-menu js-only" type="button" aria-label="打开导航" aria-controls="site-sidebar" aria-expanded="false" title="打开导航"><span class="icon icon-menu" aria-hidden="true"></span></button>
+    <a class="site-brand" href="/"><img src="/images/favicon.png" width="36" height="36" alt=""><span>PostgreSQL <strong>Howto</strong><small>中文版</small></span></a>
+    <nav class="app-nav" aria-label="主导航"><a href="/">首页</a><a href="/#/docs/topics">专题</a><a href="/#/docs/paths">学习路径</a><a href="/articles/">全部文章</a><a href="https://github.com/xiongcccc/postgres-howto" target="_blank" rel="noopener">GitHub<span class="icon icon-arrow-up-right" aria-hidden="true"></span></a></nav>
+    <div class="header-tools js-only"><button class="icon-button" type="button" data-open-search aria-label="搜索文章" aria-keyshortcuts="Control+K Meta+K" title="搜索文章 (Ctrl / Cmd + K)"><span class="icon icon-search" aria-hidden="true"></span></button><button class="icon-button theme-toggle" aria-label="切换阅读主题" title="切换阅读主题"><span class="icon icon-monitor" aria-hidden="true"></span></button></div>
+  </header>
+  <button class="sidebar-backdrop" type="button" aria-label="关闭导航" tabindex="-1" hidden></button>
+  <aside class="sidebar" id="site-sidebar" aria-label="文章导航"><div class="sidebar-nav"><div class="sidebar-heading"><span>知识导航</span><button class="icon-button" data-close-nav aria-label="关闭导航" title="关闭导航"><span class="icon icon-x" aria-hidden="true"></span></button></div><nav class="catalog-navigation" aria-label="文章分类"><ul class="catalog-pages"><li><a href="/#/README">首页</a></li><li><a href="/#/docs/topics">专题</a></li><li><a href="/#/docs/paths">学习路径</a></li><li><a href="/articles/">全部文章</a></li></ul><p class="sidebar-label">技术专题 <span>主归属文章</span></p><details data-topic="performance"><summary><span>查询性能与观测</span><small>16</small></summary><ul><li><a href="/articles/108/"><span class="article-number">108</span><span>一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离</span></a></li><li><a href="/articles/101/"><span class="article-number">101</span><span>PostgreSQL 性能排查：规划开销、分区锁与表膨胀</span></a></li><li><a href="/articles/1/"><span class="article-number">1</span><span>EXPLAIN 为什么应该带 BUFFERS</span></a></li><li><a href="/articles/5/"><span class="article-number">5</span><span>pg_stat_statements 入门</span></a></li><li><a href="/articles/6/"><span class="article-number">6</span><span>pg_stat_statements 进阶</span></a></li><li><a href="/articles/7/"><span class="article-number">7</span><span>pg_stat_statements 深入使用</span></a></li><li><a href="/articles/10/"><span class="article-number">10</span><span>使用 FlameGraph 和 eBPF/perf 排查性能</span></a></li><li><a href="/articles/11/"><span class="article-number">11</span><span>临时监控方法</span></a></li><li><a href="/articles/12/"><span class="article-number">12</span><span>为 pg_stat_statements 找到真实 SQL 样例</span></a></li><li><a href="/articles/13/"><span class="article-number">13</span><span>如何做基准测试</span></a></li><li><a href="/articles/14/"><span class="article-number">14</span><span>如何判断一个查询是否太慢</span></a></li><li><a href="/articles/50/"><span class="article-number">50</span><span>基准测试迭代前后的准备工作</span></a></li><li><a href="/articles/56/"><span class="article-number">56</span><span>让非生产环境 Planner 更像生产环境</span></a></li><li><a href="/articles/89/"><span class="article-number">89</span><span>OLTP 粗略配置调优</span></a></li><li><a href="/articles/92/"><span class="article-number">92</span><span>work_mem 调优</span></a></li><li><a href="/articles/94/"><span class="article-number">94</span><span>运行 ANALYZE 收集统计信息</span></a></li></ul></details><details data-topic="ops"><summary><span>运维排障与日常工具</span><small>21</small></summary><ul><li><a href="/articles/2/"><span class="article-number">2</span><span>排查并加速 Postgres 停止和重启</span></a></li><li><a href="/articles/3/"><span class="article-number">3</span><span>排查 Postgres 启动缓慢</span></a></li><li><a href="/articles/8/"><span class="article-number">8</span><span>加速大库 pg_dump</span></a></li><li><a href="/articles/19/"><span class="article-number">19</span><span>导入 CSV 到 Postgres</span></a></li><li><a href="/articles/20/"><span class="article-number">20</span><span>使用 pg_restore</span></a></li><li><a href="/articles/21/"><span class="article-number">21</span><span>不发额外查询设置 application_name</span></a></li><li><a href="/articles/25/"><span class="article-number">25</span><span>如何退出 psql</span></a></li><li><a href="/articles/27/"><span class="article-number">27</span><span>在 Ubuntu 22.04 编译 Postgres</span></a></li><li><a href="/articles/34/"><span class="article-number">34</span><span>初步配置调优</span></a></li><li><a href="/articles/47/"><span class="article-number">47</span><span>安装带 plpython3u 的 Postgres 16</span></a></li><li><a href="/articles/49/"><span class="article-number">49</span><span>在 psql 脚本中使用变量</span></a></li><li><a href="/articles/51/"><span class="article-number">51</span><span>通过观察 psql 学习元数据</span></a></li><li><a href="/articles/58/"><span class="article-number">58</span><span>使用 Docker 运行 Postgres</span></a></li><li><a href="/articles/59/"><span class="article-number">59</span><span>psql 调优</span></a></li><li><a href="/articles/68/"><span class="article-number">68</span><span>psql 快捷操作</span></a></li><li><a href="/articles/81/"><span class="article-number">81</span><span>在 psql 中绘图</span></a></li><li><a href="/articles/86/"><span class="article-number">86</span><span>修复 psql 中的 \\e 编辑器问题</span></a></li><li><a href="/articles/87/"><span class="article-number">87</span><span>修改数据库中所有对象所有者</span></a></li><li><a href="/articles/88/"><span class="article-number">88</span><span>面向 OLTP 的 Linux 参数调优</span></a></li><li><a href="/articles/90/"><span class="article-number">90</span><span>使用 lib_pgquery 归一化和匹配查询</span></a></li><li><a href="/articles/91/"><span class="article-number">91</span><span>格式化 psql 脚本文本输出</span></a></li></ul></details><details data-topic="locks" open data-current-topic="true"><summary><span>锁、事务与在线变更</span><small>19</small></summary><ul><li><a href="/articles/107/"><span class="article-number">107</span><span>外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务</span></a></li><li><a href="/articles/104/"><span class="article-number">104</span><span>SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争</span></a></li><li><a href="/articles/99/"><span class="article-number">99</span><span>如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除</span></a></li><li><a href="/articles/100/" aria-current="page"><span class="article-number">100</span><span>如何排查 LISTEN／NOTIFY 引起的提交阻塞</span></a></li><li><a href="/articles/22/"><span class="article-number">22</span><span>heavyweight locks 分析：基础</span></a></li><li><a href="/articles/30/"><span class="article-number">30</span><span>处理 OLTP 长事务</span></a></li><li><a href="/articles/33/"><span class="article-number">33</span><span>无停机重定义主键</span></a></li><li><a href="/articles/35/"><span class="article-number">35</span><span>使用子事务</span></a></li><li><a href="/articles/36/"><span class="article-number">36</span><span>单条查询实现 find-or-insert</span></a></li><li><a href="/articles/37/"><span class="article-number">37</span><span>无停机启用 data checksums</span></a></li><li><a href="/articles/42/"><span class="article-number">42</span><span>heavyweight locks 分析：锁树</span></a></li><li><a href="/articles/55/"><span class="article-number">55</span><span>删除列</span></a></li><li><a href="/articles/60/"><span class="article-number">60</span><span>添加列</span></a></li><li><a href="/articles/69/"><span class="article-number">69</span><span>无停机添加 CHECK 约束</span></a></li><li><a href="/articles/70/"><span class="article-number">70</span><span>添加外键</span></a></li><li><a href="/articles/71/"><span class="article-number">71</span><span>理解 DDL 被什么阻塞</span></a></li><li><a href="/articles/72/"><span class="article-number">72</span><span>移除外键</span></a></li><li><a href="/articles/73/"><span class="article-number">73</span><span>heavyweight locks 分析：持久监控</span></a></li><li><a href="/articles/83/"><span class="article-number">83</span><span>修改 Postgres 参数</span></a></li></ul></details><details data-topic="indexes"><summary><span>索引治理</span><small>9</small></summary><ul><li><a href="/articles/15/"><span class="article-number">15</span><span>监控 CREATE INDEX / REINDEX 进度</span></a></li><li><a href="/articles/18/"><span class="article-number">18</span><span>过度索引</span></a></li><li><a href="/articles/53/"><span class="article-number">53</span><span>索引维护</span></a></li><li><a href="/articles/54/"><span class="article-number">54</span><span>使用 pg_amcheck 检查 btree 索引损坏</span></a></li><li><a href="/articles/61/"><span class="article-number">61</span><span>创建索引：基础</span></a></li><li><a href="/articles/62/"><span class="article-number">62</span><span>创建索引：进阶</span></a></li><li><a href="/articles/75/"><span class="article-number">75</span><span>查找未使用索引</span></a></li><li><a href="/articles/76/"><span class="article-number">76</span><span>查找冗余索引</span></a></li><li><a href="/articles/79/"><span class="article-number">79</span><span>并行重建大量索引并避免死锁</span></a></li></ul></details><details data-topic="storage"><summary><span>存储、WAL 与 Vacuum</span><small>19</small></summary><ul><li><a href="/articles/102/"><span class="article-number">102</span><span>Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢</span></a></li><li><a href="/articles/4/"><span class="article-number">4</span><span>理解 tuple 在表中的稀疏存储</span></a></li><li><a href="/articles/9/"><span class="article-number">9</span><span>理解 LSN 和 WAL 文件名</span></a></li><li><a href="/articles/16/"><span class="article-number">16</span><span>容易踩坑的 Postgres 特性</span></a></li><li><a href="/articles/26/"><span class="article-number">26</span><span>检查 btree 索引损坏</span></a></li><li><a href="/articles/31/"><span class="article-number">31</span><span>排查 pg_wal 目录增长</span></a></li><li><a href="/articles/39/"><span class="article-number">39</span><span>如何破坏数据库：制造损坏</span></a></li><li><a href="/articles/40/"><span class="article-number">40</span><span>如何破坏数据库：模拟 XID 回卷</span></a></li><li><a href="/articles/41/"><span class="article-number">41</span><span>如何破坏数据库：有害负载</span></a></li><li><a href="/articles/44/"><span class="article-number">44</span><span>监控 XID 回卷风险</span></a></li><li><a href="/articles/45/"><span class="article-number">45</span><span>监控 xmin horizon 避免回卷和膨胀</span></a></li><li><a href="/articles/46/"><span class="article-number">46</span><span>处理 bloat</span></a></li><li><a href="/articles/52/"><span class="article-number">52</span><span>降低 WAL 生成速率</span></a></li><li><a href="/articles/66/"><span class="article-number">66</span><span>一个 page 能插入多少 tuple</span></a></li><li><a href="/articles/67/"><span class="article-number">67</span><span>Autovacuum 队列和进度</span></a></li><li><a href="/articles/74/"><span class="article-number">74</span><span>刷新 OS page cache 和 Postgres buffer pool</span></a></li><li><a href="/articles/80/"><span class="article-number">80</span><span>查找有 int4 主键溢出风险的表</span></a></li><li><a href="/articles/84/"><span class="article-number">84</span><span>列顺序与存储优化：Column Tetris</span></a></li><li><a href="/articles/85/"><span class="article-number">85</span><span>快速检查值的数据类型和存储大小</span></a></li></ul></details><details data-topic="sql"><summary><span>SQL、数据建模与扩展玩法</span><small>12</small></summary><ul><li><a href="/articles/103/"><span class="article-number">103</span><span>PostgreSQL 排序规则：文本比较、索引与升级风险</span></a></li><li><a href="/articles/23/"><span class="article-number">23</span><span>在 Postgres 中调用 OpenAI API 实现语义搜索和 GPT Chat</span></a></li><li><a href="/articles/24/"><span class="article-number">24</span><span>使用元数据</span></a></li><li><a href="/articles/28/"><span class="article-number">28</span><span>数组使用：基础</span></a></li><li><a href="/articles/29/"><span class="article-number">29</span><span>数组使用：进阶</span></a></li><li><a href="/articles/32/"><span class="article-number">32</span><span>加速批量加载</span></a></li><li><a href="/articles/43/"><span class="article-number">43</span><span>SQL 格式化与风格指南</span></a></li><li><a href="/articles/48/"><span class="article-number">48</span><span>生成测试数据</span></a></li><li><a href="/articles/64/"><span class="article-number">64</span><span>使用 UUID</span></a></li><li><a href="/articles/65/"><span class="article-number">65</span><span>UUID v7 与分区</span></a></li><li><a href="/articles/78/"><span class="article-number">78</span><span>使用创建时间和统计信息估算大表同比增长</span></a></li><li><a href="/articles/82/"><span class="article-number">82</span><span>用 SQL 绘制霜花图案</span></a></li></ul></details><details data-topic="replication"><summary><span>复制、校验与升级</span><small>7</small></summary><ul><li><a href="/articles/109/"><span class="article-number">109</span><span>备库查询为什么被取消：WAL 回放冲突与等待预算</span></a></li><li><a href="/articles/106/"><span class="article-number">106</span><span>PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化</span></a></li><li><a href="/articles/105/"><span class="article-number">105</span><span>深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复</span></a></li><li><a href="/articles/17/"><span class="article-number">17</span><span>判断复制延迟</span></a></li><li><a href="/articles/57/"><span class="article-number">57</span><span>将物理副本转换为逻辑副本</span></a></li><li><a href="/articles/77/"><span class="article-number">77</span><span>大型高负载集群的无停机大版本升级</span></a></li><li><a href="/articles/93/"><span class="article-number">93</span><span>排查流复制延迟</span></a></li></ul></details><details data-topic="practice"><summary><span>实践剖析</span><small>3</small></summary><ul><li><a href="/articles/96/"><span class="article-number">96</span><span>为什么 actual time 和 Execution Time 有很大差异？</span></a></li><li><a href="/articles/97/"><span class="article-number">97</span><span>深入浅出 bpftrace 分析 PostgreSQL</span></a></li><li><a href="/articles/98/"><span class="article-number">98</span><span>当 PostgreSQL 慢在数据库之外：用 bpftrace 打通 SQL 与内核观测</span></a></li></ul></details><details data-topic="engineering"><summary><span>工程实践与后记</span><small>3</small></summary><ul><li><a href="/articles/38/"><span class="article-number">38</span><span>如何不把 DBA/DBRE 工作搞砸</span></a></li><li><a href="/articles/63/"><span class="article-number">63</span><span>如何帮助别人</span></a></li><li><a href="/articles/95/"><span class="article-number">95</span><span>后记</span></a></li></ul></details><div class="sidebar-resources"><a href="/#/docs/series">系列阅读</a><a href="/#/docs/conferences">会议精选</a><a href="/#/docs/about">关于项目</a></div></nav></div></aside>
+  <main class="content"><article id="main" class="markdown-section" tabindex="-1"><div class="article-topline"><nav class="breadcrumbs" aria-label="面包屑"><a href="/">首页</a><span aria-hidden="true">/</span><a href="/#/docs/topics?id=topic-locks">锁、事务与在线变更</a></nav></div><h1 id="如何排查-listen／notify-引起的提交阻塞">如何排查 LISTEN／NOTIFY 引起的提交阻塞</h1><div class="article-meta"><p class="article-kicker"><a href="/#/docs/find?series=practice">实践剖析</a> · 会议材料 <span class="article-id">#100</span> <time datetime="2026-09-10">收录于 2026-09-10</time></p><p class="article-version">源码与实测基线：PostgreSQL 16.14。</p><details><summary>来源与验证说明</summary><dl><dt>原题</dt><dd>LISTEN Carefully: How NOTIFY Can Trip Up Your Database</dd><dt>来源</dt><dd><a href="https://vyruss.org/computing/slides/pgdata2026_listen_carefully.pdf" target="_blank" rel="noopener">Jimmy Angelakos（pgEdge）</a></dd><dt>中文翻译与校订</dt><dd>xiongcc</dd><dt>验证状态</dt><dd>隔离集群验证通知锁与队尾时序；未测吞吐、真实备库与故障恢复。（2026-09-10） <a href="/#/maintenance/100-validation">验证记录</a></dd></dl><blockquote>
+<p>会议精选 · PG DATA 2026 · 锁、事务与在线变更<br>
+基于 Jimmy Angelakos（pgEdge）的 <a href="https://vyruss.org/computing/slides/pgdata2026_listen_carefully.pdf">LISTEN Carefully: How NOTIFY Can Trip Up Your Database</a> 整理。演讲时间：2026-06-05，Chicago。<br>
+中文整理与技术校订：xiongcc。本文在原案例基础上补充了 PostgreSQL 16.14 的源码分析与复现实验。</p>
+</blockquote>
+</details></div><details class="article-toc"><summary>本页目录<span class="icon icon-chevron-down" aria-hidden="true"></span></summary><nav aria-label="本页目录"><ol><li class="toc-level-2"><a data-heading="notify-在什么时候发送？" href="#notify-%E5%9C%A8%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%8F%91%E9%80%81%EF%BC%9F">NOTIFY 在什么时候发送？</a></li><li class="toc-level-2"><a data-heading="commit-为什么会排队？" href="#commit-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E6%8E%92%E9%98%9F%EF%BC%9F">COMMIT 为什么会排队？</a></li><li class="toc-level-2"><a data-heading="在自己的数据库里怎么查？" href="#%E5%9C%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93%E9%87%8C%E6%80%8E%E4%B9%88%E6%9F%A5%EF%BC%9F">在自己的数据库里怎么查？</a></li><li class="toc-level-3"><a data-heading="通知队列占用是另一个指标" href="#%E9%80%9A%E7%9F%A5%E9%98%9F%E5%88%97%E5%8D%A0%E7%94%A8%E6%98%AF%E5%8F%A6%E4%B8%80%E4%B8%AA%E6%8C%87%E6%A0%87">通知队列占用是另一个指标</a></li><li class="toc-level-2"><a data-heading="jimmy-的处理办法：合并发送" href="#jimmy-%E7%9A%84%E5%A4%84%E7%90%86%E5%8A%9E%E6%B3%95%EF%BC%9A%E5%90%88%E5%B9%B6%E5%8F%91%E9%80%81">Jimmy 的处理办法：合并发送</a></li><li class="toc-level-2"><a data-heading="暂存表里的通知会不会漏发？" href="#%E6%9A%82%E5%AD%98%E8%A1%A8%E9%87%8C%E7%9A%84%E9%80%9A%E7%9F%A5%E4%BC%9A%E4%B8%8D%E4%BC%9A%E6%BC%8F%E5%8F%91%EF%BC%9F">暂存表里的通知会不会漏发？</a></li><li class="toc-level-3"><a data-heading="先看-unlogged-的取舍" href="#%E5%85%88%E7%9C%8B-unlogged-%E7%9A%84%E5%8F%96%E8%88%8D">先看 UNLOGGED 的取舍</a></li><li class="toc-level-3"><a data-heading="10-秒以前的数据究竟去了哪里？" href="#10-%E7%A7%92%E4%BB%A5%E5%89%8D%E7%9A%84%E6%95%B0%E6%8D%AE%E7%A9%B6%E7%AB%9F%E5%8E%BB%E4%BA%86%E5%93%AA%E9%87%8C%EF%BC%9F">10 秒以前的数据究竟去了哪里？</a></li><li class="toc-level-3"><a data-heading="没有下一笔业务写入，队尾由谁发送？" href="#%E6%B2%A1%E6%9C%89%E4%B8%8B%E4%B8%80%E7%AC%94%E4%B8%9A%E5%8A%A1%E5%86%99%E5%85%A5%EF%BC%8C%E9%98%9F%E5%B0%BE%E7%94%B1%E8%B0%81%E5%8F%91%E9%80%81%EF%BC%9F">没有下一笔业务写入，队尾由谁发送？</a></li><li class="toc-level-2"><a data-heading="如果事件不能丢，怎样使用-notify？" href="#%E5%A6%82%E6%9E%9C%E4%BA%8B%E4%BB%B6%E4%B8%8D%E8%83%BD%E4%B8%A2%EF%BC%8C%E6%80%8E%E6%A0%B7%E4%BD%BF%E7%94%A8-notify%EF%BC%9F">如果事件不能丢，怎样使用 NOTIFY？</a></li><li class="toc-level-2"><a data-heading="回到提交阻塞本身" href="#%E5%9B%9E%E5%88%B0%E6%8F%90%E4%BA%A4%E9%98%BB%E5%A1%9E%E6%9C%AC%E8%BA%AB">回到提交阻塞本身</a></li><li class="toc-level-2"><a data-heading="资料与复现" href="#%E8%B5%84%E6%96%99%E4%B8%8E%E5%A4%8D%E7%8E%B0">资料与复现</a></li></ol></nav></details>
+<p>业务 SQL 看起来并不慢，事务却卡在 COMMIT。排查锁等待时，日志里出现了这样一个对象：</p>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>object 0 of class 1262 of database 0
+</code></pre></div>
+<p>这是什么锁？为什么发送一条通知，会影响业务事务提交？</p>
+<p>Jimmy Angelakos 在 PG DATA 2026 分享的案例就遇到了这个问题。当时数据库通过触发器发送 NOTIFY，旧应用收到通知后，再把事件转发到 Redis。随着流量增长，这条通知链路开始拖慢事务提交。</p>
+<p>原因藏在 NOTIFY 的提交处理中。下面从两个会话的收发开始，看它什么时候需要锁，以及如何确认自己的数据库是否也卡在这里。</p>
+<h2 id="notify-在什么时候发送？">NOTIFY 在什么时候发送？</h2>
+<p>先看两个连接到<strong>同一个数据库</strong>的会话。</p>
+<p>会话 A 注册监听，使用自动提交，或者显式提交 LISTEN 所在事务：</p>
+<!-- example: listen -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code>LISTEN order_watchers_json<span class="token punctuation">;</span>
+</code></pre></div>
+<p>会话 B 发送通知：</p>
+<!-- example: publish -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">BEGIN</span><span class="token punctuation">;</span>
+<span class="token keyword">SELECT</span> pg_notify<span class="token punctuation">(</span><span class="token string">'order_watchers_json'</span><span class="token punctuation">,</span> <span class="token string">'{"order_id":42,"status":"completed"}'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">COMMIT</span><span class="token punctuation">;</span>
+</code></pre></div>
+<p>A 可以收到 channel、payload 和发送进程 PID。如果用 psql 做实验，可能需要再执行一条查询，终端才会显示通知。应用程序通常通过驱动提供的接口接收。</p>
+<p>这里有几个使用时需要注意的细节：</p>
+<ul>
+<li>发送事务提交后，通知才会对外生效；回滚则不发送。</li>
+<li>LISTEN 的注册也在提交时生效，且绑定数据库会话。接收连接应保持可用，避免长事务。</li>
+<li>同一个事务里，相同 channel、相同 payload 的重复通知可以被合并；不同事务的通知不会因此合并。</li>
+<li>默认配置下 payload 必须<strong>小于 8000 字节</strong>，不是 8000 个字符。中文和 JSON 都要按字节计算。</li>
+<li>离线期间的通知不会在重连后自动补发；没有业务消费确认、重试和持久订阅进度。</li>
+</ul>
+<p>这意味着 NOTIFY 更适合告诉应用“有变化，过来看一下”。需要断线后补领的事件，仍要另外保存。payload 也不要携带敏感凭证，同一数据库里的其他会话可以监听这个 channel。<a href="https://www.postgresql.org/docs/18/sql-notify.html">NOTIFY 文档</a></p>
+<h2 id="commit-为什么会排队？">COMMIT 为什么会排队？</h2>
+<p>回到日志里的 class 1262，它对应 <code>pg_database</code>。这里很容易误以为有人锁住了系统表，实际上，NOTIFY 借用了这个目录的编号来标识一个特殊对象锁，锁类型是 <code>object</code>，而非 <code>relation</code>。</p>
+<p>沿 PostgreSQL 16.14 的 <code>PreCommit_Notify()</code> 往下看，带有待发送通知的事务会取得这把重量级锁，串行地向通知队列写入数据。锁会一直持有到事务结束，从而保证通知队列的提交顺序。<a href="https://github.com/postgres/postgres/blob/REL_16_14/src/backend/commands/async.c#L940">对应源码</a></p>
+<pre data-lang="mermaid"><code>flowchart TB
+    A[&quot;多个业务事务&lt;br/&gt;触发器调用 pg_notify&quot;]
+    B[&quot;COMMIT 阶段&lt;br/&gt;竞争同一个特殊对象锁&quot;]
+    C[&quot;持锁者完成提交处理&lt;br/&gt;后续发送事务才能推进&quot;]
+    A --&gt; B --&gt; C</code></pre>
+<p>一次事务中的多条通知会一起处理。因此，100 个事务各发送一条通知，比一个事务集中发送 100 条通知，有更多事务参与这把锁的竞争。不发送通知的普通事务，不会因为这段处理而来抢锁。</p>
+<p>还有一个不太直观的地方：<strong>通知只在当前数据库内投递，这把特殊锁却在同一个实例内共享。</strong> 换 channel，甚至换到同实例的另一个数据库，仍可能互相等待。</p>
+<p>为确认这一点，本次在独立的 PG16.14 临时集群里做了一个实验：让数据库 A 中的事务写入数据并发送通知，再人为制造同步复制等待，使它停在提交阶段。随后，在数据库 B 中向另一个 channel 发送通知。</p>
+<p>观察结果如下。表中只保留与判断有关的字段，完整检查脚本见文末：</p>
+<div class="table-scroll" role="region" aria-label="表格，可横向滚动" tabindex="0"><table>
+<thead>
+<tr>
+<th>会话</th>
+<th>所在数据库</th>
+<th>对象锁模式</th>
+<th>granted</th>
+<th>等待状态</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>howto100-A</td>
+<td>postgres</td>
+<td>AccessExclusiveLock</td>
+<td>true</td>
+<td>SyncRep</td>
+</tr>
+<tr>
+<td>howto100-B</td>
+<td>notify_other</td>
+<td>AccessExclusiveLock</td>
+<td>false</td>
+<td>Lock 类型等待</td>
+</tr>
+</tbody></table>
+</div>
+<p>A 等待同步复制时仍然持锁，B 因而无法完成通知提交。解除实验中的同步复制等待后，两边都正常完成了提交。排查时，除了寻找 NOTIFY 的等待者，还得继续看持锁事务卡在哪里。</p>
+<p>这个实验通过配置一个不存在的同步备库名称来制造等待，没有搭建真实备库。配置只用于隔离实验，别在业务库里照做。下文涉及的内部锁标识也以 PG16.14 为准，其他版本需核对对应源码。</p>
+<h2 id="在自己的数据库里怎么查？">在自己的数据库里怎么查？</h2>
+<p>先看活跃等待，再定位具体锁：</p>
+<!-- example: activity -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SELECT</span> pid<span class="token punctuation">,</span> datname<span class="token punctuation">,</span> application_name<span class="token punctuation">,</span> state<span class="token punctuation">,</span>
+       wait_event_type<span class="token punctuation">,</span> wait_event<span class="token punctuation">,</span>
+       clock_timestamp<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> xact_start <span class="token keyword">AS</span> xact_age<span class="token punctuation">,</span>
+       pg_blocking_pids<span class="token punctuation">(</span>pid<span class="token punctuation">)</span> <span class="token keyword">AS</span> blockers<span class="token punctuation">,</span>
+       query
+<span class="token keyword">FROM</span> pg_stat_activity
+<span class="token keyword">WHERE</span> wait_event <span class="token operator">IS</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span>
+  <span class="token operator">AND</span> pid <span class="token operator">&lt;></span> pg_backend_pid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> xact_start NULLS <span class="token keyword">LAST</span><span class="token punctuation">;</span>
+</code></pre></div>
+<p>针对上述源码路径，可以筛选特殊对象锁。使用目录名称获得 OID，而不是直接写死 1262：</p>
+<!-- example: notify-locks -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SELECT</span> l<span class="token punctuation">.</span>pid<span class="token punctuation">,</span> a<span class="token punctuation">.</span>datname<span class="token punctuation">,</span> a<span class="token punctuation">.</span>application_name<span class="token punctuation">,</span>
+       l<span class="token punctuation">.</span>locktype<span class="token punctuation">,</span> l<span class="token punctuation">.</span><span class="token keyword">mode</span><span class="token punctuation">,</span> l<span class="token punctuation">.</span>granted<span class="token punctuation">,</span>
+       l<span class="token punctuation">.</span><span class="token keyword">database</span><span class="token punctuation">,</span> l<span class="token punctuation">.</span>classid<span class="token punctuation">,</span> l<span class="token punctuation">.</span>objid<span class="token punctuation">,</span> l<span class="token punctuation">.</span>objsubid<span class="token punctuation">,</span>
+       a<span class="token punctuation">.</span>wait_event_type<span class="token punctuation">,</span> a<span class="token punctuation">.</span>wait_event<span class="token punctuation">,</span>
+       pg_blocking_pids<span class="token punctuation">(</span>l<span class="token punctuation">.</span>pid<span class="token punctuation">)</span> <span class="token keyword">AS</span> blockers<span class="token punctuation">,</span>
+       a<span class="token punctuation">.</span>query
+<span class="token keyword">FROM</span> pg_locks <span class="token keyword">AS</span> l
+<span class="token keyword">LEFT</span> <span class="token keyword">JOIN</span> pg_stat_activity <span class="token keyword">AS</span> a <span class="token keyword">ON</span> a<span class="token punctuation">.</span>pid <span class="token operator">=</span> l<span class="token punctuation">.</span>pid
+<span class="token keyword">WHERE</span> l<span class="token punctuation">.</span>locktype <span class="token operator">=</span> <span class="token string">'object'</span>
+  <span class="token operator">AND</span> l<span class="token punctuation">.</span><span class="token keyword">database</span> <span class="token operator">=</span> <span class="token number">0</span>
+  <span class="token operator">AND</span> l<span class="token punctuation">.</span>classid <span class="token operator">=</span> <span class="token string">'pg_catalog.pg_database'</span>::regclass
+  <span class="token operator">AND</span> l<span class="token punctuation">.</span>objid <span class="token operator">=</span> <span class="token number">0</span>
+  <span class="token operator">AND</span> l<span class="token punctuation">.</span>objsubid <span class="token operator">=</span> <span class="token number">0</span>
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> l<span class="token punctuation">.</span>granted<span class="token punctuation">,</span> l<span class="token punctuation">.</span>pid<span class="token punctuation">;</span>
+</code></pre></div>
+<p>重点找 <code>granted=false</code> 的等待者与 <code>granted=true</code> 的持锁者，再看持锁者的 <code>wait_event</code>。查看其他用户的完整查询需要相应监控权限；如果等待很短，一次查询可能恰好错过，需要在问题发生时多采几次。</p>
+<p>排查触发器时，可以先列出定义，再阅读其调用函数：</p>
+<!-- example: triggers -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SELECT</span> t<span class="token punctuation">.</span>tgrelid::regclass <span class="token keyword">AS</span> table_name<span class="token punctuation">,</span>
+       t<span class="token punctuation">.</span>tgname<span class="token punctuation">,</span>
+       t<span class="token punctuation">.</span>tgfoid::regprocedure <span class="token keyword">AS</span> trigger_function<span class="token punctuation">,</span>
+       pg_get_triggerdef<span class="token punctuation">(</span>t<span class="token punctuation">.</span>oid<span class="token punctuation">)</span> <span class="token keyword">AS</span> definition
+<span class="token keyword">FROM</span> pg_trigger <span class="token keyword">AS</span> t
+<span class="token keyword">WHERE</span> <span class="token operator">NOT</span> t<span class="token punctuation">.</span>tgisinternal
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">;</span>
+</code></pre></div>
+<p><code>pg_notify</code> 也可能藏在间接调用的函数或应用 SQL 中，不能只搜索触发器文本。</p>
+<h3 id="通知队列占用是另一个指标">通知队列占用是另一个指标</h3>
+<!-- example: queue-usage -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SELECT</span> pg_notification_queue_usage<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div>
+<p>这个值反映 PostgreSQL 内部通知队列的占用比例。即使队列很空，发送事务之间也可能有锁竞争，两个指标要分开看。</p>
+<p>如果占用持续上涨，可以检查监听连接是否长时间停留在事务中，这会拖延通知交付或队列清理。队列满时，带 NOTIFY 的事务可能在提交阶段失败。</p>
+<h2 id="jimmy-的处理办法：合并发送">Jimmy 的处理办法：合并发送</h2>
+<p>旧应用不方便改，Jimmy 就把调整放在了数据库触发器里：</p>
+<ol>
+<li>触发器将 payload 插入一张 UNLOGGED 暂存表。</li>
+<li>使用 <code>pg_try_advisory_xact_lock()</code> 非阻塞地争取发送资格。</li>
+<li>没拿到锁的事务跳过发送；拿到锁的事务读取可见队列记录，批量调用 <code>pg_notify()</code>。</li>
+<li>发送者在提交时一次处理本事务积累的通知。</li>
+</ol>
+<p>这样，多个业务事务积累的通知有机会由一次发送事务集中处理，竞争就少了。代价是抢到 advisory lock 的那个业务事务需要多做一些工作：读取暂存记录、发送通知，然后完成自己的提交。其余事务跳过发送，但正常的行锁、I/O 和提交等待仍然存在。</p>
+<p>原文的压力测试使用了带同步备库的生产克隆环境，调整后吞吐有所改善。本次没有重做吞吐测试，重点检查的是这段做法在低流量和停流时会怎样。</p>
+<h2 id="暂存表里的通知会不会漏发？">暂存表里的通知会不会漏发？</h2>
+<h3 id="先看-unlogged-的取舍">先看 UNLOGGED 的取舍</h3>
+<p>UNLOGGED 表的数据变更不写普通 WAL，异常停机恢复后会被清空，内容也不会复制到物理备库。业务表成功提交，不代表对应暂存事件在故障切换后还存在。<a href="https://www.postgresql.org/docs/18/sql-createtable.html">UNLOGGED 语义</a></p>
+<p>如果通知只是“缓存可能过期，请重新读取状态”，而状态可从持久数据重建，这个取舍可能成立。如果消费者必须逐条处理每一次变更，暂存表的数据丢失就会成为业务问题，需要采用持久存储。</p>
+<h3 id="10-秒以前的数据究竟去了哪里？">10 秒以前的数据究竟去了哪里？</h3>
+<p>原演讲第 19–20 页先 DELETE 一批可见记录，再从 <code>RETURNING</code> 结果里筛出最近 10 秒的记录发送。<strong>外层过滤不会撤销 DELETE：更旧的记录也被删除，只是不发送。</strong></p>
+<p>本次用一条 20 秒以前的记录验证了这个行为：执行删除和外层过滤后，待发送结果为 0 条，暂存表中的记录也变成了 0 条。这条通知已经被丢弃。</p>
+<p>所以，10 秒窗口本身就是一项业务取舍。尤其要留意长事务：记录刚刚提交、对发送者可见时，生成时间可能已经超过 10 秒。</p>
+<h3 id="没有下一笔业务写入，队尾由谁发送？">没有下一笔业务写入，队尾由谁发送？</h3>
+<p>考虑下面的并发时序：</p>
+<pre data-lang="mermaid"><code>flowchart TB
+    A[&quot;A 抢到发送锁&lt;br/&gt;扫描当前可见队列&quot;]
+    B[&quot;B 写入新记录&lt;br/&gt;抢锁失败，跳过发送并提交&quot;]
+    C[&quot;A 提交并释放发送锁&lt;br/&gt;B 的记录仍留在队列&quot;]
+    D[&quot;流量停止&lt;br/&gt;没有下一次触发器来处理队尾&quot;]
+    A --&gt; B --&gt; C --&gt; D</code></pre>
+<p>按这个顺序安排两个会话后，实验结果是：B 抢锁返回 false，A 提交结束后，暂存表里还剩 1 条记录。</p>
+<p>A 的扫描快照看不到 B 后来提交的记录。如果后续一直有业务写入，下一次触发器还有机会把它带走；流量一停，这条记录就留下了。因此，采用类似做法时还需要周期性补扫。压测结束后再看一眼队尾，往往比持续加压时更容易发现这个问题。</p>
+<p>这里复现的是幻灯片公开代码的最小模型，Jimmy 的完整应用是否有其他补扫逻辑，材料中没有给出。</p>
+<p>批量发送也要限制每批数量，否则积压会集中压到一个业务事务上。单条 payload 超限就可能使发送报错、事务回滚。监控时除了暂存数量，也值得记录最老事件的年龄，少量记录长期不动同样需要处理。</p>
+<h2 id="如果事件不能丢，怎样使用-notify？">如果事件不能丢，怎样使用 NOTIFY？</h2>
+<p>在这个案例之外，还有一种值得考虑的做法：把事件保存在普通表里，与业务变更在同一个事务中提交。NOTIFY 只用于唤醒消费者，消费者回到表里领取待处理事件。这样，即使错过通知，数据还在。</p>
+<p>下面是一个简化的 outbox 表，用来说明数据和通知如何分开：</p>
+<!-- example: outbox -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> app_outbox <span class="token punctuation">(</span>
+    event_id <span class="token keyword">bigint</span> GENERATED ALWAYS <span class="token keyword">AS</span> <span class="token keyword">IDENTITY</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
+    created_at timestamptz <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword">DEFAULT</span> clock_timestamp<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    event_type <span class="token keyword">text</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    payload jsonb <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    processed_at timestamptz
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">INDEX</span> app_outbox_pending_idx <span class="token keyword">ON</span> app_outbox <span class="token punctuation">(</span>event_id<span class="token punctuation">)</span>
+<span class="token keyword">WHERE</span> processed_at <span class="token operator">IS</span> <span class="token boolean">NULL</span><span class="token punctuation">;</span>
+</code></pre></div>
+<p>为了减少业务事务对通知锁的竞争，可以由独立发送者定期检查待处理事件、合并发送唤醒通知：</p>
+<!-- example: wakeup -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SELECT</span> pg_notify<span class="token punctuation">(</span><span class="token string">'outbox_wakeup'</span><span class="token punctuation">,</span> <span class="token string">'pending'</span><span class="token punctuation">)</span>
+<span class="token keyword">WHERE</span> <span class="token keyword">EXISTS</span> <span class="token punctuation">(</span>
+    <span class="token keyword">SELECT</span> <span class="token number">1</span> <span class="token keyword">FROM</span> app_outbox <span class="token keyword">WHERE</span> processed_at <span class="token operator">IS</span> <span class="token boolean">NULL</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div>
+<p>这条查询在发送者自己的短事务中执行，发送间隔取决于业务能接受的延迟。发送通知后，事件仍保留为待处理状态，只有消费者处理成功才确认。</p>
+<p>消费者启动时，应先 LISTEN 并提交，再在新事务里扫描已有待处理数据；之后响应通知，同时保留周期性补扫。重连后重新注册并重新扫描。<a href="https://www.postgresql.org/docs/18/sql-listen.html">监听初始化规则</a></p>
+<p>这需要调整消费逻辑，不能直接替换原案例中的触发器。示例也只表达单消费状态：实际使用还要处理失败重试与幂等，多消费者则需要领取协调。扫描进度不要简单取 <code>max(event_id)</code>，小 ID 的事务可能比大 ID 更晚提交，按最大值推进会漏掉它。</p>
+<h2 id="回到提交阻塞本身">回到提交阻塞本身</h2>
+<p>遇到 COMMIT 慢，如果系统里恰好有触发器发送 NOTIFY，可以先查本文的对象锁，再追持锁事务的等待状态。盲目增加连接数或调大 <code>lock_timeout</code>，解决不了已经确认的发送串行化问题。取消提交等待也要谨慎，等待同步复制时，事务可能已经在本地提交了。</p>
+<p>Jimmy 的案例提供了一个减少发送事务数的办法。真正落地时，最值得补测的是两个时刻：通知积压超过过期窗口时，以及最后一笔业务写入结束后。它们决定了队列里哪些消息会被发送，哪些可能被丢弃或留下。</p>
+<h2 id="资料与复现">资料与复现</h2>
+<ul>
+<li><a href="https://vyruss.org/computing/slides/pgdata2026_listen_carefully.pdf">PG DATA 2026 原始幻灯片</a> · <a href="https://vyruss.org/computing/">Jimmy Angelakos 的演讲索引</a>。故障案例和合并发送方案来自这份材料；文中的实验与 outbox 示例是补充内容。</li>
+<li><a href="https://github.com/postgres/postgres/blob/REL_16_14/src/backend/commands/async.c#L940">PG16.14 async.c</a>。本次核对的通知提交实现。</li>
+<li><a href="/#/maintenance/100-validation">第 100 篇验证记录</a>。包含隔离集群的复现方式与检查结果。本次没有测试吞吐、真实备库、崩溃恢复或完整消费链路；UNLOGGED 的恢复行为依据官方文档。</li>
+</ul>
+<p>继续阅读：<a href="/articles/22/">锁分析</a> · <a href="/articles/93/">复制延迟排查</a> · <a href="/#/docs/conferences">会议精选</a></p>
+<footer class="article-footer"><p class="article-topic-label">所属专题：<a href="/#/docs/topics?id=topic-locks">锁、事务与在线变更</a></p><div class="article-neighbors"><a rel="prev" href="/articles/99/"><small>同专题上一篇</small><strong>如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除</strong></a><a rel="next" href="/articles/104/"><small>同专题下一篇</small><strong>SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争</strong></a></div><h2>继续阅读</h2><ul><li><a href="/articles/107/">外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务</a></li><li><a href="/articles/104/">SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争</a></li><li><a href="/articles/99/">如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除</a></li></ul><div class="article-source-links"><a href="https://github.com/xiongcccc/postgres-howto/blob/master/docs/100.md" target="_blank" rel="noopener">查看源文件</a><a href="https://github.com/xiongcccc/postgres-howto/issues/new?title=%E6%96%87%E7%AB%A0%20%23100%EF%BC%9A%E5%A6%82%E4%BD%95%E6%8E%92%E6%9F%A5%20LISTEN%EF%BC%8FNOTIFY%20%E5%BC%95%E8%B5%B7%E7%9A%84%E6%8F%90%E4%BA%A4%E9%98%BB%E5%A1%9E" target="_blank" rel="noopener">反馈与纠错</a></div></footer><section id="gitalk-container" class="article-discussion"><h2>讨论与补充</h2><a target="_blank" rel="noopener" href="https://github.com/xiongcccc/gitalk-comment/issues?q=is%3Aissue%20%22%2Fdocs%2F100%22">查看与参与 GitHub 讨论</a></section></article></main>
+  <footer class="site-footer"><div><a href="/articles/">文章目录</a><a href="/#/docs/about">关于项目</a><a href="https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos">上游来源</a><a href="https://xiongcc.cn/">xiongcc</a></div><div class="js-only"><button type="button" data-dialog="communityModal">读者交流</button><button type="button" data-dialog="imageModal">支持作者</button><span class="site-stats"><span id="busuanzi_container_site_pv">访问 <strong id="busuanzi_value_site_pv">--</strong> 次</span><span id="busuanzi_container_site_uv">访客 <strong id="busuanzi_value_site_uv">--</strong> 人</span></span></div></footer>
+  <dialog id="imageModal" class="support-modal" aria-labelledby="support-title"><div class="dialog-heading"><h2 id="support-title">支持作者</h2><button class="icon-button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>感谢支持 PostgreSQL Howto 的长期维护。</p><img data-src="/images/wechat_pay.png" width="280" height="280" alt="微信赞赏码"></dialog>
+  <dialog id="communityModal" class="support-modal" aria-labelledby="community-title"><div class="dialog-heading"><h2 id="community-title">读者交流群</h2><button class="icon-button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>二维码若已过期，可通过公众号 PostgreSQL 学徒或邮件联系。</p><img data-src="/images/wechatgroup.jpeg" width="280" height="427" alt="PostgreSQL 学徒读者交流群二维码"></dialog>
+  <script src="/scripts/catalog-data.js?v=beaba606436c9ec0" defer></script>
+<script src="/scripts/article-view.js?v=926830a13df34c2c" defer></script>
+<script src="/scripts/site.js?v=f2e6d95ee157b4fe" defer></script>
+<script src="/scripts/diagrams.js?v=45d556fe0c9de5ef" defer></script>
+<script src="/scripts/reading.js?v=abf3dfc7db08ddc8" defer></script>
+</body>
+</html>

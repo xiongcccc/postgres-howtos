@@ -3,7 +3,7 @@
   var loading;
   function load() {
     if (!loading) loading = new Promise(function (resolve, reject) {
-      var script = document.createElement('script'); script.src = './vendor/mermaid.min.js';
+      var script = document.createElement('script'); script.src = '/vendor/mermaid.min.js';
       script.onload = function () { mermaid.initialize({startOnLoad:false,securityLevel:'strict',theme:'neutral',fontFamily:'Inter, Noto Sans SC, sans-serif'}); resolve(); };
       script.onerror = function () { script.remove(); loading = null; reject(new Error('diagram load')); };
       document.head.append(script);

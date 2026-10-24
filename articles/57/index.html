@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>将物理副本转换为逻辑副本 | PostgreSQL Howto 中文版</title>
+  <meta name="description" content="将物理副本转换为逻辑副本。适用版本以正文为准，未声明统一最低版本。">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="canonical" href="https://postgres-howto.cn/articles/57/">
+  <meta property="og:title" content="将物理副本转换为逻辑副本 | PostgreSQL Howto 中文版">
+  <meta property="og:description" content="将物理副本转换为逻辑副本。适用版本以正文为准，未声明统一最低版本。">
+  <meta property="og:url" content="https://postgres-howto.cn/articles/57/">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://postgres-howto.cn/images/logo.png">
+  <link rel="icon" href="/images/favicon.png" type="image/png">
+  <script>(function(){var m='auto';try{m=localStorage.getItem('howto-theme')||'auto';}catch(_){}var d=m==='dark'||(m==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light';document.documentElement.style.colorScheme=d?'dark':'light';})();</script>
+  <link rel="stylesheet" href="/styles/custom.css?v=0671959df3115f7d">
+  <link rel="stylesheet" href="/styles/reading.css?v=701d1b6c5807eeb4">
+<script id="article-schema" type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"将物理副本转换为逻辑副本","inLanguage":"zh-CN","url":"https://postgres-howto.cn/articles/57/","mainEntityOfPage":"https://postgres-howto.cn/articles/57/","citation":"https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/replication/how-to-convert-a-physical-replica-to-logical.md","keywords":[]}</script>
+</head>
+<body class="reading-article" data-static-page data-static-article="57">
+  <a class="skip-link" href="#main" data-skip>跳至正文</a>
+  <header class="site-header">
+    <button id="sidebar-toggle" class="icon-button mobile-menu js-only" type="button" aria-label="打开导航" aria-controls="site-sidebar" aria-expanded="false" title="打开导航"><span class="icon icon-menu" aria-hidden="true"></span></button>
+    <a class="site-brand" href="/"><img src="/images/favicon.png" width="36" height="36" alt=""><span>PostgreSQL <strong>Howto</strong><small>中文版</small></span></a>
+    <nav class="app-nav" aria-label="主导航"><a href="/">首页</a><a href="/#/docs/topics">专题</a><a href="/#/docs/paths">学习路径</a><a href="/articles/">全部文章</a><a href="https://github.com/xiongcccc/postgres-howto" target="_blank" rel="noopener">GitHub<span class="icon icon-arrow-up-right" aria-hidden="true"></span></a></nav>
+    <div class="header-tools js-only"><button class="icon-button" type="button" data-open-search aria-label="搜索文章" aria-keyshortcuts="Control+K Meta+K" title="搜索文章 (Ctrl / Cmd + K)"><span class="icon icon-search" aria-hidden="true"></span></button><button class="icon-button theme-toggle" aria-label="切换阅读主题" title="切换阅读主题"><span class="icon icon-monitor" aria-hidden="true"></span></button></div>
+  </header>
+  <button class="sidebar-backdrop" type="button" aria-label="关闭导航" tabindex="-1" hidden></button>
+  <aside class="sidebar" id="site-sidebar" aria-label="文章导航"><div class="sidebar-nav"><div class="sidebar-heading"><span>知识导航</span><button class="icon-button" data-close-nav aria-label="关闭导航" title="关闭导航"><span class="icon icon-x" aria-hidden="true"></span></button></div><nav class="catalog-navigation" aria-label="文章分类"><ul class="catalog-pages"><li><a href="/#/README">首页</a></li><li><a href="/#/docs/topics">专题</a></li><li><a href="/#/docs/paths">学习路径</a></li><li><a href="/articles/">全部文章</a></li></ul><p class="sidebar-label">技术专题 <span>主归属文章</span></p><details data-topic="performance"><summary><span>查询性能与观测</span><small>16</small></summary><ul><li><a href="/articles/108/"><span class="article-number">108</span><span>一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离</span></a></li><li><a href="/articles/101/"><span class="article-number">101</span><span>PostgreSQL 性能排查：规划开销、分区锁与表膨胀</span></a></li><li><a href="/articles/1/"><span class="article-number">1</span><span>EXPLAIN 为什么应该带 BUFFERS</span></a></li><li><a href="/articles/5/"><span class="article-number">5</span><span>pg_stat_statements 入门</span></a></li><li><a href="/articles/6/"><span class="article-number">6</span><span>pg_stat_statements 进阶</span></a></li><li><a href="/articles/7/"><span class="article-number">7</span><span>pg_stat_statements 深入使用</span></a></li><li><a href="/articles/10/"><span class="article-number">10</span><span>使用 FlameGraph 和 eBPF/perf 排查性能</span></a></li><li><a href="/articles/11/"><span class="article-number">11</span><span>临时监控方法</span></a></li><li><a href="/articles/12/"><span class="article-number">12</span><span>为 pg_stat_statements 找到真实 SQL 样例</span></a></li><li><a href="/articles/13/"><span class="article-number">13</span><span>如何做基准测试</span></a></li><li><a href="/articles/14/"><span class="article-number">14</span><span>如何判断一个查询是否太慢</span></a></li><li><a href="/articles/50/"><span class="article-number">50</span><span>基准测试迭代前后的准备工作</span></a></li><li><a href="/articles/56/"><span class="article-number">56</span><span>让非生产环境 Planner 更像生产环境</span></a></li><li><a href="/articles/89/"><span class="article-number">89</span><span>OLTP 粗略配置调优</span></a></li><li><a href="/articles/92/"><span class="article-number">92</span><span>work_mem 调优</span></a></li><li><a href="/articles/94/"><span class="article-number">94</span><span>运行 ANALYZE 收集统计信息</span></a></li></ul></details><details data-topic="ops"><summary><span>运维排障与日常工具</span><small>21</small></summary><ul><li><a href="/articles/2/"><span class="article-number">2</span><span>排查并加速 Postgres 停止和重启</span></a></li><li><a href="/articles/3/"><span class="article-number">3</span><span>排查 Postgres 启动缓慢</span></a></li><li><a href="/articles/8/"><span class="article-number">8</span><span>加速大库 pg_dump</span></a></li><li><a href="/articles/19/"><span class="article-number">19</span><span>导入 CSV 到 Postgres</span></a></li><li><a href="/articles/20/"><span class="article-number">20</span><span>使用 pg_restore</span></a></li><li><a href="/articles/21/"><span class="article-number">21</span><span>不发额外查询设置 application_name</span></a></li><li><a href="/articles/25/"><span class="article-number">25</span><span>如何退出 psql</span></a></li><li><a href="/articles/27/"><span class="article-number">27</span><span>在 Ubuntu 22.04 编译 Postgres</span></a></li><li><a href="/articles/34/"><span class="article-number">34</span><span>初步配置调优</span></a></li><li><a href="/articles/47/"><span class="article-number">47</span><span>安装带 plpython3u 的 Postgres 16</span></a></li><li><a href="/articles/49/"><span class="article-number">49</span><span>在 psql 脚本中使用变量</span></a></li><li><a href="/articles/51/"><span class="article-number">51</span><span>通过观察 psql 学习元数据</span></a></li><li><a href="/articles/58/"><span class="article-number">58</span><span>使用 Docker 运行 Postgres</span></a></li><li><a href="/articles/59/"><span class="article-number">59</span><span>psql 调优</span></a></li><li><a href="/articles/68/"><span class="article-number">68</span><span>psql 快捷操作</span></a></li><li><a href="/articles/81/"><span class="article-number">81</span><span>在 psql 中绘图</span></a></li><li><a href="/articles/86/"><span class="article-number">86</span><span>修复 psql 中的 \\e 编辑器问题</span></a></li><li><a href="/articles/87/"><span class="article-number">87</span><span>修改数据库中所有对象所有者</span></a></li><li><a href="/articles/88/"><span class="article-number">88</span><span>面向 OLTP 的 Linux 参数调优</span></a></li><li><a href="/articles/90/"><span class="article-number">90</span><span>使用 lib_pgquery 归一化和匹配查询</span></a></li><li><a href="/articles/91/"><span class="article-number">91</span><span>格式化 psql 脚本文本输出</span></a></li></ul></details><details data-topic="locks"><summary><span>锁、事务与在线变更</span><small>19</small></summary><ul><li><a href="/articles/107/"><span class="article-number">107</span><span>外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务</span></a></li><li><a href="/articles/104/"><span class="article-number">104</span><span>SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争</span></a></li><li><a href="/articles/99/"><span class="article-number">99</span><span>如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除</span></a></li><li><a href="/articles/100/"><span class="article-number">100</span><span>如何排查 LISTEN／NOTIFY 引起的提交阻塞</span></a></li><li><a href="/articles/22/"><span class="article-number">22</span><span>heavyweight locks 分析：基础</span></a></li><li><a href="/articles/30/"><span class="article-number">30</span><span>处理 OLTP 长事务</span></a></li><li><a href="/articles/33/"><span class="article-number">33</span><span>无停机重定义主键</span></a></li><li><a href="/articles/35/"><span class="article-number">35</span><span>使用子事务</span></a></li><li><a href="/articles/36/"><span class="article-number">36</span><span>单条查询实现 find-or-insert</span></a></li><li><a href="/articles/37/"><span class="article-number">37</span><span>无停机启用 data checksums</span></a></li><li><a href="/articles/42/"><span class="article-number">42</span><span>heavyweight locks 分析：锁树</span></a></li><li><a href="/articles/55/"><span class="article-number">55</span><span>删除列</span></a></li><li><a href="/articles/60/"><span class="article-number">60</span><span>添加列</span></a></li><li><a href="/articles/69/"><span class="article-number">69</span><span>无停机添加 CHECK 约束</span></a></li><li><a href="/articles/70/"><span class="article-number">70</span><span>添加外键</span></a></li><li><a href="/articles/71/"><span class="article-number">71</span><span>理解 DDL 被什么阻塞</span></a></li><li><a href="/articles/72/"><span class="article-number">72</span><span>移除外键</span></a></li><li><a href="/articles/73/"><span class="article-number">73</span><span>heavyweight locks 分析：持久监控</span></a></li><li><a href="/articles/83/"><span class="article-number">83</span><span>修改 Postgres 参数</span></a></li></ul></details><details data-topic="indexes"><summary><span>索引治理</span><small>9</small></summary><ul><li><a href="/articles/15/"><span class="article-number">15</span><span>监控 CREATE INDEX / REINDEX 进度</span></a></li><li><a href="/articles/18/"><span class="article-number">18</span><span>过度索引</span></a></li><li><a href="/articles/53/"><span class="article-number">53</span><span>索引维护</span></a></li><li><a href="/articles/54/"><span class="article-number">54</span><span>使用 pg_amcheck 检查 btree 索引损坏</span></a></li><li><a href="/articles/61/"><span class="article-number">61</span><span>创建索引：基础</span></a></li><li><a href="/articles/62/"><span class="article-number">62</span><span>创建索引：进阶</span></a></li><li><a href="/articles/75/"><span class="article-number">75</span><span>查找未使用索引</span></a></li><li><a href="/articles/76/"><span class="article-number">76</span><span>查找冗余索引</span></a></li><li><a href="/articles/79/"><span class="article-number">79</span><span>并行重建大量索引并避免死锁</span></a></li></ul></details><details data-topic="storage"><summary><span>存储、WAL 与 Vacuum</span><small>19</small></summary><ul><li><a href="/articles/102/"><span class="article-number">102</span><span>Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢</span></a></li><li><a href="/articles/4/"><span class="article-number">4</span><span>理解 tuple 在表中的稀疏存储</span></a></li><li><a href="/articles/9/"><span class="article-number">9</span><span>理解 LSN 和 WAL 文件名</span></a></li><li><a href="/articles/16/"><span class="article-number">16</span><span>容易踩坑的 Postgres 特性</span></a></li><li><a href="/articles/26/"><span class="article-number">26</span><span>检查 btree 索引损坏</span></a></li><li><a href="/articles/31/"><span class="article-number">31</span><span>排查 pg_wal 目录增长</span></a></li><li><a href="/articles/39/"><span class="article-number">39</span><span>如何破坏数据库：制造损坏</span></a></li><li><a href="/articles/40/"><span class="article-number">40</span><span>如何破坏数据库：模拟 XID 回卷</span></a></li><li><a href="/articles/41/"><span class="article-number">41</span><span>如何破坏数据库：有害负载</span></a></li><li><a href="/articles/44/"><span class="article-number">44</span><span>监控 XID 回卷风险</span></a></li><li><a href="/articles/45/"><span class="article-number">45</span><span>监控 xmin horizon 避免回卷和膨胀</span></a></li><li><a href="/articles/46/"><span class="article-number">46</span><span>处理 bloat</span></a></li><li><a href="/articles/52/"><span class="article-number">52</span><span>降低 WAL 生成速率</span></a></li><li><a href="/articles/66/"><span class="article-number">66</span><span>一个 page 能插入多少 tuple</span></a></li><li><a href="/articles/67/"><span class="article-number">67</span><span>Autovacuum 队列和进度</span></a></li><li><a href="/articles/74/"><span class="article-number">74</span><span>刷新 OS page cache 和 Postgres buffer pool</span></a></li><li><a href="/articles/80/"><span class="article-number">80</span><span>查找有 int4 主键溢出风险的表</span></a></li><li><a href="/articles/84/"><span class="article-number">84</span><span>列顺序与存储优化：Column Tetris</span></a></li><li><a href="/articles/85/"><span class="article-number">85</span><span>快速检查值的数据类型和存储大小</span></a></li></ul></details><details data-topic="sql"><summary><span>SQL、数据建模与扩展玩法</span><small>12</small></summary><ul><li><a href="/articles/103/"><span class="article-number">103</span><span>PostgreSQL 排序规则：文本比较、索引与升级风险</span></a></li><li><a href="/articles/23/"><span class="article-number">23</span><span>在 Postgres 中调用 OpenAI API 实现语义搜索和 GPT Chat</span></a></li><li><a href="/articles/24/"><span class="article-number">24</span><span>使用元数据</span></a></li><li><a href="/articles/28/"><span class="article-number">28</span><span>数组使用：基础</span></a></li><li><a href="/articles/29/"><span class="article-number">29</span><span>数组使用：进阶</span></a></li><li><a href="/articles/32/"><span class="article-number">32</span><span>加速批量加载</span></a></li><li><a href="/articles/43/"><span class="article-number">43</span><span>SQL 格式化与风格指南</span></a></li><li><a href="/articles/48/"><span class="article-number">48</span><span>生成测试数据</span></a></li><li><a href="/articles/64/"><span class="article-number">64</span><span>使用 UUID</span></a></li><li><a href="/articles/65/"><span class="article-number">65</span><span>UUID v7 与分区</span></a></li><li><a href="/articles/78/"><span class="article-number">78</span><span>使用创建时间和统计信息估算大表同比增长</span></a></li><li><a href="/articles/82/"><span class="article-number">82</span><span>用 SQL 绘制霜花图案</span></a></li></ul></details><details data-topic="replication" open data-current-topic="true"><summary><span>复制、校验与升级</span><small>7</small></summary><ul><li><a href="/articles/109/"><span class="article-number">109</span><span>备库查询为什么被取消：WAL 回放冲突与等待预算</span></a></li><li><a href="/articles/106/"><span class="article-number">106</span><span>PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化</span></a></li><li><a href="/articles/105/"><span class="article-number">105</span><span>深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复</span></a></li><li><a href="/articles/17/"><span class="article-number">17</span><span>判断复制延迟</span></a></li><li><a href="/articles/57/" aria-current="page"><span class="article-number">57</span><span>将物理副本转换为逻辑副本</span></a></li><li><a href="/articles/77/"><span class="article-number">77</span><span>大型高负载集群的无停机大版本升级</span></a></li><li><a href="/articles/93/"><span class="article-number">93</span><span>排查流复制延迟</span></a></li></ul></details><details data-topic="practice"><summary><span>实践剖析</span><small>3</small></summary><ul><li><a href="/articles/96/"><span class="article-number">96</span><span>为什么 actual time 和 Execution Time 有很大差异？</span></a></li><li><a href="/articles/97/"><span class="article-number">97</span><span>深入浅出 bpftrace 分析 PostgreSQL</span></a></li><li><a href="/articles/98/"><span class="article-number">98</span><span>当 PostgreSQL 慢在数据库之外：用 bpftrace 打通 SQL 与内核观测</span></a></li></ul></details><details data-topic="engineering"><summary><span>工程实践与后记</span><small>3</small></summary><ul><li><a href="/articles/38/"><span class="article-number">38</span><span>如何不把 DBA/DBRE 工作搞砸</span></a></li><li><a href="/articles/63/"><span class="article-number">63</span><span>如何帮助别人</span></a></li><li><a href="/articles/95/"><span class="article-number">95</span><span>后记</span></a></li></ul></details><div class="sidebar-resources"><a href="/#/docs/series">系列阅读</a><a href="/#/docs/conferences">会议精选</a><a href="/#/docs/about">关于项目</a></div></nav></div></aside>
+  <main class="content"><article id="main" class="markdown-section" tabindex="-1"><div class="article-topline"><nav class="breadcrumbs" aria-label="面包屑"><a href="/">首页</a><span aria-hidden="true">/</span><a href="/#/docs/topics?id=topic-replication">复制、校验与升级</a></nav></div><h1 id="how-to-convert-a-physical-replica-to-logical">将物理副本转换为逻辑副本</h1><div class="article-meta"><p class="article-kicker"><a href="/#/docs/find?series=guide">实用指南</a> · 上游译文 <span class="article-id">#57</span></p><p class="article-version">适用版本以正文为准，未声明统一最低版本。</p><details><summary>来源与验证说明</summary><dl><dt>原题</dt><dd>How to convert a physical replica to logical</dd><dt>来源</dt><dd><a href="https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/replication/how-to-convert-a-physical-replica-to-logical.md" target="_blank" rel="noopener">Nikolay Samokhvalov / Postgres.ai</a></dd><dt>中文翻译与校订</dt><dd>xiongcc</dd><dt>验证状态</dt><dd>上游内容已核对；未逐条运行所有示例。（2026-09-10）</dd></dl><blockquote>
+<p>原作者：Nikolay Samokhvalov · <a href="https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/advanced-topics/replication/how-to-convert-a-physical-replica-to-logical.md">英文原文</a> · 中文翻译与校订：xiongcc</p>
+</blockquote>
+</details></div><details class="article-toc"><summary>本页目录<span class="icon icon-chevron-down" aria-hidden="true"></span></summary><nav aria-label="本页目录"><ol><li class="toc-level-2"><a data-heading="步骤1：选择一个用于转换的物理副本" href="#%E6%AD%A5%E9%AA%A41%EF%BC%9A%E9%80%89%E6%8B%A9%E4%B8%80%E4%B8%AA%E7%94%A8%E4%BA%8E%E8%BD%AC%E6%8D%A2%E7%9A%84%E7%89%A9%E7%90%86%E5%89%AF%E6%9C%AC">步骤1：选择一个用于转换的物理副本</a></li><li class="toc-level-2"><a data-heading="步骤2：确保满足要求" href="#%E6%AD%A5%E9%AA%A42%EF%BC%9A%E7%A1%AE%E4%BF%9D%E6%BB%A1%E8%B6%B3%E8%A6%81%E6%B1%82">步骤2：确保满足要求</a></li><li class="toc-level-2"><a data-heading="步骤3：停止物理副本" href="#%E6%AD%A5%E9%AA%A43%EF%BC%9A%E5%81%9C%E6%AD%A2%E7%89%A9%E7%90%86%E5%89%AF%E6%9C%AC">步骤3：停止物理副本</a></li><li class="toc-level-2"><a data-heading="步骤4：创建发布、逻辑槽并记录其lsn" href="#%E6%AD%A5%E9%AA%A44%EF%BC%9A%E5%88%9B%E5%BB%BA%E5%8F%91%E5%B8%83%E3%80%81%E9%80%BB%E8%BE%91%E6%A7%BD%E5%B9%B6%E8%AE%B0%E5%BD%95%E5%85%B6lsn">步骤4：创建发布、逻辑槽并记录其LSN</a></li><li class="toc-level-2"><a data-heading="步骤5：让物理副本追赶上主库" href="#%E6%AD%A5%E9%AA%A45%EF%BC%9A%E8%AE%A9%E7%89%A9%E7%90%86%E5%89%AF%E6%9C%AC%E8%BF%BD%E8%B5%B6%E4%B8%8A%E4%B8%BB%E5%BA%93">步骤5：让物理副本追赶上主库</a></li><li class="toc-level-2"><a data-heading="步骤6：创建订阅并启动逻辑复制" href="#%E6%AD%A5%E9%AA%A46%EF%BC%9A%E5%88%9B%E5%BB%BA%E8%AE%A2%E9%98%85%E5%B9%B6%E5%90%AF%E5%8A%A8%E9%80%BB%E8%BE%91%E5%A4%8D%E5%88%B6">步骤6：创建订阅并启动逻辑复制</a></li><li class="toc-level-2"><a data-heading="完成" href="#%E5%AE%8C%E6%88%90">完成</a></li><li class="toc-level-2"><a data-heading="额外说明" href="#%E9%A2%9D%E5%A4%96%E8%AF%B4%E6%98%8E">额外说明</a></li><li class="toc-level-2"><a data-heading="我见" href="#%E6%88%91%E8%A7%81">我见</a></li></ol></nav></details>
+<p>在某些情况下，将现有的异步物理副本转换为逻辑副本可能是有利的，或者先创建一个新的物理副本，然后将其转换为逻辑副本。</p>
+<p>这种方式：</p>
+<ul>
+<li>一方面，消除了加载初始数据这一步骤的必要，这个步骤在处理大型、负载繁重的数据库时可能会很脆弱且压力很大。</li>
+<li>另一方面，使用这种方式创建的逻辑副本拥有源 Postgres 实例中的所有数据。</li>
+</ul>
+<p>因此，这种方法非常适用于需要将源数据库中的所有数据呈现在新创建的逻辑副本中的情况，特别是在处理非常大且负载繁重的集群时极为有用。</p>
+<p>下面的步骤十分简单。我们使用一个物理副本，通过流复制 <code>primary_conninfo</code> 和复制槽 (比如通过 Patroni 进行控制) 立即从主库复制数据，不涉及级联复制 (尽管也有可能实现)。</p>
+<h2 id="步骤1：选择一个用于转换的物理副本">步骤1：选择一个用于转换的物理副本</h2>
+<p>选择一个物理副本进行转换，或者通过 <code>pg_basebackup</code>、从备份恢复或从云快照创建新的物理副本。</p>
+<p>确保在转换期间没有用户使用该副本。</p>
+<h2 id="步骤2：确保满足要求">步骤2：确保满足要求</h2>
+<p>首先，确保为逻辑复制配置了相关设置，如<a href="https://postgresql.org/docs/current/logical-replication-config.html">逻辑复制配置中</a>所述。</p>
+<p>主库设置：</p>
+<ul>
+<li><code>wal_level = &#39;logical&#39;</code></li>
+<li><code>max_replication_slots &gt; 0</code></li>
+<li><code>max_wal_senders &gt; max_replication_slots</code></li>
+</ul>
+<p>在我们将要转换的物理副本上：</p>
+<ul>
+<li><code>max_replication_slots &gt; 0</code></li>
+<li><code>max_logical_replication_workers &gt; 0</code></li>
+<li><code>max_worker_processes &gt;= max_logical_replication_workers + 1</code></li>
+</ul>
+<p>此外：</p>
+<ul>
+<li>复制延迟较小；</li>
+<li>每个表都有主键或设置了 <a href="https://postgresql.org/docs/current/sql-altertable.html#SQL-ALTERTABLE-REPLICA-IDENTITY">REPLICA IDENTITY FULL</a>；</li>
+<li>用于转换的副本没有设置 <code>restore_command</code> (如果有，临时将其值设为空字符串)；</li>
+<li>临时增加主库上的 <code>wal_keep_size</code>  (PG13+，在 PG12 或更早版本中为 <code>wal_keep_segments</code>)，增加到对应于几个小时 WAL 生成的量。</li>
+</ul>
+<h2 id="步骤3：停止物理副本">步骤3：停止物理副本</h2>
+<p>关闭物理副本，并在下一步执行期间保持其关闭。这确保其位置比我们将在主库上创建的逻辑槽的位置早。</p>
+<h2 id="步骤4：创建发布、逻辑槽并记录其lsn">步骤4：创建发布、逻辑槽并记录其LSN</h2>
+<p>在主库上：</p>
+<ol>
+<li>手动执行一次 <code>CHECKPOINT</code>；</li>
+<li>创建发布；</li>
+<li>创建逻辑复制槽并记录其 LSN 位置。</li>
+</ol>
+<p>示例：</p>
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">checkpoint</span><span class="token punctuation">;</span>
+
+<span class="token keyword">create</span> publication my_pub <span class="token keyword">for</span> <span class="token keyword">all</span> <span class="token keyword">tables</span><span class="token punctuation">;</span>
+
+<span class="token keyword">select</span> lsn
+<span class="token keyword">from</span> pg_create_logical_replication_slot<span class="token punctuation">(</span>
+  <span class="token string">'my_slot'</span><span class="token punctuation">,</span>
+  <span class="token string">'pgoutput'</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div>
+<p>请务必记住最后一条命令返回的 LSN 值 — 稍后我们会使用到它。</p>
+<h2 id="步骤5：让物理副本追赶上主库">步骤5：让物理副本追赶上主库</h2>
+<p>重新配置物理副本：</p>
+<ul>
+<li><code>recovery_target_lsn</code> — 将其设置为上一步获得的 LSN 值</li>
+<li><code>recovery_target_action = &#39;promote&#39;</code></li>
+<li><code>restore_command</code>,<code>recovery_target_timeline</code>,<code>recovery_target_xid</code>,<code>recovery_target_time</code>,<code>recovery_target_name</code> 为空或未设置。</li>
+</ul>
+<p>现在启动物理副本，监控其延迟情况，直到副本追赶上我们需要的 LSN 并自动提升。这可能需要一些时间。完成之后进行检查：</p>
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">select</span> pg_is_in_recovery<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div>
+<ul>
+<li>必须返回 <code>f</code>，这意味着该节点现在本身就是一个主节点 (一个克隆节点)，其位置与源节点上的复制槽位置相对应。</li>
+</ul>
+<h2 id="步骤6：创建订阅并启动逻辑复制">步骤6：创建订阅并启动逻辑复制</h2>
+<p>在新创建的&quot;克隆&quot;节点上，创建逻辑订阅 <code>copy_data = false</code> 和 <code>create_slot = false</code>：</p>
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">create</span> subscription <span class="token string">'my_sub'</span>
+connection <span class="token string">'host=.. port=.. user=.. dbname=..'</span>
+publication my_pub
+<span class="token keyword">with</span> <span class="token punctuation">(</span>
+  copy_data <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+  create_slot<span class="token operator">=</span><span class="token boolean">false</span><span class="token punctuation">,</span>
+  slot_name <span class="token operator">=</span> <span class="token string">'my_slot'</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div>
+<p>确保复制处于运行中的状态 — 在源主库上检查：</p>
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> pg_replication_slots<span class="token punctuation">;</span>
+</code></pre></div>
+<p>确保 <code>active</code> 字段为 <code>t</code>。</p>
+<h2 id="完成">完成</h2>
+<ul>
+<li>等待逻辑复制的延迟完全赶上 (偶尔出现的峰值是正常的)。</li>
+<li>将主库上的<code>wal_keep_size</code> (或 <code>wal_keep_segments</code>) 恢复到原始值。</li>
+</ul>
+<h2 id="额外说明">额外说明</h2>
+<p>在这个方案中，我们使用了单个发布和逻辑复制槽。也可以使用多个槽，只需对过程进行一些调整。但是，如果选择这样做，请记住使用多个复制槽/发布的潜在复杂性，首先是这些：</p>
+<ul>
+<li>无法保证逻辑副本的引用完整性 (偶尔会暂时性地违反 FK)，</li>
+<li>多个发布的创建更为脆弱 (创建 <code>FOR ALL TABLES</code> 的发布不需要表级锁，但是当我们使用多个发布，并为某些表创建发布时，需要表级锁 — 然而，这只是 <code>ShareUpdateExclusiveLock</code>，参考 <a href="https://github.com/postgres/postgres/blob/1b6da28e0668eb977dcab6987d192ddedf32b752/src/backend/commands/publicationcmds.c#L1550">this comment on PostgreSQL source code</a>)。</li>
+</ul>
+<p>以及无论如何：</p>
+<ul>
+<li>确保已准备好处理对应版本的逻辑复制限制 (例如，<a href="https://postgresql.org/docs/16/logical-replication-restrictions.html">PG16</a>)；</li>
+<li>如果考虑使用此方法执行大版本升级，请避免在已转换的节点上运行 <code>pg_upgrade</code> — 这可能不安全 (参照：<a href="https://postgresql.org/message-id/flat/20230217075433.u5mjly4d5cr4hcfe@jrouhaud">pg_upgrade and logical replication</a>)。</li>
+</ul>
+<h2 id="我见">我见</h2>
+<p>看了一下操作流程，确实十分繁琐，17 版本中的 pg_createsubscriber 无疑是个巨大的福音，大大简化了将物理副本转化为逻辑副本的步骤。</p>
+<p>pg_createsubscriber to create a logical replica from a physical standby server</p>
+<ul>
+<li>Speed up creation of logical subscriber</li>
+<li>It can be used for upgrades</li>
+</ul>
+<p>另外原文中所说的最后一点，在 17 版本看似也已解决。具体可以参照上面的邮件</p>
+<p>以及如下🔗：</p>
+<ul>
+<li><a href="https://www.postgresql.fastware.com/blog/new-logical-replication-features-in-postgresql-17">PGConf.dev 2024 - New logical replication features in PostgreSQL 17</a></li>
+<li><a href="https://www.metisdata.io/blog/whats-new-in-postgresql-17">What’s New In PostgreSQL 17</a></li>
+<li><a href="https://git.postgresql.org/gitweb/?p=postgresql.git;a=commit;h=9a17be1e244a45a77de25ed2ada246fd34e4557d">https://git.postgresql.org/gitweb/?p=postgresql.git;a=commit;h=9a17be1e244a45a77de25ed2ada246fd34e4557d</a></li>
+</ul>
+<footer class="article-footer"><p class="article-topic-label">所属专题：<a href="/#/docs/topics?id=topic-replication">复制、校验与升级</a></p><div class="article-neighbors"><a rel="prev" href="/articles/17/"><small>同专题上一篇</small><strong>判断复制延迟</strong></a><a rel="next" href="/articles/77/"><small>同专题下一篇</small><strong>大型高负载集群的无停机大版本升级</strong></a></div><h2>继续阅读</h2><ul><li><a href="/articles/93/">排查流复制延迟</a></li><li><a href="/articles/77/">大型高负载集群的无停机大版本升级</a></li><li><a href="/articles/37/">无停机启用 data checksums</a></li></ul><div class="article-source-links"><a href="https://github.com/xiongcccc/postgres-howto/blob/master/docs/57.md" target="_blank" rel="noopener">查看源文件</a><a href="https://github.com/xiongcccc/postgres-howto/issues/new?title=%E6%96%87%E7%AB%A0%20%2357%EF%BC%9A%E5%B0%86%E7%89%A9%E7%90%86%E5%89%AF%E6%9C%AC%E8%BD%AC%E6%8D%A2%E4%B8%BA%E9%80%BB%E8%BE%91%E5%89%AF%E6%9C%AC" target="_blank" rel="noopener">反馈与纠错</a></div></footer><section id="gitalk-container" class="article-discussion"><h2>讨论与补充</h2><a target="_blank" rel="noopener" href="https://github.com/xiongcccc/gitalk-comment/issues?q=is%3Aissue%20%22%2Fdocs%2F57%22">查看与参与 GitHub 讨论</a></section></article></main>
+  <footer class="site-footer"><div><a href="/articles/">文章目录</a><a href="/#/docs/about">关于项目</a><a href="https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos">上游来源</a><a href="https://xiongcc.cn/">xiongcc</a></div><div class="js-only"><button type="button" data-dialog="communityModal">读者交流</button><button type="button" data-dialog="imageModal">支持作者</button><span class="site-stats"><span id="busuanzi_container_site_pv">访问 <strong id="busuanzi_value_site_pv">--</strong> 次</span><span id="busuanzi_container_site_uv">访客 <strong id="busuanzi_value_site_uv">--</strong> 人</span></span></div></footer>
+  <dialog id="imageModal" class="support-modal" aria-labelledby="support-title"><div class="dialog-heading"><h2 id="support-title">支持作者</h2><button class="icon-button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>感谢支持 PostgreSQL Howto 的长期维护。</p><img data-src="/images/wechat_pay.png" width="280" height="280" alt="微信赞赏码"></dialog>
+  <dialog id="communityModal" class="support-modal" aria-labelledby="community-title"><div class="dialog-heading"><h2 id="community-title">读者交流群</h2><button class="icon-button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>二维码若已过期，可通过公众号 PostgreSQL 学徒或邮件联系。</p><img data-src="/images/wechatgroup.jpeg" width="280" height="427" alt="PostgreSQL 学徒读者交流群二维码"></dialog>
+  <script src="/scripts/catalog-data.js?v=beaba606436c9ec0" defer></script>
+<script src="/scripts/article-view.js?v=926830a13df34c2c" defer></script>
+<script src="/scripts/site.js?v=f2e6d95ee157b4fe" defer></script>
+<script src="/scripts/diagrams.js?v=45d556fe0c9de5ef" defer></script>
+<script src="/scripts/reading.js?v=abf3dfc7db08ddc8" defer></script>
+</body>
+</html>

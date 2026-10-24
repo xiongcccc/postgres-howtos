@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复 | PostgreSQL Howto 中文版</title>
+  <meta name="description" content="深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复。正文以 PostgreSQL 18 为基准；实验使用 18.4。序列同步 worker 按原材料的 PG19 开发背景说明，不作为 PG18 功能。">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="canonical" href="https://postgres-howto.cn/articles/105/">
+  <meta property="og:title" content="深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复 | PostgreSQL Howto 中文版">
+  <meta property="og:description" content="深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复。正文以 PostgreSQL 18 为基准；实验使用 18.4。序列同步 worker 按原材料的 PG19 开发背景说明，不作为 PG18 功能。">
+  <meta property="og:url" content="https://postgres-howto.cn/articles/105/">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://postgres-howto.cn/images/logo.png">
+  <link rel="icon" href="/images/favicon.png" type="image/png">
+  <script>(function(){var m='auto';try{m=localStorage.getItem('howto-theme')||'auto';}catch(_){}var d=m==='dark'||(m==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light';document.documentElement.style.colorScheme=d?'dark':'light';})();</script>
+  <link rel="stylesheet" href="/styles/custom.css?v=0671959df3115f7d">
+  <link rel="stylesheet" href="/styles/reading.css?v=701d1b6c5807eeb4">
+<script id="article-schema" type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复","inLanguage":"zh-CN","url":"https://postgres-howto.cn/articles/105/","mainEntityOfPage":"https://postgres-howto.cn/articles/105/","citation":"https://2026.pgconf.dev/session/527","keywords":["逻辑复制开发","logical replication","logical decoding","pgoutput","pg_recvlogical","历史快照","historic snapshot","replication origin","复制标识","行过滤","parallel apply","streaming","last_saved_restart_lsn"],"datePublished":"2026-09-24"}</script>
+</head>
+<body class="reading-article" data-static-page data-static-article="105">
+  <a class="skip-link" href="#main" data-skip>跳至正文</a>
+  <header class="site-header">
+    <button id="sidebar-toggle" class="icon-button mobile-menu js-only" type="button" aria-label="打开导航" aria-controls="site-sidebar" aria-expanded="false" title="打开导航"><span class="icon icon-menu" aria-hidden="true"></span></button>
+    <a class="site-brand" href="/"><img src="/images/favicon.png" width="36" height="36" alt=""><span>PostgreSQL <strong>Howto</strong><small>中文版</small></span></a>
+    <nav class="app-nav" aria-label="主导航"><a href="/">首页</a><a href="/#/docs/topics">专题</a><a href="/#/docs/paths">学习路径</a><a href="/articles/">全部文章</a><a href="https://github.com/xiongcccc/postgres-howto" target="_blank" rel="noopener">GitHub<span class="icon icon-arrow-up-right" aria-hidden="true"></span></a></nav>
+    <div class="header-tools js-only"><button class="icon-button" type="button" data-open-search aria-label="搜索文章" aria-keyshortcuts="Control+K Meta+K" title="搜索文章 (Ctrl / Cmd + K)"><span class="icon icon-search" aria-hidden="true"></span></button><button class="icon-button theme-toggle" aria-label="切换阅读主题" title="切换阅读主题"><span class="icon icon-monitor" aria-hidden="true"></span></button></div>
+  </header>
+  <button class="sidebar-backdrop" type="button" aria-label="关闭导航" tabindex="-1" hidden></button>
+  <aside class="sidebar" id="site-sidebar" aria-label="文章导航"><div class="sidebar-nav"><div class="sidebar-heading"><span>知识导航</span><button class="icon-button" data-close-nav aria-label="关闭导航" title="关闭导航"><span class="icon icon-x" aria-hidden="true"></span></button></div><nav class="catalog-navigation" aria-label="文章分类"><ul class="catalog-pages"><li><a href="/#/README">首页</a></li><li><a href="/#/docs/topics">专题</a></li><li><a href="/#/docs/paths">学习路径</a></li><li><a href="/articles/">全部文章</a></li></ul><p class="sidebar-label">技术专题 <span>主归属文章</span></p><details data-topic="performance"><summary><span>查询性能与观测</span><small>16</small></summary><ul><li><a href="/articles/108/"><span class="article-number">108</span><span>一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离</span></a></li><li><a href="/articles/101/"><span class="article-number">101</span><span>PostgreSQL 性能排查：规划开销、分区锁与表膨胀</span></a></li><li><a href="/articles/1/"><span class="article-number">1</span><span>EXPLAIN 为什么应该带 BUFFERS</span></a></li><li><a href="/articles/5/"><span class="article-number">5</span><span>pg_stat_statements 入门</span></a></li><li><a href="/articles/6/"><span class="article-number">6</span><span>pg_stat_statements 进阶</span></a></li><li><a href="/articles/7/"><span class="article-number">7</span><span>pg_stat_statements 深入使用</span></a></li><li><a href="/articles/10/"><span class="article-number">10</span><span>使用 FlameGraph 和 eBPF/perf 排查性能</span></a></li><li><a href="/articles/11/"><span class="article-number">11</span><span>临时监控方法</span></a></li><li><a href="/articles/12/"><span class="article-number">12</span><span>为 pg_stat_statements 找到真实 SQL 样例</span></a></li><li><a href="/articles/13/"><span class="article-number">13</span><span>如何做基准测试</span></a></li><li><a href="/articles/14/"><span class="article-number">14</span><span>如何判断一个查询是否太慢</span></a></li><li><a href="/articles/50/"><span class="article-number">50</span><span>基准测试迭代前后的准备工作</span></a></li><li><a href="/articles/56/"><span class="article-number">56</span><span>让非生产环境 Planner 更像生产环境</span></a></li><li><a href="/articles/89/"><span class="article-number">89</span><span>OLTP 粗略配置调优</span></a></li><li><a href="/articles/92/"><span class="article-number">92</span><span>work_mem 调优</span></a></li><li><a href="/articles/94/"><span class="article-number">94</span><span>运行 ANALYZE 收集统计信息</span></a></li></ul></details><details data-topic="ops"><summary><span>运维排障与日常工具</span><small>21</small></summary><ul><li><a href="/articles/2/"><span class="article-number">2</span><span>排查并加速 Postgres 停止和重启</span></a></li><li><a href="/articles/3/"><span class="article-number">3</span><span>排查 Postgres 启动缓慢</span></a></li><li><a href="/articles/8/"><span class="article-number">8</span><span>加速大库 pg_dump</span></a></li><li><a href="/articles/19/"><span class="article-number">19</span><span>导入 CSV 到 Postgres</span></a></li><li><a href="/articles/20/"><span class="article-number">20</span><span>使用 pg_restore</span></a></li><li><a href="/articles/21/"><span class="article-number">21</span><span>不发额外查询设置 application_name</span></a></li><li><a href="/articles/25/"><span class="article-number">25</span><span>如何退出 psql</span></a></li><li><a href="/articles/27/"><span class="article-number">27</span><span>在 Ubuntu 22.04 编译 Postgres</span></a></li><li><a href="/articles/34/"><span class="article-number">34</span><span>初步配置调优</span></a></li><li><a href="/articles/47/"><span class="article-number">47</span><span>安装带 plpython3u 的 Postgres 16</span></a></li><li><a href="/articles/49/"><span class="article-number">49</span><span>在 psql 脚本中使用变量</span></a></li><li><a href="/articles/51/"><span class="article-number">51</span><span>通过观察 psql 学习元数据</span></a></li><li><a href="/articles/58/"><span class="article-number">58</span><span>使用 Docker 运行 Postgres</span></a></li><li><a href="/articles/59/"><span class="article-number">59</span><span>psql 调优</span></a></li><li><a href="/articles/68/"><span class="article-number">68</span><span>psql 快捷操作</span></a></li><li><a href="/articles/81/"><span class="article-number">81</span><span>在 psql 中绘图</span></a></li><li><a href="/articles/86/"><span class="article-number">86</span><span>修复 psql 中的 \\e 编辑器问题</span></a></li><li><a href="/articles/87/"><span class="article-number">87</span><span>修改数据库中所有对象所有者</span></a></li><li><a href="/articles/88/"><span class="article-number">88</span><span>面向 OLTP 的 Linux 参数调优</span></a></li><li><a href="/articles/90/"><span class="article-number">90</span><span>使用 lib_pgquery 归一化和匹配查询</span></a></li><li><a href="/articles/91/"><span class="article-number">91</span><span>格式化 psql 脚本文本输出</span></a></li></ul></details><details data-topic="locks"><summary><span>锁、事务与在线变更</span><small>19</small></summary><ul><li><a href="/articles/107/"><span class="article-number">107</span><span>外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务</span></a></li><li><a href="/articles/104/"><span class="article-number">104</span><span>SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争</span></a></li><li><a href="/articles/99/"><span class="article-number">99</span><span>如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除</span></a></li><li><a href="/articles/100/"><span class="article-number">100</span><span>如何排查 LISTEN／NOTIFY 引起的提交阻塞</span></a></li><li><a href="/articles/22/"><span class="article-number">22</span><span>heavyweight locks 分析：基础</span></a></li><li><a href="/articles/30/"><span class="article-number">30</span><span>处理 OLTP 长事务</span></a></li><li><a href="/articles/33/"><span class="article-number">33</span><span>无停机重定义主键</span></a></li><li><a href="/articles/35/"><span class="article-number">35</span><span>使用子事务</span></a></li><li><a href="/articles/36/"><span class="article-number">36</span><span>单条查询实现 find-or-insert</span></a></li><li><a href="/articles/37/"><span class="article-number">37</span><span>无停机启用 data checksums</span></a></li><li><a href="/articles/42/"><span class="article-number">42</span><span>heavyweight locks 分析：锁树</span></a></li><li><a href="/articles/55/"><span class="article-number">55</span><span>删除列</span></a></li><li><a href="/articles/60/"><span class="article-number">60</span><span>添加列</span></a></li><li><a href="/articles/69/"><span class="article-number">69</span><span>无停机添加 CHECK 约束</span></a></li><li><a href="/articles/70/"><span class="article-number">70</span><span>添加外键</span></a></li><li><a href="/articles/71/"><span class="article-number">71</span><span>理解 DDL 被什么阻塞</span></a></li><li><a href="/articles/72/"><span class="article-number">72</span><span>移除外键</span></a></li><li><a href="/articles/73/"><span class="article-number">73</span><span>heavyweight locks 分析：持久监控</span></a></li><li><a href="/articles/83/"><span class="article-number">83</span><span>修改 Postgres 参数</span></a></li></ul></details><details data-topic="indexes"><summary><span>索引治理</span><small>9</small></summary><ul><li><a href="/articles/15/"><span class="article-number">15</span><span>监控 CREATE INDEX / REINDEX 进度</span></a></li><li><a href="/articles/18/"><span class="article-number">18</span><span>过度索引</span></a></li><li><a href="/articles/53/"><span class="article-number">53</span><span>索引维护</span></a></li><li><a href="/articles/54/"><span class="article-number">54</span><span>使用 pg_amcheck 检查 btree 索引损坏</span></a></li><li><a href="/articles/61/"><span class="article-number">61</span><span>创建索引：基础</span></a></li><li><a href="/articles/62/"><span class="article-number">62</span><span>创建索引：进阶</span></a></li><li><a href="/articles/75/"><span class="article-number">75</span><span>查找未使用索引</span></a></li><li><a href="/articles/76/"><span class="article-number">76</span><span>查找冗余索引</span></a></li><li><a href="/articles/79/"><span class="article-number">79</span><span>并行重建大量索引并避免死锁</span></a></li></ul></details><details data-topic="storage"><summary><span>存储、WAL 与 Vacuum</span><small>19</small></summary><ul><li><a href="/articles/102/"><span class="article-number">102</span><span>Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢</span></a></li><li><a href="/articles/4/"><span class="article-number">4</span><span>理解 tuple 在表中的稀疏存储</span></a></li><li><a href="/articles/9/"><span class="article-number">9</span><span>理解 LSN 和 WAL 文件名</span></a></li><li><a href="/articles/16/"><span class="article-number">16</span><span>容易踩坑的 Postgres 特性</span></a></li><li><a href="/articles/26/"><span class="article-number">26</span><span>检查 btree 索引损坏</span></a></li><li><a href="/articles/31/"><span class="article-number">31</span><span>排查 pg_wal 目录增长</span></a></li><li><a href="/articles/39/"><span class="article-number">39</span><span>如何破坏数据库：制造损坏</span></a></li><li><a href="/articles/40/"><span class="article-number">40</span><span>如何破坏数据库：模拟 XID 回卷</span></a></li><li><a href="/articles/41/"><span class="article-number">41</span><span>如何破坏数据库：有害负载</span></a></li><li><a href="/articles/44/"><span class="article-number">44</span><span>监控 XID 回卷风险</span></a></li><li><a href="/articles/45/"><span class="article-number">45</span><span>监控 xmin horizon 避免回卷和膨胀</span></a></li><li><a href="/articles/46/"><span class="article-number">46</span><span>处理 bloat</span></a></li><li><a href="/articles/52/"><span class="article-number">52</span><span>降低 WAL 生成速率</span></a></li><li><a href="/articles/66/"><span class="article-number">66</span><span>一个 page 能插入多少 tuple</span></a></li><li><a href="/articles/67/"><span class="article-number">67</span><span>Autovacuum 队列和进度</span></a></li><li><a href="/articles/74/"><span class="article-number">74</span><span>刷新 OS page cache 和 Postgres buffer pool</span></a></li><li><a href="/articles/80/"><span class="article-number">80</span><span>查找有 int4 主键溢出风险的表</span></a></li><li><a href="/articles/84/"><span class="article-number">84</span><span>列顺序与存储优化：Column Tetris</span></a></li><li><a href="/articles/85/"><span class="article-number">85</span><span>快速检查值的数据类型和存储大小</span></a></li></ul></details><details data-topic="sql"><summary><span>SQL、数据建模与扩展玩法</span><small>12</small></summary><ul><li><a href="/articles/103/"><span class="article-number">103</span><span>PostgreSQL 排序规则：文本比较、索引与升级风险</span></a></li><li><a href="/articles/23/"><span class="article-number">23</span><span>在 Postgres 中调用 OpenAI API 实现语义搜索和 GPT Chat</span></a></li><li><a href="/articles/24/"><span class="article-number">24</span><span>使用元数据</span></a></li><li><a href="/articles/28/"><span class="article-number">28</span><span>数组使用：基础</span></a></li><li><a href="/articles/29/"><span class="article-number">29</span><span>数组使用：进阶</span></a></li><li><a href="/articles/32/"><span class="article-number">32</span><span>加速批量加载</span></a></li><li><a href="/articles/43/"><span class="article-number">43</span><span>SQL 格式化与风格指南</span></a></li><li><a href="/articles/48/"><span class="article-number">48</span><span>生成测试数据</span></a></li><li><a href="/articles/64/"><span class="article-number">64</span><span>使用 UUID</span></a></li><li><a href="/articles/65/"><span class="article-number">65</span><span>UUID v7 与分区</span></a></li><li><a href="/articles/78/"><span class="article-number">78</span><span>使用创建时间和统计信息估算大表同比增长</span></a></li><li><a href="/articles/82/"><span class="article-number">82</span><span>用 SQL 绘制霜花图案</span></a></li></ul></details><details data-topic="replication" open data-current-topic="true"><summary><span>复制、校验与升级</span><small>7</small></summary><ul><li><a href="/articles/109/"><span class="article-number">109</span><span>备库查询为什么被取消：WAL 回放冲突与等待预算</span></a></li><li><a href="/articles/106/"><span class="article-number">106</span><span>PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化</span></a></li><li><a href="/articles/105/" aria-current="page"><span class="article-number">105</span><span>深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复</span></a></li><li><a href="/articles/17/"><span class="article-number">17</span><span>判断复制延迟</span></a></li><li><a href="/articles/57/"><span class="article-number">57</span><span>将物理副本转换为逻辑副本</span></a></li><li><a href="/articles/77/"><span class="article-number">77</span><span>大型高负载集群的无停机大版本升级</span></a></li><li><a href="/articles/93/"><span class="article-number">93</span><span>排查流复制延迟</span></a></li></ul></details><details data-topic="practice"><summary><span>实践剖析</span><small>3</small></summary><ul><li><a href="/articles/96/"><span class="article-number">96</span><span>为什么 actual time 和 Execution Time 有很大差异？</span></a></li><li><a href="/articles/97/"><span class="article-number">97</span><span>深入浅出 bpftrace 分析 PostgreSQL</span></a></li><li><a href="/articles/98/"><span class="article-number">98</span><span>当 PostgreSQL 慢在数据库之外：用 bpftrace 打通 SQL 与内核观测</span></a></li></ul></details><details data-topic="engineering"><summary><span>工程实践与后记</span><small>3</small></summary><ul><li><a href="/articles/38/"><span class="article-number">38</span><span>如何不把 DBA/DBRE 工作搞砸</span></a></li><li><a href="/articles/63/"><span class="article-number">63</span><span>如何帮助别人</span></a></li><li><a href="/articles/95/"><span class="article-number">95</span><span>后记</span></a></li></ul></details><div class="sidebar-resources"><a href="/#/docs/series">系列阅读</a><a href="/#/docs/conferences">会议精选</a><a href="/#/docs/about">关于项目</a></div></nav></div></aside>
+  <main class="content"><article id="main" class="markdown-section" tabindex="-1"><div class="article-topline"><nav class="breadcrumbs" aria-label="面包屑"><a href="/">首页</a><span aria-hidden="true">/</span><a href="/#/docs/topics?id=topic-replication">复制、校验与升级</a></nav></div><h1 id="how-to-hack-on-logical-replication-insights-from-contributors">深入 PostgreSQL 逻辑复制：<span class="article-title-detail">性能测试、历史快照与故障恢复</span></h1><div class="article-meta"><p class="article-kicker"><a href="/#/docs/find?series=interpretation">专题解读</a> · 会议材料 <span class="article-id">#105</span> <time datetime="2026-09-24">收录于 2026-09-24</time></p><p class="article-version">正文以 PostgreSQL 18 为基准；实验使用 18.4。序列同步 worker 按原材料的 PG19 开发背景说明，不作为 PG18 功能。</p><details><summary>来源与验证说明</summary><dl><dt>原题</dt><dd>How to Hack on Logical Replication: Insights from contributors</dd><dt>来源</dt><dd><a href="https://2026.pgconf.dev/session/527" target="_blank" rel="noopener">Hayato Kuroda、Zhijie Hou · How to Hack on Logical Replication: Insights from contributors</a></dd><dt>中文翻译与校订</dt><dd>xiongcc</dd><dt>验证状态</dt><dd>双节点验证 schema 发布刷新、行过滤与复制标识、不同主键的应用和冲突、槽回滚行为，以及正文 SQL 和 pg_recvlogical 命令。（2026-09-24） <a href="/#/maintenance/105-review">验证记录</a></dd></dl><blockquote>
+<p>专题解读 · PGConf.dev 2026 · 复制、校验与升级<br>
+基于 Hayato Kuroda、Zhijie Hou（Fujitsu）的同名分享整理，分享于 2026-05-21。<br>
+中文整理与技术校订：xiongcc。</p>
+</blockquote>
+</details></div><details class="article-toc"><summary>本页目录<span class="icon icon-chevron-down" aria-hidden="true"></span></summary><nav aria-label="本页目录"><ol><li class="toc-level-2"><a data-heading="一条变更经过哪些环节" href="#%E4%B8%80%E6%9D%A1%E5%8F%98%E6%9B%B4%E7%BB%8F%E8%BF%87%E5%93%AA%E4%BA%9B%E7%8E%AF%E8%8A%82">一条变更经过哪些环节</a></li><li class="toc-level-2"><a data-heading="性能测试要能区分解码和应用" href="#%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E8%A6%81%E8%83%BD%E5%8C%BA%E5%88%86%E8%A7%A3%E7%A0%81%E5%92%8C%E5%BA%94%E7%94%A8">性能测试要能区分解码和应用</a></li><li class="toc-level-2"><a data-heading="sql-语法背后，还要考虑后续-ddl" href="#sql-%E8%AF%AD%E6%B3%95%E8%83%8C%E5%90%8E%EF%BC%8C%E8%BF%98%E8%A6%81%E8%80%83%E8%99%91%E5%90%8E%E7%BB%AD-ddl">SQL 语法背后，还要考虑后续 DDL</a></li><li class="toc-level-2"><a data-heading="历史快照中的对象，可能与现在不同" href="#%E5%8E%86%E5%8F%B2%E5%BF%AB%E7%85%A7%E4%B8%AD%E7%9A%84%E5%AF%B9%E8%B1%A1%EF%BC%8C%E5%8F%AF%E8%83%BD%E4%B8%8E%E7%8E%B0%E5%9C%A8%E4%B8%8D%E5%90%8C">历史快照中的对象，可能与现在不同</a></li><li class="toc-level-2"><a data-heading="复制槽的内存进度与恢复进度" href="#%E5%A4%8D%E5%88%B6%E6%A7%BD%E7%9A%84%E5%86%85%E5%AD%98%E8%BF%9B%E5%BA%A6%E4%B8%8E%E6%81%A2%E5%A4%8D%E8%BF%9B%E5%BA%A6">复制槽的内存进度与恢复进度</a></li><li class="toc-level-2"><a data-heading="多一种-worker，就多一组错误路径" href="#%E5%A4%9A%E4%B8%80%E7%A7%8D-worker%EF%BC%8C%E5%B0%B1%E5%A4%9A%E4%B8%80%E7%BB%84%E9%94%99%E8%AF%AF%E8%B7%AF%E5%BE%84">多一种 worker，就多一组错误路径</a></li><li class="toc-level-2"><a data-heading="两端不必同构，但必须满足复制语义" href="#%E4%B8%A4%E7%AB%AF%E4%B8%8D%E5%BF%85%E5%90%8C%E6%9E%84%EF%BC%8C%E4%BD%86%E5%BF%85%E9%A1%BB%E6%BB%A1%E8%B6%B3%E5%A4%8D%E5%88%B6%E8%AF%AD%E4%B9%89">两端不必同构，但必须满足复制语义</a></li><li class="toc-level-2"><a data-heading="streaming-改变了性能优化的重点" href="#streaming-%E6%94%B9%E5%8F%98%E4%BA%86%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%9A%84%E9%87%8D%E7%82%B9">Streaming 改变了性能优化的重点</a></li><li class="toc-level-2"><a data-heading="从一个可以验证的改动入手" href="#%E4%BB%8E%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E9%AA%8C%E8%AF%81%E7%9A%84%E6%94%B9%E5%8A%A8%E5%85%A5%E6%89%8B">从一个可以验证的改动入手</a></li><li class="toc-level-2"><a data-heading="参考资料" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99">参考资料</a></li></ol></nav></details>
+<p>逻辑复制的入门示例很短：发布端建一个 publication，订阅端建好表，再创建 subscription，数据便能持续传过来。</p>
+<p>但真正修改这部分代码时，问题很快会超出这几条 SQL。一个 publication 明明存在，为什么解码时可能查不到？事务已经回滚，为什么复制槽还在？普通 apply worker 修过的问题，为什么到了并行 worker 又出现一次？</p>
+<p>Hayato Kuroda 和 Zhijie Hou 在这次分享中讨论的，正是参与逻辑复制开发时遇到的这些问题。性能分析、SQL 语义、历史快照、崩溃恢复和进程协作，都可能影响一项看似局部的改动。对于日常使用逻辑复制的人，理解这些约束，也有助于判断复制延迟、DDL 变更和恢复过程中的异常。</p>
+<h2 id="一条变更经过哪些环节">一条变更经过哪些环节</h2>
+<p>内置逻辑复制使用 <code>pgoutput</code> 输出插件。发布端从 WAL 中解码事务变化，根据 publication 的范围、行过滤等规则决定发送什么；订阅端接收协议消息，再把变更应用到本地表。</p>
+<pre data-lang="mermaid"><code>flowchart TD
+    A[发布端业务事务] --&gt; B[WAL]
+    B --&gt; C[逻辑解码]
+    C --&gt; D[pgoutput：发布范围与行过滤]
+    D --&gt; E[逻辑复制协议]
+    E --&gt; F[订阅端 apply worker]
+    F --&gt; G[本地事务提交]
+    H[复制槽：保留解码所需的 WAL 和目录版本] -.-&gt; C
+    G --&gt; I[Replication origin：记录应用进度]</code></pre>
+<p>这里省略了初始表同步和并行应用的细节。先关注两个位置：发布端需要知道“哪些历史数据还不能清理”，订阅端需要知道“远端事务已经应用到哪里”。复制槽和 replication origin 分别参与这两件事，它们的状态必须与数据、WAL 和恢复过程相互配合。</p>
+<p>初始同步则还有另一条路径：table synchronization worker 先复制表中已有数据，再追赶期间产生的变化，最后把表交给正常应用流程。因此，测初始同步速度、测 WAL 解码速度、测订阅端追赶速度，得到的是不同的结果。</p>
+<h2 id="性能测试要能区分解码和应用">性能测试要能区分解码和应用</h2>
+<p>两端都启动后直接跑 <code>pgbench</code>，可以测整体表现，但很难凭一个吞吐数字知道瓶颈在哪。原分享将测试分成发布端解码和订阅端追赶两个方向。</p>
+<p><strong>测发布端时，可以先让消费者只接收，不执行本地写入。</strong> <code>pg_recvlogical</code> 能读取逻辑复制流，把输出写到 <code>/dev/null</code>，从而移除订阅端建索引、检查约束、写表和提交等开销。它仍包含解码、输出插件、协议传输和客户端接收的成本，并不是纯粹的某个解码函数计时。</p>
+<p>下面是一组用于验证测试流程的小例子。只在独立实验库运行，发布端需启用 <code>wal_level=logical</code> 并配置足够的复制槽和 WAL sender。先设置 <code>PGHOST</code>、<code>PGPORT</code>、<code>PGUSER</code>、<code>PGDATABASE</code>，让 <code>psql</code> 与 <code>pg_recvlogical</code> 指向同一个实验库；不要复用生产订阅的槽。</p>
+<div class="code-block"><div class="code-toolbar"><span>Shell</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="bash" data-code-kind="code" tabindex="0" aria-label="Shell 代码"><code><span class="token builtin class-name">set</span> <span class="token parameter variable">-euo</span> pipefail
+<span class="token builtin class-name">:</span> <span class="token string">"<span class="token variable">${PGDATABASE<span class="token operator">:?</span>Set PGDATABASE to a disposable test database}</span>"</span>
+
+psql <span class="token parameter variable">-X</span> <span class="token parameter variable">-v</span> <span class="token assign-left variable">ON_ERROR_STOP</span><span class="token operator">=</span><span class="token number">1</span> <span class="token parameter variable">-c</span> <span class="token punctuation">\</span>
+  <span class="token string">"CREATE TABLE public.decode_demo(id integer PRIMARY KEY, payload text);"</span>
+psql <span class="token parameter variable">-X</span> <span class="token parameter variable">-v</span> <span class="token assign-left variable">ON_ERROR_STOP</span><span class="token operator">=</span><span class="token number">1</span> <span class="token parameter variable">-c</span> <span class="token punctuation">\</span>
+  <span class="token string">"CREATE PUBLICATION decode_demo_pub FOR TABLE public.decode_demo;"</span>
+pg_recvlogical <span class="token parameter variable">-d</span> <span class="token string">"<span class="token variable">$PGDATABASE</span>"</span> <span class="token parameter variable">--slot</span><span class="token operator">=</span>decode_demo_slot <span class="token punctuation">\</span>
+  --create-slot <span class="token parameter variable">--plugin</span><span class="token operator">=</span>pgoutput
+<span class="token builtin class-name">trap</span> <span class="token string">'pg_recvlogical -d "$PGDATABASE" --slot=decode_demo_slot --drop-slot'</span> EXIT
+
+psql <span class="token parameter variable">-X</span> <span class="token parameter variable">-v</span> <span class="token assign-left variable">ON_ERROR_STOP</span><span class="token operator">=</span><span class="token number">1</span> <span class="token parameter variable">-c</span> <span class="token punctuation">\</span>
+  <span class="token string">"INSERT INTO public.decode_demo SELECT g, repeat('x',100) FROM generate_series(1,10000) AS g;"</span>
+<span class="token assign-left variable">end_lsn</span><span class="token operator">=</span><span class="token punctuation">$(</span>psql <span class="token parameter variable">-X</span> <span class="token parameter variable">-v</span> <span class="token assign-left variable">ON_ERROR_STOP</span><span class="token operator">=</span><span class="token number">1</span> <span class="token parameter variable">-Atc</span> <span class="token string">'SELECT pg_current_wal_lsn()'</span><span class="token punctuation">)</span>
+<span class="token function">time</span> pg_recvlogical <span class="token parameter variable">-d</span> <span class="token string">"<span class="token variable">$PGDATABASE</span>"</span> <span class="token parameter variable">--slot</span><span class="token operator">=</span>decode_demo_slot <span class="token punctuation">\</span>
+  <span class="token parameter variable">--start</span> --no-loop <span class="token parameter variable">--endpos</span><span class="token operator">=</span><span class="token string">"<span class="token variable">$end_lsn</span>"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-o</span> <span class="token assign-left variable">proto_version</span><span class="token operator">=</span><span class="token number">1</span> <span class="token parameter variable">-o</span> <span class="token assign-left variable">publication_names</span><span class="token operator">=</span>decode_demo_pub <span class="token parameter variable">-f</span> /dev/null
+
+psql <span class="token parameter variable">-X</span> <span class="token parameter variable">-v</span> <span class="token assign-left variable">ON_ERROR_STOP</span><span class="token operator">=</span><span class="token number">1</span> <span class="token parameter variable">-c</span> <span class="token punctuation">\</span>
+  <span class="token string">"DROP PUBLICATION decode_demo_pub; DROP TABLE public.decode_demo;"</span>
+</code></pre></div>
+<p>顺序很重要：<strong>先创建槽，再产生负载，最后记录终点 LSN 并消费到该位置。</strong> 槽没有保留的历史 WAL，不能指望测试时再补回来。这段命令使用协议版本 1，测的是非 streaming 的基础路径；它已经在 PostgreSQL 18.4 实验环境中执行通过。</p>
+<p>正式比较补丁前后的性能，需要固定事务大小、表结构、数据量和 WAL 范围，重复测试，并配合 <code>perf</code> 查看热点。每次比较应重新准备可比的起点；一个槽已经消费过的范围，不能简单重复同一条命令就当成第二次测试。实验异常中断后，也要检查槽是否清理，避免持续保留 WAL。</p>
+<p><strong>测追赶时，则需要完整的发布订阅链路。</strong> 可以在初始表同步结束后暂停订阅，积累一批固定变更，再启用订阅观察追赶。记录发布端的终点，并核对订阅端应用进度及最终数据；只看 <code>received_lsn</code> 或进程是否仍活跃，不能证明这些变化已经提交到订阅表。这个测试测得的是端到端追赶能力，仍应结合两端 profile，判断时间花在哪里。</p>
+<p>原分享中的一个优化来自“不发布任何业务变更”的测试。虽然变更最终被过滤掉，<code>get_rel_sync_entry()</code> 仍对每条变化查询关系类型和分区信息。提交 <code>6ce1608</code> 把这两次查询移入缓存建立或重建的路径，减少了重复访问。</p>
+<p>因此，负载也应包含大量未发布表的写入。订阅的数据量很小，并不代表发布端为了判断这些变化是否需要发送而付出的成本也很小。</p>
+<h2 id="sql-语法背后，还要考虑后续-ddl">SQL 语法背后，还要考虑后续 DDL</h2>
+<p><code>CREATE PUBLICATION ... FOR TABLES IN SCHEMA</code> 会把指定 schema 中现有和未来创建的、符合条件的表纳入发布范围。它与 <code>GRANT ... ON ALL TABLES IN SCHEMA</code> 不同，后者操作的是执行授权时已有的对象；未来对象的权限需要另行配置默认权限。</p>
+<p>材料提到，这也是语法没有沿用 <code>FOR ALL TABLES IN SCHEMA</code> 的原因之一：相似写法容易让人误以为两者具有相同的时间范围。</p>
+<p>本次实验中，publication 创建之后新增的表，立即出现在发布端的 <code>pg_publication_tables</code> 中。但订阅端并没有自动增加该表的同步状态。仍需先准备订阅端表结构，再执行 <code>ALTER SUBSCRIPTION ... REFRESH PUBLICATION</code>。<strong>发布范围自动扩展，与订阅端发现并同步新表，是两件不同的事。</strong> PostgreSQL 18 的内置逻辑复制也不会替你复制建表 DDL。</p>
+<p>更复杂的例子是行过滤。假设在实验库创建如下表和 publication：</p>
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token keyword">public</span><span class="token punctuation">.</span>filter_demo <span class="token punctuation">(</span>
+    id <span class="token keyword">integer</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
+    tenant_id <span class="token keyword">integer</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> <span class="token keyword">public</span><span class="token punctuation">.</span>filter_demo <span class="token keyword">VALUES</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">CREATE</span> PUBLICATION filter_pub
+<span class="token keyword">FOR</span> <span class="token keyword">TABLE</span> <span class="token keyword">public</span><span class="token punctuation">.</span>filter_demo <span class="token keyword">WHERE</span> <span class="token punctuation">(</span>tenant_id <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div>
+<p>在 PostgreSQL 18.4 中，这些语句可以成功。接着执行：</p>
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">UPDATE</span> <span class="token keyword">public</span><span class="token punctuation">.</span>filter_demo <span class="token keyword">SET</span> tenant_id <span class="token operator">=</span> <span class="token number">20</span> <span class="token keyword">WHERE</span> id <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+</code></pre></div>
+<p>UPDATE 返回 <code>42P10</code>：行过滤使用的列没有被复制标识覆盖。默认发布包含 UPDATE 和 DELETE，而这张表的复制标识只有主键 <code>id</code>，没有 <code>tenant_id</code>。</p>
+<p>原因在于，过滤 UPDATE 时需要同时判断旧行和新行。如果旧行属于租户 10、新行不再属于租户 10，订阅端应当删除原有行；反过来则需要插入。判断旧行是否匹配，必须有相应的旧列值可用。</p>
+<p>可以在这个实验中改为记录完整旧行：</p>
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> <span class="token keyword">public</span><span class="token punctuation">.</span>filter_demo REPLICA <span class="token keyword">IDENTITY</span> <span class="token keyword">FULL</span><span class="token punctuation">;</span>
+<span class="token keyword">UPDATE</span> <span class="token keyword">public</span><span class="token punctuation">.</span>filter_demo <span class="token keyword">SET</span> tenant_id <span class="token operator">=</span> <span class="token number">20</span> <span class="token keyword">WHERE</span> id <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+</code></pre></div>
+<p>更新随后成功。补充的双节点实验也确认了：当行离开过滤范围时，订阅端删除该行；再次进入时，订阅端插入该行。如果 publication 只发布 INSERT，过滤条件则可以引用复制标识之外的普通列。<code>FULL</code> 会增加旧行信息的记录和传输成本，不能把它当成所有表都应启用的默认选项。</p>
+<p>对开发者而言，困难还在后续变化。即使创建 publication 时满足条件，之后仍可能修改复制标识、删除索引或调整分区。要把所有校验都放在 CREATE/ALTER PUBLICATION 阶段，就必须追踪所有可能改变条件的 DDL 路径。</p>
+<p>这里的设计问题是：哪些限制必须在定义时检查，哪些应在实际执行相关操作时再确认。单测只覆盖“创建成功”，很容易漏掉后续 DDL 使条件失效的情况。</p>
+<h2 id="历史快照中的对象，可能与现在不同">历史快照中的对象，可能与现在不同</h2>
+<p>逻辑解码要解释的是过去发生的变化。那个时点的列定义、类型和系统目录状态，可能已经不同于当前状态。输出插件涉及系统目录查询时，需要考虑解码使用的历史快照，不能默认看到的总是最新目录。</p>
+<p>材料展示过这样一个问题：先创建新的 publication <code>pub2</code>，再让 subscription 改为订阅 <code>pub1, pub2</code>。应用进程重启后，从已有进度重新连接；如果解码重新开始的位置早于 <code>pub2</code> 的创建时点，历史快照中就可能找不到它。</p>
+<p>对于当前 SQL 会话，<code>pub2</code> 的确存在；对于正在解释旧 WAL 的解码过程，它尚未出现。问题不能仅靠“再查一次 publication 是否存在”来理解，必须把解码起点和目录变化的先后顺序放在一起分析。</p>
+<p>这也解释了行过滤为什么不能任意调用用户函数。PostgreSQL 18 限制过滤表达式使用用户定义的函数、操作符、类型、排序规则等，也不允许可变的内置函数。仅把一个用户函数声明成 <code>IMMUTABLE</code>，并不能通过这个检查；本次实验返回 <code>0A000</code>。</p>
+<p>假如允许过滤表达式依赖扩展函数，扩展后来被删除、重建，即使名字相同，对象身份也可能变化。解码回到旧位置时，该查询应该看到哪个版本的函数，就成了需要额外解决的问题。<code>IMMUTABLE</code> 描述的是函数结果与输入的关系，不能保证这个目录对象在每一个历史快照中都可见。</p>
+<p>输出插件新增目录依赖时，除了检查正常发送，还应测试积压后的追赶、断开重连，以及依赖对象在期间发生变化的情况。</p>
+<h2 id="复制槽的内存进度与恢复进度">复制槽的内存进度与恢复进度</h2>
+<p>publication 的目录修改有事务语义，持久复制槽却不能按普通表对象那样理解。在本次实验中，在事务内创建一个持久逻辑槽，再执行 <code>ROLLBACK</code>，槽仍然存在，需要显式删除。临时槽有不同的生命周期，不能与这个结果混用。</p>
+<p>这意味着涉及远端建槽的操作，需要考虑部分成功的清理。创建 subscription 的过程中，如果远端槽已经建立、后续步骤失败，不能仅凭本地语句报错就认定所有远端状态都不存在。检查遗留槽时，要确认所属订阅和消费者，不能看到 <code>active=false</code> 就直接删除。</p>
+<p>复制槽还有一个更隐蔽的约束：内存中的进度推进，不代表磁盘上的状态已经同步保存。</p>
+<p>原分享引用了提交 <code>ca307d5</code> 修复的历史问题：checkpoint 过程中，槽的 <code>restart_lsn</code> 又向前推进；如果按这个新值回收 WAL，但新槽状态尚未保存，紧接着崩溃恢复时，磁盘上的旧状态仍要求从更早的位置读取，而那部分 WAL 已经被删除。</p>
+<p>修复引入 <code>last_saved_restart_lsn</code>，将最后一次保存的恢复位置纳入 WAL 保留计算。重点在于：<strong>回收数据时，需要考虑崩溃后能够恢复的状态，不能只考虑当前内存里的状态。</strong></p>
+<p>几个容易混淆的进度，各有用途：</p>
+<div class="table-scroll" role="region" aria-label="表格，可横向滚动" tabindex="0"><table>
+<thead>
+<tr>
+<th>位置或状态</th>
+<th>回答的问题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>发布端槽的 <code>restart_lsn</code></td>
+<td>这个槽可能仍需要从哪里开始读取 WAL</td>
+</tr>
+<tr>
+<td>发布端槽的 <code>confirmed_flush_lsn</code></td>
+<td>消费者已确认接收至什么位置；其确认语义取决于消费者实现</td>
+</tr>
+<tr>
+<td>订阅端 replication origin 的进度</td>
+<td>对应远端来源的事务已经应用到哪里</td>
+</tr>
+</tbody></table>
+</div>
+<p>不能把 <code>confirmed_flush_lsn</code> 一律当成“业务表已更新到这里”。前面的 <code>pg_recvlogical -f /dev/null</code> 就是一个例子：客户端可以确认接收，却根本没有更新任何订阅表。</p>
+<p>这些状态也不是适合随意手工推进的计数器。为了让延迟指标归零而跳过一个位置，可能让尚未处理的事务失去再次发送的机会。</p>
+<h2 id="多一种-worker，就多一组错误路径">多一种 worker，就多一组错误路径</h2>
+<p>订阅端不只有一个应用进程。正常 apply worker 负责接收和协调；table synchronization worker 负责初始表同步；parallel apply worker 可以参与正在传输的大事务的应用。材料还展示了序列同步 worker，那是 PostgreSQL 19 方向的功能，不应照搬成 PostgreSQL 18 的进程清单。</p>
+<p>多个 worker 可以共用不少逻辑，但启动方式、信号处理、事务状态和退出路径未必完全一致。原分享给了两个具体修复。</p>
+<p><code>e41d954</code> 处理的是并行 apply 的锁超时。这个 worker 曾使用 <code>SIGINT</code> 接收 leader 发来的有序退出请求，而锁超时也通过 <code>SIGINT</code> 触发查询取消。信号用途重叠，导致锁等待时的行为不正确。修复把这类退出通知改为 <code>SIGUSR2</code>，让锁超时继续走查询取消路径。</p>
+<p><code>1528b0d</code> 处理的是应用失败时错误推进 origin。正常 apply 和 table synchronization worker 已注册退出回调，在关闭过程中中止未完成事务前重置 origin 状态；并行 apply 却遗漏了对应处理。结果可能是事务没有成功应用，进度却已经前移，重新连接后也不会再次收到它。</p>
+<p>这类问题很难通过“插入几行，看看订阅端有没有”发现。测试需要主动进入锁等待、超时、错误和进程退出路径，并检查恢复后最终的数据与进度。只确认 worker 能重新启动，还不足以证明复制已经正确恢复。</p>
+<p>origin 本身也有对象生命周期。它用本地标识表示来源，并记录进度；删除后重新创建，内部 ID 可能被复用。所以，涉及冲突归属或升级迁移的功能，不能把一个数字 ID 当成永久不变的来源身份。材料讨论 origin 迁移时关心的，正是这些状态在不同生命周期中还能否保持正确对应。</p>
+<h2 id="两端不必同构，但必须满足复制语义">两端不必同构，但必须满足复制语义</h2>
+<p>跨版本复制是逻辑复制的重要用途。订阅端的新代码可能连接旧发布端，因此调用远端 SQL 函数、选择协议版本、执行初始同步时，都要考虑对端是否支持相应接口。只在同版本两节点上通过测试，不能证明跨版本路径也正确。</p>
+<p>两端的表也未必有完全相同的主键。原材料用订单明细举例：发布端主键是 <code>(order_id, product_id)</code>，订阅端主键只有 <code>order_id</code>。订阅端的键列是发布端发送的键列的子集，在数据满足订阅端约束时，可以定位需要更新的行。</p>
+<p>本次实验先复制一条订单明细，再更新数量，两端主键不同仍能正常应用。但在发布端为同一个订单插入另一种商品后，订阅端报了唯一约束冲突：它的 <code>order_id</code> 主键只允许一条明细。</p>
+<p>这区分了两个问题：复制协议提供的信息够不够定位行，以及发布端允许的数据是否也满足订阅端约束。前者成立，后者仍可能失败。以这个例子设计实际订单系统，就必须明确订阅端为什么只容纳每个订单的一行，不能把较少的键列直接理解为通用优化。</p>
+<h2 id="streaming-改变了性能优化的重点">Streaming 改变了性能优化的重点</h2>
+<p>PostgreSQL 14 加入对进行中大事务的 streaming 支持，PostgreSQL 16 加入 parallel apply。PostgreSQL 18 新建订阅的 <code>streaming</code> 默认值为 <code>parallel</code>；已有订阅仍需检查实际配置，不能从服务器版本反推它正在使用的模式。</p>
+<p>这几种方式有明显区别：</p>
+<div class="table-scroll" role="region" aria-label="表格，可横向滚动" tabindex="0"><table>
+<thead>
+<tr>
+<th>模式</th>
+<th>大事务的处理方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>off</code></td>
+<td>发布端解码到提交后才发送整个事务，期间可能溢写到磁盘</td>
+</tr>
+<tr>
+<td><code>on</code></td>
+<td>允许提前分段发送，订阅端暂存到文件，收到提交后再应用</td>
+</tr>
+<tr>
+<td><code>parallel</code></td>
+<td>有可用并行 worker 时提前应用；没有可用 worker 时可以退回文件暂存</td>
+</tr>
+</tbody></table>
+</div>
+<p>提前发送、提前应用，都不意味着可以把尚未提交的事务提前暴露给普通查询。提交与回滚的语义仍需保持。Streaming 也不是完全消除溢写；例如部分 TOAST 数据尚不能组成完整元组时，仍可能需要磁盘暂存。</p>
+<p>原分享据此重新评估了“压缩溢写事务”这类优化：如果主要负载已经使用 streaming，原来的热点可能缩小，工程投入应根据当前模式重新判断。但旧版本、禁用 streaming 的订阅，以及仍会发生溢写的路径，依然可能有优化价值。</p>
+<p>物理复制的思路同样不能直接平移。物理备库可以先接收并保存 WAL，再延迟回放；逻辑复制的接收、暂存、应用和反馈关系不同。要实现延迟应用，需要设计可靠的暂存、容量限制和恢复机制，并明确什么时候向发布端确认。简单暂停读取会把压力留给发布端复制槽；收到数据就确认、却没有可靠保存，则可能造成故障后的数据缺口。这是需要专门设计的功能，不能照搬一个物理恢复参数。</p>
+<h2 id="从一个可以验证的改动入手">从一个可以验证的改动入手</h2>
+<p>材料把参与方式分成新功能、性能优化、缺陷修复和重构。对于刚接触这部分代码的人，一个有明确复现过程的缺陷，或者 profile 中反复出现的开销，通常比直接设计一套大型复制功能更容易开展。</p>
+<p>阅读 PostgreSQL 18 源码时，可以按问题找入口：</p>
+<div class="table-scroll" role="region" aria-label="表格，可横向滚动" tabindex="0"><table>
+<thead>
+<tr>
+<th>关心的问题</th>
+<th>主要入口，路径相对 <code>src/backend/</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>publication 的 DDL 与表达式限制</td>
+<td><code>commands/publicationcmds.c</code></td>
+</tr>
+<tr>
+<td>WAL 如何转成逻辑变化、组织事务</td>
+<td><code>replication/logical/decode.c</code>、<code>reorderbuffer.c</code>、<code>snapbuild.c</code></td>
+</tr>
+<tr>
+<td>发布范围、行过滤和输出消息</td>
+<td><code>replication/pgoutput/pgoutput.c</code></td>
+</tr>
+<tr>
+<td>正常应用、并行应用与初始同步</td>
+<td><code>replication/logical/worker.c</code>、<code>applyparallelworker.c</code>、<code>tablesync.c</code></td>
+</tr>
+<tr>
+<td>槽的保存与恢复、来源进度</td>
+<td><code>replication/slot.c</code>、<code>replication/logical/origin.c</code></td>
+</tr>
+</tbody></table>
+</div>
+<p>已有的 <code>src/test/subscription/t/</code> 测试也值得一起读。修改之前先找到相关用例，补上能暴露问题的场景，再比较修改后的结果。关注 BuildFarm 和 Patch Tester 的失败记录，可以发现特定平台、并发时序或新提交引入的问题，但仍需要缩小复现条件。</p>
+<p>例如，原分享中的 <code>MERGE</code> 修复就来自新功能与逻辑复制的交叉：目标表发布 UPDATE/DELETE 时，MERGE 中相应操作也必须遵守复制标识要求。检查 INSERT、UPDATE、DELETE 各自的路径，并不能自动覆盖新增的执行入口。</p>
+<p>逻辑复制的很多约束，平时隐藏在正常运行的背后。积压时会遇到旧目录，失败时会回到保存的进度，并行时会经过另一套退出路径。一个改动是否可靠，往往就取决于这些情况下还能否继续正确复制。</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li>原分享：Hayato Kuroda、Zhijie Hou，<a href="https://2026.pgconf.dev/session/527"><em>How to Hack on Logical Replication: Insights from contributors</em>，PGConf.dev 2026</a>，<a href="https://www.pgevents.ca/events/pgconfdev2026/schedule/session/527/">会议资料入口</a>。</li>
+<li>基础与语义：<a href="https://www.postgresql.org/docs/18/logical-replication-architecture.html">逻辑复制架构</a>、<a href="https://www.postgresql.org/docs/18/logical-replication-publication.html">Publication 与复制标识</a>、<a href="https://www.postgresql.org/docs/18/sql-createpublication.html">CREATE PUBLICATION</a>、<a href="https://www.postgresql.org/docs/18/logical-replication-row-filter.html">行过滤</a>。</li>
+<li>解码与恢复：<a href="https://www.postgresql.org/docs/18/app-pgrecvlogical.html">pg_recvlogical</a>、<a href="https://www.postgresql.org/docs/18/logicaldecoding-explanation.html">逻辑解码概念</a>、<a href="https://www.postgresql.org/docs/18/replication-origins.html">Replication progress tracking</a>、<a href="https://www.postgresql.org/docs/18/logicaldecoding-streaming.html">大事务 streaming</a>、<a href="https://www.postgresql.org/docs/18/sql-createsubscription.html">CREATE SUBSCRIPTION</a>。</li>
+<li>材料中的修复：<a href="https://git.postgresql.org/gitweb/?p=postgresql.git;a=commit;h=6ce1608">减少关系缓存访问 6ce1608</a>、<a href="https://git.postgresql.org/gitweb/?p=postgresql.git;a=commit;h=ca307d5">WAL 保留与已保存进度 ca307d5</a>、<a href="https://git.postgresql.org/gitweb/?p=postgresql.git;a=commit;h=e41d954">并行应用锁超时 e41d954</a>、<a href="https://github.com/postgres/postgres/commit/1528b0d">应用失败时不推进 origin 1528b0d</a>、<a href="https://git.postgresql.org/gitweb/?p=postgresql.git;a=commit;h=fc6600f">MERGE 复制标识检查 fc6600f</a>。</li>
+<li>开发测试：<a href="https://github.com/postgres/postgres/tree/REL_18_STABLE/src/test/subscription/t">PostgreSQL 18 订阅测试</a>、<a href="https://buildfarm.postgresql.org/">BuildFarm</a>、<a href="https://cfbot.cputube.org/">Patch Tester</a>。</li>
+</ul>
+<footer class="article-footer"><p class="article-topic-label">所属专题：<a href="/#/docs/topics?id=topic-replication">复制、校验与升级</a></p><div class="article-neighbors"><a rel="prev" href="/articles/93/"><small>同专题上一篇</small><strong>排查流复制延迟</strong></a><a rel="next" href="/articles/106/"><small>同专题下一篇</small><strong>PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化</strong></a></div><h2>继续阅读</h2><ul><li><a href="/articles/109/">备库查询为什么被取消：WAL 回放冲突与等待预算</a></li><li><a href="/articles/106/">PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化</a></li><li><a href="/articles/107/">外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务</a></li></ul><div class="article-source-links"><a href="https://github.com/xiongcccc/postgres-howto/blob/master/docs/105.md" target="_blank" rel="noopener">查看源文件</a><a href="https://github.com/xiongcccc/postgres-howto/issues/new?title=%E6%96%87%E7%AB%A0%20%23105%EF%BC%9A%E6%B7%B1%E5%85%A5%20PostgreSQL%20%E9%80%BB%E8%BE%91%E5%A4%8D%E5%88%B6%EF%BC%9A%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E3%80%81%E5%8E%86%E5%8F%B2%E5%BF%AB%E7%85%A7%E4%B8%8E%E6%95%85%E9%9A%9C%E6%81%A2%E5%A4%8D" target="_blank" rel="noopener">反馈与纠错</a></div></footer><section id="gitalk-container" class="article-discussion"><h2>讨论与补充</h2><a target="_blank" rel="noopener" href="https://github.com/xiongcccc/gitalk-comment/issues?q=is%3Aissue%20%22%2Fdocs%2F105%22">查看与参与 GitHub 讨论</a></section></article></main>
+  <footer class="site-footer"><div><a href="/articles/">文章目录</a><a href="/#/docs/about">关于项目</a><a href="https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos">上游来源</a><a href="https://xiongcc.cn/">xiongcc</a></div><div class="js-only"><button type="button" data-dialog="communityModal">读者交流</button><button type="button" data-dialog="imageModal">支持作者</button><span class="site-stats"><span id="busuanzi_container_site_pv">访问 <strong id="busuanzi_value_site_pv">--</strong> 次</span><span id="busuanzi_container_site_uv">访客 <strong id="busuanzi_value_site_uv">--</strong> 人</span></span></div></footer>
+  <dialog id="imageModal" class="support-modal" aria-labelledby="support-title"><div class="dialog-heading"><h2 id="support-title">支持作者</h2><button class="icon-button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>感谢支持 PostgreSQL Howto 的长期维护。</p><img data-src="/images/wechat_pay.png" width="280" height="280" alt="微信赞赏码"></dialog>
+  <dialog id="communityModal" class="support-modal" aria-labelledby="community-title"><div class="dialog-heading"><h2 id="community-title">读者交流群</h2><button class="icon-button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>二维码若已过期，可通过公众号 PostgreSQL 学徒或邮件联系。</p><img data-src="/images/wechatgroup.jpeg" width="280" height="427" alt="PostgreSQL 学徒读者交流群二维码"></dialog>
+  <script src="/scripts/catalog-data.js?v=beaba606436c9ec0" defer></script>
+<script src="/scripts/article-view.js?v=926830a13df34c2c" defer></script>
+<script src="/scripts/site.js?v=f2e6d95ee157b4fe" defer></script>
+<script src="/scripts/diagrams.js?v=45d556fe0c9de5ef" defer></script>
+<script src="/scripts/reading.js?v=abf3dfc7db08ddc8" defer></script>
+</body>
+</html>

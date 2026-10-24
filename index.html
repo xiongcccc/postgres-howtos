@@ -11,7 +11,6 @@
   <meta property="og:description" content="面向真实工程问题的 PostgreSQL 中文实践知识库。">
   <meta property="og:url" content="https://postgres-howto.cn/">
   <meta property="og:image" content="https://postgres-howto.cn/images/logo.png">
-  <link rel="canonical" href="https://postgres-howto.cn/">
   <link rel="icon" type="image/png" href="./images/favicon.png">
   <link rel="apple-touch-icon" href="./images/favicon.png">
   <script>
@@ -21,29 +20,32 @@
       var dark = mode === 'dark' || (mode === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
       document.documentElement.dataset.theme = dark ? 'dark' : 'light';
       document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+      var route=location.hash.slice(1).split('?')[0];
+      document.documentElement.dataset.view=/^\/?(?:README(?:\.md)?)?$/i.test(route)?'home':/^\/docs\/\d+/.test(route)?'article':'page';
     })();
   </script>
-  <link rel="stylesheet" href="./styles/custom.css?v=1ac8f4ba232d28b9">
-  <link rel="stylesheet" href="./styles/reading.css?v=33a89641025d54b6">
+  <link rel="stylesheet" href="./styles/custom.css?v=0671959df3115f7d">
+  <link rel="stylesheet" href="./styles/reading.css?v=701d1b6c5807eeb4">
 </head>
-<body>
+<body data-loading>
+  <script>document.body.classList.toggle('reading-home',document.documentElement.dataset.view==='home');document.body.classList.toggle('reading-article',document.documentElement.dataset.view==='article');</script>
   <a class="skip-link" href="#main" data-skip>跳至正文</a>
   <header class="site-header">
-    <button id="sidebar-toggle" class="icon-button mobile-menu" type="button" aria-label="打开导航" aria-controls="site-sidebar" aria-expanded="false" title="打开导航"><span class="icon icon-menu" aria-hidden="true"></span></button>
+    <button id="sidebar-toggle" class="icon-button mobile-menu js-only" type="button" aria-label="打开导航" aria-controls="site-sidebar" aria-expanded="false" title="打开导航"><span class="icon icon-menu" aria-hidden="true"></span></button>
     <a class="site-brand" href="#/README"><img src="./images/favicon.png" width="36" height="36" alt=""><span>PostgreSQL <strong>Howto</strong><small>中文版</small></span></a>
     <nav class="app-nav" aria-label="主导航">
       <a href="#/README">首页</a><a href="#/docs/topics">专题</a><a href="#/docs/paths">学习路径</a><a href="#/docs/find">全部文章</a><a href="https://github.com/xiongcccc/postgres-howto" target="_blank" rel="noopener">GitHub<span class="icon icon-arrow-up-right" aria-hidden="true"></span></a>
     </nav>
-    <div class="header-tools">
+    <div class="header-tools js-only">
       <button type="button" class="icon-button" data-open-search aria-label="搜索文章" aria-keyshortcuts="Control+K Meta+K" title="搜索文章 (Ctrl / Cmd + K)"><span class="icon icon-search" aria-hidden="true"></span></button>
       <button type="button" class="icon-button theme-toggle" aria-label="切换阅读主题" title="切换阅读主题"><span class="icon icon-monitor" aria-hidden="true"></span></button>
     </div>
   </header>
   <button class="sidebar-backdrop" type="button" aria-label="关闭导航" tabindex="-1" hidden></button>
   <div id="app"><p class="loading-message">PostgreSQL Howto · 正在载入文章</p></div>
-  <noscript><p>阅读本站需要 JavaScript，也可以在 <a href="https://github.com/xiongcccc/postgres-howto">GitHub 仓库</a>查看文章源文件。</p></noscript>
+  <noscript><style>#app{display:none}</style><section class="no-js-intro"><h1>PostgreSQL Howto 中文版</h1><p>面向真实工程问题的 PostgreSQL 实践知识库。</p><p><a href="/articles/">阅读全部文章</a>，或在 <a href="https://github.com/xiongcccc/postgres-howto">GitHub 仓库</a>查看原文。</p></section></noscript>
   <footer class="site-footer">
-    <div><a href="#/docs/about">关于项目</a><a href="https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos" target="_blank" rel="noopener">上游来源</a><a href="https://xiongcc.cn/" target="_blank" rel="noopener">xiongcc</a></div>
+    <div><a href="#/docs/about">关于项目</a><a href="/articles/">文章目录</a><a href="https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos" target="_blank" rel="noopener">上游来源</a><a href="https://xiongcc.cn/" target="_blank" rel="noopener">xiongcc</a></div>
     <div><button type="button" data-dialog="communityModal">读者交流</button><button type="button" data-dialog="imageModal">支持作者</button><span class="site-stats" aria-label="站点访问统计"><span id="busuanzi_container_site_pv">访问 <strong id="busuanzi_value_site_pv">--</strong> 次</span><span id="busuanzi_container_site_uv">访客 <strong id="busuanzi_value_site_uv">--</strong> 人</span></span></div>
   </footer>
   <dialog id="imageModal" class="support-modal" aria-labelledby="support-title"><div class="dialog-heading"><h2 id="support-title">支持作者</h2><button class="icon-button" type="button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>感谢支持 PostgreSQL Howto 的长期维护。</p><img data-src="./images/wechat_pay.png" width="280" height="280" alt="微信赞赏码"></dialog>
@@ -51,16 +53,17 @@
   <script>
     window.$docsify = {
       name: 'PostgreSQL Howto', repo: false, maxLevel: 5, subMaxLevel: 0,
-      homepage: 'README.md', coverpage: false, loadSidebar: true, loadNavbar: false,
-      auto2top: true, notFoundPage: 'docs/not-found.md'
+      homepage: 'docs/home.md', alias: {'/README(?:\\.md)?$':'/docs/home.md'}, coverpage: false, loadSidebar: true, loadNavbar: false,
+      auto2top: true, topMargin: 88, notFoundPage: 'docs/not-found.md'
     };
   </script>
-  <script src="./scripts/catalog-data.js?v=407d2a61721a9d67"></script>
+  <script src="./scripts/catalog-data.js?v=beaba606436c9ec0"></script>
   <script src="./scripts/search-core.js?v=6e4ff33700ab76b7"></script>
-  <script src="./scripts/site.js?v=8bd6e789a14ef289"></script>
-  <script src="./scripts/finder.js?v=04cf6edbbfac5df2"></script>
-  <script src="./scripts/diagrams.js?v=2277fa2b06c40a94"></script>
-  <script src="./scripts/reading.js?v=b9a6169290147579"></script>
+  <script src="./scripts/article-view.js?v=926830a13df34c2c"></script>
+  <script src="./scripts/site.js?v=f2e6d95ee157b4fe"></script>
+  <script src="./scripts/finder.js?v=2ab948b07c73c440"></script>
+  <script src="./scripts/diagrams.js?v=45d556fe0c9de5ef"></script>
+  <script src="./scripts/reading.js?v=abf3dfc7db08ddc8"></script>
   <script src="./scripts/comments.js?v=c8b87fcdfd828c7c"></script>
   <script src="./vendor/docsify.min.js"></script>
   <script src="./vendor/prism-sql.min.js"></script>

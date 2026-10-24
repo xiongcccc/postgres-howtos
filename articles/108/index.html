@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离 | PostgreSQL Howto 中文版</title>
+  <meta name="description" content="一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离。机制按 PostgreSQL 18 核对；最小实验使用 18.4，内存采样依赖 18 的 path 列。Linux 内存策略单独说明。">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="canonical" href="https://postgres-howto.cn/articles/108/">
+  <meta property="og:title" content="一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离 | PostgreSQL Howto 中文版">
+  <meta property="og:description" content="一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离。机制按 PostgreSQL 18 核对；最小实验使用 18.4，内存采样依赖 18 的 path 列。Linux 内存策略单独说明。">
+  <meta property="og:url" content="https://postgres-howto.cn/articles/108/">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://postgres-howto.cn/images/logo.png">
+  <link rel="icon" href="/images/favicon.png" type="image/png">
+  <script>(function(){var m='auto';try{m=localStorage.getItem('howto-theme')||'auto';}catch(_){}var d=m==='dark'||(m==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light';document.documentElement.style.colorScheme=d?'dark':'light';})();</script>
+  <link rel="stylesheet" href="/styles/custom.css?v=0671959df3115f7d">
+  <link rel="stylesheet" href="/styles/reading.css?v=701d1b6c5807eeb4">
+<script id="article-schema" type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离","inLanguage":"zh-CN","url":"https://postgres-howto.cn/articles/108/","mainEntityOfPage":"https://postgres-howto.cn/articles/108/","citation":"https://clickhouse.com/blog/can-your-postgres-survive-a-bad-query","keywords":["坏查询","坏 SQL","OOM","out of memory","查询内存","内存隔离","递归去重","RecursiveUnion","work_mem","temp_file_limit","statement_timeout","overcommit","pg_backend_memory_contexts","pg_log_backend_memory_contexts","ClickHouse","Kevin Biju Kizhake Kanichery"],"datePublished":"2026-10-09"}</script>
+</head>
+<body class="reading-article" data-static-page data-static-article="108">
+  <a class="skip-link" href="#main" data-skip>跳至正文</a>
+  <header class="site-header">
+    <button id="sidebar-toggle" class="icon-button mobile-menu js-only" type="button" aria-label="打开导航" aria-controls="site-sidebar" aria-expanded="false" title="打开导航"><span class="icon icon-menu" aria-hidden="true"></span></button>
+    <a class="site-brand" href="/"><img src="/images/favicon.png" width="36" height="36" alt=""><span>PostgreSQL <strong>Howto</strong><small>中文版</small></span></a>
+    <nav class="app-nav" aria-label="主导航"><a href="/">首页</a><a href="/#/docs/topics">专题</a><a href="/#/docs/paths">学习路径</a><a href="/articles/">全部文章</a><a href="https://github.com/xiongcccc/postgres-howto" target="_blank" rel="noopener">GitHub<span class="icon icon-arrow-up-right" aria-hidden="true"></span></a></nav>
+    <div class="header-tools js-only"><button class="icon-button" type="button" data-open-search aria-label="搜索文章" aria-keyshortcuts="Control+K Meta+K" title="搜索文章 (Ctrl / Cmd + K)"><span class="icon icon-search" aria-hidden="true"></span></button><button class="icon-button theme-toggle" aria-label="切换阅读主题" title="切换阅读主题"><span class="icon icon-monitor" aria-hidden="true"></span></button></div>
+  </header>
+  <button class="sidebar-backdrop" type="button" aria-label="关闭导航" tabindex="-1" hidden></button>
+  <aside class="sidebar" id="site-sidebar" aria-label="文章导航"><div class="sidebar-nav"><div class="sidebar-heading"><span>知识导航</span><button class="icon-button" data-close-nav aria-label="关闭导航" title="关闭导航"><span class="icon icon-x" aria-hidden="true"></span></button></div><nav class="catalog-navigation" aria-label="文章分类"><ul class="catalog-pages"><li><a href="/#/README">首页</a></li><li><a href="/#/docs/topics">专题</a></li><li><a href="/#/docs/paths">学习路径</a></li><li><a href="/articles/">全部文章</a></li></ul><p class="sidebar-label">技术专题 <span>主归属文章</span></p><details data-topic="performance" open data-current-topic="true"><summary><span>查询性能与观测</span><small>16</small></summary><ul><li><a href="/articles/108/" aria-current="page"><span class="article-number">108</span><span>一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离</span></a></li><li><a href="/articles/101/"><span class="article-number">101</span><span>PostgreSQL 性能排查：规划开销、分区锁与表膨胀</span></a></li><li><a href="/articles/1/"><span class="article-number">1</span><span>EXPLAIN 为什么应该带 BUFFERS</span></a></li><li><a href="/articles/5/"><span class="article-number">5</span><span>pg_stat_statements 入门</span></a></li><li><a href="/articles/6/"><span class="article-number">6</span><span>pg_stat_statements 进阶</span></a></li><li><a href="/articles/7/"><span class="article-number">7</span><span>pg_stat_statements 深入使用</span></a></li><li><a href="/articles/10/"><span class="article-number">10</span><span>使用 FlameGraph 和 eBPF/perf 排查性能</span></a></li><li><a href="/articles/11/"><span class="article-number">11</span><span>临时监控方法</span></a></li><li><a href="/articles/12/"><span class="article-number">12</span><span>为 pg_stat_statements 找到真实 SQL 样例</span></a></li><li><a href="/articles/13/"><span class="article-number">13</span><span>如何做基准测试</span></a></li><li><a href="/articles/14/"><span class="article-number">14</span><span>如何判断一个查询是否太慢</span></a></li><li><a href="/articles/50/"><span class="article-number">50</span><span>基准测试迭代前后的准备工作</span></a></li><li><a href="/articles/56/"><span class="article-number">56</span><span>让非生产环境 Planner 更像生产环境</span></a></li><li><a href="/articles/89/"><span class="article-number">89</span><span>OLTP 粗略配置调优</span></a></li><li><a href="/articles/92/"><span class="article-number">92</span><span>work_mem 调优</span></a></li><li><a href="/articles/94/"><span class="article-number">94</span><span>运行 ANALYZE 收集统计信息</span></a></li></ul></details><details data-topic="ops"><summary><span>运维排障与日常工具</span><small>21</small></summary><ul><li><a href="/articles/2/"><span class="article-number">2</span><span>排查并加速 Postgres 停止和重启</span></a></li><li><a href="/articles/3/"><span class="article-number">3</span><span>排查 Postgres 启动缓慢</span></a></li><li><a href="/articles/8/"><span class="article-number">8</span><span>加速大库 pg_dump</span></a></li><li><a href="/articles/19/"><span class="article-number">19</span><span>导入 CSV 到 Postgres</span></a></li><li><a href="/articles/20/"><span class="article-number">20</span><span>使用 pg_restore</span></a></li><li><a href="/articles/21/"><span class="article-number">21</span><span>不发额外查询设置 application_name</span></a></li><li><a href="/articles/25/"><span class="article-number">25</span><span>如何退出 psql</span></a></li><li><a href="/articles/27/"><span class="article-number">27</span><span>在 Ubuntu 22.04 编译 Postgres</span></a></li><li><a href="/articles/34/"><span class="article-number">34</span><span>初步配置调优</span></a></li><li><a href="/articles/47/"><span class="article-number">47</span><span>安装带 plpython3u 的 Postgres 16</span></a></li><li><a href="/articles/49/"><span class="article-number">49</span><span>在 psql 脚本中使用变量</span></a></li><li><a href="/articles/51/"><span class="article-number">51</span><span>通过观察 psql 学习元数据</span></a></li><li><a href="/articles/58/"><span class="article-number">58</span><span>使用 Docker 运行 Postgres</span></a></li><li><a href="/articles/59/"><span class="article-number">59</span><span>psql 调优</span></a></li><li><a href="/articles/68/"><span class="article-number">68</span><span>psql 快捷操作</span></a></li><li><a href="/articles/81/"><span class="article-number">81</span><span>在 psql 中绘图</span></a></li><li><a href="/articles/86/"><span class="article-number">86</span><span>修复 psql 中的 \\e 编辑器问题</span></a></li><li><a href="/articles/87/"><span class="article-number">87</span><span>修改数据库中所有对象所有者</span></a></li><li><a href="/articles/88/"><span class="article-number">88</span><span>面向 OLTP 的 Linux 参数调优</span></a></li><li><a href="/articles/90/"><span class="article-number">90</span><span>使用 lib_pgquery 归一化和匹配查询</span></a></li><li><a href="/articles/91/"><span class="article-number">91</span><span>格式化 psql 脚本文本输出</span></a></li></ul></details><details data-topic="locks"><summary><span>锁、事务与在线变更</span><small>19</small></summary><ul><li><a href="/articles/107/"><span class="article-number">107</span><span>外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务</span></a></li><li><a href="/articles/104/"><span class="article-number">104</span><span>SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争</span></a></li><li><a href="/articles/99/"><span class="article-number">99</span><span>如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除</span></a></li><li><a href="/articles/100/"><span class="article-number">100</span><span>如何排查 LISTEN／NOTIFY 引起的提交阻塞</span></a></li><li><a href="/articles/22/"><span class="article-number">22</span><span>heavyweight locks 分析：基础</span></a></li><li><a href="/articles/30/"><span class="article-number">30</span><span>处理 OLTP 长事务</span></a></li><li><a href="/articles/33/"><span class="article-number">33</span><span>无停机重定义主键</span></a></li><li><a href="/articles/35/"><span class="article-number">35</span><span>使用子事务</span></a></li><li><a href="/articles/36/"><span class="article-number">36</span><span>单条查询实现 find-or-insert</span></a></li><li><a href="/articles/37/"><span class="article-number">37</span><span>无停机启用 data checksums</span></a></li><li><a href="/articles/42/"><span class="article-number">42</span><span>heavyweight locks 分析：锁树</span></a></li><li><a href="/articles/55/"><span class="article-number">55</span><span>删除列</span></a></li><li><a href="/articles/60/"><span class="article-number">60</span><span>添加列</span></a></li><li><a href="/articles/69/"><span class="article-number">69</span><span>无停机添加 CHECK 约束</span></a></li><li><a href="/articles/70/"><span class="article-number">70</span><span>添加外键</span></a></li><li><a href="/articles/71/"><span class="article-number">71</span><span>理解 DDL 被什么阻塞</span></a></li><li><a href="/articles/72/"><span class="article-number">72</span><span>移除外键</span></a></li><li><a href="/articles/73/"><span class="article-number">73</span><span>heavyweight locks 分析：持久监控</span></a></li><li><a href="/articles/83/"><span class="article-number">83</span><span>修改 Postgres 参数</span></a></li></ul></details><details data-topic="indexes"><summary><span>索引治理</span><small>9</small></summary><ul><li><a href="/articles/15/"><span class="article-number">15</span><span>监控 CREATE INDEX / REINDEX 进度</span></a></li><li><a href="/articles/18/"><span class="article-number">18</span><span>过度索引</span></a></li><li><a href="/articles/53/"><span class="article-number">53</span><span>索引维护</span></a></li><li><a href="/articles/54/"><span class="article-number">54</span><span>使用 pg_amcheck 检查 btree 索引损坏</span></a></li><li><a href="/articles/61/"><span class="article-number">61</span><span>创建索引：基础</span></a></li><li><a href="/articles/62/"><span class="article-number">62</span><span>创建索引：进阶</span></a></li><li><a href="/articles/75/"><span class="article-number">75</span><span>查找未使用索引</span></a></li><li><a href="/articles/76/"><span class="article-number">76</span><span>查找冗余索引</span></a></li><li><a href="/articles/79/"><span class="article-number">79</span><span>并行重建大量索引并避免死锁</span></a></li></ul></details><details data-topic="storage"><summary><span>存储、WAL 与 Vacuum</span><small>19</small></summary><ul><li><a href="/articles/102/"><span class="article-number">102</span><span>Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢</span></a></li><li><a href="/articles/4/"><span class="article-number">4</span><span>理解 tuple 在表中的稀疏存储</span></a></li><li><a href="/articles/9/"><span class="article-number">9</span><span>理解 LSN 和 WAL 文件名</span></a></li><li><a href="/articles/16/"><span class="article-number">16</span><span>容易踩坑的 Postgres 特性</span></a></li><li><a href="/articles/26/"><span class="article-number">26</span><span>检查 btree 索引损坏</span></a></li><li><a href="/articles/31/"><span class="article-number">31</span><span>排查 pg_wal 目录增长</span></a></li><li><a href="/articles/39/"><span class="article-number">39</span><span>如何破坏数据库：制造损坏</span></a></li><li><a href="/articles/40/"><span class="article-number">40</span><span>如何破坏数据库：模拟 XID 回卷</span></a></li><li><a href="/articles/41/"><span class="article-number">41</span><span>如何破坏数据库：有害负载</span></a></li><li><a href="/articles/44/"><span class="article-number">44</span><span>监控 XID 回卷风险</span></a></li><li><a href="/articles/45/"><span class="article-number">45</span><span>监控 xmin horizon 避免回卷和膨胀</span></a></li><li><a href="/articles/46/"><span class="article-number">46</span><span>处理 bloat</span></a></li><li><a href="/articles/52/"><span class="article-number">52</span><span>降低 WAL 生成速率</span></a></li><li><a href="/articles/66/"><span class="article-number">66</span><span>一个 page 能插入多少 tuple</span></a></li><li><a href="/articles/67/"><span class="article-number">67</span><span>Autovacuum 队列和进度</span></a></li><li><a href="/articles/74/"><span class="article-number">74</span><span>刷新 OS page cache 和 Postgres buffer pool</span></a></li><li><a href="/articles/80/"><span class="article-number">80</span><span>查找有 int4 主键溢出风险的表</span></a></li><li><a href="/articles/84/"><span class="article-number">84</span><span>列顺序与存储优化：Column Tetris</span></a></li><li><a href="/articles/85/"><span class="article-number">85</span><span>快速检查值的数据类型和存储大小</span></a></li></ul></details><details data-topic="sql"><summary><span>SQL、数据建模与扩展玩法</span><small>12</small></summary><ul><li><a href="/articles/103/"><span class="article-number">103</span><span>PostgreSQL 排序规则：文本比较、索引与升级风险</span></a></li><li><a href="/articles/23/"><span class="article-number">23</span><span>在 Postgres 中调用 OpenAI API 实现语义搜索和 GPT Chat</span></a></li><li><a href="/articles/24/"><span class="article-number">24</span><span>使用元数据</span></a></li><li><a href="/articles/28/"><span class="article-number">28</span><span>数组使用：基础</span></a></li><li><a href="/articles/29/"><span class="article-number">29</span><span>数组使用：进阶</span></a></li><li><a href="/articles/32/"><span class="article-number">32</span><span>加速批量加载</span></a></li><li><a href="/articles/43/"><span class="article-number">43</span><span>SQL 格式化与风格指南</span></a></li><li><a href="/articles/48/"><span class="article-number">48</span><span>生成测试数据</span></a></li><li><a href="/articles/64/"><span class="article-number">64</span><span>使用 UUID</span></a></li><li><a href="/articles/65/"><span class="article-number">65</span><span>UUID v7 与分区</span></a></li><li><a href="/articles/78/"><span class="article-number">78</span><span>使用创建时间和统计信息估算大表同比增长</span></a></li><li><a href="/articles/82/"><span class="article-number">82</span><span>用 SQL 绘制霜花图案</span></a></li></ul></details><details data-topic="replication"><summary><span>复制、校验与升级</span><small>7</small></summary><ul><li><a href="/articles/109/"><span class="article-number">109</span><span>备库查询为什么被取消：WAL 回放冲突与等待预算</span></a></li><li><a href="/articles/106/"><span class="article-number">106</span><span>PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化</span></a></li><li><a href="/articles/105/"><span class="article-number">105</span><span>深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复</span></a></li><li><a href="/articles/17/"><span class="article-number">17</span><span>判断复制延迟</span></a></li><li><a href="/articles/57/"><span class="article-number">57</span><span>将物理副本转换为逻辑副本</span></a></li><li><a href="/articles/77/"><span class="article-number">77</span><span>大型高负载集群的无停机大版本升级</span></a></li><li><a href="/articles/93/"><span class="article-number">93</span><span>排查流复制延迟</span></a></li></ul></details><details data-topic="practice"><summary><span>实践剖析</span><small>3</small></summary><ul><li><a href="/articles/96/"><span class="article-number">96</span><span>为什么 actual time 和 Execution Time 有很大差异？</span></a></li><li><a href="/articles/97/"><span class="article-number">97</span><span>深入浅出 bpftrace 分析 PostgreSQL</span></a></li><li><a href="/articles/98/"><span class="article-number">98</span><span>当 PostgreSQL 慢在数据库之外：用 bpftrace 打通 SQL 与内核观测</span></a></li></ul></details><details data-topic="engineering"><summary><span>工程实践与后记</span><small>3</small></summary><ul><li><a href="/articles/38/"><span class="article-number">38</span><span>如何不把 DBA/DBRE 工作搞砸</span></a></li><li><a href="/articles/63/"><span class="article-number">63</span><span>如何帮助别人</span></a></li><li><a href="/articles/95/"><span class="article-number">95</span><span>后记</span></a></li></ul></details><div class="sidebar-resources"><a href="/#/docs/series">系列阅读</a><a href="/#/docs/conferences">会议精选</a><a href="/#/docs/about">关于项目</a></div></nav></div></aside>
+  <main class="content"><article id="main" class="markdown-section" tabindex="-1"><div class="article-topline"><nav class="breadcrumbs" aria-label="面包屑"><a href="/">首页</a><span aria-hidden="true">/</span><a href="/#/docs/topics?id=topic-performance">查询性能与观测</a></nav></div><h1 id="can-your-postgres-survive-a-bad-query">一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离</h1><div class="article-meta"><p class="article-kicker"><a href="/#/docs/find?series=interpretation">专题解读</a> · 技术博客 <span class="article-id">#108</span> <time datetime="2026-10-09">收录于 2026-10-09</time></p><p class="article-version">机制按 PostgreSQL 18 核对；最小实验使用 18.4，内存采样依赖 18 的 path 列。Linux 内存策略单独说明。</p><details><summary>来源与验证说明</summary><dl><dt>原题</dt><dd>Can your Postgres survive a bad query?</dd><dt>来源</dt><dd><a href="https://clickhouse.com/blog/can-your-postgres-survive-a-bad-query" target="_blank" rel="noopener">Kevin Biju Kizhake Kanichery / ClickHouse Blog</a></dd><dt>中文翻译与校订</dt><dd>xiongcc</dd><dt>验证状态</dt><dd>实测十万节点、排序落盘与递归去重内存、临时文件超限和超时后的连接复用；未制造 OOM 或复现云服务压测。（2026-10-09） <a href="/#/maintenance/108-review">验证记录</a></dd></dl></details></div><details class="article-toc"><summary>本页目录<span class="icon icon-chevron-down" aria-hidden="true"></span></summary><nav aria-label="本页目录"><ol><li class="toc-level-2"><a data-heading="work_mem-管的是哪些内存？" href="#work_mem-%E7%AE%A1%E7%9A%84%E6%98%AF%E5%93%AA%E4%BA%9B%E5%86%85%E5%AD%98%EF%BC%9F">work_mem 管的是哪些内存？</a></li><li class="toc-level-2"><a data-heading="在十万个节点上观察两种内存行为" href="#%E5%9C%A8%E5%8D%81%E4%B8%87%E4%B8%AA%E8%8A%82%E7%82%B9%E4%B8%8A%E8%A7%82%E5%AF%9F%E4%B8%A4%E7%A7%8D%E5%86%85%E5%AD%98%E8%A1%8C%E4%B8%BA">在十万个节点上观察两种内存行为</a></li><li class="toc-level-3"><a data-heading="普通排序会写临时文件" href="#%E6%99%AE%E9%80%9A%E6%8E%92%E5%BA%8F%E4%BC%9A%E5%86%99%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6">普通排序会写临时文件</a></li><li class="toc-level-3"><a data-heading="递归-union-要记住已经到过的节点" href="#%E9%80%92%E5%BD%92-union-%E8%A6%81%E8%AE%B0%E4%BD%8F%E5%B7%B2%E7%BB%8F%E5%88%B0%E8%BF%87%E7%9A%84%E8%8A%82%E7%82%B9">递归 UNION 要记住已经到过的节点</a></li><li class="toc-level-2"><a data-heading="查询报错以后，连接还能不能用？" href="#%E6%9F%A5%E8%AF%A2%E6%8A%A5%E9%94%99%E4%BB%A5%E5%90%8E%EF%BC%8C%E8%BF%9E%E6%8E%A5%E8%BF%98%E8%83%BD%E4%B8%8D%E8%83%BD%E7%94%A8%EF%BC%9F">查询报错以后，连接还能不能用？</a></li><li class="toc-level-2"><a data-heading="为什么一个后端被杀，其他连接也会断？" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%80%E4%B8%AA%E5%90%8E%E7%AB%AF%E8%A2%AB%E6%9D%80%EF%BC%8C%E5%85%B6%E4%BB%96%E8%BF%9E%E6%8E%A5%E4%B9%9F%E4%BC%9A%E6%96%AD%EF%BC%9F">为什么一个后端被杀，其他连接也会断？</a></li><li class="toc-level-2"><a data-heading="原文的云服务测试说明了什么？" href="#%E5%8E%9F%E6%96%87%E7%9A%84%E4%BA%91%E6%9C%8D%E5%8A%A1%E6%B5%8B%E8%AF%95%E8%AF%B4%E6%98%8E%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F">原文的云服务测试说明了什么？</a></li><li class="toc-level-2"><a data-heading="严格-overcommit-为什么有帮助，又为什么不能照抄？" href="#%E4%B8%A5%E6%A0%BC-overcommit-%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9C%89%E5%B8%AE%E5%8A%A9%EF%BC%8C%E5%8F%88%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E7%85%A7%E6%8A%84%EF%BC%9F">严格 overcommit 为什么有帮助，又为什么不能照抄？</a></li><li class="toc-level-2"><a data-heading="生产环境应该从哪里查起？" href="#%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E5%BA%94%E8%AF%A5%E4%BB%8E%E5%93%AA%E9%87%8C%E6%9F%A5%E8%B5%B7%EF%BC%9F">生产环境应该从哪里查起？</a></li><li class="toc-level-2"><a data-heading="参考资料" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99">参考资料</a></li></ol></nav></details>
+<p>本文由 Kevin Biju Kizhake Kanichery 于 2026 年 9 月 28 日发表在 ClickHouse 博客的同名文章引出，结合 PostgreSQL 文档、源码与最小实验，讨论查询内存和故障隔离。中文解读与技术校订：xiongcc。</p>
+<p>一条报表 SQL 内存用得太多，最好的结果是查询报错，其他业务照常运行。更麻烦的结果是：操作系统杀掉数据库进程，原本正常的连接也跟着断开，实例进入崩溃恢复。</p>
+<p>这两种结果可能出自同一类查询，差别在于资源耗尽发生在哪一层，以及系统有没有机会正常处理错误。</p>
+<p><strong>要控制这类风险，光看 <code>work_mem</code> 不够。需要同时理解执行节点的内存、查询并发量，以及内存申请失败后的处理路径。</strong></p>
+<h2 id="work_mem-管的是哪些内存？">work_mem 管的是哪些内存？</h2>
+<p><code>work_mem</code> 为排序、哈希等执行操作提供内存预算。排序数据放不下时，可以生成有序的临时文件，再合并这些文件；哈希连接、哈希聚合也有分批处理的路径，用额外 I/O 换取较低的内存占用。</p>
+<p>一个计划里可能同时存在几个这类操作。假设 <code>work_mem = &#39;8MB&#39;</code>，计划中有两个排序和一个普通哈希操作，<code>hash_mem_multiplier = 2</code>。仅这些操作的预算相加，就可能达到 <code>8 + 8 + 16 = 32MB</code>。这只是帮助理解预算的例子，各节点实际使用多少、生命周期是否重叠，还要看执行过程，不能据此算出整条 SQL 的精确峰值。</p>
+<p>并行执行还会增加参与进程。<code>Gather</code> 下方的普通 <code>Hash</code> 可能由每个参与进程各建一份；<code>Parallel Hash</code> 则协作建立共享哈希表。读计划时需要区分它们，不能把所有节点一律乘以 worker 数，也不能把 leader 上的节点算到每个 worker 里。</p>
+<p>此外，执行器还有不受这套落盘预算约束的状态。递归 <code>UNION</code> 的全局去重集合就是一个具体例子。把 <code>work_mem</code> 调小，可以改变排序的处理方式，却未必限制住这些状态的增长。</p>
+<h2 id="在十万个节点上观察两种内存行为">在十万个节点上观察两种内存行为</h2>
+<p>下面使用 PostgreSQL 18.4，所有操作在同一个 psql 窗口中按顺序执行，保持默认自动提交。内存采样使用 PostgreSQL 18 的 <code>pg_backend_memory_contexts.path</code> 列，需要超级用户或 <code>pg_read_all_stats</code> 权限；设置 <code>temp_file_limit</code> 还需要相应参数权限。</p>
+<p>在独立测试库连接，例如：</p>
+<div class="code-block"><div class="code-toolbar"><span>Shell</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="bash" data-code-kind="code" tabindex="0" aria-label="Shell 代码"><code>psql <span class="token parameter variable">-X</span> <span class="token parameter variable">-P</span> <span class="token assign-left variable">pager</span><span class="token operator">=</span>off <span class="token parameter variable">-d</span> 你的测试库名
+</code></pre></div>
+<p>建一张只有十万行的有向边表：<code>0 → 1 → 2 → … → 99999 → 0</code>，最后一条边回到起点。示例使用专用 schema；如果同名 schema 已存在，换一个空测试库，不要删除已有对象。</p>
+<!-- verify:setup -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">CREATE</span> <span class="token keyword">SCHEMA</span> bad_query_demo<span class="token punctuation">;</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> bad_query_demo<span class="token punctuation">.</span>edges <span class="token punctuation">(</span>
+    src <span class="token keyword">integer</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
+    dst <span class="token keyword">integer</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> bad_query_demo<span class="token punctuation">.</span>edges
+<span class="token keyword">SELECT</span> n<span class="token punctuation">,</span> <span class="token punctuation">(</span>n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token number">100000</span>
+<span class="token keyword">FROM</span> generate_series<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">99999</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> g<span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">ANALYZE</span> bad_query_demo<span class="token punctuation">.</span>edges<span class="token punctuation">;</span>
+
+<span class="token keyword">SET</span> work_mem <span class="token operator">=</span> <span class="token string">'1MB'</span><span class="token punctuation">;</span>
+<span class="token keyword">SET</span> temp_file_limit <span class="token operator">=</span> <span class="token string">'32MB'</span><span class="token punctuation">;</span>
+<span class="token keyword">SET</span> statement_timeout <span class="token operator">=</span> <span class="token string">'10s'</span><span class="token punctuation">;</span>
+<span class="token keyword">SET</span> max_parallel_workers_per_gather <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+</code></pre></div>
+<p>这里将排序预算设为 1 MB，临时文件限制为 32 MB，语句超时为 10 秒，并关闭当前会话的并行查询，便于只观察一个进程。</p>
+<!-- verify:sample -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SELECT</span> src<span class="token punctuation">,</span> dst
+<span class="token keyword">FROM</span> bad_query_demo<span class="token punctuation">.</span>edges
+<span class="token keyword">WHERE</span> src <span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">99999</span><span class="token punctuation">)</span>
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> src<span class="token punctuation">;</span>
+</code></pre></div>
+<!-- result:sample -->
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>  src  | dst
+-------+-----
+     0 |   1
+     1 |   2
+ 99999 |   0
+(3 rows)
+</code></pre></div>
+<h3 id="普通排序会写临时文件">普通排序会写临时文件</h3>
+<p>按节点编号的 MD5 值排序，让数据库真正执行一次排序，不直接利用主键顺序：</p>
+<!-- verify:sort-low -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span><span class="token keyword">ANALYZE</span><span class="token punctuation">,</span> BUFFERS <span class="token keyword">OFF</span><span class="token punctuation">,</span> COSTS <span class="token keyword">OFF</span><span class="token punctuation">,</span> TIMING <span class="token keyword">OFF</span><span class="token punctuation">,</span> SUMMARY <span class="token keyword">OFF</span><span class="token punctuation">)</span>
+<span class="token keyword">SELECT</span> src
+<span class="token keyword">FROM</span> bad_query_demo<span class="token punctuation">.</span>edges
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> md5<span class="token punctuation">(</span>src::<span class="token keyword">text</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div>
+<!-- result:sort-low -->
+<div class="code-block"><div class="code-toolbar"><span>EXPLAIN</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="plan" tabindex="0" aria-label="EXPLAIN 代码"><code>                       QUERY PLAN
+---------------------------------------------------------
+ Sort (actual rows=100000.00 loops=1)
+   Sort Key: (md5((src)::text))
+   Sort Method: external merge  Disk: 4624kB
+   -&gt;  Seq Scan on edges (actual rows=100000.00 loops=1)
+(4 rows)
+</code></pre></div>
+<p><code>external merge</code> 表明使用了外部归并排序，<code>Disk</code> 显示排序临时文件占用；它不是这条 SQL 的全部磁盘读写量。此时查询能够完成，只是增加了临时文件的写入和读取。</p>
+<p>只为当前会话调高预算，再跑同一个查询：</p>
+<!-- verify:sort-high -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SET</span> work_mem <span class="token operator">=</span> <span class="token string">'32MB'</span><span class="token punctuation">;</span>
+<span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span><span class="token keyword">ANALYZE</span><span class="token punctuation">,</span> BUFFERS <span class="token keyword">OFF</span><span class="token punctuation">,</span> COSTS <span class="token keyword">OFF</span><span class="token punctuation">,</span> TIMING <span class="token keyword">OFF</span><span class="token punctuation">,</span> SUMMARY <span class="token keyword">OFF</span><span class="token punctuation">)</span>
+<span class="token keyword">SELECT</span> src
+<span class="token keyword">FROM</span> bad_query_demo<span class="token punctuation">.</span>edges
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> md5<span class="token punctuation">(</span>src::<span class="token keyword">text</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">SET</span> work_mem <span class="token operator">=</span> <span class="token string">'1MB'</span><span class="token punctuation">;</span>
+</code></pre></div>
+<!-- result:sort-high -->
+<div class="code-block"><div class="code-toolbar"><span>EXPLAIN</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="plan" tabindex="0" aria-label="EXPLAIN 代码"><code>                       QUERY PLAN
+---------------------------------------------------------
+ Sort (actual rows=100000.00 loops=1)
+   Sort Key: (md5((src)::text))
+   Sort Method: quicksort  Memory: 8541kB
+   -&gt;  Seq Scan on edges (actual rows=100000.00 loops=1)
+(4 rows)
+</code></pre></div>
+<p>排序改为内存中的 <code>quicksort</code>。这说明增加 <code>work_mem</code> 可以消除这次排序的落盘，但也允许每个并发执行同类操作的进程使用更多内存。是否值得调整，要结合这类查询的并发量和临时 I/O 成本判断。</p>
+<h3 id="递归-union-要记住已经到过的节点">递归 UNION 要记住已经到过的节点</h3>
+<p>沿着边表从 0 出发，最终会绕回 0。查询使用 <code>UNION</code> 去重时，数据库需要记住之前产生过哪些行：首次遇到 0、1、2 时接受它们；再次遇到 0 时，发现已经见过，停止把它加入下一轮。</p>
+<p>这个集合必须跨递归轮次保留。如果每轮结束就丢弃记录，数据库下一轮又会把旧节点当成新节点。PostgreSQL 18 的 <code>RecursiveUnion</code> 为此维护一张持续存在的去重哈希表，没有像普通排序那样按 <code>work_mem</code> 转为外部文件的实现。</p>
+<p>与此同时，递归的工作表和结果存储可以通过 tuplestore 落盘。<strong>同一条递归查询里，可以同时出现临时文件和持续增长的去重内存。</strong> 看到临时文件，并不能据此判断查询的所有状态都受到了限制。</p>
+<p>为了在查询执行过程中取样，先建立一个辅助函数。它返回 <code>RecursiveUnion hash table</code> 内存上下文及其子上下文的已分配字节数。内存上下文是 PostgreSQL 管理一组内存分配的容器；这里按 <code>path</code> 汇总子层级，避免漏掉下属分配。</p>
+<!-- verify:probe -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">CREATE</span> <span class="token keyword">FUNCTION</span> bad_query_demo<span class="token punctuation">.</span>recursive_bytes<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">RETURNS</span> <span class="token keyword">bigint</span>
+<span class="token keyword">LANGUAGE</span> <span class="token keyword">sql</span> VOLATILE
+<span class="token keyword">AS</span> $$
+    <span class="token keyword">WITH</span> contexts <span class="token keyword">AS</span> MATERIALIZED <span class="token punctuation">(</span>
+        <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> pg_backend_memory_contexts
+    <span class="token punctuation">)</span>
+    <span class="token keyword">SELECT</span> <span class="token keyword">coalesce</span><span class="token punctuation">(</span><span class="token function">sum</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>total_bytes<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>::<span class="token keyword">bigint</span>
+    <span class="token keyword">FROM</span> contexts <span class="token keyword">AS</span> c
+    <span class="token keyword">JOIN</span> contexts <span class="token keyword">AS</span> root
+      <span class="token keyword">ON</span> root<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">'RecursiveUnion hash table'</span>
+     <span class="token operator">AND</span> c<span class="token punctuation">.</span>path<span class="token punctuation">[</span>root<span class="token punctuation">.</span><span class="token keyword">level</span><span class="token punctuation">]</span> <span class="token operator">=</span> root<span class="token punctuation">.</span>path<span class="token punctuation">[</span>root<span class="token punctuation">.</span><span class="token keyword">level</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+$$<span class="token punctuation">;</span>
+</code></pre></div>
+<p>运行递归查询，在读到最后一个不同节点时取样：</p>
+<!-- verify:recursive -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">WITH</span> RECURSIVE walk<span class="token punctuation">(</span>n<span class="token punctuation">)</span> <span class="token keyword">AS</span> <span class="token punctuation">(</span>
+    <span class="token keyword">SELECT</span> <span class="token number">0</span>
+    <span class="token keyword">UNION</span>
+    <span class="token keyword">SELECT</span> e<span class="token punctuation">.</span>dst
+    <span class="token keyword">FROM</span> walk <span class="token keyword">AS</span> w
+    <span class="token keyword">JOIN</span> bad_query_demo<span class="token punctuation">.</span>edges <span class="token keyword">AS</span> e <span class="token keyword">ON</span> e<span class="token punctuation">.</span>src <span class="token operator">=</span> w<span class="token punctuation">.</span>n
+<span class="token punctuation">)</span>
+<span class="token keyword">SELECT</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> reached_nodes<span class="token punctuation">,</span>
+       <span class="token function">round</span><span class="token punctuation">(</span><span class="token function">max</span><span class="token punctuation">(</span>bad_query_demo<span class="token punctuation">.</span>recursive_bytes<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+             FILTER <span class="token punctuation">(</span><span class="token keyword">WHERE</span> n <span class="token operator">=</span> <span class="token number">99999</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">1024.0</span> <span class="token operator">/</span> <span class="token number">1024</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> dedup_allocated_mb
+<span class="token keyword">FROM</span> walk<span class="token punctuation">;</span>
+</code></pre></div>
+<!-- result:recursive -->
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code> reached_nodes | dedup_allocated_mb
+---------------+--------------------
+        100000 |               4.00
+(1 row)
+</code></pre></div>
+<p>查询一共找到十万个不同节点。当前 <code>work_mem</code> 仍是 1 MB，取样时去重上下文已经分配了 4.00 MB。这是该次运行中一个上下文树的分配量，包含可复用空间；它不代表进程 RSS，也没有把整条 SQL 的其他内存算进来。不同版本、构建和数据规模下，具体数值会变化。</p>
+<p>这个观察已经足以说明问题：<code>work_mem = &#39;1MB&#39;</code> 没有把递归去重状态限制在 1 MB 内。</p>
+<p>查询结束后，再查看当前后端：</p>
+<!-- verify:after-recursive -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SELECT</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> remaining_contexts
+<span class="token keyword">FROM</span> pg_backend_memory_contexts
+<span class="token keyword">WHERE</span> name <span class="token operator">=</span> <span class="token string">'RecursiveUnion hash table'</span><span class="token punctuation">;</span>
+</code></pre></div>
+<!-- result:after-recursive -->
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code> remaining_contexts
+--------------------
+                  0
+(1 row)
+</code></pre></div>
+<p>对应上下文已经释放。这也解释了为什么事后才查询内存视图，可能看不到刚刚增长的对象。</p>
+<p>有环图不能直接把这里的 <code>UNION</code> 换成 <code>UNION ALL</code>：重复的节点会不断进入下一轮。还要注意，<code>UNION</code> 比较的是输出的整行。假如额外输出不断递增的深度，<code>(0, 0)</code> 和 <code>(0, 100000)</code> 就是两行，单靠 <code>UNION</code> 不再能阻止这个环。实际业务应根据需要选择访问集合、<code>CYCLE</code> 或明确的遍历边界，避免把无限增长交给资源限制处理。</p>
+<h2 id="查询报错以后，连接还能不能用？">查询报错以后，连接还能不能用？</h2>
+<p>这个小实验不需要把主机内存耗尽。利用临时文件上限，可以观察 PostgreSQL 正常取消一条查询后的行为。</p>
+<p>保持 <code>work_mem = &#39;1MB&#39;</code>，不允许当前进程写执行器临时文件，再执行刚才的排序。下面这一步预期报错，之后继续执行下一条语句：</p>
+<!-- verify:temp-limit -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SET</span> temp_file_limit <span class="token operator">=</span> <span class="token string">'0'</span><span class="token punctuation">;</span>
+<span class="token keyword">SELECT</span> src
+<span class="token keyword">FROM</span> bad_query_demo<span class="token punctuation">.</span>edges
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> md5<span class="token punctuation">(</span>src::<span class="token keyword">text</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div>
+<!-- result:temp-limit -->
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>ERROR:  temporary file size exceeds "temp_file_limit" (0kB)
+</code></pre></div>
+<!-- verify:after-temp-limit -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SELECT</span> <span class="token number">1</span> <span class="token keyword">AS</span> connection_still_usable<span class="token punctuation">;</span>
+<span class="token keyword">SET</span> temp_file_limit <span class="token operator">=</span> <span class="token string">'32MB'</span><span class="token punctuation">;</span>
+</code></pre></div>
+<!-- result:after-temp-limit -->
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code> connection_still_usable
+-------------------------
+                       1
+(1 row)
+</code></pre></div>
+<p>报错终止了那条排序 SQL，连接仍然可用。<code>temp_file_limit</code> 限制的是<strong>每个进程</strong>用于这类临时文件的空间，默认不设上限；它不限制递归去重哈希表的内存，也不覆盖显式临时表。并行查询涉及多个进程时，同样不能把它当作整条查询共用的磁盘额度。</p>
+<p>再看语句超时：</p>
+<!-- verify:timeout -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SET</span> statement_timeout <span class="token operator">=</span> <span class="token string">'100ms'</span><span class="token punctuation">;</span>
+<span class="token keyword">SELECT</span> pg_sleep<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div>
+<!-- result:timeout -->
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>ERROR:  canceling statement due to statement timeout
+</code></pre></div>
+<!-- verify:after-timeout -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SELECT</span> <span class="token number">1</span> <span class="token keyword">AS</span> connection_still_usable<span class="token punctuation">;</span>
+<span class="token keyword">SET</span> statement_timeout <span class="token operator">=</span> <span class="token string">'10s'</span><span class="token punctuation">;</span>
+</code></pre></div>
+<!-- result:after-timeout -->
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code> connection_still_usable
+-------------------------
+                       1
+(1 row)
+</code></pre></div>
+<p><code>statement_timeout</code> 限制执行时间。一个查询如果在很短时间内分配了大量内存，仍可能在超时前耗尽资源，所以时间上限需要和并发控制配合。</p>
+<p>这些步骤使用自动提交。如果应用把失败语句包在显式 <code>BEGIN</code> 事务中，通常需要先 <code>ROLLBACK</code>，连接才能继续正常执行后续业务。连接保留，不代表失败的事务还能继续提交。</p>
+<p>完成实验后清理：</p>
+<!-- verify:cleanup -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">DROP</span> <span class="token keyword">SCHEMA</span> bad_query_demo <span class="token keyword">CASCADE</span><span class="token punctuation">;</span>
+RESET work_mem<span class="token punctuation">;</span>
+RESET temp_file_limit<span class="token punctuation">;</span>
+RESET statement_timeout<span class="token punctuation">;</span>
+RESET max_parallel_workers_per_gather<span class="token punctuation">;</span>
+</code></pre></div>
+<h2 id="为什么一个后端被杀，其他连接也会断？">为什么一个后端被杀，其他连接也会断？</h2>
+<p>PostgreSQL 由 postmaster 管理多个进程。每个普通客户端连接通常对应一个后端，它们既有私有内存，也共同访问共享内存。</p>
+<p>如果内存分配器返回失败，PostgreSQL 在可正常处理错误的执行路径上可以抛出 <code>ERROR: out of memory</code>，SQLSTATE 为 <code>53200</code>。当前语句失败，事务按错误规则处理，连接有机会保留下来。</p>
+<p>Linux OOM killer 的处理方式不同：它可以直接向选中的进程发送 <code>SIGKILL</code>。被杀进程没有机会清理共享状态。对于访问共享内存的普通后端异常退出，默认配置下 postmaster 会终止其他相关进程，再重新初始化并进行崩溃恢复，避免继续使用可能不一致的共享状态。</p>
+<p>因此，“每个连接一个进程”并没有把崩溃影响严格限制在一个连接里。这里说的是同一个 PostgreSQL 实例内的连锁影响，不意味着所有副本也同时宕机。</p>
+<pre data-lang="mermaid"><code>flowchart TD
+    A[&quot;申请查询内存&quot;] --&gt; B[&quot;分配失败，可处理&quot;]
+    B --&gt; C[&quot;ERROR：查询失败，连接保留&quot;]
+    A --&gt; D[&quot;内存耗尽，后端遭 SIGKILL&quot;]
+    D --&gt; E[&quot;后端异常退出&quot;]
+    E --&gt; F[&quot;其他连接中断，实例恢复&quot;]</code></pre>
+<p>可以按客户端看到的结果区分故障范围：</p>
+<div class="table-scroll" role="region" aria-label="表格，可横向滚动" tabindex="0"><table>
+<thead>
+<tr>
+<th>处理方式</th>
+<th>当前查询</th>
+<th>当前连接</th>
+<th>同一实例的其他连接</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>正常 <code>ERROR</code>，如超时或执行器临时文件超限</td>
+<td>失败</td>
+<td>通常保留，事务可能需回滚</td>
+<td>一般继续服务</td>
+</tr>
+<tr>
+<td>管理操作正常终止后端，如 <code>pg_terminate_backend</code></td>
+<td>失败</td>
+<td>断开</td>
+<td>通常继续服务</td>
+</tr>
+<tr>
+<td>普通后端遭 <code>SIGKILL</code> 等异常终止</td>
+<td>失败</td>
+<td>断开</td>
+<td>可能被终止，随后进行崩溃恢复</td>
+</tr>
+</tbody></table>
+</div>
+<p>诊断时既要看“这条 SQL 是否完成”，也要看“正常连接有没有一起断开”。它们衡量的是不同的可用性问题。</p>
+<h2 id="原文的云服务测试说明了什么？">原文的云服务测试说明了什么？</h2>
+<p>Kevin 使用递归 <code>UNION</code> 对四家托管 PostgreSQL 服务施加内存压力：每条查询遍历约 1260 万个节点，再逐步增加到 7 至 23 个并发连接，分别统计查询完成和实例存活。</p>
+<p>文中报告，ClickHouse Managed Postgres 通过较保守的内存承诺上限，让一部分查询以错误结束，换取测试中的实例持续服务；其他服务在压力下出现了连接终止或实例恢复。</p>
+<p>这是服务商发布的特定配置测试，适合用来理解保护策略的取舍，不宜直接当成所有规格和工作负载的排名。它提出的工程问题很有价值：<strong>过载时允许一部分请求失败，往往比让正常业务一起经历重连和恢复更可控。</strong></p>
+<h2 id="严格-overcommit-为什么有帮助，又为什么不能照抄？">严格 overcommit 为什么有帮助，又为什么不能照抄？</h2>
+<p>Linux 可以先允许进程申请虚拟地址空间，等真正访问内存页时再分配物理资源。如果所有进程后来都要兑现这些申请，系统可能无力满足，最终触发 OOM。</p>
+<p><code>vm.overcommit_memory = 2</code> 使用严格的内存承诺检查。内核根据 swap、物理内存及相关配置计算承诺上限；超过上限的部分申请会被拒绝，让应用有机会处理分配失败。</p>
+<p>这是一项主机级策略，既不按 SQL 计费，也不按 PostgreSQL 角色划分额度。<code>Committed_AS</code> 衡量承诺量，不能直接等同于 RSS。容器的 cgroup 内存限制又是另一层约束，在触碰 cgroup 上限时仍可能发生 OOM kill。</p>
+<p>因此，上线前需要把共享内存、连接进程、维护任务、其他服务和系统开销纳入容量测试，为操作系统页缓存留出空间，并检查 fork 等操作是否还能正常完成。官方文档也明确指出，严格 overcommit 会降低 OOM 风险，但不能完全消除它。仅修改这一个开关，无法保证任意查询都能优雅报错。</p>
+<h2 id="生产环境应该从哪里查起？">生产环境应该从哪里查起？</h2>
+<p>遇到疑似内存问题，先按日志区分事件：是 <code>53200</code> 内存不足、<code>53400</code> 临时文件配置超限、<code>57014</code> 查询取消，还是连接突然断开并伴随系统 OOM 记录。后者还需要检查主机或容器日志，以及 PostgreSQL 是否出现后端异常退出、终止其他进程和恢复记录。</p>
+<p>对于仍在执行的查询，管理员可以从另一个连接定位 PID，再请求目标后端把内存上下文写入数据库日志：</p>
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SELECT</span> pid<span class="token punctuation">,</span> usename<span class="token punctuation">,</span> application_name<span class="token punctuation">,</span> state<span class="token punctuation">,</span> wait_event_type<span class="token punctuation">,</span> wait_event<span class="token punctuation">,</span>
+       clock_timestamp<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> query_start <span class="token keyword">AS</span> elapsed<span class="token punctuation">,</span> <span class="token keyword">left</span><span class="token punctuation">(</span>query<span class="token punctuation">,</span> <span class="token number">160</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> query
+<span class="token keyword">FROM</span> pg_stat_activity
+<span class="token keyword">WHERE</span> state <span class="token operator">=</span> <span class="token string">'active'</span>
+  <span class="token operator">AND</span> pid <span class="token operator">&lt;></span> pg_backend_pid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> query_start<span class="token punctuation">;</span>
+
+<span class="token comment">-- 确认 PID 和对应业务后再执行，替换为实际值。</span>
+<span class="token keyword">SELECT</span> pg_log_backend_memory_contexts<span class="token punctuation">(</span><span class="token number">12345</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div>
+<p>这个函数请求日志输出，不会把目标内存明细作为结果返回；不要高频调用。当前连接上的 <code>pg_backend_memory_contexts</code> 也不会自动显示另一个 PID 的内存。遇到并行查询，需要连同 worker 分析。进程 RSS 可用于观察主机压力，但简单相加多个后端的 RSS 会重复计算共享映射。</p>
+<p>排序、哈希落盘突出时，检查计划和所需工作集，为特定报表任务调整会话预算；并发一高就出问题时，限制真正同时执行的重查询数量，让请求排队；递归结果持续膨胀时，检查循环、去重键和遍历边界。</p>
+<p>允许用户或 AI 直接生成 SQL 的场景，还可以使用单独角色和独立只读副本，避免和交易请求争用同一实例的资源。只读权限本身不会限制内存或 CPU。</p>
+<p>配置时间和临时文件上限，能截断一部分失控查询；连接池可以控制进入数据库的并发，但需要区分空闲连接和正在执行的重查询。报错后立即大规模重试，反而会把刚释放的资源重新占满。</p>
+<p><code>work_mem</code> 值得调，但它解决的是部分执行操作的工作集问题。真正的故障隔离，还要看查询能增长到多大、同时运行多少条，以及资源不足时系统能否只拒绝当前请求。</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li>原文：<a href="https://clickhouse.com/blog/can-your-postgres-survive-a-bad-query">Kevin Biju Kizhake Kanichery：Can your Postgres survive a bad query?</a></li>
+<li>内存、临时文件与超时：<a href="https://www.postgresql.org/docs/18/runtime-config-resource.html">Resource Consumption</a>、<a href="https://www.postgresql.org/docs/18/runtime-config-client.html">Client Connection Defaults</a>、<a href="https://www.postgresql.org/docs/18/errcodes-appendix.html">PostgreSQL Error Codes</a></li>
+<li>递归语义与执行：<a href="https://www.postgresql.org/docs/18/queries-with.html">WITH Queries</a>、<a href="https://github.com/postgres/postgres/blob/REL_18_4/src/backend/executor/nodeRecursiveunion.c">PostgreSQL 18.4：nodeRecursiveunion.c</a></li>
+<li>并行执行：<a href="https://www.postgresql.org/docs/18/parallel-plans.html">Parallel Plans</a></li>
+<li>内存观测：<a href="https://www.postgresql.org/docs/18/view-pg-backend-memory-contexts.html">pg_backend_memory_contexts</a>、<a href="https://www.postgresql.org/docs/18/functions-admin.html">System Administration Functions</a></li>
+<li>分配失败与异常退出：<a href="https://github.com/postgres/postgres/blob/REL_18_4/src/backend/utils/mmgr/mcxt.c">mcxt.c</a>、<a href="https://github.com/postgres/postgres/blob/REL_18_4/src/backend/postmaster/postmaster.c">postmaster.c</a></li>
+<li>Linux 内存策略：<a href="https://www.postgresql.org/docs/18/kernel-resources.html">Managing Kernel Resources</a>、<a href="https://www.kernel.org/doc/Documentation/vm/overcommit-accounting">Overcommit Accounting</a>、<a href="https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html">Control Group v2</a></li>
+<li>站内延伸：<a href="/articles/92/">work_mem 调优</a>、<a href="/articles/14/">如何判断一个查询是否太慢</a></li>
+</ul>
+<footer class="article-footer"><p class="article-topic-label">所属专题：<a href="/#/docs/topics?id=topic-performance">查询性能与观测</a></p><div class="article-neighbors"><a rel="prev" href="/articles/101/"><small>同专题上一篇</small><strong>PostgreSQL 性能排查：规划开销、分区锁与表膨胀</strong></a><span></span></div><h2>继续阅读</h2><ul><li><a href="/articles/98/">当 PostgreSQL 慢在数据库之外：用 bpftrace 打通 SQL 与内核观测</a></li><li><a href="/articles/97/">深入浅出 bpftrace 分析 PostgreSQL</a></li><li><a href="/articles/109/">备库查询为什么被取消：WAL 回放冲突与等待预算</a></li></ul><div class="article-source-links"><a href="https://github.com/xiongcccc/postgres-howto/blob/master/docs/108.md" target="_blank" rel="noopener">查看源文件</a><a href="https://github.com/xiongcccc/postgres-howto/issues/new?title=%E6%96%87%E7%AB%A0%20%23108%EF%BC%9A%E4%B8%80%E6%9D%A1%E5%9D%8F%20SQL%20%E4%BC%9A%E6%8B%96%E5%9E%AE%20PostgreSQL%20%E5%90%97%EF%BC%9F%E7%90%86%E8%A7%A3%E6%9F%A5%E8%AF%A2%E5%86%85%E5%AD%98%E4%B8%8E%E6%95%85%E9%9A%9C%E9%9A%94%E7%A6%BB" target="_blank" rel="noopener">反馈与纠错</a></div></footer><section id="gitalk-container" class="article-discussion"><h2>讨论与补充</h2><a target="_blank" rel="noopener" href="https://github.com/xiongcccc/gitalk-comment/issues?q=is%3Aissue%20%22%2Fdocs%2F108%22">查看与参与 GitHub 讨论</a></section></article></main>
+  <footer class="site-footer"><div><a href="/articles/">文章目录</a><a href="/#/docs/about">关于项目</a><a href="https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos">上游来源</a><a href="https://xiongcc.cn/">xiongcc</a></div><div class="js-only"><button type="button" data-dialog="communityModal">读者交流</button><button type="button" data-dialog="imageModal">支持作者</button><span class="site-stats"><span id="busuanzi_container_site_pv">访问 <strong id="busuanzi_value_site_pv">--</strong> 次</span><span id="busuanzi_container_site_uv">访客 <strong id="busuanzi_value_site_uv">--</strong> 人</span></span></div></footer>
+  <dialog id="imageModal" class="support-modal" aria-labelledby="support-title"><div class="dialog-heading"><h2 id="support-title">支持作者</h2><button class="icon-button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>感谢支持 PostgreSQL Howto 的长期维护。</p><img data-src="/images/wechat_pay.png" width="280" height="280" alt="微信赞赏码"></dialog>
+  <dialog id="communityModal" class="support-modal" aria-labelledby="community-title"><div class="dialog-heading"><h2 id="community-title">读者交流群</h2><button class="icon-button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>二维码若已过期，可通过公众号 PostgreSQL 学徒或邮件联系。</p><img data-src="/images/wechatgroup.jpeg" width="280" height="427" alt="PostgreSQL 学徒读者交流群二维码"></dialog>
+  <script src="/scripts/catalog-data.js?v=beaba606436c9ec0" defer></script>
+<script src="/scripts/article-view.js?v=926830a13df34c2c" defer></script>
+<script src="/scripts/site.js?v=f2e6d95ee157b4fe" defer></script>
+<script src="/scripts/diagrams.js?v=45d556fe0c9de5ef" defer></script>
+<script src="/scripts/reading.js?v=abf3dfc7db08ddc8" defer></script>
+</body>
+</html>

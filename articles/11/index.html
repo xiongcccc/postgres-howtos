@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>临时监控方法 | PostgreSQL Howto 中文版</title>
+  <meta name="description" content="临时监控方法。适用版本以正文为准，未声明统一最低版本。">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="canonical" href="https://postgres-howto.cn/articles/11/">
+  <meta property="og:title" content="临时监控方法 | PostgreSQL Howto 中文版">
+  <meta property="og:description" content="临时监控方法。适用版本以正文为准，未声明统一最低版本。">
+  <meta property="og:url" content="https://postgres-howto.cn/articles/11/">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://postgres-howto.cn/images/logo.png">
+  <link rel="icon" href="/images/favicon.png" type="image/png">
+  <script>(function(){var m='auto';try{m=localStorage.getItem('howto-theme')||'auto';}catch(_){}var d=m==='dark'||(m==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light';document.documentElement.style.colorScheme=d?'dark':'light';})();</script>
+  <link rel="stylesheet" href="/styles/custom.css?v=0671959df3115f7d">
+  <link rel="stylesheet" href="/styles/reading.css?v=701d1b6c5807eeb4">
+<script id="article-schema" type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"临时监控方法","inLanguage":"zh-CN","url":"https://postgres-howto.cn/articles/11/","mainEntityOfPage":"https://postgres-howto.cn/articles/11/","citation":"https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/monitoring/ad-hoc-monitoring.md","keywords":[]}</script>
+</head>
+<body class="reading-article" data-static-page data-static-article="11">
+  <a class="skip-link" href="#main" data-skip>跳至正文</a>
+  <header class="site-header">
+    <button id="sidebar-toggle" class="icon-button mobile-menu js-only" type="button" aria-label="打开导航" aria-controls="site-sidebar" aria-expanded="false" title="打开导航"><span class="icon icon-menu" aria-hidden="true"></span></button>
+    <a class="site-brand" href="/"><img src="/images/favicon.png" width="36" height="36" alt=""><span>PostgreSQL <strong>Howto</strong><small>中文版</small></span></a>
+    <nav class="app-nav" aria-label="主导航"><a href="/">首页</a><a href="/#/docs/topics">专题</a><a href="/#/docs/paths">学习路径</a><a href="/articles/">全部文章</a><a href="https://github.com/xiongcccc/postgres-howto" target="_blank" rel="noopener">GitHub<span class="icon icon-arrow-up-right" aria-hidden="true"></span></a></nav>
+    <div class="header-tools js-only"><button class="icon-button" type="button" data-open-search aria-label="搜索文章" aria-keyshortcuts="Control+K Meta+K" title="搜索文章 (Ctrl / Cmd + K)"><span class="icon icon-search" aria-hidden="true"></span></button><button class="icon-button theme-toggle" aria-label="切换阅读主题" title="切换阅读主题"><span class="icon icon-monitor" aria-hidden="true"></span></button></div>
+  </header>
+  <button class="sidebar-backdrop" type="button" aria-label="关闭导航" tabindex="-1" hidden></button>
+  <aside class="sidebar" id="site-sidebar" aria-label="文章导航"><div class="sidebar-nav"><div class="sidebar-heading"><span>知识导航</span><button class="icon-button" data-close-nav aria-label="关闭导航" title="关闭导航"><span class="icon icon-x" aria-hidden="true"></span></button></div><nav class="catalog-navigation" aria-label="文章分类"><ul class="catalog-pages"><li><a href="/#/README">首页</a></li><li><a href="/#/docs/topics">专题</a></li><li><a href="/#/docs/paths">学习路径</a></li><li><a href="/articles/">全部文章</a></li></ul><p class="sidebar-label">技术专题 <span>主归属文章</span></p><details data-topic="performance" open data-current-topic="true"><summary><span>查询性能与观测</span><small>16</small></summary><ul><li><a href="/articles/108/"><span class="article-number">108</span><span>一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离</span></a></li><li><a href="/articles/101/"><span class="article-number">101</span><span>PostgreSQL 性能排查：规划开销、分区锁与表膨胀</span></a></li><li><a href="/articles/1/"><span class="article-number">1</span><span>EXPLAIN 为什么应该带 BUFFERS</span></a></li><li><a href="/articles/5/"><span class="article-number">5</span><span>pg_stat_statements 入门</span></a></li><li><a href="/articles/6/"><span class="article-number">6</span><span>pg_stat_statements 进阶</span></a></li><li><a href="/articles/7/"><span class="article-number">7</span><span>pg_stat_statements 深入使用</span></a></li><li><a href="/articles/10/"><span class="article-number">10</span><span>使用 FlameGraph 和 eBPF/perf 排查性能</span></a></li><li><a href="/articles/11/" aria-current="page"><span class="article-number">11</span><span>临时监控方法</span></a></li><li><a href="/articles/12/"><span class="article-number">12</span><span>为 pg_stat_statements 找到真实 SQL 样例</span></a></li><li><a href="/articles/13/"><span class="article-number">13</span><span>如何做基准测试</span></a></li><li><a href="/articles/14/"><span class="article-number">14</span><span>如何判断一个查询是否太慢</span></a></li><li><a href="/articles/50/"><span class="article-number">50</span><span>基准测试迭代前后的准备工作</span></a></li><li><a href="/articles/56/"><span class="article-number">56</span><span>让非生产环境 Planner 更像生产环境</span></a></li><li><a href="/articles/89/"><span class="article-number">89</span><span>OLTP 粗略配置调优</span></a></li><li><a href="/articles/92/"><span class="article-number">92</span><span>work_mem 调优</span></a></li><li><a href="/articles/94/"><span class="article-number">94</span><span>运行 ANALYZE 收集统计信息</span></a></li></ul></details><details data-topic="ops"><summary><span>运维排障与日常工具</span><small>21</small></summary><ul><li><a href="/articles/2/"><span class="article-number">2</span><span>排查并加速 Postgres 停止和重启</span></a></li><li><a href="/articles/3/"><span class="article-number">3</span><span>排查 Postgres 启动缓慢</span></a></li><li><a href="/articles/8/"><span class="article-number">8</span><span>加速大库 pg_dump</span></a></li><li><a href="/articles/19/"><span class="article-number">19</span><span>导入 CSV 到 Postgres</span></a></li><li><a href="/articles/20/"><span class="article-number">20</span><span>使用 pg_restore</span></a></li><li><a href="/articles/21/"><span class="article-number">21</span><span>不发额外查询设置 application_name</span></a></li><li><a href="/articles/25/"><span class="article-number">25</span><span>如何退出 psql</span></a></li><li><a href="/articles/27/"><span class="article-number">27</span><span>在 Ubuntu 22.04 编译 Postgres</span></a></li><li><a href="/articles/34/"><span class="article-number">34</span><span>初步配置调优</span></a></li><li><a href="/articles/47/"><span class="article-number">47</span><span>安装带 plpython3u 的 Postgres 16</span></a></li><li><a href="/articles/49/"><span class="article-number">49</span><span>在 psql 脚本中使用变量</span></a></li><li><a href="/articles/51/"><span class="article-number">51</span><span>通过观察 psql 学习元数据</span></a></li><li><a href="/articles/58/"><span class="article-number">58</span><span>使用 Docker 运行 Postgres</span></a></li><li><a href="/articles/59/"><span class="article-number">59</span><span>psql 调优</span></a></li><li><a href="/articles/68/"><span class="article-number">68</span><span>psql 快捷操作</span></a></li><li><a href="/articles/81/"><span class="article-number">81</span><span>在 psql 中绘图</span></a></li><li><a href="/articles/86/"><span class="article-number">86</span><span>修复 psql 中的 \\e 编辑器问题</span></a></li><li><a href="/articles/87/"><span class="article-number">87</span><span>修改数据库中所有对象所有者</span></a></li><li><a href="/articles/88/"><span class="article-number">88</span><span>面向 OLTP 的 Linux 参数调优</span></a></li><li><a href="/articles/90/"><span class="article-number">90</span><span>使用 lib_pgquery 归一化和匹配查询</span></a></li><li><a href="/articles/91/"><span class="article-number">91</span><span>格式化 psql 脚本文本输出</span></a></li></ul></details><details data-topic="locks"><summary><span>锁、事务与在线变更</span><small>19</small></summary><ul><li><a href="/articles/107/"><span class="article-number">107</span><span>外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务</span></a></li><li><a href="/articles/104/"><span class="article-number">104</span><span>SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争</span></a></li><li><a href="/articles/99/"><span class="article-number">99</span><span>如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除</span></a></li><li><a href="/articles/100/"><span class="article-number">100</span><span>如何排查 LISTEN／NOTIFY 引起的提交阻塞</span></a></li><li><a href="/articles/22/"><span class="article-number">22</span><span>heavyweight locks 分析：基础</span></a></li><li><a href="/articles/30/"><span class="article-number">30</span><span>处理 OLTP 长事务</span></a></li><li><a href="/articles/33/"><span class="article-number">33</span><span>无停机重定义主键</span></a></li><li><a href="/articles/35/"><span class="article-number">35</span><span>使用子事务</span></a></li><li><a href="/articles/36/"><span class="article-number">36</span><span>单条查询实现 find-or-insert</span></a></li><li><a href="/articles/37/"><span class="article-number">37</span><span>无停机启用 data checksums</span></a></li><li><a href="/articles/42/"><span class="article-number">42</span><span>heavyweight locks 分析：锁树</span></a></li><li><a href="/articles/55/"><span class="article-number">55</span><span>删除列</span></a></li><li><a href="/articles/60/"><span class="article-number">60</span><span>添加列</span></a></li><li><a href="/articles/69/"><span class="article-number">69</span><span>无停机添加 CHECK 约束</span></a></li><li><a href="/articles/70/"><span class="article-number">70</span><span>添加外键</span></a></li><li><a href="/articles/71/"><span class="article-number">71</span><span>理解 DDL 被什么阻塞</span></a></li><li><a href="/articles/72/"><span class="article-number">72</span><span>移除外键</span></a></li><li><a href="/articles/73/"><span class="article-number">73</span><span>heavyweight locks 分析：持久监控</span></a></li><li><a href="/articles/83/"><span class="article-number">83</span><span>修改 Postgres 参数</span></a></li></ul></details><details data-topic="indexes"><summary><span>索引治理</span><small>9</small></summary><ul><li><a href="/articles/15/"><span class="article-number">15</span><span>监控 CREATE INDEX / REINDEX 进度</span></a></li><li><a href="/articles/18/"><span class="article-number">18</span><span>过度索引</span></a></li><li><a href="/articles/53/"><span class="article-number">53</span><span>索引维护</span></a></li><li><a href="/articles/54/"><span class="article-number">54</span><span>使用 pg_amcheck 检查 btree 索引损坏</span></a></li><li><a href="/articles/61/"><span class="article-number">61</span><span>创建索引：基础</span></a></li><li><a href="/articles/62/"><span class="article-number">62</span><span>创建索引：进阶</span></a></li><li><a href="/articles/75/"><span class="article-number">75</span><span>查找未使用索引</span></a></li><li><a href="/articles/76/"><span class="article-number">76</span><span>查找冗余索引</span></a></li><li><a href="/articles/79/"><span class="article-number">79</span><span>并行重建大量索引并避免死锁</span></a></li></ul></details><details data-topic="storage"><summary><span>存储、WAL 与 Vacuum</span><small>19</small></summary><ul><li><a href="/articles/102/"><span class="article-number">102</span><span>Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢</span></a></li><li><a href="/articles/4/"><span class="article-number">4</span><span>理解 tuple 在表中的稀疏存储</span></a></li><li><a href="/articles/9/"><span class="article-number">9</span><span>理解 LSN 和 WAL 文件名</span></a></li><li><a href="/articles/16/"><span class="article-number">16</span><span>容易踩坑的 Postgres 特性</span></a></li><li><a href="/articles/26/"><span class="article-number">26</span><span>检查 btree 索引损坏</span></a></li><li><a href="/articles/31/"><span class="article-number">31</span><span>排查 pg_wal 目录增长</span></a></li><li><a href="/articles/39/"><span class="article-number">39</span><span>如何破坏数据库：制造损坏</span></a></li><li><a href="/articles/40/"><span class="article-number">40</span><span>如何破坏数据库：模拟 XID 回卷</span></a></li><li><a href="/articles/41/"><span class="article-number">41</span><span>如何破坏数据库：有害负载</span></a></li><li><a href="/articles/44/"><span class="article-number">44</span><span>监控 XID 回卷风险</span></a></li><li><a href="/articles/45/"><span class="article-number">45</span><span>监控 xmin horizon 避免回卷和膨胀</span></a></li><li><a href="/articles/46/"><span class="article-number">46</span><span>处理 bloat</span></a></li><li><a href="/articles/52/"><span class="article-number">52</span><span>降低 WAL 生成速率</span></a></li><li><a href="/articles/66/"><span class="article-number">66</span><span>一个 page 能插入多少 tuple</span></a></li><li><a href="/articles/67/"><span class="article-number">67</span><span>Autovacuum 队列和进度</span></a></li><li><a href="/articles/74/"><span class="article-number">74</span><span>刷新 OS page cache 和 Postgres buffer pool</span></a></li><li><a href="/articles/80/"><span class="article-number">80</span><span>查找有 int4 主键溢出风险的表</span></a></li><li><a href="/articles/84/"><span class="article-number">84</span><span>列顺序与存储优化：Column Tetris</span></a></li><li><a href="/articles/85/"><span class="article-number">85</span><span>快速检查值的数据类型和存储大小</span></a></li></ul></details><details data-topic="sql"><summary><span>SQL、数据建模与扩展玩法</span><small>12</small></summary><ul><li><a href="/articles/103/"><span class="article-number">103</span><span>PostgreSQL 排序规则：文本比较、索引与升级风险</span></a></li><li><a href="/articles/23/"><span class="article-number">23</span><span>在 Postgres 中调用 OpenAI API 实现语义搜索和 GPT Chat</span></a></li><li><a href="/articles/24/"><span class="article-number">24</span><span>使用元数据</span></a></li><li><a href="/articles/28/"><span class="article-number">28</span><span>数组使用：基础</span></a></li><li><a href="/articles/29/"><span class="article-number">29</span><span>数组使用：进阶</span></a></li><li><a href="/articles/32/"><span class="article-number">32</span><span>加速批量加载</span></a></li><li><a href="/articles/43/"><span class="article-number">43</span><span>SQL 格式化与风格指南</span></a></li><li><a href="/articles/48/"><span class="article-number">48</span><span>生成测试数据</span></a></li><li><a href="/articles/64/"><span class="article-number">64</span><span>使用 UUID</span></a></li><li><a href="/articles/65/"><span class="article-number">65</span><span>UUID v7 与分区</span></a></li><li><a href="/articles/78/"><span class="article-number">78</span><span>使用创建时间和统计信息估算大表同比增长</span></a></li><li><a href="/articles/82/"><span class="article-number">82</span><span>用 SQL 绘制霜花图案</span></a></li></ul></details><details data-topic="replication"><summary><span>复制、校验与升级</span><small>7</small></summary><ul><li><a href="/articles/109/"><span class="article-number">109</span><span>备库查询为什么被取消：WAL 回放冲突与等待预算</span></a></li><li><a href="/articles/106/"><span class="article-number">106</span><span>PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化</span></a></li><li><a href="/articles/105/"><span class="article-number">105</span><span>深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复</span></a></li><li><a href="/articles/17/"><span class="article-number">17</span><span>判断复制延迟</span></a></li><li><a href="/articles/57/"><span class="article-number">57</span><span>将物理副本转换为逻辑副本</span></a></li><li><a href="/articles/77/"><span class="article-number">77</span><span>大型高负载集群的无停机大版本升级</span></a></li><li><a href="/articles/93/"><span class="article-number">93</span><span>排查流复制延迟</span></a></li></ul></details><details data-topic="practice"><summary><span>实践剖析</span><small>3</small></summary><ul><li><a href="/articles/96/"><span class="article-number">96</span><span>为什么 actual time 和 Execution Time 有很大差异？</span></a></li><li><a href="/articles/97/"><span class="article-number">97</span><span>深入浅出 bpftrace 分析 PostgreSQL</span></a></li><li><a href="/articles/98/"><span class="article-number">98</span><span>当 PostgreSQL 慢在数据库之外：用 bpftrace 打通 SQL 与内核观测</span></a></li></ul></details><details data-topic="engineering"><summary><span>工程实践与后记</span><small>3</small></summary><ul><li><a href="/articles/38/"><span class="article-number">38</span><span>如何不把 DBA/DBRE 工作搞砸</span></a></li><li><a href="/articles/63/"><span class="article-number">63</span><span>如何帮助别人</span></a></li><li><a href="/articles/95/"><span class="article-number">95</span><span>后记</span></a></li></ul></details><div class="sidebar-resources"><a href="/#/docs/series">系列阅读</a><a href="/#/docs/conferences">会议精选</a><a href="/#/docs/about">关于项目</a></div></nav></div></aside>
+  <main class="content"><article id="main" class="markdown-section" tabindex="-1"><div class="article-topline"><nav class="breadcrumbs" aria-label="面包屑"><a href="/">首页</a><span aria-hidden="true">/</span><a href="/#/docs/topics?id=topic-performance">查询性能与观测</a></nav></div><h1 id="ad-hoc-monitoring">临时监控方法</h1><div class="article-meta"><p class="article-kicker"><a href="/#/docs/find?series=guide">实用指南</a> · 上游译文 <span class="article-id">#11</span></p><p class="article-version">适用版本以正文为准，未声明统一最低版本。</p><details><summary>来源与验证说明</summary><dl><dt>原题</dt><dd>Ad-hoc monitoring</dd><dt>来源</dt><dd><a href="https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/monitoring/ad-hoc-monitoring.md" target="_blank" rel="noopener">Nikolay Samokhvalov / Postgres.ai</a></dd><dt>中文翻译与校订</dt><dd>xiongcc</dd><dt>验证状态</dt><dd>上游内容已核对；未逐条运行所有示例。（2026-09-10）</dd></dl><blockquote>
+<p>原作者：Nikolay Samokhvalov · <a href="https://gitlab.com/postgres-ai/docs/-/blob/80536bb97f28d1007ad09627db434c2b7016da1f/docs/postgres-howtos/performance-optimization/monitoring/ad-hoc-monitoring.md">英文原文</a> · 中文翻译与校订：xiongcc</p>
+</blockquote>
+</details></div><details class="article-toc"><summary>本页目录<span class="icon icon-chevron-down" aria-hidden="true"></span></summary><nav aria-label="本页目录"><ol><li class="toc-level-2"><a data-heading="关键原则" href="#%E5%85%B3%E9%94%AE%E5%8E%9F%E5%88%99">关键原则</a></li><li class="toc-level-2"><a data-heading="示例" href="#%E7%A4%BA%E4%BE%8B">示例</a></li><li class="toc-level-2"><a data-heading="使用-tmux-或-screen" href="#%E4%BD%BF%E7%94%A8-tmux-%E6%88%96-screen">使用 tmux (或 screen)</a></li><li class="toc-level-2"><a data-heading="如何使用循环批处理" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E5%BE%AA%E7%8E%AF%E6%89%B9%E5%A4%84%E7%90%86">如何使用循环/批处理</a></li><li class="toc-level-2"><a data-heading="使用-psql-选项：-x--a--t" href="#%E4%BD%BF%E7%94%A8-psql-%E9%80%89%E9%A1%B9%EF%BC%9A-x--a--t">使用 psql 选项：-X, -A, -t</a></li><li class="toc-level-2"><a data-heading="使用-csv-作为输出" href="#%E4%BD%BF%E7%94%A8-csv-%E4%BD%9C%E4%B8%BA%E8%BE%93%E5%87%BA">使用 CSV 作为输出</a></li><li class="toc-level-2"><a data-heading="日志技巧：不要丢失-stderr，记录时间戳，追加而非覆盖" href="#%E6%97%A5%E5%BF%97%E6%8A%80%E5%B7%A7%EF%BC%9A%E4%B8%8D%E8%A6%81%E4%B8%A2%E5%A4%B1-stderr%EF%BC%8C%E8%AE%B0%E5%BD%95%E6%97%B6%E9%97%B4%E6%88%B3%EF%BC%8C%E8%BF%BD%E5%8A%A0%E8%80%8C%E9%9D%9E%E8%A6%86%E7%9B%96">日志技巧：不要丢失 STDERR，记录时间戳，追加而非覆盖</a></li><li class="toc-level-2"><a data-heading="结果处理" href="#%E7%BB%93%E6%9E%9C%E5%A4%84%E7%90%86">结果处理</a></li><li class="toc-level-2"><a data-heading="另一种采样方式——直接在-psql-中操作" href="#%E5%8F%A6%E4%B8%80%E7%A7%8D%E9%87%87%E6%A0%B7%E6%96%B9%E5%BC%8F%E2%80%94%E2%80%94%E7%9B%B4%E6%8E%A5%E5%9C%A8-psql-%E4%B8%AD%E6%93%8D%E4%BD%9C">另一种采样方式——直接在 psql 中操作</a></li></ol></nav></details>
+<p><img src="https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/raw/main/files/0011_cover.png" alt="img" loading="lazy" decoding="async"></p>
+<p>// 我每天发布一篇新的 PostgreSQL &quot;howto&quot; 文章。和我一起踏上这段旅程 — 订阅、提供反馈、分享！</p>
+<p>在某些情况下，我们需要观察 Postgres 或其运行环境中的一些值 (操作系统、文件系统等)，然而：</p>
+<ul>
+<li>我们没有好的监控工具，或者</li>
+<li>现有的监控缺少我们所需的某些功能，或者</li>
+<li>我们不完全信任现有的监控 (例如，你是刚开始接手某个系统的工程师)。</li>
+</ul>
+<p>能够根据特定的指标组织一个&quot;临时&quot;的观察是一项重要的技能。此处我们将描述一些技巧和方法，可能会对你有帮助。</p>
+<p>在某些情况下，你可以快速安装类似 <a href="https://www.netdata.cloud/">Netdata</a> 的工具 (一个非常强大的现代监控工具，能快速安装，并且有Postgres plugin)，或者使用一些临时的控制台工具，如 <a href="https://github.com/lesovsky/pgcenter">pgCenter</a> 或 <a href="https://pg_top.gitlab.io/">pg_top</a>。但你可能仍然希望手动监控某些特定的方面。</p>
+<p>以下假设我们使用的是 Linux，但大多数方法也可以应用于 macOS 或 BSD 系统。</p>
+<h2 id="关键原则">关键原则</h2>
+<ul>
+<li>观察不应依赖于你的互联网连接。</li>
+<li>保存结果以便长期存储和后续分析。</li>
+<li>记录时间戳。</li>
+<li>防止程序因意外中断 (如按下 <code>Ctrl-C</code>) 而终止。</li>
+<li>在 Postgres 重启后仍能保持观察。</li>
+<li>既要记录正常信息，也要记录错误信息。</li>
+<li>优先以有助于编程处理的形式收集数据 (例如 CSV)。</li>
+</ul>
+<h2 id="示例">示例</h2>
+<p>假设我们需要收集 <code>pg_stat_activity</code> (<code>pgsa</code>) 的样本，以研究运行超过 1 分钟的长事务。</p>
+<p>以下是操作步骤 — 我们将逐步详细讨论。</p>
+<ol>
+<li>启动一个 <code>tmux</code> 会话。这是一个幂等的代码片段，可以用来连接到一个名为 &quot;observe&quot; 的现有会话，或者如果找不到该会话，则创建一个：</li>
+</ol>
+<div class="code-block"><div class="code-toolbar"><span>Shell</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="bash" data-code-kind="code" tabindex="0" aria-label="Shell 代码"><code><span class="token builtin class-name">export</span> <span class="token assign-left variable">TMUX_NAME</span><span class="token operator">=</span>observe
+tmux a <span class="token parameter variable">-t</span> <span class="token variable">$TMUX_NAME</span> <span class="token operator">||</span> tmux new <span class="token parameter variable">-s</span> <span class="token variable">$TMUX_NAME</span>
+</code></pre></div>
+<ol start="2">
+<li>每秒收集一次 <code>pgsa</code> 样本，并无限次地记录日志 (直到手动中断)：</li>
+</ol>
+<div class="code-block"><div class="code-toolbar"><span>Shell</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="bash" data-code-kind="code" tabindex="0" aria-label="Shell 代码"><code><span class="token keyword">while</span> <span class="token function">sleep</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token keyword">do</span>
+    psql <span class="token parameter variable">-XAtc</span> <span class="token string">"
+        copy (
+        with samples as (
+            select
+            clock_timestamp(),
+            clock_timestamp() - xact_start as xact_duration,
+            *
+            from pg_stat_activity
+        )
+        select *
+        from samples
+        where xact_duration > interval '1 minute'
+        order by xact_duration desc
+        ) to stdout delimiter ',' csv
+    "</span> <span class="token operator"><span class="token file-descriptor important">2</span>></span><span class="token file-descriptor important">&amp;1</span> <span class="token punctuation">\</span>
+    <span class="token operator">|</span> <span class="token function">tee</span> <span class="token parameter variable">-a</span> long_tx_<span class="token variable"><span class="token variable">$(</span><span class="token function">date</span> +%Y%m%d<span class="token variable">)</span></span>.log.csv
+<span class="token keyword">done</span>
+</code></pre></div>
+<p>下面我们讨论此处使用的各种技巧和窍门。</p>
+<h2 id="使用-tmux-或-screen">使用 tmux (或 screen)</h2>
+<p>好处显而易见：如果你遇到网络连接问题而断开连接，只要 <code>tmux</code> 会话在服务器上运行，工作不会丢失。遵循预定义的会话命名约定在团队协作时也很有帮助。</p>
+<h2 id="如何使用循环批处理">如何使用循环/批处理</h2>
+<p>某些程序支持批量报告 (例如：<code>iostat -x 5</code>、<code>top -b -n 100 -d 5</code>)，而有些不支持。在后者的情况下，可以使用 <code>while</code> 循环。我倾向于使用无限循环，如 <code>while sleep 5; do ... ; done</code>。它有一个小缺点 — 开始时会先等待一会儿，然后再执行有用的工作 — 但它的好处是，大多数时候你可以使用 <code>Ctrl-C</code> 中断。</p>
+<h2 id="使用-psql-选项：-x--a--t">使用 psql 选项：-X, -A, -t</h2>
+<p>用于观测相关采样的 <code>psql</code> 最佳实践 (以及通常的工作自动化)：</p>
+<ul>
+<li>始终使用 <code>-X</code> — 这在某一天会对你非常有用，尤其当你在一个服务器上工作时，意外的<code>~/.psqlrc</code>文件可能包含影响输出的不确定内容（例如，一个简单的 <code>\timing on</code>）。<code>-X</code> 选项告诉psql忽略 <code>~/.psqlrc </code>文件。</li>
+<li>选项 <code>-A</code> 和 <code>-t</code> — 提供无对齐且无标题的输出。这有助于生成更容易解析和处理的大量结果。</li>
+</ul>
+<h2 id="使用-csv-作为输出">使用 CSV 作为输出</h2>
+<p>有几种方式可以生成 CSV：</p>
+<ul>
+<li>使用 psql 的命令 <code>\copy</code> — 这种情况下，结果将保存在客户端。</li>
+<li><code>copy (...) to &#39;/path/to/file&#39;</code> — 这种方式会将结果保存在服务器上 (如果路径对于 Postgres 运行的操作系统用户不可写，可能会遇到权限问题)。</li>
+<li><code>psql --csv -F,</code> — 生成 CSV (但可能存在字段分隔符与转义值冲突的问题)。</li>
+<li><code>copy (...) to stdout</code> — 这种方式可能最适合采样和记录日志。</li>
+</ul>
+<h2 id="日志技巧：不要丢失-stderr，记录时间戳，追加而非覆盖">日志技巧：不要丢失 STDERR，记录时间戳，追加而非覆盖</h2>
+<p>为了后续分析 (谁知道我们几个小时后会检查什么？)，最好将所有内容保存到文件中。</p>
+<p>但同样重要的是不要丢失错误信息 — 通常，它们被打印到 <code>STDERR</code>，因此我们需要将它们写入单独的文件。我们还希望不要丢失文件中的现有内容，所以我们不想简单地覆盖 (<code>&gt;</code>)，而是要追加 (<code>&gt;&gt;</code>)：</p>
+<div class="code-block"><div class="code-toolbar"><span>Shell</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="bash" data-code-kind="code" tabindex="0" aria-label="Shell 代码"><code><span class="token builtin class-name">command</span>   <span class="token operator"><span class="token file-descriptor important">2</span>>></span>error.log <span class="token operator">>></span>messages.log
+</code></pre></div>
+<p>或者将所有内容都重定向到一个文件中：</p>
+<div class="code-block"><div class="code-toolbar"><span>Shell</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="bash" data-code-kind="code" tabindex="0" aria-label="Shell 代码"><code><span class="token builtin class-name">command</span>  <span class="token operator">&amp;>></span>everything.log
+</code></pre></div>
+<p>如果你想同时查看和记录所有内容，使用 <code>tee</code> — 或者在追加模式下使用 <code>tee -a</code> (这里，<code>2&gt;&amp;1 </code>将 <code>STDERR</code> 重定向到 <code>STDOUT</code>，之后 <code>tee</code> 获取从 <code>STDOUT</code> 输出的所有内容)：</p>
+<div class="code-block"><div class="code-toolbar"><span>Shell</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="bash" data-code-kind="code" tabindex="0" aria-label="Shell 代码"><code><span class="token builtin class-name">command</span> <span class="token operator"><span class="token file-descriptor important">2</span>></span><span class="token file-descriptor important">&amp;1</span> <span class="token operator">|</span> <span class="token function">tee</span> <span class="token parameter variable">-a</span> everything.log
+</code></pre></div>
+<p>如果输出缺少时间戳 (在我们上面的 psql 代码片段中则不需要)，可以使用 <code>ts</code> 为每一行前添加时间戳：</p>
+<div class="code-block"><div class="code-toolbar"><span>Shell</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="bash" data-code-kind="code" tabindex="0" aria-label="Shell 代码"><code><span class="token builtin class-name">command</span> <span class="token operator"><span class="token file-descriptor important">2</span>></span><span class="token file-descriptor important">&amp;1</span> <span class="token punctuation">\</span>
+  ts <span class="token punctuation">\</span>
+  <span class="token function">tee</span> <span class="token parameter variable">-a</span> everything.log
+</code></pre></div>
+<p>最后，通常明智的做法是使用当前日期 (甚至是日期+时间，取决于情况) 为结果文件命名：</p>
+<div class="code-block"><div class="code-toolbar"><span>Shell</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="bash" data-code-kind="code" tabindex="0" aria-label="Shell 代码"><code><span class="token builtin class-name">command</span> <span class="token operator"><span class="token file-descriptor important">2</span>></span><span class="token file-descriptor important">&amp;1</span> <span class="token punctuation">\</span>
+  <span class="token operator">|</span> ts <span class="token punctuation">\</span>
+  <span class="token operator">|</span> <span class="token function">tee</span> <span class="token parameter variable">-a</span> observing_our_command_<span class="token variable"><span class="token variable">$(</span><span class="token function">date</span> +%Y%m%d<span class="token variable">)</span></span>.log
+</code></pre></div>
+<p>使用 <code>tee</code> 的一个缺点是，有时你可能会意外中断它 (例如，按错了 <code>tmux</code> 窗口/窗格中的 <code>Ctrl-C</code>)。因此，有些人更喜欢使用 <code>nohup ... &amp;</code> 将观测任务放在后台运行，并使用 <code>tail -f</code> 查看结果。</p>
+<h2 id="结果处理">结果处理</h2>
+<p>如果结果是 CSV 格式，后续处理非常方便 — Postgres 对其处理非常好。我们只需要记住使用的列集，就可以创建一个表并加载数据：</p>
+<div class="code-block"><div class="code-toolbar"><span>PSQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="terminal" tabindex="0" aria-label="PSQL 代码"><code>nik=# create table log_loaded as select clock_timestamp(), clock_timestamp() - xact_start as xact_duration, * from pg_stat_activity limit 0;
+SELECT 0
+nik=# copy log_loaded from &#39;/Users/nik/long_tx_20231006.log.csv&#39; csv delimiter &#39;,&#39;;
+COPY 4
+</code></pre></div>
+<p>然后你可以用 SQL 进行分析。或者你也可以将 CSV 加载到某些电子表格工具中，然后分析数据并创建一些图表。</p>
+<h2 id="另一种采样方式——直接在-psql-中操作">另一种采样方式——直接在 psql 中操作</h2>
+<p>在 psql 中，你可以使用 <code>\o | tee -a logfile</code> 和<code>\watch</code> 来同时查看数据和记录日志 — 不过注意，这不会捕捉到文件中的错误。示例：</p>
+<div class="code-block"><div class="code-toolbar"><span>PSQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="terminal" tabindex="0" aria-label="PSQL 代码"><code>nik=# \o | tee -a alternative.log
+
+nik=# \t
+Tuples only is on.
+nik=# \a
+Output format is unaligned.
+nik=# \f ┃
+Field separator is &quot;┃&quot;.
+nik=# select clock_timestamp(), &#39;test&#39; as c1 \watch 3
+2023-10-06 21:01:05.33987-07┃test
+2023-10-06 21:01:08.342017-07┃test
+2023-10-06 21:01:11.339183-07┃test
+^C
+nik=# \! cat  alternative.log
+2023-10-06 21:01:05.33987-07┃test
+2023-10-06 21:01:08.342017-07┃test
+2023-10-06 21:01:11.339183-07┃test
+nik=#
+</code></pre></div>
+<footer class="article-footer"><p class="article-topic-label">所属专题：<a href="/#/docs/topics?id=topic-performance">查询性能与观测</a></p><div class="article-neighbors"><a rel="prev" href="/articles/10/"><small>同专题上一篇</small><strong>使用 FlameGraph 和 eBPF/perf 排查性能</strong></a><a rel="next" href="/articles/12/"><small>同专题下一篇</small><strong>为 pg_stat_statements 找到真实 SQL 样例</strong></a></div><h2>继续阅读</h2><ul><li><a href="/articles/94/">运行 ANALYZE 收集统计信息</a></li><li><a href="/articles/92/">work_mem 调优</a></li><li><a href="/articles/89/">OLTP 粗略配置调优</a></li></ul><div class="article-source-links"><a href="https://github.com/xiongcccc/postgres-howto/blob/master/docs/11.md" target="_blank" rel="noopener">查看源文件</a><a href="https://github.com/xiongcccc/postgres-howto/issues/new?title=%E6%96%87%E7%AB%A0%20%2311%EF%BC%9A%E4%B8%B4%E6%97%B6%E7%9B%91%E6%8E%A7%E6%96%B9%E6%B3%95" target="_blank" rel="noopener">反馈与纠错</a></div></footer><section id="gitalk-container" class="article-discussion"><h2>讨论与补充</h2><a target="_blank" rel="noopener" href="https://github.com/xiongcccc/gitalk-comment/issues?q=is%3Aissue%20%22%2Fdocs%2F11%22">查看与参与 GitHub 讨论</a></section></article></main>
+  <footer class="site-footer"><div><a href="/articles/">文章目录</a><a href="/#/docs/about">关于项目</a><a href="https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos">上游来源</a><a href="https://xiongcc.cn/">xiongcc</a></div><div class="js-only"><button type="button" data-dialog="communityModal">读者交流</button><button type="button" data-dialog="imageModal">支持作者</button><span class="site-stats"><span id="busuanzi_container_site_pv">访问 <strong id="busuanzi_value_site_pv">--</strong> 次</span><span id="busuanzi_container_site_uv">访客 <strong id="busuanzi_value_site_uv">--</strong> 人</span></span></div></footer>
+  <dialog id="imageModal" class="support-modal" aria-labelledby="support-title"><div class="dialog-heading"><h2 id="support-title">支持作者</h2><button class="icon-button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>感谢支持 PostgreSQL Howto 的长期维护。</p><img data-src="/images/wechat_pay.png" width="280" height="280" alt="微信赞赏码"></dialog>
+  <dialog id="communityModal" class="support-modal" aria-labelledby="community-title"><div class="dialog-heading"><h2 id="community-title">读者交流群</h2><button class="icon-button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>二维码若已过期，可通过公众号 PostgreSQL 学徒或邮件联系。</p><img data-src="/images/wechatgroup.jpeg" width="280" height="427" alt="PostgreSQL 学徒读者交流群二维码"></dialog>
+  <script src="/scripts/catalog-data.js?v=beaba606436c9ec0" defer></script>
+<script src="/scripts/article-view.js?v=926830a13df34c2c" defer></script>
+<script src="/scripts/site.js?v=f2e6d95ee157b4fe" defer></script>
+<script src="/scripts/diagrams.js?v=45d556fe0c9de5ef" defer></script>
+<script src="/scripts/reading.js?v=abf3dfc7db08ddc8" defer></script>
+</body>
+</html>

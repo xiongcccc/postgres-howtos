@@ -2,9 +2,9 @@
 
 * **PostgreSQL Howto 中文版**
   * [首页](/README.md)
-  * [查找文章](/docs/find.md)
-  * [专题索引](/docs/topics.md)
-  * [推荐路径](/docs/paths.md)
+  * [全部文章](/docs/find.md)
+  * [专题](/docs/topics.md)
+  * [学习路径](/docs/paths.md)
   * [系列阅读](/docs/series.md)
   * [会议精选](/docs/conferences.md)
 

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务 | PostgreSQL Howto 中文版</title>
+  <meta name="description" content="外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务。主要讨论 PostgreSQL 17、18；成员变化实验使用 18.4。19 的成员偏移扩展单独说明。">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="canonical" href="https://postgres-howto.cn/articles/107/">
+  <meta property="og:title" content="外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务 | PostgreSQL Howto 中文版">
+  <meta property="og:description" content="外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务。主要讨论 PostgreSQL 17、18；成员变化实验使用 18.4。19 的成员偏移扩展单独说明。">
+  <meta property="og:url" content="https://postgres-howto.cn/articles/107/">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://postgres-howto.cn/images/logo.png">
+  <link rel="icon" href="/images/favicon.png" type="image/png">
+  <script>(function(){var m='auto';try{m=localStorage.getItem('howto-theme')||'auto';}catch(_){}var d=m==='dark'||(m==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light';document.documentElement.style.colorScheme=d?'dark':'light';})();</script>
+  <link rel="stylesheet" href="/styles/custom.css?v=0671959df3115f7d">
+  <link rel="stylesheet" href="/styles/reading.css?v=701d1b6c5807eeb4">
+<script id="article-schema" type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务","inLanguage":"zh-CN","url":"https://postgres-howto.cn/articles/107/","mainEntityOfPage":"https://postgres-howto.cn/articles/107/","citation":"https://thebuild.com/blog/all-your-gucs-in-a-row-multixact_member_buffers-and-multixact_offset_buffers/","keywords":["MultiXact","multixact_member_buffers","multixact_offset_buffers","SLRU","外键写入","外键插入","FOR KEY SHARE","pg_stat_slru","MultiXactOffsetSLRU","MultiXactMemberSLRU","The Build","Christophe Pettus"],"datePublished":"2026-10-09"}</script>
+</head>
+<body class="reading-article" data-static-page data-static-article="107">
+  <a class="skip-link" href="#main" data-skip>跳至正文</a>
+  <header class="site-header">
+    <button id="sidebar-toggle" class="icon-button mobile-menu js-only" type="button" aria-label="打开导航" aria-controls="site-sidebar" aria-expanded="false" title="打开导航"><span class="icon icon-menu" aria-hidden="true"></span></button>
+    <a class="site-brand" href="/"><img src="/images/favicon.png" width="36" height="36" alt=""><span>PostgreSQL <strong>Howto</strong><small>中文版</small></span></a>
+    <nav class="app-nav" aria-label="主导航"><a href="/">首页</a><a href="/#/docs/topics">专题</a><a href="/#/docs/paths">学习路径</a><a href="/articles/">全部文章</a><a href="https://github.com/xiongcccc/postgres-howto" target="_blank" rel="noopener">GitHub<span class="icon icon-arrow-up-right" aria-hidden="true"></span></a></nav>
+    <div class="header-tools js-only"><button class="icon-button" type="button" data-open-search aria-label="搜索文章" aria-keyshortcuts="Control+K Meta+K" title="搜索文章 (Ctrl / Cmd + K)"><span class="icon icon-search" aria-hidden="true"></span></button><button class="icon-button theme-toggle" aria-label="切换阅读主题" title="切换阅读主题"><span class="icon icon-monitor" aria-hidden="true"></span></button></div>
+  </header>
+  <button class="sidebar-backdrop" type="button" aria-label="关闭导航" tabindex="-1" hidden></button>
+  <aside class="sidebar" id="site-sidebar" aria-label="文章导航"><div class="sidebar-nav"><div class="sidebar-heading"><span>知识导航</span><button class="icon-button" data-close-nav aria-label="关闭导航" title="关闭导航"><span class="icon icon-x" aria-hidden="true"></span></button></div><nav class="catalog-navigation" aria-label="文章分类"><ul class="catalog-pages"><li><a href="/#/README">首页</a></li><li><a href="/#/docs/topics">专题</a></li><li><a href="/#/docs/paths">学习路径</a></li><li><a href="/articles/">全部文章</a></li></ul><p class="sidebar-label">技术专题 <span>主归属文章</span></p><details data-topic="performance"><summary><span>查询性能与观测</span><small>16</small></summary><ul><li><a href="/articles/108/"><span class="article-number">108</span><span>一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离</span></a></li><li><a href="/articles/101/"><span class="article-number">101</span><span>PostgreSQL 性能排查：规划开销、分区锁与表膨胀</span></a></li><li><a href="/articles/1/"><span class="article-number">1</span><span>EXPLAIN 为什么应该带 BUFFERS</span></a></li><li><a href="/articles/5/"><span class="article-number">5</span><span>pg_stat_statements 入门</span></a></li><li><a href="/articles/6/"><span class="article-number">6</span><span>pg_stat_statements 进阶</span></a></li><li><a href="/articles/7/"><span class="article-number">7</span><span>pg_stat_statements 深入使用</span></a></li><li><a href="/articles/10/"><span class="article-number">10</span><span>使用 FlameGraph 和 eBPF/perf 排查性能</span></a></li><li><a href="/articles/11/"><span class="article-number">11</span><span>临时监控方法</span></a></li><li><a href="/articles/12/"><span class="article-number">12</span><span>为 pg_stat_statements 找到真实 SQL 样例</span></a></li><li><a href="/articles/13/"><span class="article-number">13</span><span>如何做基准测试</span></a></li><li><a href="/articles/14/"><span class="article-number">14</span><span>如何判断一个查询是否太慢</span></a></li><li><a href="/articles/50/"><span class="article-number">50</span><span>基准测试迭代前后的准备工作</span></a></li><li><a href="/articles/56/"><span class="article-number">56</span><span>让非生产环境 Planner 更像生产环境</span></a></li><li><a href="/articles/89/"><span class="article-number">89</span><span>OLTP 粗略配置调优</span></a></li><li><a href="/articles/92/"><span class="article-number">92</span><span>work_mem 调优</span></a></li><li><a href="/articles/94/"><span class="article-number">94</span><span>运行 ANALYZE 收集统计信息</span></a></li></ul></details><details data-topic="ops"><summary><span>运维排障与日常工具</span><small>21</small></summary><ul><li><a href="/articles/2/"><span class="article-number">2</span><span>排查并加速 Postgres 停止和重启</span></a></li><li><a href="/articles/3/"><span class="article-number">3</span><span>排查 Postgres 启动缓慢</span></a></li><li><a href="/articles/8/"><span class="article-number">8</span><span>加速大库 pg_dump</span></a></li><li><a href="/articles/19/"><span class="article-number">19</span><span>导入 CSV 到 Postgres</span></a></li><li><a href="/articles/20/"><span class="article-number">20</span><span>使用 pg_restore</span></a></li><li><a href="/articles/21/"><span class="article-number">21</span><span>不发额外查询设置 application_name</span></a></li><li><a href="/articles/25/"><span class="article-number">25</span><span>如何退出 psql</span></a></li><li><a href="/articles/27/"><span class="article-number">27</span><span>在 Ubuntu 22.04 编译 Postgres</span></a></li><li><a href="/articles/34/"><span class="article-number">34</span><span>初步配置调优</span></a></li><li><a href="/articles/47/"><span class="article-number">47</span><span>安装带 plpython3u 的 Postgres 16</span></a></li><li><a href="/articles/49/"><span class="article-number">49</span><span>在 psql 脚本中使用变量</span></a></li><li><a href="/articles/51/"><span class="article-number">51</span><span>通过观察 psql 学习元数据</span></a></li><li><a href="/articles/58/"><span class="article-number">58</span><span>使用 Docker 运行 Postgres</span></a></li><li><a href="/articles/59/"><span class="article-number">59</span><span>psql 调优</span></a></li><li><a href="/articles/68/"><span class="article-number">68</span><span>psql 快捷操作</span></a></li><li><a href="/articles/81/"><span class="article-number">81</span><span>在 psql 中绘图</span></a></li><li><a href="/articles/86/"><span class="article-number">86</span><span>修复 psql 中的 \\e 编辑器问题</span></a></li><li><a href="/articles/87/"><span class="article-number">87</span><span>修改数据库中所有对象所有者</span></a></li><li><a href="/articles/88/"><span class="article-number">88</span><span>面向 OLTP 的 Linux 参数调优</span></a></li><li><a href="/articles/90/"><span class="article-number">90</span><span>使用 lib_pgquery 归一化和匹配查询</span></a></li><li><a href="/articles/91/"><span class="article-number">91</span><span>格式化 psql 脚本文本输出</span></a></li></ul></details><details data-topic="locks" open data-current-topic="true"><summary><span>锁、事务与在线变更</span><small>19</small></summary><ul><li><a href="/articles/107/" aria-current="page"><span class="article-number">107</span><span>外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务</span></a></li><li><a href="/articles/104/"><span class="article-number">104</span><span>SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争</span></a></li><li><a href="/articles/99/"><span class="article-number">99</span><span>如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除</span></a></li><li><a href="/articles/100/"><span class="article-number">100</span><span>如何排查 LISTEN／NOTIFY 引起的提交阻塞</span></a></li><li><a href="/articles/22/"><span class="article-number">22</span><span>heavyweight locks 分析：基础</span></a></li><li><a href="/articles/30/"><span class="article-number">30</span><span>处理 OLTP 长事务</span></a></li><li><a href="/articles/33/"><span class="article-number">33</span><span>无停机重定义主键</span></a></li><li><a href="/articles/35/"><span class="article-number">35</span><span>使用子事务</span></a></li><li><a href="/articles/36/"><span class="article-number">36</span><span>单条查询实现 find-or-insert</span></a></li><li><a href="/articles/37/"><span class="article-number">37</span><span>无停机启用 data checksums</span></a></li><li><a href="/articles/42/"><span class="article-number">42</span><span>heavyweight locks 分析：锁树</span></a></li><li><a href="/articles/55/"><span class="article-number">55</span><span>删除列</span></a></li><li><a href="/articles/60/"><span class="article-number">60</span><span>添加列</span></a></li><li><a href="/articles/69/"><span class="article-number">69</span><span>无停机添加 CHECK 约束</span></a></li><li><a href="/articles/70/"><span class="article-number">70</span><span>添加外键</span></a></li><li><a href="/articles/71/"><span class="article-number">71</span><span>理解 DDL 被什么阻塞</span></a></li><li><a href="/articles/72/"><span class="article-number">72</span><span>移除外键</span></a></li><li><a href="/articles/73/"><span class="article-number">73</span><span>heavyweight locks 分析：持久监控</span></a></li><li><a href="/articles/83/"><span class="article-number">83</span><span>修改 Postgres 参数</span></a></li></ul></details><details data-topic="indexes"><summary><span>索引治理</span><small>9</small></summary><ul><li><a href="/articles/15/"><span class="article-number">15</span><span>监控 CREATE INDEX / REINDEX 进度</span></a></li><li><a href="/articles/18/"><span class="article-number">18</span><span>过度索引</span></a></li><li><a href="/articles/53/"><span class="article-number">53</span><span>索引维护</span></a></li><li><a href="/articles/54/"><span class="article-number">54</span><span>使用 pg_amcheck 检查 btree 索引损坏</span></a></li><li><a href="/articles/61/"><span class="article-number">61</span><span>创建索引：基础</span></a></li><li><a href="/articles/62/"><span class="article-number">62</span><span>创建索引：进阶</span></a></li><li><a href="/articles/75/"><span class="article-number">75</span><span>查找未使用索引</span></a></li><li><a href="/articles/76/"><span class="article-number">76</span><span>查找冗余索引</span></a></li><li><a href="/articles/79/"><span class="article-number">79</span><span>并行重建大量索引并避免死锁</span></a></li></ul></details><details data-topic="storage"><summary><span>存储、WAL 与 Vacuum</span><small>19</small></summary><ul><li><a href="/articles/102/"><span class="article-number">102</span><span>Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢</span></a></li><li><a href="/articles/4/"><span class="article-number">4</span><span>理解 tuple 在表中的稀疏存储</span></a></li><li><a href="/articles/9/"><span class="article-number">9</span><span>理解 LSN 和 WAL 文件名</span></a></li><li><a href="/articles/16/"><span class="article-number">16</span><span>容易踩坑的 Postgres 特性</span></a></li><li><a href="/articles/26/"><span class="article-number">26</span><span>检查 btree 索引损坏</span></a></li><li><a href="/articles/31/"><span class="article-number">31</span><span>排查 pg_wal 目录增长</span></a></li><li><a href="/articles/39/"><span class="article-number">39</span><span>如何破坏数据库：制造损坏</span></a></li><li><a href="/articles/40/"><span class="article-number">40</span><span>如何破坏数据库：模拟 XID 回卷</span></a></li><li><a href="/articles/41/"><span class="article-number">41</span><span>如何破坏数据库：有害负载</span></a></li><li><a href="/articles/44/"><span class="article-number">44</span><span>监控 XID 回卷风险</span></a></li><li><a href="/articles/45/"><span class="article-number">45</span><span>监控 xmin horizon 避免回卷和膨胀</span></a></li><li><a href="/articles/46/"><span class="article-number">46</span><span>处理 bloat</span></a></li><li><a href="/articles/52/"><span class="article-number">52</span><span>降低 WAL 生成速率</span></a></li><li><a href="/articles/66/"><span class="article-number">66</span><span>一个 page 能插入多少 tuple</span></a></li><li><a href="/articles/67/"><span class="article-number">67</span><span>Autovacuum 队列和进度</span></a></li><li><a href="/articles/74/"><span class="article-number">74</span><span>刷新 OS page cache 和 Postgres buffer pool</span></a></li><li><a href="/articles/80/"><span class="article-number">80</span><span>查找有 int4 主键溢出风险的表</span></a></li><li><a href="/articles/84/"><span class="article-number">84</span><span>列顺序与存储优化：Column Tetris</span></a></li><li><a href="/articles/85/"><span class="article-number">85</span><span>快速检查值的数据类型和存储大小</span></a></li></ul></details><details data-topic="sql"><summary><span>SQL、数据建模与扩展玩法</span><small>12</small></summary><ul><li><a href="/articles/103/"><span class="article-number">103</span><span>PostgreSQL 排序规则：文本比较、索引与升级风险</span></a></li><li><a href="/articles/23/"><span class="article-number">23</span><span>在 Postgres 中调用 OpenAI API 实现语义搜索和 GPT Chat</span></a></li><li><a href="/articles/24/"><span class="article-number">24</span><span>使用元数据</span></a></li><li><a href="/articles/28/"><span class="article-number">28</span><span>数组使用：基础</span></a></li><li><a href="/articles/29/"><span class="article-number">29</span><span>数组使用：进阶</span></a></li><li><a href="/articles/32/"><span class="article-number">32</span><span>加速批量加载</span></a></li><li><a href="/articles/43/"><span class="article-number">43</span><span>SQL 格式化与风格指南</span></a></li><li><a href="/articles/48/"><span class="article-number">48</span><span>生成测试数据</span></a></li><li><a href="/articles/64/"><span class="article-number">64</span><span>使用 UUID</span></a></li><li><a href="/articles/65/"><span class="article-number">65</span><span>UUID v7 与分区</span></a></li><li><a href="/articles/78/"><span class="article-number">78</span><span>使用创建时间和统计信息估算大表同比增长</span></a></li><li><a href="/articles/82/"><span class="article-number">82</span><span>用 SQL 绘制霜花图案</span></a></li></ul></details><details data-topic="replication"><summary><span>复制、校验与升级</span><small>7</small></summary><ul><li><a href="/articles/109/"><span class="article-number">109</span><span>备库查询为什么被取消：WAL 回放冲突与等待预算</span></a></li><li><a href="/articles/106/"><span class="article-number">106</span><span>PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化</span></a></li><li><a href="/articles/105/"><span class="article-number">105</span><span>深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复</span></a></li><li><a href="/articles/17/"><span class="article-number">17</span><span>判断复制延迟</span></a></li><li><a href="/articles/57/"><span class="article-number">57</span><span>将物理副本转换为逻辑副本</span></a></li><li><a href="/articles/77/"><span class="article-number">77</span><span>大型高负载集群的无停机大版本升级</span></a></li><li><a href="/articles/93/"><span class="article-number">93</span><span>排查流复制延迟</span></a></li></ul></details><details data-topic="practice"><summary><span>实践剖析</span><small>3</small></summary><ul><li><a href="/articles/96/"><span class="article-number">96</span><span>为什么 actual time 和 Execution Time 有很大差异？</span></a></li><li><a href="/articles/97/"><span class="article-number">97</span><span>深入浅出 bpftrace 分析 PostgreSQL</span></a></li><li><a href="/articles/98/"><span class="article-number">98</span><span>当 PostgreSQL 慢在数据库之外：用 bpftrace 打通 SQL 与内核观测</span></a></li></ul></details><details data-topic="engineering"><summary><span>工程实践与后记</span><small>3</small></summary><ul><li><a href="/articles/38/"><span class="article-number">38</span><span>如何不把 DBA/DBRE 工作搞砸</span></a></li><li><a href="/articles/63/"><span class="article-number">63</span><span>如何帮助别人</span></a></li><li><a href="/articles/95/"><span class="article-number">95</span><span>后记</span></a></li></ul></details><div class="sidebar-resources"><a href="/#/docs/series">系列阅读</a><a href="/#/docs/conferences">会议精选</a><a href="/#/docs/about">关于项目</a></div></nav></div></aside>
+  <main class="content"><article id="main" class="markdown-section" tabindex="-1"><div class="article-topline"><nav class="breadcrumbs" aria-label="面包屑"><a href="/">首页</a><span aria-hidden="true">/</span><a href="/#/docs/topics?id=topic-locks">锁、事务与在线变更</a></nav></div><h1 id="all-your-gucs-in-a-row-multixact_member_buffers-and-multixact_offset_buffers">外键写入为什么会变慢：<span class="article-title-detail">理解 PostgreSQL 的 MultiXact 与长事务</span></h1><div class="article-meta"><p class="article-kicker"><a href="/#/docs/find?series=interpretation">专题解读</a> · 技术博客 <span class="article-id">#107</span> <time datetime="2026-10-09">收录于 2026-10-09</time></p><p class="article-version">主要讨论 PostgreSQL 17、18；成员变化实验使用 18.4。19 的成员偏移扩展单独说明。</p><details><summary>来源与验证说明</summary><dl><dt>原题</dt><dd>All Your GUCs in a Row: multixact_member_buffers and multixact_offset_buffers</dd><dt>来源</dt><dd><a href="https://thebuild.com/blog/all-your-gucs-in-a-row-multixact_member_buffers-and-multixact_offset_buffers/" target="_blank" rel="noopener">Christophe Pettus / The Build</a></dd><dt>中文翻译与校订</dt><dd>xiongcc</dd><dt>验证状态</dt><dd>实测建表与样例数据、四会话操作、MultiXact 成员变化、提交后结果及诊断 SQL；未进行吞吐压测。（2026-10-09） <a href="/#/maintenance/107-review">验证记录</a></dd></dl></details></div><details class="article-toc"><summary>本页目录<span class="icon icon-chevron-down" aria-hidden="true"></span></summary><nav aria-label="本页目录"><ol><li class="toc-level-2"><a data-heading="插入订单，为什么会锁住客户记录？" href="#%E6%8F%92%E5%85%A5%E8%AE%A2%E5%8D%95%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E9%94%81%E4%BD%8F%E5%AE%A2%E6%88%B7%E8%AE%B0%E5%BD%95%EF%BC%9F">插入订单，为什么会锁住客户记录？</a></li><li class="toc-level-2"><a data-heading="multixact-记录放在哪里？" href="#multixact-%E8%AE%B0%E5%BD%95%E6%94%BE%E5%9C%A8%E5%93%AA%E9%87%8C%EF%BC%9F">MultiXact 记录放在哪里？</a></li><li class="toc-level-2"><a data-heading="长事务怎样改变访问范围？" href="#%E9%95%BF%E4%BA%8B%E5%8A%A1%E6%80%8E%E6%A0%B7%E6%94%B9%E5%8F%98%E8%AE%BF%E9%97%AE%E8%8C%83%E5%9B%B4%EF%BC%9F">长事务怎样改变访问范围？</a></li><li class="toc-level-2"><a data-heading="用三笔订单观察成员变化" href="#%E7%94%A8%E4%B8%89%E7%AC%94%E8%AE%A2%E5%8D%95%E8%A7%82%E5%AF%9F%E6%88%90%E5%91%98%E5%8F%98%E5%8C%96">用三笔订单观察成员变化</a></li><li class="toc-level-3"><a data-heading="建表和准备数据" href="#%E5%BB%BA%E8%A1%A8%E5%92%8C%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE">建表和准备数据</a></li><li class="toc-level-3"><a data-heading="a-插入订单，保持事务打开" href="#a-%E6%8F%92%E5%85%A5%E8%AE%A2%E5%8D%95%EF%BC%8C%E4%BF%9D%E6%8C%81%E4%BA%8B%E5%8A%A1%E6%89%93%E5%BC%80">A 插入订单，保持事务打开</a></li><li class="toc-level-3"><a data-heading="b-插入第二笔订单，查询成员列表" href="#b-%E6%8F%92%E5%85%A5%E7%AC%AC%E4%BA%8C%E7%AC%94%E8%AE%A2%E5%8D%95%EF%BC%8C%E6%9F%A5%E8%AF%A2%E6%88%90%E5%91%98%E5%88%97%E8%A1%A8">B 插入第二笔订单，查询成员列表</a></li><li class="toc-level-3"><a data-heading="b-提交，c-再插入一笔订单" href="#b-%E6%8F%90%E4%BA%A4%EF%BC%8Cc-%E5%86%8D%E6%8F%92%E5%85%A5%E4%B8%80%E7%AC%94%E8%AE%A2%E5%8D%95">B 提交，C 再插入一笔订单</a></li><li class="toc-level-3"><a data-heading="提交并核对数据" href="#%E6%8F%90%E4%BA%A4%E5%B9%B6%E6%A0%B8%E5%AF%B9%E6%95%B0%E6%8D%AE">提交并核对数据</a></li><li class="toc-level-2"><a data-heading="扩大缓存，还会改变内部锁的竞争" href="#%E6%89%A9%E5%A4%A7%E7%BC%93%E5%AD%98%EF%BC%8C%E8%BF%98%E4%BC%9A%E6%94%B9%E5%8F%98%E5%86%85%E9%83%A8%E9%94%81%E7%9A%84%E7%AB%9E%E4%BA%89">扩大缓存，还会改变内部锁的竞争</a></li><li class="toc-level-2"><a data-heading="怎样判断自己的系统是否遇到了这个问题？" href="#%E6%80%8E%E6%A0%B7%E5%88%A4%E6%96%AD%E8%87%AA%E5%B7%B1%E7%9A%84%E7%B3%BB%E7%BB%9F%E6%98%AF%E5%90%A6%E9%81%87%E5%88%B0%E4%BA%86%E8%BF%99%E4%B8%AA%E9%97%AE%E9%A2%98%EF%BC%9F">怎样判断自己的系统是否遇到了这个问题？</a></li><li class="toc-level-2"><a data-heading="处理时，把事务模式和缓存一起考虑" href="#%E5%A4%84%E7%90%86%E6%97%B6%EF%BC%8C%E6%8A%8A%E4%BA%8B%E5%8A%A1%E6%A8%A1%E5%BC%8F%E5%92%8C%E7%BC%93%E5%AD%98%E4%B8%80%E8%B5%B7%E8%80%83%E8%99%91">处理时，把事务模式和缓存一起考虑</a></li><li class="toc-level-2"><a data-heading="延伸阅读" href="#%E5%BB%B6%E4%BC%B8%E9%98%85%E8%AF%BB">延伸阅读</a></li><li class="toc-level-2"><a data-heading="参考资料" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99">参考资料</a></li></ol></nav></details>
+<p>本文基于 Christophe Pettus 在 The Build 发布的 MultiXact 缓存文章，结合 PostgreSQL 文档、源码与一个最小实验，讨论外键写入、MultiXact 和长事务之间的关系。中文解读与技术校订：xiongcc。</p>
+<p>假设有一套订单系统：后台正在批量导入订单，线上也不断产生新订单。订单表的外键指向客户表，客户主键索引齐全，插入语句看起来也很简单，但批量任务运行期间，线上写入明显变慢。</p>
+<p>查执行计划没有发现大范围扫描，业务锁等待也不突出。这个时候，还可以检查外键校验留下的行锁，以及 PostgreSQL 为这些锁维护的 MultiXact 记录。</p>
+<p>这里值得关注的地方是：<strong>即使两个事务的行锁互相兼容，记录和读取这些锁的过程仍然有成本。</strong> 长事务会让这部分成本持续影响其他写入。</p>
+<h2 id="插入订单，为什么会锁住客户记录？">插入订单，为什么会锁住客户记录？</h2>
+<p>考虑两张表：<code>customers</code> 保存客户，<code>orders.customer_id</code> 通过外键引用 <code>customers.id</code>。</p>
+<p>普通的非延迟外键校验除了确认客户存在，还需要保证：订单事务尚未结束时，其他事务不能删除该客户，也不能把被引用的键改掉。为此，PostgreSQL 会在对应的父表行上取得 <code>FOR KEY SHARE</code> 行锁。</p>
+<p>这个锁允许其他事务同时检查并引用同一位客户。因此，事务 A 和 B 各自插入一张订单，可以同时持有同一客户行的 <code>KEY SHARE</code> 锁，不需要等对方提交。但数据库仍然要记住谁在持锁，才能正确处理后续的删除、更新和加锁请求。</p>
+<p>行版本头部的 <code>xmax</code> 字段参与记录这些信息。只有一个持锁事务时，它可以记录事务 ID；需要表达多个事务的锁状态时，它可以记录一个 <strong>MultiXact ID</strong>，通过这个编号查到成员事务及其锁模式。</p>
+<p>这也解释了为什么看到非零 <code>xmax</code>，不能立即认定这一行已被删除：它的含义还取决于行头部的标志位。</p>
+<p>在本文的普通事务示例中，父表行锁一直保持到事务提交或回滚。SQL 已经执行完、连接处于 <code>idle in transaction</code>，都不会自动结束这个事务。</p>
+<h2 id="multixact-记录放在哪里？">MultiXact 记录放在哪里？</h2>
+<p>MultiXact 的成员数不固定，全部塞进一行的头部显然不合适。PostgreSQL 把记录保存在数据目录的 <code>pg_multixact</code> 下，分成两部分：</p>
+<ul>
+<li><code>offsets</code>：根据 MultiXact ID 找到成员列表的起始位置。</li>
+<li><code>members</code>：保存成员的事务 ID 和锁模式。</li>
+</ul>
+<p>读取一条需要解析的 MultiXact 时，大致经过下面的路径：</p>
+<pre data-lang="mermaid"><code>flowchart TD
+    A[&quot;父表行头部：xmax 是 MultiXact ID&quot;] --&gt; B[&quot;offsets：定位成员列表&quot;]
+    B --&gt; C[&quot;members：读取事务 ID 和锁模式&quot;]
+    C --&gt; D[&quot;结合事务状态，判断现有锁的影响&quot;]</code></pre>
+<p>这两部分各有一个共享内存缓存，属于 <strong>SLRU</strong>。在这里，可以把 SLRU 理解为 PostgreSQL 专门缓存事务辅助记录的小型页缓存；它和缓存表、索引页面的 <code>shared_buffers</code> 分开管理。</p>
+<p>PostgreSQL 17 开始允许配置它们的大小。17、18 的默认值分别是：</p>
+<div class="table-scroll" role="region" aria-label="表格，可横向滚动" tabindex="0"><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>缓存对象</th>
+<th>默认页数</th>
+<th>按 8 KB 页计算的容量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>multixact_offset_buffers</code></td>
+<td>MultiXact 的成员位置</td>
+<td>16</td>
+<td>128 KB</td>
+</tr>
+<tr>
+<td><code>multixact_member_buffers</code></td>
+<td>成员事务与锁模式</td>
+<td>32</td>
+<td>256 KB</td>
+</tr>
+</tbody></table>
+</div>
+<p>这两个默认值不会随着 <code>shared_buffers</code> 增大而自动增长。即使表和索引都已经缓存在内存里，访问 MultiXact 时仍可能遇到另一组缓存的容量限制。</p>
+<p>不过，数据库产生过多少 MultiXact，并不直接决定需要多大的缓存。真正影响当前开销的是：正在执行的事务还需要访问哪些记录，这些记录分布在多少页面上。</p>
+<h2 id="长事务怎样改变访问范围？">长事务怎样改变访问范围？</h2>
+<p>对于只记录行锁的旧 MultiXact，PostgreSQL 有一条跳过成员读取的路径：如果根据活动事务的 MultiXact 边界，能够确定其中已经不可能存在仍有效的持锁事务，就不必再读取旧成员列表。</p>
+<p>短事务不断结束时，这条边界能向前推进。父表行上即便还留着旧编号，后续事务也往往无需解析那份锁记录。</p>
+<p>现在把事务 A 换成一个批量任务：它在一个事务中插入许多订单，涉及大量客户，完成后迟迟没有提交。A 会在这些客户行上一直保持外键校验取得的锁。</p>
+<p>如果线上事务 B 又为其中一位客户插入订单，就需要记录 A 和 B 同时持锁。B 提交后，A 仍在；事务 C 再次引用这位客户时，需要读取之前的成员信息，识别仍有效的 A，并形成包含 A、C 的锁记录。</p>
+<p><strong>这里的成员变化会产生新的 MultiXact，而不是把旧成员列表直接改写。</strong> 各个客户行上最后留下的编号取决于它最近一次被哪些事务访问，因而可能指向不同位置的记录。</p>
+<p>把这个过程扩展到大量客户行，新的访问就可能分散到许多 <code>offsets</code>、<code>members</code> 页面。缓存放不下时，旧页被换出，下一次引用又需要读回来。</p>
+<p>因此，判断这种问题要同时看长事务保持了多久、锁住了多少父表行，以及其他事务是否持续引用这些行。一个很老但没有参与相关行锁的事务，和一个覆盖大量客户的外键批量写入任务，对这条路径的影响并不相同。</p>
+<h2 id="用三笔订单观察成员变化">用三笔订单观察成员变化</h2>
+<p>下面的例子使用 PostgreSQL 18.4、默认 <code>READ COMMITTED</code> 隔离级别。在专用测试库中打开四个 <code>psql</code> 窗口，分别作为会话 A、B、C 和观察会话。四个窗口连接同一个库，观察会话保持默认的自动提交，不执行 <code>BEGIN</code>。</p>
+<p>可以用 <code>psql -X -P pager=off -d 你的测试库名</code> 连接，按环境补上 <code>-h</code>、<code>-p</code>、<code>-U</code>。<code>-X</code> 避免本机 psql 配置影响例子。以下包含 psql 的 <code>\gset</code> 命令，整段在 psql 中执行。</p>
+<p>下面的输出来自本次运行。其他实例的事务 ID 和 MultiXact ID 可能不同，比较它们的对应关系即可；观察查询会读取实际编号。</p>
+<h3 id="建表和准备数据">建表和准备数据</h3>
+<p>在观察会话执行。使用独立的 <code>mx_demo</code> schema；如果这个名称已经存在，请换一个空测试库，不要覆盖原有对象。</p>
+<!-- verify:setup -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">CREATE</span> <span class="token keyword">SCHEMA</span> mx_demo<span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> mx_demo<span class="token punctuation">.</span>customers <span class="token punctuation">(</span>
+    id <span class="token keyword">integer</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
+    name <span class="token keyword">text</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> mx_demo<span class="token punctuation">.</span>orders <span class="token punctuation">(</span>
+    id <span class="token keyword">integer</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
+    customer_id <span class="token keyword">integer</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword">REFERENCES</span> mx_demo<span class="token punctuation">.</span>customers<span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    amount <span class="token keyword">numeric</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> mx_demo<span class="token punctuation">.</span>customers <span class="token keyword">VALUES</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'Alice'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'Bob'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">SELECT</span> id<span class="token punctuation">,</span> name<span class="token punctuation">,</span> xmax
+<span class="token keyword">FROM</span> mx_demo<span class="token punctuation">.</span>customers
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> id<span class="token punctuation">;</span>
+</code></pre></div>
+<!-- result:setup -->
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>id | name  | xmax
+----+-------+------
+  1 | Alice |    0
+  2 | Bob   |    0
+(2 rows)
+</code></pre></div>
+<p>后面的订单都引用 Alice；Bob 用来对照没有参与外键校验的父表行。这里使用的 <code>xmax</code> 是 PostgreSQL 的系统列，不是建表时添加的业务字段。</p>
+<h3 id="a-插入订单，保持事务打开">A 插入订单，保持事务打开</h3>
+<p>在会话 A 执行，暂不提交：</p>
+<!-- verify:a -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SET</span> application_name <span class="token operator">=</span> <span class="token string">'mx_demo_A'</span><span class="token punctuation">;</span>
+<span class="token keyword">BEGIN</span><span class="token punctuation">;</span>
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> mx_demo<span class="token punctuation">.</span>orders <span class="token keyword">VALUES</span> <span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">100.00</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">SELECT</span> pg_current_xact_id<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> xid_a<span class="token punctuation">;</span>
+</code></pre></div>
+<!-- result:a -->
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>xid_a
+-------
+   756
+(1 row)
+</code></pre></div>
+<p>回到观察会话，读取父表行：</p>
+<!-- verify:observe-a -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SELECT</span> id<span class="token punctuation">,</span> name<span class="token punctuation">,</span> xmax
+<span class="token keyword">FROM</span> mx_demo<span class="token punctuation">.</span>customers
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> id<span class="token punctuation">;</span>
+</code></pre></div>
+<!-- result:observe-a -->
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>id | name  | xmax
+----+-------+------
+  1 | Alice |  756
+  2 | Bob   |    0
+(2 rows)
+</code></pre></div>
+<p>Alice 行的 <code>xmax</code> 此时记录 A 的事务 ID。仅凭这个数字不能把它当成 MultiXact ID，下面要等 B 也取得锁，再查询成员。</p>
+<h3 id="b-插入第二笔订单，查询成员列表">B 插入第二笔订单，查询成员列表</h3>
+<p>在会话 B 执行，也暂不提交：</p>
+<!-- verify:b -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SET</span> application_name <span class="token operator">=</span> <span class="token string">'mx_demo_B'</span><span class="token punctuation">;</span>
+<span class="token keyword">BEGIN</span><span class="token punctuation">;</span>
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> mx_demo<span class="token punctuation">.</span>orders <span class="token keyword">VALUES</span> <span class="token punctuation">(</span><span class="token number">101</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">200.00</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">SELECT</span> pg_current_xact_id<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> xid_b<span class="token punctuation">;</span>
+</code></pre></div>
+<!-- result:b -->
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>xid_b
+-------
+   757
+(1 row)
+</code></pre></div>
+<p>这条插入可以完成，因为 A、B 在父表行上的 <code>KEY SHARE</code> 锁相互兼容。</p>
+<p>在观察会话执行：</p>
+<!-- verify:observe-ab -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SELECT</span> id<span class="token punctuation">,</span> name<span class="token punctuation">,</span> xmax
+<span class="token keyword">FROM</span> mx_demo<span class="token punctuation">.</span>customers
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> id<span class="token punctuation">;</span>
+
+<span class="token keyword">SELECT</span> xmax::<span class="token keyword">text</span> <span class="token keyword">AS</span> mx_ab
+<span class="token keyword">FROM</span> mx_demo<span class="token punctuation">.</span>customers
+<span class="token keyword">WHERE</span> id <span class="token operator">=</span> <span class="token number">1</span>
+\gset
+
+<span class="token keyword">SELECT</span> xid<span class="token punctuation">,</span> <span class="token keyword">mode</span>
+<span class="token keyword">FROM</span> pg_get_multixact_members<span class="token punctuation">(</span>:<span class="token string">'mx_ab'</span>::xid<span class="token punctuation">)</span>
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> xid::<span class="token keyword">text</span>::<span class="token keyword">bigint</span><span class="token punctuation">;</span>
+</code></pre></div>
+<!-- result:observe-ab -->
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>id | name  | xmax
+----+-------+------
+  1 | Alice |    1
+  2 | Bob   |    0
+(2 rows)
+
+ xid | mode
+-----+-------
+ 756 | keysh
+ 757 | keysh
+(2 rows)
+</code></pre></div>
+<p>Alice 的 <code>xmax</code> 现在是 MultiXact ID 1，它的两个成员分别对应 A、B。Bob 的记录没有变化。</p>
+<p><code>\gset</code> 把这次读到的编号存入观察会话的 <code>mx_ab</code> 变量，后续可以再次查询同一份记录。<code>keysh</code> 是函数返回的锁模式名称，对应 <code>FOR KEY SHARE</code>。事务 ID 和 MultiXact ID 是两套编号；这里根据前面的操作过程确认 <code>xmax</code> 的含义，而非比较数字大小。</p>
+<h3 id="b-提交，c-再插入一笔订单">B 提交，C 再插入一笔订单</h3>
+<p>先在会话 B 执行：</p>
+<!-- verify:b-commit -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">COMMIT</span><span class="token punctuation">;</span>
+</code></pre></div>
+<p>让 A 继续保持打开，再在会话 C 执行：</p>
+<!-- verify:c -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SET</span> application_name <span class="token operator">=</span> <span class="token string">'mx_demo_C'</span><span class="token punctuation">;</span>
+<span class="token keyword">BEGIN</span><span class="token punctuation">;</span>
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> mx_demo<span class="token punctuation">.</span>orders <span class="token keyword">VALUES</span> <span class="token punctuation">(</span><span class="token number">102</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">300.00</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">SELECT</span> pg_current_xact_id<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> xid_c<span class="token punctuation">;</span>
+</code></pre></div>
+<!-- result:c -->
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>xid_c
+-------
+   758
+(1 row)
+</code></pre></div>
+<p>回到同一个观察会话，同时查看当前编号和之前保存的编号：</p>
+<!-- verify:observe-ac -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SELECT</span> c<span class="token punctuation">.</span>id<span class="token punctuation">,</span> c<span class="token punctuation">.</span>xmax<span class="token punctuation">,</span> m<span class="token punctuation">.</span>xid<span class="token punctuation">,</span> m<span class="token punctuation">.</span><span class="token keyword">mode</span>
+<span class="token keyword">FROM</span> mx_demo<span class="token punctuation">.</span>customers <span class="token keyword">AS</span> c
+<span class="token keyword">CROSS</span> <span class="token keyword">JOIN</span> LATERAL pg_get_multixact_members<span class="token punctuation">(</span>c<span class="token punctuation">.</span>xmax<span class="token punctuation">)</span> <span class="token keyword">AS</span> m
+<span class="token keyword">WHERE</span> c<span class="token punctuation">.</span>id <span class="token operator">=</span> <span class="token number">1</span>
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> m<span class="token punctuation">.</span>xid::<span class="token keyword">text</span>::<span class="token keyword">bigint</span><span class="token punctuation">;</span>
+
+<span class="token keyword">SELECT</span> xid<span class="token punctuation">,</span> <span class="token keyword">mode</span>
+<span class="token keyword">FROM</span> pg_get_multixact_members<span class="token punctuation">(</span>:<span class="token string">'mx_ab'</span>::xid<span class="token punctuation">)</span>
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> xid::<span class="token keyword">text</span>::<span class="token keyword">bigint</span><span class="token punctuation">;</span>
+</code></pre></div>
+<!-- result:observe-ac -->
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>id | xmax | xid | mode
+----+------+-----+-------
+  1 |    2 | 756 | keysh
+  1 |    2 | 758 | keysh
+(2 rows)
+
+ xid | mode
+-----+-------
+ 756 | keysh
+ 757 | keysh
+(2 rows)
+</code></pre></div>
+<p>当前编号已经变成 2，成员是 A、C；之前保存的编号 1 仍然对应 A、B。旧列表没有被原地改写。这里也能看到，函数返回的是记录中的成员，并不自动过滤已经结束的事务；B 出现在旧列表中，不代表它还在持锁。</p>
+<p>第一条查询读取 Alice 行当前的成员，第二条读取 A、B 同时持锁时的记录。这里只对已确认使用 MultiXact 的 Alice 行调用函数，不把 Bob 的 <code>xmax = 0</code> 或普通事务 ID 传进去。</p>
+<h3 id="提交并核对数据">提交并核对数据</h3>
+<p>在会话 C、A 中分别执行一次：</p>
+<!-- verify:finish -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">COMMIT</span><span class="token punctuation">;</span>
+</code></pre></div>
+<p>随后在观察会话执行：</p>
+<!-- verify:final -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SELECT</span> id<span class="token punctuation">,</span> customer_id<span class="token punctuation">,</span> amount
+<span class="token keyword">FROM</span> mx_demo<span class="token punctuation">.</span>orders
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> id<span class="token punctuation">;</span>
+
+<span class="token keyword">SELECT</span> id<span class="token punctuation">,</span> name<span class="token punctuation">,</span> xmax
+<span class="token keyword">FROM</span> mx_demo<span class="token punctuation">.</span>customers
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> id<span class="token punctuation">;</span>
+</code></pre></div>
+<!-- result:final -->
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>id  | customer_id | amount
+-----+-------------+--------
+ 100 |           1 | 100.00
+ 101 |           1 | 200.00
+ 102 |           1 | 300.00
+(3 rows)
+
+ id | name  | xmax
+----+-------+------
+  1 | Alice |    2
+  2 | Bob   |    0
+(2 rows)
+</code></pre></div>
+<p>三笔订单都已提交，但 Alice 行的 <code>xmax</code> 仍然是 2。事务结束释放了锁，不要求立即改写每个曾经加锁的行头部。后续访问会结合事务状态判断这些成员是否仍有效；不能单凭非零 <code>xmax</code> 判断一行还被锁住。</p>
+<p>这个例子用于观察兼容行锁和成员集合的变化，不需要制造大量负载。大工作集下的 SLRU 读取和内部锁竞争，还要结合后面的监控方法判断。</p>
+<p>完成后，确认 A、B、C 都已经提交或回滚，再在观察会话删除本例对象：</p>
+<!-- verify:cleanup -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">DROP</span> <span class="token keyword">SCHEMA</span> mx_demo <span class="token keyword">CASCADE</span><span class="token punctuation">;</span>
+</code></pre></div>
+<h2 id="扩大缓存，还会改变内部锁的竞争">扩大缓存，还会改变内部锁的竞争</h2>
+<p>读取缓存中的 MultiXact 页面，也需要保护缓存自身的并发访问。这一层使用的是 PostgreSQL 内部轻量级锁，与前面客户行上的业务行锁不同。</p>
+<p>从 PostgreSQL 17 开始，SLRU 缓存以每 16 页为一组划分为多个 bank，各组有自己的锁。页面按照页号对 bank 数量取模，分配到对应组；MultiXact 的相关读取路径会取得该组的排他锁。</p>
+<p>默认的 16 页 <code>offsets</code> 缓存只有一个 bank。增大页数后，既能容纳更多页面，也会增加 bank 数量，让落在不同组的访问有机会并发进行。</p>
+<p>这不意味着每个请求都能获得独立的锁。同一页面仍然落在同一组，访问还涉及其他共享状态。缓存增大能改善哪一部分，要根据实际等待来判断。</p>
+<p>Pettus 在原文中用一个长期未提交、覆盖大量父表行的事务，叠加多个客户端随机插入子表的负载，对比了默认与扩大后的缓存。扩大后，SLRU 读取次数下降，插入吞吐也有改善。这组结果与上述访问路径相符；本文的小实验则用于观察成员变化，不承担吞吐测试的作用。</p>
+<h2 id="怎样判断自己的系统是否遇到了这个问题？">怎样判断自己的系统是否遇到了这个问题？</h2>
+<p>可以从 <code>pg_stat_slru</code> 看起。下面的查询适用于 PostgreSQL 17、18 的名称：</p>
+<!-- verify:slru -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SELECT</span> name<span class="token punctuation">,</span> blks_hit<span class="token punctuation">,</span> blks_read<span class="token punctuation">,</span> blks_written<span class="token punctuation">,</span> stats_reset
+<span class="token keyword">FROM</span> pg_stat_slru
+<span class="token keyword">WHERE</span> name <span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token string">'multixact_offset'</span><span class="token punctuation">,</span> <span class="token string">'multixact_member'</span><span class="token punctuation">)</span>
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> name<span class="token punctuation">;</span>
+</code></pre></div>
+<p>这些是实例级累计计数。应该在写入变慢的时间段采样，比较两次之间的增量，同时确认 <code>stats_reset</code> 没有变化。在自动提交模式下分开执行两次查询即可；不要把监控采样长期放在同一个事务里，以免读到缓存的统计快照。</p>
+<p><code>blks_read</code> 增长表示需要从 SLRU 文件读取页面，不能直接换算成物理磁盘读取次数：文件可能已经在操作系统页缓存里。即便如此，额外的读取路径和并发协调仍有成本。冷启动时少量读取很正常，单次看到非零值不足以判断缓存偏小。</p>
+<p>如果写入变慢时这两行的读取增量明显增大，再结合 <code>pg_stat_activity</code> 观察 <code>MultiXactOffsetSLRU</code>、<code>MultiXactMemberSLRU</code> 等等待，以及事务开始时间：</p>
+<!-- verify:activity -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SELECT</span> pid<span class="token punctuation">,</span>
+       <span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> xact_start <span class="token keyword">AS</span> xact_age<span class="token punctuation">,</span>
+       state<span class="token punctuation">,</span>
+       wait_event_type<span class="token punctuation">,</span>
+       wait_event<span class="token punctuation">,</span>
+       query
+<span class="token keyword">FROM</span> pg_stat_activity
+<span class="token keyword">WHERE</span> backend_type <span class="token operator">=</span> <span class="token string">'client backend'</span>
+  <span class="token operator">AND</span> pid <span class="token operator">&lt;></span> pg_backend_pid<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token operator">AND</span> xact_start <span class="token operator">IS</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span>
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> xact_start<span class="token punctuation">;</span>
+</code></pre></div>
+<p>这条查询帮助定位长时间打开的客户端事务。查看其他用户会话的完整信息，需要相应的监控权限，例如 <code>pg_read_all_stats</code>。</p>
+<p><code>query</code> 显示的当前或最近一条语句，未必是事务前面取得行锁的那条 SQL，还需要结合应用日志、批处理任务及事务边界确认。内部等待出现得很短，单次采样也可能错过，可以在问题持续期间多次观察。</p>
+<p>如果 SLRU 读取基本不增长，相关等待也没有集中出现，就没有充分依据把这两个参数当成当前瓶颈。外键查询是否有效利用索引、是否存在冲突行锁，仍然值得分别检查。</p>
+<h2 id="处理时，把事务模式和缓存一起考虑">处理时，把事务模式和缓存一起考虑</h2>
+<p>对于覆盖大量父表行的批量写入，值得优先评估能否拆成较小的提交批次。事务更早结束，可以更早释放父表行锁，让其他事务不必持续处理同一批仍有效的锁成员。</p>
+<p>拆分会改变原子性、失败重试和业务可见性。业务确实需要整体提交时，就要在批处理时间、并发程度和缓存容量之间选择，不能只为了缩短事务破坏原有一致性要求。</p>
+<p>有了 SLRU 读取和等待的证据后，再评估 <code>multixact_offset_buffers</code>、<code>multixact_member_buffers</code>。这两个参数需要在服务器启动时生效，页数必须是 16 的倍数；修改前应核对内存预算并安排重启窗口。</p>
+<p>容量选择要看问题时间段内活跃访问的页面范围、MultiXact 产生速度和成员数量。扩大后的对照也应保持相近负载，比较 SLRU 读取增量、内部等待、请求延迟和吞吐，不能只盯缓存命中率。</p>
+<p>升级 PostgreSQL 19 时，还需要重新看 <code>offsets</code> 的容量。19 将成员位置的偏移值从 32 位扩展到 64 位；按 8 KB 页面计算，每页可容纳的偏移项由 2,048 个降为 1,024 个。同样的缓存页数，能覆盖的偏移项减少了一半。</p>
+<p>这一变化值得已有调优配置的系统在升级测试中重点检查，但不必据此把所有实例的参数机械翻倍。成员页布局没有同样的变化，而 MultiXact ID 本身也仍是 32 位，扩展的是成员偏移值。</p>
+<p>外键写入变慢时，除了检查索引是否找得快，还可以继续追问：父表行上的锁保持了多久，其他事务正在反复访问哪些锁记录？把这两件事查清楚，才能判断该调整批处理事务、缓存，还是继续寻找别处的瓶颈。</p>
+<h2 id="延伸阅读">延伸阅读</h2>
+<ul>
+<li><a href="/articles/104/">SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争</a></li>
+<li><a href="/articles/102/">Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢</a></li>
+</ul>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li>原文：Christophe Pettus，<a href="https://thebuild.com/blog/all-your-gucs-in-a-row-multixact_member_buffers-and-multixact_offset_buffers/">All Your GUCs in a Row: multixact_member_buffers and multixact_offset_buffers</a>，2026-10-04。</li>
+<li>行锁与外键校验：<a href="https://www.postgresql.org/docs/18/explicit-locking.html#LOCKING-ROWS">Explicit Locking</a>、<a href="https://github.com/postgres/postgres/blob/REL_18_STABLE/src/backend/utils/adt/ri_triggers.c">ri_triggers.c</a>。</li>
+<li>缓存参数与版本变化：<a href="https://www.postgresql.org/docs/18/runtime-config-resource.html">Resource Consumption</a>、<a href="https://www.postgresql.org/docs/17/release-17.html">PostgreSQL 17 Release Notes</a>。</li>
+<li>监控与实验函数：<a href="https://www.postgresql.org/docs/18/monitoring-stats.html">The Cumulative Statistics System</a>、<a href="https://www.postgresql.org/docs/18/functions-info.html">System Information Functions</a>。</li>
+<li>psql 变量与命令：<a href="https://www.postgresql.org/docs/18/app-psql.html">psql</a>。</li>
+<li>MultiXact 与 SLRU 实现：<a href="https://github.com/postgres/postgres/blob/REL_18_STABLE/src/backend/access/transam/multixact.c">multixact.c</a>、<a href="https://github.com/postgres/postgres/blob/REL_18_STABLE/src/backend/access/transam/slru.c">slru.c</a>。</li>
+<li>PostgreSQL 19：<a href="https://github.com/postgres/postgres/commit/bd8d9c9bd">Widen MultiXactOffset to 64 bits</a>。</li>
+</ul>
+<footer class="article-footer"><p class="article-topic-label">所属专题：<a href="/#/docs/topics?id=topic-locks">锁、事务与在线变更</a></p><div class="article-neighbors"><a rel="prev" href="/articles/104/"><small>同专题上一篇</small><strong>SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争</strong></a><span></span></div><h2>继续阅读</h2><ul><li><a href="/articles/106/">PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化</a></li><li><a href="/articles/104/">SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争</a></li><li><a href="/articles/101/">PostgreSQL 性能排查：规划开销、分区锁与表膨胀</a></li></ul><div class="article-source-links"><a href="https://github.com/xiongcccc/postgres-howto/blob/master/docs/107.md" target="_blank" rel="noopener">查看源文件</a><a href="https://github.com/xiongcccc/postgres-howto/issues/new?title=%E6%96%87%E7%AB%A0%20%23107%EF%BC%9A%E5%A4%96%E9%94%AE%E5%86%99%E5%85%A5%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%8F%98%E6%85%A2%EF%BC%9A%E7%90%86%E8%A7%A3%20PostgreSQL%20%E7%9A%84%20MultiXact%20%E4%B8%8E%E9%95%BF%E4%BA%8B%E5%8A%A1" target="_blank" rel="noopener">反馈与纠错</a></div></footer><section id="gitalk-container" class="article-discussion"><h2>讨论与补充</h2><a target="_blank" rel="noopener" href="https://github.com/xiongcccc/gitalk-comment/issues?q=is%3Aissue%20%22%2Fdocs%2F107%22">查看与参与 GitHub 讨论</a></section></article></main>
+  <footer class="site-footer"><div><a href="/articles/">文章目录</a><a href="/#/docs/about">关于项目</a><a href="https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos">上游来源</a><a href="https://xiongcc.cn/">xiongcc</a></div><div class="js-only"><button type="button" data-dialog="communityModal">读者交流</button><button type="button" data-dialog="imageModal">支持作者</button><span class="site-stats"><span id="busuanzi_container_site_pv">访问 <strong id="busuanzi_value_site_pv">--</strong> 次</span><span id="busuanzi_container_site_uv">访客 <strong id="busuanzi_value_site_uv">--</strong> 人</span></span></div></footer>
+  <dialog id="imageModal" class="support-modal" aria-labelledby="support-title"><div class="dialog-heading"><h2 id="support-title">支持作者</h2><button class="icon-button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>感谢支持 PostgreSQL Howto 的长期维护。</p><img data-src="/images/wechat_pay.png" width="280" height="280" alt="微信赞赏码"></dialog>
+  <dialog id="communityModal" class="support-modal" aria-labelledby="community-title"><div class="dialog-heading"><h2 id="community-title">读者交流群</h2><button class="icon-button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>二维码若已过期，可通过公众号 PostgreSQL 学徒或邮件联系。</p><img data-src="/images/wechatgroup.jpeg" width="280" height="427" alt="PostgreSQL 学徒读者交流群二维码"></dialog>
+  <script src="/scripts/catalog-data.js?v=beaba606436c9ec0" defer></script>
+<script src="/scripts/article-view.js?v=926830a13df34c2c" defer></script>
+<script src="/scripts/site.js?v=f2e6d95ee157b4fe" defer></script>
+<script src="/scripts/diagrams.js?v=45d556fe0c9de5ef" defer></script>
+<script src="/scripts/reading.js?v=abf3dfc7db08ddc8" defer></script>
+</body>
+</html>
