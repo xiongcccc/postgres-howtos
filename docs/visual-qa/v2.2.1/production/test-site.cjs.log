@@ -1,0 +1,6 @@
+PASS: root/home, generated counts, dates, all problem/topic/path entry links
+PASS: all numbered routes, Chinese headings, attribution, primary categories and diagrams
+PASS: normalized highlights, excerpts, keyboard navigation, pagination, filters and history restoration
+PASS: TOC offsets, copy fidelity, font settings and recoverable 404
+PASS: six viewport widths, both themes, wide SQL/table local scrolling and accessible drawer
+PASS: native dialogs, global search shortcut, index failure fallback/retry; screenshots and measured local metrics saved

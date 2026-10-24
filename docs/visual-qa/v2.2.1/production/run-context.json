@@ -1,0 +1,73 @@
+{
+  "recordedAt": "2026-10-24T12:12:01.404Z",
+  "releaseCommit": "a62d965f1fa23002256bfac1fa1f576adc047f67",
+  "environment": {
+    "HOWTO_URL": "https://postgres-howto.cn/",
+    "PLAYWRIGHT_PACKAGE": "/Users/xiongcancan/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright",
+    "CHROME_PATH": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+  },
+  "browser": "155.0.8059.86",
+  "suites": [
+    {
+      "script": "test-v2.2-final.cjs",
+      "status": 0,
+      "seconds": 295.189
+    },
+    {
+      "script": "test-v2.2.1.cjs",
+      "status": 0,
+      "seconds": 42.978
+    },
+    {
+      "script": "test-v2.1.cjs",
+      "status": 0,
+      "seconds": 68.878
+    },
+    {
+      "script": "test-v2.2-touch.cjs",
+      "status": 0,
+      "seconds": 12.701
+    },
+    {
+      "script": "test-anchor-stability.cjs",
+      "status": 0,
+      "seconds": 47.033
+    },
+    {
+      "script": "test-site.cjs",
+      "status": 0,
+      "seconds": 43.288
+    }
+  ],
+  "files": [
+    {
+      "file": "version.json",
+      "sha256": "f85c89a501def8498df9e4137382797b87854e5b7765e96807861da41014d826"
+    },
+    {
+      "file": "matrix.json",
+      "sha256": "2457349baf53a9da1f27f7845b8b61ccecfa4b6492a6784f476e01842e45e7ed"
+    },
+    {
+      "file": "reading.json",
+      "sha256": "63562b0a361ab6b8fc680bfcdfc7dd2d12e3da8a872a08bea50d03ee7040bfbe"
+    },
+    {
+      "file": "search-static-metrics.json",
+      "sha256": "33491f9bd81250e47327d6a34326fa3ee816ea570327fbbdd3f8d78283fb6430"
+    },
+    {
+      "file": "touch.json",
+      "sha256": "46f0eb75402e5f0f6f9146a12131fa36fe9cae98c495e16cd4ad2bc8b5faa316"
+    },
+    {
+      "file": "anchor-metrics.json",
+      "sha256": "5b138929c96c6a9e76cb8936672aa8164cffe601f9fbf3ddc8ef695eee2d1c16"
+    },
+    {
+      "file": "legacy-metrics.json",
+      "sha256": "fa7d7cd20222784c78a2ae962acc6cb538a2ca106d28d6a146dd98323a9e888d"
+    }
+  ],
+  "note": "The original test-site metrics have no base field; execution environment is recorded here without altering the raw measurements."
+}

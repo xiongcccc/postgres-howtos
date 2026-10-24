@@ -1,0 +1,59 @@
+{
+  "base": "https://postgres-howto.cn/",
+  "commit": "a62d965f1fa23002256bfac1fa1f576adc047f67",
+  "attempts": [
+    {
+      "at": "2026-10-24T12:01:12.470Z",
+      "files": [
+        {
+          "file": "index.html",
+          "status": 200,
+          "sha256": "6c465a60475bb5cddfebd4a1b9d026cdc2856474f25dc2bf7e4d6f90542d90ee",
+          "matchesLocal": true,
+          "etag": "W/\"6adc9e00-1d75\"",
+          "lastModified": "Sat, 24 Oct 2026 12:01:04 GMT"
+        },
+        {
+          "file": "scripts/site.js",
+          "status": 200,
+          "sha256": "77f25db896d7574e72c12a2d63bcaa3a9450a246ff8276a0aaf8ca2c110c45de",
+          "matchesLocal": true,
+          "etag": "W/\"6adc9e00-349f\"",
+          "lastModified": "Sat, 24 Oct 2026 12:01:04 GMT"
+        },
+        {
+          "file": "styles/custom.css",
+          "status": 200,
+          "sha256": "0c60c003b9cbb000b7ed117593908b98d086241970abce16bad10a149e378a15",
+          "matchesLocal": true,
+          "etag": "W/\"6adc9e00-4c64\"",
+          "lastModified": "Sat, 24 Oct 2026 12:01:04 GMT"
+        },
+        {
+          "file": "articles/42/index.html",
+          "status": 200,
+          "sha256": "c0e465458e88dec441fbbe635c2beb94ea2bfde6efcb26b3218a8b55e81e4e22",
+          "matchesLocal": true,
+          "etag": "W/\"6adc9e00-d224\"",
+          "lastModified": "Sat, 24 Oct 2026 12:01:04 GMT"
+        },
+        {
+          "file": "images/icons/zoom-in.svg",
+          "status": 200,
+          "sha256": "8759f0ae4e5fb8624e6f4dc77ba1f7130553ec695ad064b00feb1b6e5a1991bc",
+          "matchesLocal": true,
+          "etag": "W/\"6adc9e00-165\"",
+          "lastModified": "Sat, 24 Oct 2026 12:01:04 GMT"
+        },
+        {
+          "file": "images/icons/zoom-out.svg",
+          "status": 200,
+          "sha256": "ad6548369e87daf933b4c65edd42c68eb15f6f21daf2ff93fa5d0b3ddc85db8d",
+          "matchesLocal": true,
+          "etag": "W/\"6adc9e00-13b\"",
+          "lastModified": "Sat, 24 Oct 2026 12:01:04 GMT"
+        }
+      ]
+    }
+  ]
+}

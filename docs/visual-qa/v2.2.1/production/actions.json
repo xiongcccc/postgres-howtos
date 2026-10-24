@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-10-24T12:01:52.878Z",
+  "status": 200,
+  "runs": [
+    {
+      "id": 40092159584,
+      "name": "Validate article catalog",
+      "status": "completed",
+      "conclusion": "success",
+      "sha": "a62d965f1fa23002256bfac1fa1f576adc047f67",
+      "url": "https://github.com/xiongcccc/postgres-howtos/actions/runs/40092159584"
+    },
+    {
+      "id": 40092159693,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "sha": "a62d965f1fa23002256bfac1fa1f576adc047f67",
+      "url": "https://github.com/xiongcccc/postgres-howtos/actions/runs/40092159693"
+    },
+    {
+      "id": 40075088631,
+      "name": "Validate article catalog",
+      "status": "completed",
+      "conclusion": "success",
+      "sha": "c9e4e9c2b5e2a1b758d7745dedb6711f13f35f8b",
+      "url": "https://github.com/xiongcccc/postgres-howtos/actions/runs/40075088631"
+    },
+    {
+      "id": 40075088691,
+      "name": "pages build and deployment",
+      "status": "completed",
+      "conclusion": "success",
+      "sha": "c9e4e9c2b5e2a1b758d7745dedb6711f13f35f8b",
+      "url": "https://github.com/xiongcccc/postgres-howtos/actions/runs/40075088691"
+    }
+  ]
+}
