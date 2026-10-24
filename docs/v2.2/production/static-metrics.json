@@ -1,0 +1,397 @@
+{
+  "base": "https://postgres-howto.cn/",
+  "articles": 109,
+  "viewports": [
+    1440,
+    1280,
+    1024,
+    768,
+    390,
+    360
+  ],
+  "staticCodeBlocks": 650,
+  "search": [
+    {
+      "query": "work_mem",
+      "id": 92,
+      "milliseconds": 132
+    },
+    {
+      "query": "pg_stat_statements",
+      "id": 5,
+      "milliseconds": 148
+    },
+    {
+      "query": "EXPLAIN BUFFERS",
+      "id": 1,
+      "milliseconds": 140
+    },
+    {
+      "query": "autovacuum",
+      "id": 102,
+      "milliseconds": 143
+    },
+    {
+      "query": "xmin",
+      "id": 45,
+      "milliseconds": 150
+    },
+    {
+      "query": "replication lag",
+      "id": 93,
+      "milliseconds": 135
+    },
+    {
+      "query": "锁等待",
+      "id": 42,
+      "milliseconds": 147
+    },
+    {
+      "query": "索引膨胀",
+      "id": 46,
+      "milliseconds": 146
+    },
+    {
+      "query": "WAL",
+      "id": 31,
+      "milliseconds": 151
+    }
+  ],
+  "lab": [
+    {
+      "path": "/",
+      "width": 1440,
+      "lcp": 784,
+      "cls": 0,
+      "resources": [
+        {
+          "path": "/styles/custom.css",
+          "bytes": 4681
+        },
+        {
+          "path": "/styles/reading.css",
+          "bytes": 2936
+        },
+        {
+          "path": "/images/brand/symbol.svg",
+          "bytes": 134
+        },
+        {
+          "path": "/scripts/catalog-data.js",
+          "bytes": 13147
+        },
+        {
+          "path": "/scripts/search-core.js",
+          "bytes": 1137
+        },
+        {
+          "path": "/scripts/article-view.js",
+          "bytes": 2032
+        },
+        {
+          "path": "/images/brand/symbol-dark.svg",
+          "bytes": 134
+        },
+        {
+          "path": "/scripts/diagrams.js",
+          "bytes": 917
+        },
+        {
+          "path": "/scripts/comments.js",
+          "bytes": 611
+        },
+        {
+          "path": "/scripts/finder.js",
+          "bytes": 3279
+        },
+        {
+          "path": "/vendor/docsify.min.js",
+          "bytes": 48646
+        },
+        {
+          "path": "/vendor/prism-sql.min.js",
+          "bytes": 1811
+        },
+        {
+          "path": "/scripts/site.js",
+          "bytes": 3568
+        },
+        {
+          "path": "/scripts/reading.js",
+          "bytes": 5050
+        },
+        {
+          "path": "/vendor/prism-bash.min.js",
+          "bytes": 2951
+        },
+        {
+          "path": "/vendor/prism-java.min.js",
+          "bytes": 1216
+        },
+        {
+          "path": "/vendor/prism-python.min.js",
+          "bytes": 1078
+        },
+        {
+          "path": "/vendor/prism-json.min.js",
+          "bytes": 271
+        },
+        {
+          "path": "/vendor/prism-ini.min.js",
+          "bytes": 271
+        },
+        {
+          "path": "/vendor/prism-yaml.min.js",
+          "bytes": 859
+        },
+        {
+          "path": "/vendor/prism-c.min.js",
+          "bytes": 959
+        },
+        {
+          "path": "/images/icons/search.svg",
+          "bytes": 195
+        },
+        {
+          "path": "/images/icons/monitor.svg",
+          "bytes": 210
+        },
+        {
+          "path": "/docs/home.md",
+          "bytes": 2832
+        },
+        {
+          "path": "/images/brand/favicon.svg",
+          "bytes": 208
+        },
+        {
+          "path": "/_sidebar.md",
+          "bytes": 3171
+        },
+        {
+          "path": "/images/icons/sliders-horizontal.svg",
+          "bytes": 244
+        },
+        {
+          "path": "/images/brand/favicon.svg",
+          "bytes": 208
+        }
+      ],
+      "conditions": "Local Chrome, height 1000px, no throttling, independent profile, 1s after content, analytics blocked; not field CWV"
+    },
+    {
+      "path": "/",
+      "width": 390,
+      "lcp": 804,
+      "cls": 0,
+      "resources": [
+        {
+          "path": "/styles/custom.css",
+          "bytes": 4681
+        },
+        {
+          "path": "/styles/reading.css",
+          "bytes": 2936
+        },
+        {
+          "path": "/images/brand/symbol-dark.svg",
+          "bytes": 134
+        },
+        {
+          "path": "/images/brand/symbol.svg",
+          "bytes": 134
+        },
+        {
+          "path": "/scripts/catalog-data.js",
+          "bytes": 13147
+        },
+        {
+          "path": "/scripts/search-core.js",
+          "bytes": 1137
+        },
+        {
+          "path": "/scripts/article-view.js",
+          "bytes": 2032
+        },
+        {
+          "path": "/scripts/site.js",
+          "bytes": 3568
+        },
+        {
+          "path": "/scripts/finder.js",
+          "bytes": 3279
+        },
+        {
+          "path": "/scripts/reading.js",
+          "bytes": 5050
+        },
+        {
+          "path": "/scripts/diagrams.js",
+          "bytes": 917
+        },
+        {
+          "path": "/scripts/comments.js",
+          "bytes": 611
+        },
+        {
+          "path": "/vendor/docsify.min.js",
+          "bytes": 48646
+        },
+        {
+          "path": "/vendor/prism-bash.min.js",
+          "bytes": 2951
+        },
+        {
+          "path": "/vendor/prism-sql.min.js",
+          "bytes": 1811
+        },
+        {
+          "path": "/vendor/prism-python.min.js",
+          "bytes": 1078
+        },
+        {
+          "path": "/vendor/prism-c.min.js",
+          "bytes": 959
+        },
+        {
+          "path": "/vendor/prism-java.min.js",
+          "bytes": 1216
+        },
+        {
+          "path": "/vendor/prism-json.min.js",
+          "bytes": 271
+        },
+        {
+          "path": "/vendor/prism-yaml.min.js",
+          "bytes": 859
+        },
+        {
+          "path": "/vendor/prism-ini.min.js",
+          "bytes": 271
+        },
+        {
+          "path": "/images/icons/menu.svg",
+          "bytes": 193
+        },
+        {
+          "path": "/images/icons/search.svg",
+          "bytes": 195
+        },
+        {
+          "path": "/images/icons/monitor.svg",
+          "bytes": 210
+        },
+        {
+          "path": "/docs/home.md",
+          "bytes": 2832
+        },
+        {
+          "path": "/images/brand/favicon.svg",
+          "bytes": 208
+        },
+        {
+          "path": "/_sidebar.md",
+          "bytes": 3171
+        },
+        {
+          "path": "/images/icons/sliders-horizontal.svg",
+          "bytes": 244
+        },
+        {
+          "path": "/images/brand/favicon.svg",
+          "bytes": 208
+        }
+      ],
+      "conditions": "Local Chrome, height 1000px, no throttling, independent profile, 1s after content, analytics blocked; not field CWV"
+    },
+    {
+      "path": "/articles/105/",
+      "width": 1440,
+      "lcp": 544,
+      "cls": 0.010186048418209878,
+      "resources": [
+        {
+          "path": "/styles/custom.css",
+          "bytes": 4681
+        },
+        {
+          "path": "/styles/reading.css",
+          "bytes": 2936
+        },
+        {
+          "path": "/images/brand/symbol.svg",
+          "bytes": 134
+        },
+        {
+          "path": "/images/brand/symbol-dark.svg",
+          "bytes": 134
+        },
+        {
+          "path": "/scripts/catalog-data.js",
+          "bytes": 13147
+        },
+        {
+          "path": "/scripts/article-view.js",
+          "bytes": 2032
+        },
+        {
+          "path": "/scripts/site.js",
+          "bytes": 3568
+        },
+        {
+          "path": "/scripts/diagrams.js",
+          "bytes": 917
+        },
+        {
+          "path": "/scripts/reading.js",
+          "bytes": 5050
+        },
+        {
+          "path": "/images/icons/search.svg",
+          "bytes": 195
+        },
+        {
+          "path": "/images/icons/monitor.svg",
+          "bytes": 210
+        },
+        {
+          "path": "/images/icons/chevron-down.svg",
+          "bytes": 236
+        },
+        {
+          "path": "/images/icons/copy.svg",
+          "bytes": 226
+        },
+        {
+          "path": "/images/icons/arrow-left.svg",
+          "bytes": 188
+        },
+        {
+          "path": "/images/icons/arrow-right.svg",
+          "bytes": 185
+        },
+        {
+          "path": "/images/icons/sliders-horizontal.svg",
+          "bytes": 244
+        },
+        {
+          "path": "/vendor/mermaid.min.js",
+          "bytes": 1004284
+        },
+        {
+          "path": "/images/brand/favicon.svg",
+          "bytes": 208
+        }
+      ],
+      "conditions": "Local Chrome, height 1000px, no throttling, independent profile, 1s after content, analytics blocked; not field CWV"
+    }
+  ],
+  "communityModal": {
+    "width": 1050,
+    "height": 1602
+  },
+  "imageModal": {
+    "width": 828,
+    "height": 1124
+  }
+}

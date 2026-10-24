@@ -1,0 +1,68 @@
+{
+  "origin": "https://postgres-howto.cn/",
+  "conditions": "Independent Chrome; touch/mobile viewport emulation, not physical Safari",
+  "cases": [
+    {
+      "width": 390,
+      "deviceScaleFactor": 3,
+      "initialTheme": "light",
+      "homeBrand": {
+        "source": "./images/brand/symbol.svg?v=2e286b3c74e47be8",
+        "brandRight": 230.640625,
+        "toolsLeft": 290,
+        "top": 17.5,
+        "bottom": 45.5
+      },
+      "homeSearchArticleAndTouchNavigation": true,
+      "staticArticle": true,
+      "themeSwitchAndReload": true
+    },
+    {
+      "width": 390,
+      "deviceScaleFactor": 3,
+      "initialTheme": "dark",
+      "homeBrand": {
+        "source": "./images/brand/symbol-dark.svg?v=ae07e0e7f1880588",
+        "brandRight": 230.640625,
+        "toolsLeft": 290,
+        "top": 17.5,
+        "bottom": 45.5
+      },
+      "homeSearchArticleAndTouchNavigation": true,
+      "staticArticle": true,
+      "themeSwitchAndReload": true
+    },
+    {
+      "width": 360,
+      "deviceScaleFactor": 3,
+      "initialTheme": "light",
+      "homeBrand": {
+        "source": "./images/brand/symbol.svg?v=2e286b3c74e47be8",
+        "brandRight": 222.75,
+        "toolsLeft": 260,
+        "top": 17.5,
+        "bottom": 45.5
+      },
+      "homeSearchArticleAndTouchNavigation": true,
+      "staticArticle": true,
+      "themeSwitchAndReload": true
+    },
+    {
+      "width": 360,
+      "deviceScaleFactor": 3,
+      "initialTheme": "dark",
+      "homeBrand": {
+        "source": "./images/brand/symbol-dark.svg?v=ae07e0e7f1880588",
+        "brandRight": 222.75,
+        "toolsLeft": 260,
+        "top": 17.5,
+        "bottom": 45.5
+      },
+      "homeSearchArticleAndTouchNavigation": true,
+      "staticArticle": true,
+      "themeSwitchAndReload": true
+    }
+  ],
+  "browser": "155.0.8059.86",
+  "checkedAt": "2026-10-24T05:29:30.818Z"
+}
