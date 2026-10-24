@@ -1,0 +1,28 @@
+[
+  {
+    "width": 1440,
+    "inline": {
+      "naturalWidth": 1409,
+      "width": 839.96875
+    },
+    "preview": {
+      "naturalWidth": 1409,
+      "width": 1165.96875,
+      "height": 467.546875
+    },
+    "buttons": 1
+  },
+  {
+    "width": 390,
+    "inline": {
+      "naturalWidth": 1409,
+      "width": 349.984375
+    },
+    "preview": {
+      "naturalWidth": 1409,
+      "width": 323.984375,
+      "height": 129.921875
+    },
+    "buttons": 1
+  }
+]

@@ -1,0 +1,67 @@
+{
+  "base": "http://127.0.0.1:4176/",
+  "browser": "155.0.8059.86",
+  "method": "CDP touchStart/touchMove/touchEnd; mobile emulation, not physical Safari",
+  "cases": [
+    {
+      "width": 390,
+      "mode": "light",
+      "table": {
+        "scrollLeft": 210,
+        "clientWidth": 350,
+        "scrollWidth": 560
+      },
+      "code": {
+        "scrollLeft": 294,
+        "clientWidth": 348,
+        "scrollWidth": 830
+      },
+      "pageWidth": 390
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "table": {
+        "scrollLeft": 210,
+        "clientWidth": 350,
+        "scrollWidth": 560
+      },
+      "code": {
+        "scrollLeft": 428,
+        "clientWidth": 348,
+        "scrollWidth": 830
+      },
+      "pageWidth": 390
+    },
+    {
+      "width": 360,
+      "mode": "light",
+      "table": {
+        "scrollLeft": 240,
+        "clientWidth": 320,
+        "scrollWidth": 560
+      },
+      "code": {
+        "scrollLeft": 385,
+        "clientWidth": 318,
+        "scrollWidth": 830
+      },
+      "pageWidth": 360
+    },
+    {
+      "width": 360,
+      "mode": "dark",
+      "table": {
+        "scrollLeft": 240,
+        "clientWidth": 320,
+        "scrollWidth": 560
+      },
+      "code": {
+        "scrollLeft": 403,
+        "clientWidth": 318,
+        "scrollWidth": 830
+      },
+      "pageWidth": 360
+    }
+  ]
+}

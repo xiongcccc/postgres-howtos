@@ -144,12 +144,36 @@
     var viewer=document.getElementById('image-viewer');
     if(!viewer){
       viewer=document.createElement('dialog');viewer.id='image-viewer';viewer.className='image-viewer';viewer.setAttribute('aria-label','文章图片预览');
-      viewer.innerHTML='<button type="button" class="icon-button" data-close-dialog aria-label="关闭图片预览" title="关闭图片预览">'+icon('x')+'</button><img alt="">';
+      viewer.innerHTML='<div class="image-viewer-toolbar"><button type="button" class="icon-button" data-image-size aria-label="原始尺寸" title="原始尺寸" aria-pressed="false">'+icon('zoom-in')+'</button><button type="button" class="icon-button" data-close-dialog aria-label="关闭图片预览" title="关闭图片预览">'+icon('x')+'</button></div><div class="image-viewport" tabindex="0" role="region" aria-label="图片预览区域"><img alt=""></div>';
       document.body.append(viewer);
+      var viewport=viewer.querySelector('.image-viewport');
+      var preview=viewer.querySelector('img');
+      var toggle=viewer.querySelector('[data-image-size]');
+      function setSize(original){
+        viewer.dataset.original=String(original);
+        toggle.innerHTML=icon(original?'zoom-out':'zoom-in');
+        toggle.title=original?'适应窗口':'原始尺寸';
+        toggle.setAttribute('aria-label',toggle.title);
+        toggle.setAttribute('aria-pressed',String(original));
+        viewport.scrollTo(0,0);
+      }
+      function updateSize(){
+        if(!viewer.open)return;
+        viewer.style.setProperty('--image-width',preview.naturalWidth+'px');
+        toggle.disabled=!preview.naturalWidth||(preview.naturalWidth<=viewport.clientWidth-32&&preview.naturalHeight<=viewport.clientHeight-32);
+        if(toggle.disabled)setSize(false);
+      }
+      toggle.addEventListener('click',function(){setSize(viewer.dataset.original!=='true');});
+      preview.addEventListener('load',updateSize);
+      preview.addEventListener('error',function(){toggle.disabled=true;setSize(false);});
+      window.addEventListener('resize',updateSize);
+      viewer.resetImage=function(){setSize(false);toggle.disabled=true;};
+      viewer.updateImageSize=updateSize;
       viewer.addEventListener('close',function(){if(dialogFocus?.isConnected)dialogFocus.focus();});
       viewer.addEventListener('click',function(event){if(event.target===viewer){var r=viewer.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)viewer.close();}});
     }
-    dialogFocus=img;viewer.querySelector('img').src=img.currentSrc||img.src;viewer.querySelector('img').alt=img.alt;viewer.showModal();
+    dialogFocus=img;viewer.resetImage();viewer.querySelector('img').src=img.currentSrc||img.src;viewer.querySelector('img').alt=img.alt;viewer.showModal();
+    if(viewer.querySelector('img').complete)viewer.updateImageSize();
   }
   document.addEventListener('click',function(event){if(event.target.matches('img[data-zoomable]'))zoomImage(event.target);});
   document.addEventListener('keydown',function(event){if(event.target.matches('img[data-zoomable]')&&(event.key==='Enter'||event.key===' ')){event.preventDefault();zoomImage(event.target);}});

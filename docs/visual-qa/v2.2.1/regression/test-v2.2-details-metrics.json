@@ -1,0 +1,297 @@
+{
+  "browser": "155.0.8059.86",
+  "base": "http://127.0.0.1:4176/",
+  "fonts": [
+    {
+      "mode": "light",
+      "width": 1440,
+      "heading": {
+        "fonts": [
+          {
+            "familyName": ".SF NS",
+            "postScriptName": ".SFNS-Regular_wdth_opsz2A0000_GRAD_wght28A0000",
+            "isCustomFont": false,
+            "glyphCount": 16
+          }
+        ]
+      },
+      "chinese": {
+        "fonts": [
+          {
+            "familyName": "PingFang SC",
+            "postScriptName": "PingFangSC-Regular",
+            "isCustomFont": false,
+            "glyphCount": 15
+          },
+          {
+            "familyName": ".SF NS",
+            "postScriptName": ".SFNS-Regular",
+            "isCustomFont": false,
+            "glyphCount": 12
+          }
+        ]
+      }
+    },
+    {
+      "mode": "light",
+      "width": 1440,
+      "code": {
+        "fonts": [
+          {
+            "familyName": "Menlo",
+            "postScriptName": "Menlo-Regular",
+            "isCustomFont": false,
+            "glyphCount": 404
+          }
+        ]
+      }
+    },
+    {
+      "mode": "light",
+      "width": 390,
+      "heading": {
+        "fonts": [
+          {
+            "familyName": ".SF NS",
+            "postScriptName": ".SFNS-Regular_wdth_opsz200000_GRAD_wght28A0000",
+            "isCustomFont": false,
+            "glyphCount": 16
+          }
+        ]
+      },
+      "chinese": {
+        "fonts": [
+          {
+            "familyName": "PingFang SC",
+            "postScriptName": "PingFangSC-Regular",
+            "isCustomFont": false,
+            "glyphCount": 15
+          },
+          {
+            "familyName": ".SF NS",
+            "postScriptName": ".SFNS-Regular",
+            "isCustomFont": false,
+            "glyphCount": 12
+          }
+        ]
+      }
+    },
+    {
+      "mode": "light",
+      "width": 390,
+      "code": {
+        "fonts": [
+          {
+            "familyName": "Menlo",
+            "postScriptName": "Menlo-Regular",
+            "isCustomFont": false,
+            "glyphCount": 404
+          }
+        ]
+      }
+    },
+    {
+      "mode": "dark",
+      "width": 1440,
+      "heading": {
+        "fonts": [
+          {
+            "familyName": ".SF NS",
+            "postScriptName": ".SFNS-Regular_wdth_opsz2A0000_GRAD_wght28A0000",
+            "isCustomFont": false,
+            "glyphCount": 16
+          }
+        ]
+      },
+      "chinese": {
+        "fonts": [
+          {
+            "familyName": "PingFang SC",
+            "postScriptName": "PingFangSC-Regular",
+            "isCustomFont": false,
+            "glyphCount": 15
+          },
+          {
+            "familyName": ".SF NS",
+            "postScriptName": ".SFNS-Regular",
+            "isCustomFont": false,
+            "glyphCount": 12
+          }
+        ]
+      }
+    },
+    {
+      "mode": "dark",
+      "width": 1440,
+      "code": {
+        "fonts": [
+          {
+            "familyName": "Menlo",
+            "postScriptName": "Menlo-Regular",
+            "isCustomFont": false,
+            "glyphCount": 404
+          }
+        ]
+      }
+    },
+    {
+      "mode": "dark",
+      "width": 390,
+      "heading": {
+        "fonts": [
+          {
+            "familyName": ".SF NS",
+            "postScriptName": ".SFNS-Regular_wdth_opsz200000_GRAD_wght28A0000",
+            "isCustomFont": false,
+            "glyphCount": 16
+          }
+        ]
+      },
+      "chinese": {
+        "fonts": [
+          {
+            "familyName": "PingFang SC",
+            "postScriptName": "PingFangSC-Regular",
+            "isCustomFont": false,
+            "glyphCount": 15
+          },
+          {
+            "familyName": ".SF NS",
+            "postScriptName": ".SFNS-Regular",
+            "isCustomFont": false,
+            "glyphCount": 12
+          }
+        ]
+      }
+    },
+    {
+      "mode": "dark",
+      "width": 390,
+      "code": {
+        "fonts": [
+          {
+            "familyName": "Menlo",
+            "postScriptName": "Menlo-Regular",
+            "isCustomFont": false,
+            "glyphCount": 404
+          }
+        ]
+      }
+    }
+  ],
+  "images": [
+    {
+      "mode": "light",
+      "width": 1440,
+      "natural": [
+        1409,
+        565
+      ],
+      "display": [
+        839.96875,
+        336.828125
+      ],
+      "src": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/raw/main/files/0042_example_output.jpeg"
+    },
+    {
+      "mode": "light",
+      "width": 390,
+      "natural": [
+        1409,
+        565
+      ],
+      "display": [
+        349.984375,
+        140.34375
+      ],
+      "src": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/raw/main/files/0042_example_output.jpeg"
+    },
+    {
+      "mode": "dark",
+      "width": 1440,
+      "natural": [
+        1409,
+        565
+      ],
+      "display": [
+        839.96875,
+        336.828125
+      ],
+      "src": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/raw/main/files/0042_example_output.jpeg"
+    },
+    {
+      "mode": "dark",
+      "width": 390,
+      "natural": [
+        1409,
+        565
+      ],
+      "display": [
+        349.984375,
+        140.34375
+      ],
+      "src": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/raw/main/files/0042_example_output.jpeg"
+    }
+  ],
+  "navigation": [
+    {
+      "mode": "light",
+      "width": 1440,
+      "topicHover": {
+        "color": "rgb(34, 107, 112)",
+        "decoration": "underline"
+      }
+    },
+    {
+      "mode": "light",
+      "width": 1440,
+      "neighbor": "#/docs/106"
+    },
+    {
+      "mode": "light",
+      "width": 390,
+      "topicHover": {
+        "color": "rgb(34, 107, 112)",
+        "decoration": "underline"
+      }
+    },
+    {
+      "mode": "light",
+      "width": 390,
+      "neighbor": "#/docs/106"
+    },
+    {
+      "mode": "dark",
+      "width": 1440,
+      "topicHover": {
+        "color": "rgb(148, 208, 206)",
+        "decoration": "underline"
+      }
+    },
+    {
+      "mode": "dark",
+      "width": 1440,
+      "neighbor": "#/docs/106"
+    },
+    {
+      "mode": "dark",
+      "width": 390,
+      "topicHover": {
+        "color": "rgb(148, 208, 206)",
+        "decoration": "underline"
+      }
+    },
+    {
+      "mode": "dark",
+      "width": 390,
+      "neighbor": "#/docs/106"
+    }
+  ],
+  "seo": {
+    "sitemapUrls": 111,
+    "unique": 111,
+    "fragmentUrls": [],
+    "canonical": "https://postgres-howto.cn/articles/106/",
+    "missingStaticStatus": 404
+  }
+}
