@@ -1,0 +1,721 @@
+{
+  "checkedAt": "2026-10-24T04:51:12.333Z",
+  "origin": "https://postgres-howto.cn",
+  "contentCommit": "20eece60b0731786f8218e6acff048d82d17d476",
+  "method": "Sequential HTTPS GET without cache-busting; SHA-256 compared with local committed outputs",
+  "pages": [
+    {
+      "path": "/articles/",
+      "status": 200,
+      "sha256": "9ebb3cb5eba8d809d3d966dea2909955852dbc8ce5926b568ea6aa640f202c41",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/109/",
+      "status": 200,
+      "sha256": "d1eca98bb7cac87dd4cdd6bc633b652429718285c85ce15da070859313f5119f",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/108/",
+      "status": 200,
+      "sha256": "8450756e465057ec186f0dfbb6a1b5cc83c6d072fa4f5d9b3471857334775db4",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/107/",
+      "status": 200,
+      "sha256": "7630140221f89739f812897fc58db598c2c86079ce822284f98dee195334f54c",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/106/",
+      "status": 200,
+      "sha256": "a5d2b39738c5733e743292d5fabf695f999700f2b89349fa766ec0b25964ed6f",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/105/",
+      "status": 200,
+      "sha256": "2af54f18d666bb89edf07a2a783ca9e1ad0cf28e62777667d28410376be23d2e",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/104/",
+      "status": 200,
+      "sha256": "1e277d55591776731f592bf484309e9c1bf953755e5af670f577f301c0e7b4a2",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/103/",
+      "status": 200,
+      "sha256": "c9afd4582b81f07b4151fbc728508ff8a42b323832b3c7048e79706582a06ff6",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/102/",
+      "status": 200,
+      "sha256": "d82a0692f74f14f6c1e2d331b14f05bcdc406d506826be1e51c271a1acb1cd7d",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/101/",
+      "status": 200,
+      "sha256": "0041f5a413f03248578caae0695e19a69ebde6393e43400bcd28d1891e529eb5",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/1/",
+      "status": 200,
+      "sha256": "85b6809d34c6fbd9052548bb6a284eaa6743433c847d1cef46ea8361cd8fdb85",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/5/",
+      "status": 200,
+      "sha256": "3f0fde2cd7665d74597e3d0dafccbf9deb46e879ea0b70f7f58ad12f04ccca02",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/6/",
+      "status": 200,
+      "sha256": "69a2aa89349507deaeae394882c8613804eaeb767febe4168a693010be3225c1",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/7/",
+      "status": 200,
+      "sha256": "c3ef5ecdfe79b3759d1af861fac6ba336312bafcc25f399daf390f9f2cfdd603",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/10/",
+      "status": 200,
+      "sha256": "880bdc365f3283242a8ceb91f543ab5929e8ad33d4cbcf74edd34708eb3ab430",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/11/",
+      "status": 200,
+      "sha256": "d779e30102e74f90b8001e19d61f32ed0ea8c862d8a8429f170398df8ac910cd",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/12/",
+      "status": 200,
+      "sha256": "6884620b9adf3d90266beb428f0245ab68ef9cb1ae2c10a4369226e6cc33bd46",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/13/",
+      "status": 200,
+      "sha256": "b80a833400e6eb94296cfd869db913f42f700e6a7d18033734463853158a09fa",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/14/",
+      "status": 200,
+      "sha256": "ae45f80c8c65d7f4f41ce2e9205ed42eba5d678ac4cee0f0760712d28010d113",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/50/",
+      "status": 200,
+      "sha256": "abc1efd2125fc532a5aef83322d4be8dc256fb56177b195888b99bcdfaee4220",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/56/",
+      "status": 200,
+      "sha256": "6d415ae3e17b41f07f78cf53af641656c8b7c945e84c1538c9b1834dd20a1978",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/89/",
+      "status": 200,
+      "sha256": "c4d25ea26628ed644727c1c570c09f9ba943c0d4588c34ba899fce5548389951",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/92/",
+      "status": 200,
+      "sha256": "ad5988b9b85d711719a8309553a37faee2561ebee64d06fb957cc5797c40a980",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/94/",
+      "status": 200,
+      "sha256": "3d92accadf88dc5bf0369ea3eb05aaca53c66ac40e8c5c367dac870d22cb2b50",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/2/",
+      "status": 200,
+      "sha256": "eab7226ef456f8128291e2d95daf90f84f15ad5caa97e45a88f1b31f79a9dfe5",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/3/",
+      "status": 200,
+      "sha256": "27921dc17b4f2403f6df2c778d332be35d4b1715f94fa29659d89a1be80c7e72",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/8/",
+      "status": 200,
+      "sha256": "5504c8c27ded973674e0b12a67a8eb9407cd3493880e33c15bef902125070548",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/19/",
+      "status": 200,
+      "sha256": "41199794a6c4060e7d4ad14decb9390bc270751c1be8521cf258547a7c0532ac",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/20/",
+      "status": 200,
+      "sha256": "f2dde73c70c064b77d054d3c92150647f6ca6828ecda16e6c829a90158778692",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/21/",
+      "status": 200,
+      "sha256": "7c4c7ff031e33a2e828db1d5ae4f0bc9313a3b762c64161cac31ea44db9e668c",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/25/",
+      "status": 200,
+      "sha256": "9cc80c6c57254c7f1ce6bfb328c5512d0cf7945fbcfd3456f0134fecf4b82087",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/27/",
+      "status": 200,
+      "sha256": "eb4018255501ae1edd64c43a50f7631ff2b648a3a1603838e0f257373b026686",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/34/",
+      "status": 200,
+      "sha256": "671b56a832adc779afe1299c810c8e9a702e4b81b50470675e2e882d95da0eb3",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/47/",
+      "status": 200,
+      "sha256": "45caea043f7f52051abb1b581e841c09e0d47f639759395f01be4924e64ecf8b",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/49/",
+      "status": 200,
+      "sha256": "c1f15a002bbb3537af4399960f4e844b7764647b40fff8a9219dc99745a468d8",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/51/",
+      "status": 200,
+      "sha256": "fde495d21f154f7081ad32791de98851669416555671a1e6c3fc0be5f9851e78",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/58/",
+      "status": 200,
+      "sha256": "6859a90763b8eeca83a65ec7588c8a55d0471d5795df7beb70dbec52ec4b8fa0",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/59/",
+      "status": 200,
+      "sha256": "bf38de58067c4473f560a6d5a44608d977ddcf35b10164a9618c6752b144b97f",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/68/",
+      "status": 200,
+      "sha256": "a75237adab4013ac84c1a5047a7e3c90df1093ee7fdaff631d1e53a335181448",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/81/",
+      "status": 200,
+      "sha256": "edfb894fe095d8d5a7fa9f94de12bf5e4c869d6f205e712170bae39962795b50",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/86/",
+      "status": 200,
+      "sha256": "0daa8bb3370d1c49998dc8bef3984461595f731c30b24dd6673ab23a907e5581",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/87/",
+      "status": 200,
+      "sha256": "9e2b75dddf3021f33257c1d076708f3e47da7db2f77f5b204830921d40d0050d",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/88/",
+      "status": 200,
+      "sha256": "4d4edf5ccd0726d0b229836ab08eda2d6aca2ee97a8ac189c06522ad24efbc74",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/90/",
+      "status": 200,
+      "sha256": "57b03c9f59f28ecd9ead84b7d9e35a8f57ec95871c52e57d8af38db7ebbf9520",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/91/",
+      "status": 200,
+      "sha256": "924dbe351722e70818ccca99c13893e8619a1c5e351be9df9397f4ad8a1f8955",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/99/",
+      "status": 200,
+      "sha256": "a6d81bd7eac9ebea2147b0c93475a636e60a267c4b744f7d84b57595a329e8f2",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/100/",
+      "status": 200,
+      "sha256": "d445d92bfff3321e864cab1a7ae35c45f471bf23d18d6743c1faf34739b1f24b",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/22/",
+      "status": 200,
+      "sha256": "82ee52fe6bc7b54a67f79d6b636115550252fe2a215a94df3dcd2a4d2b813a4e",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/30/",
+      "status": 200,
+      "sha256": "77e6f67d45cee8d87d24de36b94af7865c54ec40d83b91de624a8e3c49b17bdf",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/33/",
+      "status": 200,
+      "sha256": "5dcf2488ed483a6b6170166dd8a203af89e5c081793b2661c97cb2b991c76ed4",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/35/",
+      "status": 200,
+      "sha256": "928432040f1d8aa76d318211a868404400fa78100e3e3d0e941d8b11b1602aa4",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/36/",
+      "status": 200,
+      "sha256": "bd2a682bd6b73238f5c61196b63bc2cbf3518cb49247b04b25fac88239b43fd9",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/37/",
+      "status": 200,
+      "sha256": "21143e5e32e1fc34fb0dd1d9639a64ec6df0ea372983d56e702b08837f5089d8",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/42/",
+      "status": 200,
+      "sha256": "a8d34c716d8e121a41e0c10dbb8764d76279a1d661a2476541cb875313185d9b",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/55/",
+      "status": 200,
+      "sha256": "ffa4320c8e6f09403f089537ed155c31c682866c8446f87a171244d46939b422",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/60/",
+      "status": 200,
+      "sha256": "af532cf1d0b4b8b2e8b913f2da0ebaab568ca5fc9c11ee67a885e5cdf1122fff",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/69/",
+      "status": 200,
+      "sha256": "212df0c727159f302e6e4beb8384d3984b10dc1f057ca5c65608ace62ccbde3f",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/70/",
+      "status": 200,
+      "sha256": "64f90e3f1a681c137a07cdaf2dccbdbbe62ba9515d0da2c90d75bad751623c7a",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/71/",
+      "status": 200,
+      "sha256": "3c185ac92042e930de0ce1347940bd1bac1de4b7930d4879d22d3dd419171da7",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/72/",
+      "status": 200,
+      "sha256": "2bde013d93fda7179eb72f91702dae8301e8d0ff9be435b54e6e37560aa3d618",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/73/",
+      "status": 200,
+      "sha256": "43227be8bdb54bf1babf3b1796e9da67ae201ee3fe42a8e16c9b341b81697920",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/83/",
+      "status": 200,
+      "sha256": "5a30cb22c21a8c69db5b4ebc02f7c5276d325744173a1ca25837e322ba274783",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/15/",
+      "status": 200,
+      "sha256": "244946752f3ddbc3f00b3180c8604af9edb4c61b821573e4027f40c00999f331",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/18/",
+      "status": 200,
+      "sha256": "6d636288ecf75fefd8f49df25009f06ed03ec5f3befdf5bd80a2a419a71097a7",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/53/",
+      "status": 200,
+      "sha256": "3fef8cd40aa2485649ee5913e690a6a5de67d401ff823ad20ebddf51e9be90fb",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/54/",
+      "status": 200,
+      "sha256": "1cac523955e152f9bf538b7807e442ba200ae2fec1028e6d0b96e8b0a360df11",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/61/",
+      "status": 200,
+      "sha256": "a5ad0af884a0144741db7e6c91b53a7b2b7b5b79a3d0b7b28a630a25223779d8",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/62/",
+      "status": 200,
+      "sha256": "ea1b9f7291b093d475985b05302d06112a358bd4fb326171790f33f67e861de0",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/75/",
+      "status": 200,
+      "sha256": "4ce6bc6778b3427c1c2810c4a54ee607a5ad5b4adae8ae71101d0fb2619ca819",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/76/",
+      "status": 200,
+      "sha256": "7552ecedb6ef496df151a6feef868846fcc99d9bfdd99e9cff9802b6feb3d34e",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/79/",
+      "status": 200,
+      "sha256": "213c9026c34eeb1aa285fc1cb058898964e01d8a939c0e1a93df087b42e30708",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/4/",
+      "status": 200,
+      "sha256": "7507b9919a9f159a486e777d909d6d18e5ec1637eacb749795d8e14c54095047",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/9/",
+      "status": 200,
+      "sha256": "3a894010bb67a3a8a800d11f7515109f00968d8db020ee84b3ed51e801931cbd",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/16/",
+      "status": 200,
+      "sha256": "7e8269ccb4d35e7e088e77ab72adccfce462469cb4fb77e3a9ac7d287ff8443b",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/26/",
+      "status": 200,
+      "sha256": "62254abd6ae2fe81378d42db239b9247c4d5c1024a6e1572137c2efcb131ccd3",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/31/",
+      "status": 200,
+      "sha256": "d233ef94996b2b54f59c9c02522bfbd89bb25e8c460388e0aa7a9dde369a2938",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/39/",
+      "status": 200,
+      "sha256": "ffc7da98eedf3401bbf68c1317c4c88a9704d5195a8bb581d01fc3cd695267ae",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/40/",
+      "status": 200,
+      "sha256": "45b617d509cf92b34178bf153876b290e456c767ad513153100246eaa7461316",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/41/",
+      "status": 200,
+      "sha256": "7b1596a2dde07b838b9a065234f1fb83e0b619ab2d294a694e8311f36015d8cc",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/44/",
+      "status": 200,
+      "sha256": "2693b29cde48b6c3d0f9a4edfb21d398946807dc83cfbb4ae7e209a864a44e5a",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/45/",
+      "status": 200,
+      "sha256": "8b95a7ee0dff8a435bb3d69825c2cc21d9c5a8c5ac7ca07f900e0f169d9d633f",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/46/",
+      "status": 200,
+      "sha256": "c3044a986f13a8675f866dcfa8a3f411c0ce0072d42b3ea05f59ab51492724da",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/52/",
+      "status": 200,
+      "sha256": "ea8d6fddc1cb6229ffeea539c4f94b49b7a78551116b7355cc972a441ed8f9e9",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/66/",
+      "status": 200,
+      "sha256": "90341ac39f143c0c6b4802a814aa153ca6e5ba771f240a8b99c7a70c075e6dff",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/67/",
+      "status": 200,
+      "sha256": "57558ab5c84f3dd334bad40c8bfed9fd7bfc9aad08cf0a160c2ef955fbeb2afe",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/74/",
+      "status": 200,
+      "sha256": "6588bdc0164a1a5a7112c5dbe297f90aa8cc905a28d0dd5a83ebd0d5d619ac30",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/80/",
+      "status": 200,
+      "sha256": "4a7ff3860badd35790cdf518b13bbf7d6585d3a62f560c6ccd29808ca300eb3a",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/84/",
+      "status": 200,
+      "sha256": "c41eb674a9fdce3a57a8fdcd5ccc51537c2f008abe3a6d62c32f1aee9e0b2dbc",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/85/",
+      "status": 200,
+      "sha256": "2af2a64a987394a621423a05a7abf294c309ced3d10728e1db3b4caf1f0e3ec8",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/23/",
+      "status": 200,
+      "sha256": "9a1a9050b77a87d9eb80f8d885ec9f05ebaac264897a69c12805036938d25e06",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/24/",
+      "status": 200,
+      "sha256": "7496258cecfc6600be5d659e48df348c3b1a159bce6542b0f444b6f104bf638b",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/28/",
+      "status": 200,
+      "sha256": "12f97b306500b572794cffb8842cb1363492bc431ba7033c21cefbf938fdf5d6",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/29/",
+      "status": 200,
+      "sha256": "b81df47eb4b33462c266394256ae2d4fcca117a4b5373c275f393bd4d51b0e49",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/32/",
+      "status": 200,
+      "sha256": "d9ec1fe929714b47e0faf8840e56ae6545f55c9aa2003d16192fb0c1774cbfeb",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/43/",
+      "status": 200,
+      "sha256": "adfc9fa785ec7223e1037f10780cd299cc761d2924f8fa0ae34057c4220fd988",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/48/",
+      "status": 200,
+      "sha256": "dd2ab57a3099a4f3ccc4dbdbeb7d2d203699488fe18dbfe2f16f21875433b8f3",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/64/",
+      "status": 200,
+      "sha256": "cc291531ad670132fde651070100451dd1d5100496c2e67dc834ebe1bf3fa5e1",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/65/",
+      "status": 200,
+      "sha256": "cc46b7d5d9aa27b67d69ff74fc70defae29ebd15d2949fd03205f67c2264f357",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/78/",
+      "status": 200,
+      "sha256": "2b9ef2064c1935c3a1c12c178f2897e51cc2d8ae1181db337f2611442e2bc466",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/82/",
+      "status": 200,
+      "sha256": "8fb6d5f0260a9b6b72b125b9a5a08e9a27bc3c2f2dff28a574899c1082788e9c",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/17/",
+      "status": 200,
+      "sha256": "7294141d584fbf211b734d8cac924598a538de7b6d43e587d717b1600acfaecb",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/57/",
+      "status": 200,
+      "sha256": "7ad21191db298bbba6c097bbb6338e6004d3d02b9a2d2493c8bf60c189f28888",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/77/",
+      "status": 200,
+      "sha256": "80521f41c51a3f1da02ad684ad134c0d89a48749f06949fc6a37d9c80e085e60",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/93/",
+      "status": 200,
+      "sha256": "f4b0520f2e2ad838689ffc4c8c4e941715c4219ff88aba253fc936f828f59806",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/96/",
+      "status": 200,
+      "sha256": "fe1cbfa11d62a4bfa822b248da6e0b5419f0704621e0c06be5eb05fda175683a",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/97/",
+      "status": 200,
+      "sha256": "c1cc2bea9b95122fafe134fdb8662a9338850b1acfbc8ae6fdd658d3c0f19bf9",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/98/",
+      "status": 200,
+      "sha256": "046d3720427d483e2fd6eeb13cf067d0c33e3e9b37633db83bc21830c4ba6e17",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/38/",
+      "status": 200,
+      "sha256": "0b547698d9ca2e9a9a81d1b603d0d15de53a5cd9db1508cd0ec0471903ef974a",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/63/",
+      "status": 200,
+      "sha256": "6d5dfa18a179e954fac36b117f7f31d5cdbd73d16c4e75f87722a4772e0923f2",
+      "matchesLocal": true
+    },
+    {
+      "path": "/articles/95/",
+      "status": 200,
+      "sha256": "3bd8fb68b882a43bd212f1abe94aa23cd7ee98a964338ca6ddd82ca2f3da6e6a",
+      "matchesLocal": true
+    }
+  ],
+  "assets": [
+    {
+      "path": "/",
+      "status": 200,
+      "sha256": "f29e65de07c12ccd99babb5db33df3e16e22a57d336c1ee8bb7cc69f0bd5346f",
+      "matchesLocal": true
+    },
+    {
+      "path": "/docs/home.md",
+      "status": 200,
+      "sha256": "c0d28ff58ec239b9459420a5091d1001dbfd63465a1e49448601dc9939ceec32",
+      "matchesLocal": true
+    },
+    {
+      "path": "/data/search-index.json",
+      "status": 200,
+      "sha256": "c42033e0aca7c8c13356a7ecb68acd380fca8a71e15dcca992822db65883053a",
+      "matchesLocal": true
+    },
+    {
+      "path": "/scripts/reading.js",
+      "status": 200,
+      "sha256": "abf3dfc7db08ddc821c2fce72a4cb8f45906f59610914b1b11decb68bc00ea09",
+      "matchesLocal": true
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200,
+      "sha256": "6c1f5517313d098d71cbca1d096fa96ccea92e1c18a8e8cb1fac3cf5b83d8f7f",
+      "matchesLocal": true
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200,
+      "sha256": "58de3670459dd79e525bf4a48f6ccb1835e203a3878ed9262e2983ce05bc58c5",
+      "matchesLocal": true
+    }
+  ],
+  "sitemap": {
+    "urls": 111,
+    "unique": true,
+    "fragmentFree": true
+  },
+  "directoryNormalization": {
+    "path": "/articles/107",
+    "status": 200,
+    "resolvedUrl": "https://postgres-howto.cn/articles/107/"
+  },
+  "missingArticle": {
+    "path": "/articles/99999/",
+    "status": 404
+  },
+  "finishedAt": "2026-10-24T04:51:37.513Z"
+}
