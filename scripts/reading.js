@@ -73,6 +73,20 @@
     var target=document.getElementById(id);
     if(target)requestAnimationFrame(function(){requestAnimationFrame(function(){if(target.isConnected)target.scrollIntoView({block:'start',behavior:'instant'});});});
   }
+  function settleDiagramAnchor(section, ready) {
+    var hash=location.hash;
+    var anchored=staticArticle?hash.length>1:new URLSearchParams(hash.split('?')[1]||'').has('id');
+    if(!ready||!anchored)return;
+    var interrupted=false;
+    function cancel(){interrupted=true;}
+    var events=['wheel','touchstart','pointerdown','keydown'];
+    events.forEach(function(type){window.addEventListener(type,cancel,{passive:true});});
+    ready.finally(function(){
+      events.forEach(function(type){window.removeEventListener(type,cancel);});
+      // An async diagram can change the height above a freshly opened deep link.
+      if(!interrupted&&section.isConnected&&location.hash===hash){restoreAnchor();requestAnimationFrame(highlightSection);}
+    });
+  }
   window.addEventListener('scroll',function(){if(!scheduled&&toc){scheduled=true;requestAnimationFrame(highlightSection);}},{passive:true});
   window.addEventListener('hashchange',function(){
     if(staticArticle){restoreAnchor();requestAnimationFrame(highlightSection);return;}
@@ -143,7 +157,7 @@
       var section=document.querySelector('.markdown-section');if(!section)return;
       section.tabIndex=-1;
       document.querySelectorAll('[data-finder]').forEach(function(el){window.HowtoFinder?.mount(el);});
-      mountSidebar();mountArticle(section);HowtoDiagrams.mount(section);mountCodes(section);mountImages(section);
+      mountSidebar();mountArticle(section);settleDiagramAnchor(section,HowtoDiagrams.mount(section));mountCodes(section);mountImages(section);
       section.querySelectorAll('table').forEach(function(table){
         if(table.parentElement.classList.contains('table-scroll'))return;
         var wrapper=document.createElement('div');wrapper.className='table-scroll';wrapper.tabIndex=0;wrapper.setAttribute('role','region');wrapper.setAttribute('aria-label','表格，可横向滚动');table.before(wrapper);wrapper.append(table);
@@ -155,8 +169,9 @@
     var resetEvents=vm.$resetEvents;
     vm.$resetEvents=function(type){
       var query=this.route.query,id=query.id;
-      if(!matchMedia('(prefers-reduced-motion: reduce)').matches||!id||type==='history')return resetEvents.apply(this,arguments);
-      // Docsify 4.13.1 otherwise always starts a 500ms JavaScript anchor tween.
+      var diagram=document.querySelector('.markdown-section .mermaid,.markdown-section pre[data-lang="mermaid"]');
+      if((!matchMedia('(prefers-reduced-motion: reduce)').matches&&!diagram)||!id||type==='history')return resetEvents.apply(this,arguments);
+      // A fixed 500ms tween can overwrite the position after a diagram resizes.
       query.id=null;
       try{resetEvents.apply(this,arguments);}finally{query.id=id;}
       restoreAnchor();

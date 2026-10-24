@@ -36,7 +36,7 @@
         });
       });
     }
-    render();
+    return render();
   }
   window.HowtoDiagrams = {mount:mount};
 })();
