@@ -1,0 +1,615 @@
+{
+  "baseline": "eb067abd83f9b5f5efc25865c6618b4b9a98d3f5",
+  "files": [
+    {
+      "file": "docs/109.md",
+      "unchanged": true,
+      "sha256": "6deb4f1a4834a6624612453b461fbec0096b9bdc71b0875aee4c15104b81cadb"
+    },
+    {
+      "file": "docs/108.md",
+      "unchanged": true,
+      "sha256": "c439eb4dc103b53705594c2edab6951be794dc49602aa87c1f60f45b8c55644d"
+    },
+    {
+      "file": "docs/107.md",
+      "unchanged": true,
+      "sha256": "894a3785e92bbf1e5e42c5520404208fcd353bd11da773058fc07d6a30b328e5"
+    },
+    {
+      "file": "docs/106.md",
+      "unchanged": true,
+      "sha256": "f32c71bac36daf20d2ffd01410e285b487b1b56c7c9ac67b4a338a5a6362b5a0"
+    },
+    {
+      "file": "docs/105.md",
+      "unchanged": true,
+      "sha256": "493b19c2d22352404f43c2055a7cbb0f86939ffb8027e25d1b767a023a91e26d"
+    },
+    {
+      "file": "docs/104.md",
+      "unchanged": true,
+      "sha256": "94fce69417d414416976fee3b05cca31295236180a4ce1bfa54c0afb5a1ce969"
+    },
+    {
+      "file": "docs/103.md",
+      "unchanged": true,
+      "sha256": "cce50bafa450f3823873ff01d765c1a1664726c321954f1e796048bc942a7352"
+    },
+    {
+      "file": "docs/102.md",
+      "unchanged": true,
+      "sha256": "c4884a51b2b7b8d49dc6c870b2498a5979a2083afc1791324475158040e8e471"
+    },
+    {
+      "file": "docs/101.md",
+      "unchanged": true,
+      "sha256": "7eb4f36c15cebab1e5aa83e0926519da06578d61a259c756cf469cf1b14b0107"
+    },
+    {
+      "file": "docs/1.md",
+      "unchanged": true,
+      "sha256": "ce8fc8eb8ce0eec6cfcebdca2b55a085378e1a4d335b055c375f8d696a9ceef9"
+    },
+    {
+      "file": "docs/5.md",
+      "unchanged": true,
+      "sha256": "2a4a415f15df834fb9aee5e8fc0cf272f575290b1aa3cc3005a7a171ceb0e7f0"
+    },
+    {
+      "file": "docs/6.md",
+      "unchanged": true,
+      "sha256": "75042a6a01bd27d10b85b25744bcc90d99a463d22b3892c1ea638b979f40ab9c"
+    },
+    {
+      "file": "docs/7.md",
+      "unchanged": true,
+      "sha256": "8b118405281059a09c3c80f821b7b718a0aae5530880900f863fe163bfe37960"
+    },
+    {
+      "file": "docs/10.md",
+      "unchanged": true,
+      "sha256": "6de5e936e75935e69be2c951ac36a1775d40ef3850901ed604f9b6a711b96eae"
+    },
+    {
+      "file": "docs/11.md",
+      "unchanged": true,
+      "sha256": "92304843cbe0ca90aad88e44c672cc3b1a5101db761c79baf855661ce0265d7f"
+    },
+    {
+      "file": "docs/12.md",
+      "unchanged": true,
+      "sha256": "ff675a7601258223dbf1e0eeeb337e605c522b6259541e0f5555eb45499d0490"
+    },
+    {
+      "file": "docs/13.md",
+      "unchanged": true,
+      "sha256": "b4013d3a16a4fb41a0eade66a58ef83ee647de8ae95fdfb153eb2bc91c76756d"
+    },
+    {
+      "file": "docs/14.md",
+      "unchanged": true,
+      "sha256": "b290d39d43b39ce964cbad0f04e7b28ce83afdb5317d540acb5228f4578412f0"
+    },
+    {
+      "file": "docs/50.md",
+      "unchanged": true,
+      "sha256": "5fdeb4c66ac3b7ea183aa7792b4376d092abee2a60452db7162a23254a62776a"
+    },
+    {
+      "file": "docs/56.md",
+      "unchanged": true,
+      "sha256": "6b249227bdfda4bc0900007d1ea68a8ac29017fd4eaee4040eb9853388e320c9"
+    },
+    {
+      "file": "docs/89.md",
+      "unchanged": true,
+      "sha256": "69a46d2eadcad58ac50ab0f38d6a593c1de178e583b01c6b5f1b710c55d8edea"
+    },
+    {
+      "file": "docs/92.md",
+      "unchanged": true,
+      "sha256": "9cb0b6be4ecc6a0873d181ee01116b02562eccfc7532ba6b6945d551562c8522"
+    },
+    {
+      "file": "docs/94.md",
+      "unchanged": true,
+      "sha256": "9a015bda9ba946b3dc5a0cc9d64b494701810a1454bf55d0b98d5580584e2cf2"
+    },
+    {
+      "file": "docs/2.md",
+      "unchanged": true,
+      "sha256": "4e559eaf8e21507933c9b8594f59d1cc4c9ded95b542d392f14d5310f5a19482"
+    },
+    {
+      "file": "docs/3.md",
+      "unchanged": true,
+      "sha256": "d589af4aad46d78008394e17ff5400028d0668b29519dff3c820644f78de7d32"
+    },
+    {
+      "file": "docs/8.md",
+      "unchanged": true,
+      "sha256": "3717b5bc3afce9a54c49363709847cc1d5fa776f951b6597738143097ac3edd3"
+    },
+    {
+      "file": "docs/19.md",
+      "unchanged": true,
+      "sha256": "8fe105d0c8827f7c07949467d1600871af1b2324d3c59e695c2348f13be77a44"
+    },
+    {
+      "file": "docs/20.md",
+      "unchanged": true,
+      "sha256": "2d5aa8b3856ab9734f7c2b65b95da23a6c506a145b0b5f002234fdc5b680942c"
+    },
+    {
+      "file": "docs/21.md",
+      "unchanged": true,
+      "sha256": "60ee4eb03ef745988da37733d1b731980178c7a9893c6726bdcad3cdea8deb03"
+    },
+    {
+      "file": "docs/25.md",
+      "unchanged": true,
+      "sha256": "40e39116f7aa7c54a25679c4787774a2972d5bf3eeab61304ed5896bbe9ea3ff"
+    },
+    {
+      "file": "docs/27.md",
+      "unchanged": true,
+      "sha256": "295d1f49eefe6a0412f7d2fcf2bb1f0e7ede5c9243c59affca4caf74a1fbff30"
+    },
+    {
+      "file": "docs/34.md",
+      "unchanged": true,
+      "sha256": "40f093de2face2bf46dcfefe02b0215306ff559e6d0c90140fd79da932280685"
+    },
+    {
+      "file": "docs/47.md",
+      "unchanged": true,
+      "sha256": "5f450f493b604c243675bebf81dead0aaa90523f2ace3b19739eed44aaecaddd"
+    },
+    {
+      "file": "docs/49.md",
+      "unchanged": true,
+      "sha256": "8a1535eb98dd46b4621ccd207da2bcf715fd1923cac089afdb3417f87da6bd26"
+    },
+    {
+      "file": "docs/51.md",
+      "unchanged": true,
+      "sha256": "b67ba96b448d1bf3982fabee424b472b40222409663055ee821a20943bdab479"
+    },
+    {
+      "file": "docs/58.md",
+      "unchanged": true,
+      "sha256": "3cc092bf6ca1811a1ab718ac2b0d103f952b5b88d077cab36e8744bb137255f6"
+    },
+    {
+      "file": "docs/59.md",
+      "unchanged": true,
+      "sha256": "aa5b4ea1630af66fd71e58ead2f89f4318d897f2a4feb95dccb4717cf9e0f960"
+    },
+    {
+      "file": "docs/68.md",
+      "unchanged": true,
+      "sha256": "2ebe5a05d1159529d2e4e0e5b45295a633f133ce45b9d77c869f6d9d2436b99f"
+    },
+    {
+      "file": "docs/81.md",
+      "unchanged": true,
+      "sha256": "d11bae1f083feb2b88e3660c86331a9cf7d560d1325d6c0adba5bc854a0ef4bf"
+    },
+    {
+      "file": "docs/86.md",
+      "unchanged": true,
+      "sha256": "8699d1837efc5f80519ba598c4a709b3a66c82c747b34491d604b0d0a8b979a4"
+    },
+    {
+      "file": "docs/87.md",
+      "unchanged": true,
+      "sha256": "192c6e102eb25f458a8b06634e77bc34e092675e36d21616d75f81e62e6a71be"
+    },
+    {
+      "file": "docs/88.md",
+      "unchanged": true,
+      "sha256": "d3613f6bb42345115bd8e6196dc3a216baf1514a6c5a592c3aeed68308e89c55"
+    },
+    {
+      "file": "docs/90.md",
+      "unchanged": true,
+      "sha256": "cf2f7f3fa85694916bf1285294d8cf43121e131f8b387d3df3cea2aafefe806a"
+    },
+    {
+      "file": "docs/91.md",
+      "unchanged": true,
+      "sha256": "b4186a2ec9fa10633691d63415654e41c153d6db7e6ecab13ceabaebb13e2245"
+    },
+    {
+      "file": "docs/99.md",
+      "unchanged": true,
+      "sha256": "a9f5e3a4ad39613e42734dbe4744f59c1eaeb72a67589f1c03c2a91a6f794aec"
+    },
+    {
+      "file": "docs/100.md",
+      "unchanged": true,
+      "sha256": "8e882a322e20b59585e925be10dceb61aa772c0182b31d5d742709a32245e10c"
+    },
+    {
+      "file": "docs/22.md",
+      "unchanged": true,
+      "sha256": "2966e090a22b56600b8e902c54418afb37306aff8749086ed1662bd590b93392"
+    },
+    {
+      "file": "docs/30.md",
+      "unchanged": true,
+      "sha256": "cc5edbddfb0631de65c96f8ef7cf98cb6dbce9851d4a2874c65d3fc7c65637a1"
+    },
+    {
+      "file": "docs/33.md",
+      "unchanged": true,
+      "sha256": "2510b3ba1c2b7bd3a5b1b1924043447df92b713117951794e5908ef4a12cd4a6"
+    },
+    {
+      "file": "docs/35.md",
+      "unchanged": true,
+      "sha256": "4628633d8a5506ffe86011951ffb0ffd8e35d0640b626165e93d7c33d9f44966"
+    },
+    {
+      "file": "docs/36.md",
+      "unchanged": true,
+      "sha256": "14b6880ec5bf351d50f3505215b5b0c7fc4d0278b0d8612ec12c1b17d082627a"
+    },
+    {
+      "file": "docs/37.md",
+      "unchanged": true,
+      "sha256": "9e0286bb4b0ee994c1f123a6f93fcd83d87a049f64747626510267e238807cf3"
+    },
+    {
+      "file": "docs/42.md",
+      "unchanged": true,
+      "sha256": "8f8de04ca7ccedbd2dd7fd678735ac45334896c5392f03f1b9a881d495515278"
+    },
+    {
+      "file": "docs/55.md",
+      "unchanged": true,
+      "sha256": "3587d7e4568ee9702f177b7473062b541ba09c24d70cfd9d707542279869e40b"
+    },
+    {
+      "file": "docs/60.md",
+      "unchanged": true,
+      "sha256": "76217e69b11de64153ab139afdf960f97b9c08457b64fcd769b67d57b8aa99b0"
+    },
+    {
+      "file": "docs/69.md",
+      "unchanged": true,
+      "sha256": "6ba4a1a1a1821c76c9beb8fbb73f6ba14323fad205b993867dadbd653bb33a94"
+    },
+    {
+      "file": "docs/70.md",
+      "unchanged": true,
+      "sha256": "104927a5373cfd8ac74fd954fc9062d1603c7f39372d8fd5b9ef825c4d112532"
+    },
+    {
+      "file": "docs/71.md",
+      "unchanged": true,
+      "sha256": "6e45c53dc2248edd9b82042b50fa8a8596c0009616a707543301c1604ac80e98"
+    },
+    {
+      "file": "docs/72.md",
+      "unchanged": true,
+      "sha256": "e1aad7828937fe796e8e08fea6240db6cbe0ba9860f476e91f2509863d90efc0"
+    },
+    {
+      "file": "docs/73.md",
+      "unchanged": true,
+      "sha256": "19bd222a1a95db59725f06c02ad6115821978f593e4cf02c0c89ac1d003f481b"
+    },
+    {
+      "file": "docs/83.md",
+      "unchanged": true,
+      "sha256": "b2200fbb1c05befc14a717b612b77ede576e481ed2b0512d13aceebcfec001c8"
+    },
+    {
+      "file": "docs/15.md",
+      "unchanged": true,
+      "sha256": "1df32ca06029968d15803c1fbb30d034addff26a3bcb11130bf0d828941c37c2"
+    },
+    {
+      "file": "docs/18.md",
+      "unchanged": true,
+      "sha256": "7144352b6d4e5d03d79f28230334f30b891669e0c827ade9c58750dfcbe51fb7"
+    },
+    {
+      "file": "docs/53.md",
+      "unchanged": true,
+      "sha256": "21c5adefe89e7693be7c203e8fdacaad08da04e16d26c29da330f778572256d7"
+    },
+    {
+      "file": "docs/54.md",
+      "unchanged": true,
+      "sha256": "b48b9d507df80521912c6c287c2b8ba4a4f80dc3507ddacfa9b68f62a7d6c89f"
+    },
+    {
+      "file": "docs/61.md",
+      "unchanged": true,
+      "sha256": "d22fe7ff64f3066d4b9dfb5f631f5d167d735486bdf1d7cace55a3bab1c5efea"
+    },
+    {
+      "file": "docs/62.md",
+      "unchanged": true,
+      "sha256": "23ddf7317c3853739e891b2409e3a58dae7ad0a3d2218287ce5bec1a637f3230"
+    },
+    {
+      "file": "docs/75.md",
+      "unchanged": true,
+      "sha256": "5af0e6369a12fad818a841242294e4a4f3753fcfa8afd648a3cd68e1b9869324"
+    },
+    {
+      "file": "docs/76.md",
+      "unchanged": true,
+      "sha256": "a30f08a1575834b2baedea707e5a2eb2ea06ea58db548938d77fa162789fa20f"
+    },
+    {
+      "file": "docs/79.md",
+      "unchanged": true,
+      "sha256": "9b119842e68169018cc12f5652e1c6aedbfec5492ab85bc8a5e76070011b7fab"
+    },
+    {
+      "file": "docs/4.md",
+      "unchanged": true,
+      "sha256": "ac55db41ceff866d4b84446c5b5a814bb826283f57d6c676577873d7641f97ab"
+    },
+    {
+      "file": "docs/9.md",
+      "unchanged": true,
+      "sha256": "403a903192028e0598c7c174350475bcd930a2f157f1b8aec1d4cca42d7d2f05"
+    },
+    {
+      "file": "docs/16.md",
+      "unchanged": true,
+      "sha256": "22acee6aff8e61f84e943021a70f76a7dc8ab078af095e792f0d8d2a3cf90ea4"
+    },
+    {
+      "file": "docs/26.md",
+      "unchanged": true,
+      "sha256": "afb74c422566c67ac102506b480735830b4b29cfc35374760f1be7685726c7f5"
+    },
+    {
+      "file": "docs/31.md",
+      "unchanged": true,
+      "sha256": "38ce500aa6156c99ca10d679d5cf1d08790000aff1534ba1a643216b6963087b"
+    },
+    {
+      "file": "docs/39.md",
+      "unchanged": true,
+      "sha256": "200328646d00fb1949620a8741f2c13483fac8b97458b4e931d4e783df9f1fa1"
+    },
+    {
+      "file": "docs/40.md",
+      "unchanged": true,
+      "sha256": "6b64f73c25101e5de5377ba5754a877c30c2249397190450782308b1f1af8b5f"
+    },
+    {
+      "file": "docs/41.md",
+      "unchanged": true,
+      "sha256": "679319685a387cd1f6fc5b663885f2a5a308c76ed2ca30cc8c3ee5331265f15a"
+    },
+    {
+      "file": "docs/44.md",
+      "unchanged": true,
+      "sha256": "37ab84d29decd449525d2026c170988b5c8fe44171873f8eb43e009ddeb9269d"
+    },
+    {
+      "file": "docs/45.md",
+      "unchanged": true,
+      "sha256": "599c40fb659429ff8ff2fea76695656a1ceda3b3c97ed982267424b9eedeb45a"
+    },
+    {
+      "file": "docs/46.md",
+      "unchanged": true,
+      "sha256": "9dec95eab81967ca218801890283a10f8cff634ea2ac0f3846058d79f19fd32c"
+    },
+    {
+      "file": "docs/52.md",
+      "unchanged": true,
+      "sha256": "da8d572f2996d06cc0eccaeea16882dffba7e61f8ea42cad34b8a0745f439c30"
+    },
+    {
+      "file": "docs/66.md",
+      "unchanged": true,
+      "sha256": "3dd625dec9884dd89c0a5a365175dc15c0f005b10c2761e53a1fcb4b82223a66"
+    },
+    {
+      "file": "docs/67.md",
+      "unchanged": true,
+      "sha256": "450a51e805a443ebcaad75e117c9b8914bfc2f55d74855879001908b5bbeb6bf"
+    },
+    {
+      "file": "docs/74.md",
+      "unchanged": true,
+      "sha256": "352b0be379bf4c7506f6169a3c0e5800a2d67e6c8227686bf5fea9e610d91670"
+    },
+    {
+      "file": "docs/80.md",
+      "unchanged": true,
+      "sha256": "4a75e7d400b352a8f55dcfaa1d24083a45acc038cc3979a549d39ad944a59f10"
+    },
+    {
+      "file": "docs/84.md",
+      "unchanged": true,
+      "sha256": "5e3c9f08dcc38bbfd1d964e924af8c223dec2e02273b736077633b51ad38e716"
+    },
+    {
+      "file": "docs/85.md",
+      "unchanged": true,
+      "sha256": "3736dc390539987dedd8a353ceaaa41d727dd7f2ba5b3ba87897b73c9b5f7678"
+    },
+    {
+      "file": "docs/23.md",
+      "unchanged": true,
+      "sha256": "1607ea61acd54d36504a833e0b9373778bf5c68bb75db53c6bb7d32afd9e2a40"
+    },
+    {
+      "file": "docs/24.md",
+      "unchanged": true,
+      "sha256": "7f4c3b986a8da3237586d30bc65b8358c3d1c34a0861ee81ae1d3a3fedb9d977"
+    },
+    {
+      "file": "docs/28.md",
+      "unchanged": true,
+      "sha256": "9258b5d70cc078b0e2997aa68c80aaac7a6af86cb9964f4ac348e62be56d716e"
+    },
+    {
+      "file": "docs/29.md",
+      "unchanged": true,
+      "sha256": "f3d12d3f92a30fb71de41aff65957a889abb11d912c76fa509df783938b546da"
+    },
+    {
+      "file": "docs/32.md",
+      "unchanged": true,
+      "sha256": "512cb7e1cc5c329232b21d13ca6c73d9417b9a41f2543cf6da7cd4d64e7380af"
+    },
+    {
+      "file": "docs/43.md",
+      "unchanged": true,
+      "sha256": "ffad81ce2cbfd2c6ab0448600aaba251e8ab6c2bd0877815674373bb9d978705"
+    },
+    {
+      "file": "docs/48.md",
+      "unchanged": true,
+      "sha256": "121b5ceadd9cbb66d5bad9e9e500e6a8d5c690a1e0bebb0e0c8aeac33094e6ac"
+    },
+    {
+      "file": "docs/64.md",
+      "unchanged": true,
+      "sha256": "4e478be90dc1d3892ff4c9c70c6f00dfee70799769bbaeb38442e21c843293d5"
+    },
+    {
+      "file": "docs/65.md",
+      "unchanged": true,
+      "sha256": "11b95f1d2c217bdabb728074658621b9940fbacfdb35328502a0cb31783b709e"
+    },
+    {
+      "file": "docs/78.md",
+      "unchanged": true,
+      "sha256": "07550f5af69585a74de78cdeaf451eb84ad2834caa9af71289ce12779a9e62f9"
+    },
+    {
+      "file": "docs/82.md",
+      "unchanged": true,
+      "sha256": "272c850cf070941f8fef92a812a0f0486d3392029e93f13484de5a212b581e79"
+    },
+    {
+      "file": "docs/17.md",
+      "unchanged": true,
+      "sha256": "a4f2369d16044beb0557b0509c7e78f7ace9556614bf262cb5d0c9b6b88bbddb"
+    },
+    {
+      "file": "docs/57.md",
+      "unchanged": true,
+      "sha256": "b44cd21f599fad1c4b7f240cefd30fa3c27199ae559c0aebe543ceff66a1d42a"
+    },
+    {
+      "file": "docs/77.md",
+      "unchanged": true,
+      "sha256": "0d965363102357c6ed4051db6a00c26f4bf3de3749e6eb77276c2f433db23501"
+    },
+    {
+      "file": "docs/93.md",
+      "unchanged": true,
+      "sha256": "d3d16431b3b4ae0c83955a35c60ef8cd75152b4df58b3722e20d71689e24b3b0"
+    },
+    {
+      "file": "docs/96.md",
+      "unchanged": true,
+      "sha256": "65ab5ae81073747c2bba0833482c529b7674d1d2cc779d47f9f675fd4cb43dec"
+    },
+    {
+      "file": "docs/97.md",
+      "unchanged": true,
+      "sha256": "488dbe56986e581deaf8044b2bfaf8428437b57b540fadcdc3a44502a89759c5"
+    },
+    {
+      "file": "docs/98.md",
+      "unchanged": true,
+      "sha256": "8c716b5b74b0c7dd7315384c79a679c93334eb5da3958dfd56af0e853423689e"
+    },
+    {
+      "file": "docs/38.md",
+      "unchanged": true,
+      "sha256": "b0c4958c15f736100f73ff8d9a4c53c3da69749785b026399800a26ecd26512a"
+    },
+    {
+      "file": "docs/63.md",
+      "unchanged": true,
+      "sha256": "1bdaa55068179a4ff6f9c049de0377534b1fe9bcd235a763a22b3129f7252a2b"
+    },
+    {
+      "file": "docs/95.md",
+      "unchanged": true,
+      "sha256": "9992623fcaa076170e06f761667d78b30c0df4c407bc7216aa8351489aa4089d"
+    },
+    {
+      "file": "data/articles.json",
+      "unchanged": true,
+      "sha256": "407b760388128c0481f2b1f8e72133bc56e290201b390bdfed2c0c306825fd8e"
+    },
+    {
+      "file": "maintenance/home-template.md",
+      "unchanged": true,
+      "sha256": "9db1846dabd315364957e91066cd6a548a6f11c32d37b9f06a6e0f998e9b7f55"
+    },
+    {
+      "file": "images/brand/README.md",
+      "unchanged": true,
+      "sha256": "410adb79f4b01c92ac15a7e6c0999afd7857e49a78ac4746a46c37b5b142f9ce"
+    },
+    {
+      "file": "images/brand/favicon-32.png",
+      "unchanged": true,
+      "sha256": "71e3e852dec3854533d32c511864110298422f51f79f65d2741fbfb8ff0ef851"
+    },
+    {
+      "file": "images/brand/favicon.svg",
+      "unchanged": true,
+      "sha256": "c3ba1e771fe2090e824402fda35afd7939c0a9488a0bd5aacd29d233580f6c3f"
+    },
+    {
+      "file": "images/brand/logo-dark.svg",
+      "unchanged": true,
+      "sha256": "30ce7a2963503e2bd9fea5914d2efbde412278f160125a33eca63eafcf21a6c9"
+    },
+    {
+      "file": "images/brand/logo.svg",
+      "unchanged": true,
+      "sha256": "3d820cf38cd7474298bdec6a532da5646e795a266618e236cad10eba3a92a66c"
+    },
+    {
+      "file": "images/brand/raster-manifest.json",
+      "unchanged": true,
+      "sha256": "c7fb4a4b634833d794f2110568d21e36479e64fd12c0cc9ab771290e6483e078"
+    },
+    {
+      "file": "images/brand/social.png",
+      "unchanged": true,
+      "sha256": "13a2415c3863121940e6349451ce56f0e2b57683e2aae456075884ecb7490aff"
+    },
+    {
+      "file": "images/brand/social.svg",
+      "unchanged": true,
+      "sha256": "7ebf91cb4bced5591dc321c3b3917dd69be3fb677226b19baa99504c489a1eb7"
+    },
+    {
+      "file": "images/brand/symbol-dark.svg",
+      "unchanged": true,
+      "sha256": "ae07e0e7f188058830119bf2d9167d3b8d0cbe1dea1960021dd27d542aefe8f4"
+    },
+    {
+      "file": "images/brand/symbol.svg",
+      "unchanged": true,
+      "sha256": "2e286b3c74e47be80bcd9bdc9bd1d94f119d75e8e5d96fc1cc6d8b6e535a63b5"
+    },
+    {
+      "file": "images/brand/touch-180.png",
+      "unchanged": true,
+      "sha256": "c1cd2d1a7eb1274937c31962513292f143d2c1d62fede48d987eb009a174c8c2"
+    }
+  ]
+}

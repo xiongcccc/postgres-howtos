@@ -22,6 +22,10 @@
 
 中文翻译、解读与技术校订：**xiongcc**。技术材料、图片及第三方库沿用各自的原始版权与许可声明，本项目不改变这些声明。
 
+## 许可与版权
+
+仓库目前没有统一覆盖全部文章的项目级 LICENSE。本轮不为上游译文、会议材料或技术博客重新声明授权；具体许可请以各篇来源及原作者声明为准。第三方库的固定版本、来源和许可证见 [vendor](vendor/README.md)，图标许可见 [images/icons/LICENSE](images/icons/LICENSE)。
+
 ## 贡献与反馈
 
 欢迎通过 [Issues](https://github.com/xiongcccc/postgres-howto/issues) 反馈问题或提交 Pull Request。请提供文章链接、PostgreSQL 版本和最小例子，移除业务数据与连接信息。

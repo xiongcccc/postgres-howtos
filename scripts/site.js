@@ -65,7 +65,8 @@
     closeNavigation(false);
     document.querySelectorAll('.app-nav a').forEach(function (a) {
       var current = location.hash.split('?')[0] || '#/README';
-      if (a.hash === current || (a.hash === '#/README' && current === '#/')) a.setAttribute('aria-current', 'page');
+      var route=a.dataset.docsRoute?'#'+a.dataset.docsRoute:a.hash;
+      if (route === current || (route === '#/README' && current === '#/')) a.setAttribute('aria-current', 'page');
       else a.removeAttribute('aria-current');
     });
     if (pendingSearch) { pendingSearch = false; document.querySelector('#article-query')?.focus(); }
@@ -118,7 +119,14 @@
       var href = target.getAttribute('href') || '';
       var match = href.match(/^\/?(?:\.\/)?(README|docs\/[\w-]+|maintenance\/[\w-]+)\.md(\?[^#]*)?$/);
       var route = target.dataset.docsRoute || (match ? '/' + match[1] + (match[2] || '') : '');
-      if (route) { event.preventDefault(); if(document.body.hasAttribute('data-static-page'))location.href='/#'+route;else location.hash = route; }
+      if (route) {
+        event.preventDefault();
+        if(document.body.hasAttribute('data-static-page'))location.href='/#'+route;
+        else if(location.hash==='#'+route&&target.closest('.site-header')){
+          window.scrollTo(0,0);
+          document.getElementById('main')?.focus({preventScroll:true});
+        }else location.hash=route;
+      }
     }
   });
   document.addEventListener('keydown', function (event) {

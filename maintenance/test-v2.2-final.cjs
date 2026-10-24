@@ -4,7 +4,6 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const {execFileSync} = require('node:child_process');
-const {chromium} = require(process.env.PLAYWRIGHT_PACKAGE || 'playwright');
 const catalog = require('../data/articles.json');
 const root = path.resolve(__dirname, '..');
 const base = process.env.HOWTO_URL || 'http://127.0.0.1:4176/';
@@ -16,7 +15,8 @@ const routes = [
   ['all','#/docs/find'], ['search','#/docs/find?q=work_mem'],
   ['explain','#/docs/1'], ['ordinary','#/docs/7'], ['locks','#/docs/42'],
   ['bpftrace','#/docs/98'], ['autovacuum','#/docs/102'], ['long','#/docs/105'],
-  ['about','#/docs/about'], ['static','/articles/105/'], ['directory','/articles/']
+  ['about','#/docs/about'], ['static','/articles/105/'], ['directory','/articles/'],
+  ['static-topics','/topics/'], ['static-paths','/paths/']
 ];
 const sha = data => crypto.createHash('sha256').update(data).digest('hex');
 fs.mkdirSync(output, {recursive:true});
@@ -24,10 +24,10 @@ fs.mkdirSync(output, {recursive:true});
 async function verifyVersion() {
   const files = ['index.html','docs/home.md','docs/topics.md','docs/paths.md','docs/about.md',
     'styles/custom.css','styles/reading.css','data/articles.json','data/search-index.json',
-    'sitemap.xml','robots.txt', ...fs.readdirSync(path.join(root,'scripts')).filter(f=>f.endsWith('.js')).map(f=>'scripts/'+f),
+    'sitemap.xml','robots.txt','topics/index.html','paths/index.html', ...fs.readdirSync(path.join(root,'scripts')).filter(f=>f.endsWith('.js')).map(f=>'scripts/'+f),
     ...fs.readdirSync(path.join(root,'images/brand')).filter(f=>/\.(svg|png)$/.test(f)).map(f=>'images/brand/'+f),
     'articles/index.html', ...catalog.articles.map(a=>'articles/'+a.id+'/index.html')];
-  const result = {checkedAt:new Date().toISOString(), base,
+  const result = {checkedAt:new Date().toISOString(), base, comparison:'working-tree',
     head:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),
     originMaster:execFileSync('git',['rev-parse','origin/master'],{cwd:root,encoding:'utf8'}).trim(), files:[]};
   for (const file of files) {
@@ -37,12 +37,13 @@ async function verifyVersion() {
   }
   fs.writeFileSync(path.join(output,'version.json'),JSON.stringify(result,null,2)+'\n');
   assert.ok(result.files.every(f=>f.status===200&&f.matchesLocal),'HTTP content must match checked-out source');
-  console.log('PASS: '+result.files.length+' HTTP files match '+result.head);
+  console.log('PASS: '+result.files.length+' HTTP files match working files (HEAD '+result.head+')');
 }
 
 (async () => {
   if (!process.argv.includes('--matrix-only')) await verifyVersion();
   if (process.argv.includes('--http-only')) return;
+  const {chromium} = require(process.env.PLAYWRIGHT_PACKAGE || 'playwright');
   const browser = await chromium.launch({headless:true,...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{})});
   const result = {checkedAt:new Date().toISOString(),base,baseline,browser:browser.version(),viewports,cases:[],components:[],errors:[],consoleErrors:[],httpErrors:[],failures:[]};
   const save = () => fs.writeFileSync(path.join(output,'matrix.json'),JSON.stringify(result,null,2)+'\n');
@@ -60,7 +61,7 @@ async function verifyVersion() {
       async function go(route) {
         await page.goto(new URL(route,base).href,{waitUntil:'domcontentloaded'});
         await page.locator('.markdown-section h1').first().waitFor();
-        if (!route.startsWith('/articles/')) await page.waitForFunction(()=>document.querySelector('.markdown-section')?.dataset.renderedRoute===location.hash);
+        if (!['/articles/','/topics/','/paths/'].some(prefix=>route.startsWith(prefix))) await page.waitForFunction(()=>document.querySelector('.markdown-section')?.dataset.renderedRoute===location.hash);
         if (route.includes('find')) await page.locator('.finder-results a').first().waitFor();
         if(await page.locator('.mermaid').count())await page.waitForFunction(()=>[...document.querySelectorAll('.mermaid')].every(e=>e.querySelector('svg')));
         await page.waitForTimeout(650);

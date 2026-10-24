@@ -1,0 +1,158 @@
+{
+  "base": "https://postgres-howto.cn/",
+  "checkedAt": "2026-10-24T13:51:27.245Z",
+  "browser": "155.0.8059.86",
+  "phase": "unchanged production baseline",
+  "cases": [
+    {
+      "width": 1440,
+      "mode": "light",
+      "name": "home",
+      "route": "#/README",
+      "status": 200,
+      "navigation": "document HTTP response",
+      "title": "PostgreSQL Howto | PostgreSQL Howto 中文版",
+      "h1": "PostgreSQL Howto",
+      "canonical": "https://postgres-howto.cn/",
+      "revision": "b921a28ec4230926",
+      "viewport": 1440,
+      "entitySnippets": 0
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "name": "search",
+      "route": "#/docs/find?q=work_mem",
+      "status": null,
+      "navigation": "fragment navigation; no new HTTP request",
+      "title": "全部文章 | PostgreSQL Howto 中文版",
+      "h1": "全部文章",
+      "canonical": "https://postgres-howto.cn/",
+      "revision": "b921a28ec4230926",
+      "viewport": 1440,
+      "entitySnippets": 0
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "name": "locks",
+      "route": "#/docs/42",
+      "status": null,
+      "navigation": "fragment navigation; no new HTTP request",
+      "title": "heavyweight locks 分析：锁树 | PostgreSQL Howto 中文版",
+      "h1": "heavyweight locks 分析：锁树",
+      "canonical": "https://postgres-howto.cn/articles/42/",
+      "revision": "b921a28ec4230926",
+      "viewport": 1440,
+      "entitySnippets": 0
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "name": "static",
+      "route": "/articles/105/",
+      "status": 200,
+      "navigation": "document HTTP response",
+      "title": "深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复 | PostgreSQL Howto 中文版",
+      "h1": "深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复",
+      "canonical": "https://postgres-howto.cn/articles/105/",
+      "revision": "b921a28ec4230926",
+      "viewport": 1440,
+      "entitySnippets": 0
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "name": "home",
+      "route": "#/README",
+      "status": 200,
+      "navigation": "document HTTP response",
+      "title": "PostgreSQL Howto | PostgreSQL Howto 中文版",
+      "h1": "PostgreSQL Howto",
+      "canonical": "https://postgres-howto.cn/",
+      "revision": "b921a28ec4230926",
+      "viewport": 390,
+      "entitySnippets": 0
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "name": "search",
+      "route": "#/docs/find?q=work_mem",
+      "status": null,
+      "navigation": "fragment navigation; no new HTTP request",
+      "title": "全部文章 | PostgreSQL Howto 中文版",
+      "h1": "全部文章",
+      "canonical": "https://postgres-howto.cn/",
+      "revision": "b921a28ec4230926",
+      "viewport": 390,
+      "entitySnippets": 0
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "name": "locks",
+      "route": "#/docs/42",
+      "status": null,
+      "navigation": "fragment navigation; no new HTTP request",
+      "title": "heavyweight locks 分析：锁树 | PostgreSQL Howto 中文版",
+      "h1": "heavyweight locks 分析：锁树",
+      "canonical": "https://postgres-howto.cn/articles/42/",
+      "revision": "b921a28ec4230926",
+      "viewport": 390,
+      "entitySnippets": 0
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "name": "static",
+      "route": "/articles/105/",
+      "status": 200,
+      "navigation": "document HTTP response",
+      "title": "深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复 | PostgreSQL Howto 中文版",
+      "h1": "深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复",
+      "canonical": "https://postgres-howto.cn/articles/105/",
+      "revision": "b921a28ec4230926",
+      "viewport": 390,
+      "entitySnippets": 0
+    }
+  ],
+  "noJS": [
+    {
+      "route": "/",
+      "status": 200,
+      "main": 0,
+      "codeBlocks": 0
+    },
+    {
+      "route": "/articles/105/",
+      "status": 200,
+      "main": 1,
+      "codeBlocks": 5
+    }
+  ],
+  "errors": [],
+  "missingStaticStatus": 404,
+  "fullText": [
+    {
+      "mode": "light",
+      "width": 1440,
+      "revision": "b921a28ec4230926",
+      "status": "14 篇匹配文章",
+      "entitySnippets": [
+        "…Postgres 次要或主要版本 不同的操作系统版本 不同的设置，如 work_mem 不同的硬件 规模变化：不同数量的客户端与数据库进行交互或不同的表大小 不同的文件系统 不建议将 SQL 查询中更改的模式更改视为&quot;差异&quot;，因为： 此类工作负载变化通常发生得非常快 完整的基准测试非常昂贵 可以在共…",
+        "…acuum_workers )、更多的内存 ( autovacuum_work_mem ) 以及更高的&quot;配额&quot; (通过 *_cost_limit 和 *_cost_delay 控制)。 检查点调优 同样，这个话题值得单独讨论。但简而言之，你需要考虑提高 checkpoint_timeout ，最重要…"
+      ]
+    },
+    {
+      "mode": "dark",
+      "width": 390,
+      "revision": "b921a28ec4230926",
+      "status": "14 篇匹配文章",
+      "entitySnippets": [
+        "…Postgres 次要或主要版本 不同的操作系统版本 不同的设置，如 work_mem 不同的硬件 规模变化：不同数量的客户端与数据库进行交互或不同的表大小 不同的文件系统 不建议将 SQL 查询中更改的模式更改视为&quot;差异&quot;，因为： 此类工作负载变化通常发生得非常快 完整的基准测试非常昂贵 可以在共…",
+        "…acuum_workers )、更多的内存 ( autovacuum_work_mem ) 以及更高的&quot;配额&quot; (通过 *_cost_limit 和 *_cost_delay 控制)。 检查点调优 同样，这个话题值得单独讨论。但简而言之，你需要考虑提高 checkpoint_timeout ，最重要…"
+      ]
+    }
+  ]
+}

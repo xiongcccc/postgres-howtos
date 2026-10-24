@@ -1,0 +1,51 @@
+[
+  {
+    "name": "build",
+    "args": [
+      "maintenance/build-catalog.mjs",
+      "--check"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "unit",
+    "args": [
+      "--test",
+      "maintenance/test-catalog.cjs",
+      "maintenance/test-seo.cjs"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "site-syntax",
+    "args": [
+      "--check",
+      "scripts/site.js"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "reading-syntax",
+    "args": [
+      "--check",
+      "scripts/reading.js"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "article-view-syntax",
+    "args": [
+      "--check",
+      "scripts/article-view.js"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "final-test-syntax",
+    "args": [
+      "--check",
+      "maintenance/test-final.cjs"
+    ],
+    "exitCode": 0
+  }
+]

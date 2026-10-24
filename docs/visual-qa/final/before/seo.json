@@ -1,0 +1,53 @@
+{
+  "head": "eb067abd83f9b5f5efc25865c6618b4b9a98d3f5",
+  "rows": [
+    {
+      "file": "index.html",
+      "bytes": 7541,
+      "main": false,
+      "headings": 1,
+      "staticArticleLinks": 0,
+      "canonical": []
+    },
+    {
+      "file": "articles/index.html",
+      "bytes": 28762,
+      "main": true,
+      "headings": 1,
+      "staticArticleLinks": 218,
+      "canonical": [
+        "https://postgres-howto.cn/articles/"
+      ]
+    },
+    {
+      "file": "articles/1/index.html",
+      "bytes": 31228,
+      "main": true,
+      "headings": 1,
+      "staticArticleLinks": 113,
+      "canonical": [
+        "https://postgres-howto.cn/articles/1/"
+      ]
+    },
+    {
+      "file": "articles/42/index.html",
+      "bytes": 53796,
+      "main": true,
+      "headings": 1,
+      "staticArticleLinks": 115,
+      "canonical": [
+        "https://postgres-howto.cn/articles/42/"
+      ]
+    },
+    {
+      "file": "articles/105/index.html",
+      "bytes": 58177,
+      "main": true,
+      "headings": 1,
+      "staticArticleLinks": 114,
+      "canonical": [
+        "https://postgres-howto.cn/articles/105/"
+      ]
+    }
+  ]
+}

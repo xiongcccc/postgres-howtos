@@ -3,8 +3,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
-import { lexer } from '../vendor/marked.cjs';
+import { parse } from '../vendor/marked.cjs';
 import {staticPages} from './static-pages.mjs';
+import {visibleText, staticMarkup} from './html-tools.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = p => fs.readFileSync(path.join(root, p), 'utf8');
@@ -92,21 +93,15 @@ outputs.set('README.md',banner+readme);
 outputs.set('docs/about.md',banner+read('maintenance/about-template.md'));
 outputs.set('docs/not-found.md',banner+'# 没有找到这篇文章\n\n链接可能不完整，或文章尚未收录。\n\n[查找文章](/docs/find.md) · [专题索引](/docs/topics.md) · [返回首页](/README.md)\n');
 outputs.set('robots.txt','User-agent: *\nAllow: /\nSitemap: https://postgres-howto.cn/sitemap.xml\n');
-function searchText(tokens) {
-  return tokens.map(token=>{
-    if (token.type==='table') return [...token.header,...token.rows.flat()].map(cell=>searchText(cell.tokens)).join(' ');
-    if (token.type==='list') return token.items.map(item=>searchText(item.tokens)).join(' ');
-    if (token.tokens) return searchText(token.tokens);
-    if (token.type==='html') return token.text.replace(/<!--[^]*?-->/g,' ').replace(/<[^>]*>/g,' ');
-    return token.text || '';
-  }).join(' ');
-}
-const index = catalog.articles.map(a=>({id:a.id,text:searchText(lexer(read(`docs/${a.id}.md`)))
+const index = catalog.articles.map(a=>({id:a.id,text:visibleText(parse(read(`docs/${a.id}.md`)))
   .replace(/https?:\/\/[^\s)]+/g,' ').replace(/\s+/g,' ').trim()}));
 const revision = createHash('sha256').update(JSON.stringify(catalog)+JSON.stringify(index)).digest('hex').slice(0,16);
 outputs.set('data/search-index.json', JSON.stringify({revision,articles:index})+'\n');
 outputs.set('scripts/catalog-data.js', '// Generated; do not edit.\nwindow.HowtoCatalog = '+JSON.stringify({...catalog,statistics,revision}).replaceAll('<','\\u003c')+';\n');
 let entry = read('index.html');
+const homeMarkers=/<!-- HOME_PRERENDER_START -->[^]*?<!-- HOME_PRERENDER_END -->/;
+assert.ok(homeMarkers.test(entry),'Homepage pre-render markers required');
+entry=entry.replace(homeMarkers,'<!-- HOME_PRERENDER_START -->\n<main class="content home-prerender"><article id="main" class="markdown-section" tabindex="-1">'+staticMarkup(parse(home),{home:true})+'</article></main>\n<!-- HOME_PRERENDER_END -->');
 for (const asset of ['scripts/catalog-data.js','scripts/search-core.js','scripts/article-view.js','scripts/site.js','scripts/finder.js','scripts/diagrams.js','scripts/reading.js','scripts/comments.js','styles/custom.css','styles/reading.css','images/brand/symbol.svg','images/brand/symbol-dark.svg','images/brand/favicon.svg','images/brand/favicon-32.png','images/brand/touch-180.png','images/brand/social.png']) {
   const hash=createHash('sha256').update(outputs.get(asset) || read(asset)).digest('hex').slice(0,16);
   const pattern=new RegExp('((?:\\./|https://postgres-howto\\.cn/)'+asset.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')(?:\\?v=[^"\\s]+)?(?=")','g');

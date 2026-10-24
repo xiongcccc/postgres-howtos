@@ -1,0 +1,90 @@
+{
+  "shifts": [
+    {
+      "time": 90.6000000089407,
+      "value": 0.093,
+      "sources": [
+        {
+          "node": "<footer class=\"site-footer\">\n    <div><a href=\"#/docs/about\">关于项目</a><a href=\"/articles/\">文章目录</a><a href=\"https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos\" target=\"_blank\" rel=\"noopener\">上游来源</a><a href=\"https://xiongcc.cn/\" targ",
+          "prev": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "current": {
+            "x": 0,
+            "y": 880,
+            "width": 1440,
+            "height": 93,
+            "top": 880,
+            "right": 1440,
+            "bottom": 973,
+            "left": 0
+          }
+        }
+      ]
+    },
+    {
+      "time": 112.5,
+      "value": 0.093,
+      "sources": [
+        {
+          "node": "<footer class=\"site-footer\">\n    <div><a href=\"#/docs/about\">关于项目</a><a href=\"/articles/\">文章目录</a><a href=\"https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos\" target=\"_blank\" rel=\"noopener\">上游来源</a><a href=\"https://xiongcc.cn/\" targ",
+          "prev": {
+            "x": 0,
+            "y": 880,
+            "width": 1440,
+            "height": 93,
+            "top": 880,
+            "right": 1440,
+            "bottom": 973,
+            "left": 0
+          },
+          "current": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        }
+      ]
+    }
+  ],
+  "hero": [
+    {
+      "tag": "H1",
+      "cls": "",
+      "height": 52.5
+    },
+    {
+      "tag": "P",
+      "cls": "home-hero__lead",
+      "height": 34
+    },
+    {
+      "tag": "P",
+      "cls": "home-hero__summary",
+      "height": 27
+    },
+    {
+      "tag": "P",
+      "cls": "home-stats",
+      "height": 25.890625
+    },
+    {
+      "tag": "DIV",
+      "cls": "article-finder",
+      "height": 114
+    }
+  ],
+  "body": "reading-home ready sticky"
+}

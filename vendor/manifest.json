@@ -1,5 +1,23 @@
 [
   {
+    "file": "parse5.mjs",
+    "source": "https://esm.sh/parse5@7.2.1/es2022/parse5.bundle.mjs",
+    "bytes": 181046,
+    "sha256": "c1ffc636ee27b37b8f18202d2705bcb7b2cc7f628496d761a87e0f4e950a728d"
+  },
+  {
+    "file": "parse5.LICENSE",
+    "source": "https://cdn.jsdelivr.net/npm/parse5@7.2.1/LICENSE",
+    "bytes": 1109,
+    "sha256": "8c535800331e1e4439835555b3f9edc7fe9dee2fab0d8bbbd5a982e8b8343d4d"
+  },
+  {
+    "file": "entities.LICENSE",
+    "source": "https://cdn.jsdelivr.net/npm/entities@4.5.0/LICENSE",
+    "bytes": 1260,
+    "sha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164"
+  },
+  {
     "file": "prism-clike.min.js",
     "source": "https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-clike.min.js",
     "bytes": 708,

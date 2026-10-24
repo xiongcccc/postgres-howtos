@@ -3,6 +3,12 @@
   function escape(value) { return String(value || '').replace(/[&<>"']/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
   function url(id) { return '/articles/' + id + '/'; }
   function canonical(id) { return 'https://postgres-howto.cn' + url(id); }
+  function discovery(route) {
+    return {
+      '/docs/topics':{url:'/topics/',title:'专题',description:'按技术场景浏览 PostgreSQL Howto 中文版，包含主归属与跨专题收录。'},
+      '/docs/paths':{url:'/paths/',title:'学习路径',description:'从判断依据到具体操作，沿 PostgreSQL Howto 中文版的六条学习路径深入阅读。'}
+    }[route.replace(/\.md$/,'')];
+  }
   function title(a) {
     var at=a.title.indexOf('：');
     return at>0&&a.title.length>30?escape(a.title.slice(0,at+1))+'<span class="article-title-detail">'+escape(a.title.slice(at+1))+'</span>':escape(a.title);
@@ -26,6 +32,6 @@
   function schema(a) {
     return {'@context':'https://schema.org','@type':a.type==='editorial'?'Article':'TechArticle',headline:a.title,inLanguage:'zh-CN',url:canonical(a.id),mainEntityOfPage:canonical(a.id),citation:a.source.url,keywords:a.aliases,datePublished:a.addedOn||undefined};
   }
-  var api={escape:escape,url:url,canonical:canonical,title:title,codeInfo:codeInfo,meta:meta,footer:footer,schema:schema};
+  var api={escape:escape,url:url,canonical:canonical,discovery:discovery,title:title,codeInfo:codeInfo,meta:meta,footer:footer,schema:schema};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.HowtoArticle=api;
 })(typeof window==='undefined'?globalThis:window);

@@ -1,0 +1,29 @@
+{
+  "browser": "155.0.8059.86",
+  "base": "http://127.0.0.1:4176/",
+  "head": "eb067abd83f9b5f5efc25865c6618b4b9a98d3f5",
+  "homeNoJS": {
+    "main": false,
+    "topics": 0,
+    "paths": 0,
+    "text": "跳至正文\nPostgreSQL Howto中文版\n首页\n专题\n学习路径\n全部文章\nGitHub\nPostgreSQL Howto 中文版\n\n面向真实工程问题的 PostgreSQL 实践知识库。\n\n阅读全部文章，或在 GitHub 仓库查看原文。"
+  },
+  "search": [
+    "How to tune work_mem 原作者：Nikolay Samokhvalov · 英文原文 · 中文翻译与校订：xiongcc work_mem 用于查询执行期间排序和哈希操作的内存分配。默认情况下，其大小为 4MB。 由于其性质，调优 work_mem 相对复杂。 这里介绍了一种可能的调优方法。 work…",
+    "…发生在哪一层，以及系统有没有机会正常处理错误。 要控制这类风险，光看 work_mem 不够。需要同时理解执行节点的内存、查询并发量，以及内存申请失败后的处理路径。 work_mem 管的是哪些内存？ work_mem 为排序、哈希等执行操作提供内存预算。排序数据放不下时，可以生成有序的临时文件，再合并这些文件；哈希连…",
+    "…, 'vacuum_cost_delay', 'autovacuum_work_mem', 'maintenance_work_mem', 'track_cost_delay_timing' ) ORDER BY name; 本次 PostgreSQL 18.4 实例中， autovacuum_max_workers …",
+    "…Postgres 次要或主要版本 不同的操作系统版本 不同的设置，如 work_mem 不同的硬件 规模变化：不同数量的客户端与数据库进行交互或不同的表大小 不同的文件系统 不建议将 SQL 查询中更改的模式更改视为&quot;差异&quot;，因为： 此类工作负载变化通常发生得非常快 完整的基准测试非常昂贵 可以在共…",
+    "… Postgres 参数，如 statement_timeout 或 work_mem )，但此处我们重点关注 application_name 。 通常， application_name 是通过 SET 设置的 (抱歉使用了同源词)： nik=# show application_name; application…",
+    "…acuum_workers )、更多的内存 ( autovacuum_work_mem ) 以及更高的&quot;配额&quot; (通过 *_cost_limit 和 *_cost_delay 控制)。 检查点调优 同样，这个话题值得单独讨论。但简而言之，你需要考虑提高 checkpoint_timeout ，最重要…",
+    "… 同时进行的事务，每个事务持有其他事务所需的锁。 临时文件 — 由于 work_mem 不足，查询产生的临时文件。 终止后台进程 — 使用 pg_terminate_backend() 或 pg_cancel_backend() 终止随机的后台进程或查询。 连接失败 — 耗尽所有可用连接 (其他客户端无法连接到 Pos…",
+    "…source <> 'default' and ( name ~ '(work_mem$|^enable_|_cost$|scan_size$|effective_cache_size|^jit)' or name ~ '(^geqo|default_statistics_target|constraint_exclu…",
+    "…tatement_timeout to 0; maintenance_work_mem ：将此参数 ( 文档 ) 提高到几百 MiB 或几 GiB (在较大的系统上) 以更快地创建索引。 CONCURRENTLY 除非以下情况，建议始终使用 CONCURRENTLY 选项： 在一个尚未使用的表上创建索引 — 例如，一个…",
+    "…建时间。以下是一些常见方法： 配置调优 提高 maintenance_work_mem ，此前已经描述过。 🎯 TODO : 通过实验展示如何调整此参数。 检查点调优 ：临时提高 max_wal_size 和 checkpoint_timeout (无需重启) 以减少检查点频率，这可能会提高创建的时间。 🎯 TOD…",
+    "…---------------+------- autovacuum_work_mem | -1 dynamic_shared_memory_type | posix enable_memoize | on hash_mem_multiplier | 2 logical_decoding_work_mem | 64MB…",
+    "…示可用于缓存数据的内存量，包括操作系统缓存。 maintenance_work_mem = 2GB 提高维护性操作 (比如 VACUUM 、 CREATE INDEX 等) 的性能。 checkpoint_completion_target = 0.9 控制 checkpoint 的完成目标，通过分散写入活动来减少 I…",
+    "…on log_autovacuum_min_duration = 0 work_mem = '1MB' shared_buffers = '128MB' max_wal_size = '256MB' checkpoint_timeout = '30s' 启动： runuser -u postgres -- pg_ctl…",
+    "…话用过的查询、缓存的状态和扩展，也会影响它的实际占用。 评估内存时， work_mem 尤其容易被误用。它限制的是排序、哈希等查询操作的内存使用，不是连接建立后预先分配的固定额度。一条复杂 SQL 可能同时运行多个这样的操作，多个会话和并行 worker 也可能同时消耗内存。哈希操作还受 hash_mem_multip…"
+  ],
+  "staticImage": "Example output that shows the &quot;forest of lock trees&quot;",
+  "homeTitle": "heavyweight locks 分析：锁树 | PostgreSQL Howto 中文版"
+}

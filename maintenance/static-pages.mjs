@@ -2,6 +2,7 @@ import {createRequire} from 'node:module';
 import {createHash} from 'node:crypto';
 import {Marked, Renderer} from '../vendor/marked.cjs';
 import view from '../scripts/article-view.js';
+import {staticHref, staticMarkup, visibleText} from './html-tools.mjs';
 
 const require=createRequire(import.meta.url);
 const Prism=require('../vendor/prism-core.min.js');
@@ -30,10 +31,11 @@ export function staticPages(catalog, read, outputs) {
       return `<details data-topic="${t.id}"${current?' open data-current-topic="true"':''}><summary><span>${e(t.title)}</span><small>${items.length}</small></summary><ul>`+items.map(a=>`<li><a href="${view.url(a.id)}"${active?.id===a.id?' aria-current="page"':''}><span class="article-number">${a.id}</span><span>${e(a.title)}</span></a></li>`).join('')+'</ul></details>';
     }).join('')+'<div class="sidebar-resources"><a href="/#/docs/series">系列阅读</a><a href="/#/docs/conferences">会议精选</a><a href="/#/docs/about">关于项目</a></div></nav></div></aside>';
   }
-  function page({a,title,description,body}) {
-    const replacements={TITLE:e(title+' | PostgreSQL Howto 中文版'),DESCRIPTION:e(description),CANONICAL:a?view.canonical(a.id):origin+'/articles/',
+  function page({a,title,description,body,url='/articles/'}) {
+    const replacements={TITLE:e(title+' | PostgreSQL Howto 中文版'),DESCRIPTION:e(description),CANONICAL:a?view.canonical(a.id):origin+url,
       BODY_CLASS:a?'reading-article':'reading-home',ARTICLE_ATTRIBUTE:a?`data-static-article="${a.id}"`:'',BODY:body,SIDEBAR:sidebar(a),
       OG_TYPE:a?'article':'website',
+      PRIMARY_NAV:[['首页','/'],['专题','/topics/'],['学习路径','/paths/'],['全部文章','/articles/']].map(([label,href])=>`<a href="${href}"${!a&&url===href?' aria-current="page"':''}>${label}</a>`).join('')+'<a href="https://github.com/xiongcccc/postgres-howto" target="_blank" rel="noopener">GitHub</a>',
       BASE_CSS:asset('styles/custom.css'),READING_CSS:asset('styles/reading.css'),
       SYMBOL_LIGHT:asset('images/brand/symbol.svg'),SYMBOL_DARK:asset('images/brand/symbol-dark.svg'),
       FAVICON_PNG:asset('images/brand/favicon-32.png'),FAVICON_SVG:asset('images/brand/favicon.svg'),TOUCH_ICON:asset('images/brand/touch-180.png'),SOCIAL_IMAGE:origin+asset('images/brand/social.png'),
@@ -58,12 +60,11 @@ export function staticPages(catalog, read, outputs) {
         return `<div class="code-block"><div class="code-toolbar"><span>${info.label}</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码">${icon('copy')}</button></div><pre data-lang="${e(lang)}" data-code-kind="${info.kind}" tabindex="0" aria-label="${info.label} 代码"><code>${codeWhitespace(rendered)}\n</code></pre></div>\n`;
       },
       link(href,title,text){
-        const numbered=href?.match(/^\/docs\/(\d+)\.md(?:\?id=(.*))?$/);
-        if(numbered)href=view.url(numbered[1])+(numbered[2]?'#'+numbered[2]:'');
-        else if(/^\/(?:docs|maintenance)\/.+\.md/.test(href||''))href='/#'+href.replace(/\.md(?=\?|$)/,'');
+        href=staticHref(href);
+        if(/^\/maintenance\/.+\.md/.test(href||''))href='/#'+href.replace(/\.md(?=\?|$)/,'');
         return defaults.link(href,title,text);
       },
-      image(href,title,text){return `<img src="${e(href)}" alt="${e(text)}"${title?' title="'+e(title)+'"':''} loading="lazy" decoding="async">`;},
+      image(href,title,text){return `<img src="${e(href)}" alt="${e(visibleText(text))}"${title?' title="'+e(title)+'"':''} loading="lazy" decoding="async">`;},
       table(header,body){return '<div class="table-scroll" role="region" aria-label="表格，可横向滚动" tabindex="0">'+defaults.table(header,body)+'</div>\n';}
     }});
     const tokens=marked.lexer(read(`docs/${a.id}.md`));
@@ -77,12 +78,16 @@ export function staticPages(catalog, read, outputs) {
     // Insert metadata after the first heading without reparsing or editing article text.
     const firstHeadingEnd=body.indexOf('</h1>')+5;
     body=body.slice(0,firstHeadingEnd)+meta+toc+body.slice(firstHeadingEnd);
-    const top=`<div class="article-topline"><nav class="breadcrumbs" aria-label="面包屑"><a href="/">首页</a><span aria-hidden="true">/</span><a href="/#/docs/topics?id=topic-${primary.id}">${e(primary.title)}</a></nav></div>`;
+    const top=`<div class="article-topline"><nav class="breadcrumbs" aria-label="面包屑"><a href="/">首页</a><span aria-hidden="true">/</span><a href="/topics/#topic-${primary.id}">${e(primary.title)}</a></nav></div>`;
     const discussion='<section id="gitalk-container" class="article-discussion"><h2>讨论与补充</h2><a target="_blank" rel="noopener" href="https://github.com/xiongcccc/gitalk-comment/issues?q='+encodeURIComponent('is:issue "/docs/'+a.id+'"')+'">查看与参与 GitHub 讨论</a></section>';
     return page({a,title:a.title,description:a.title+'。'+a.versionNote,body:top+body+view.footer(catalog,a,view.url)+discussion});
   }
   for(const a of catalog.articles)outputs.set(`articles/${a.id}/index.html`,render(a));
   const directory='<h1>全部文章</h1><p>PostgreSQL Howto 中文版 · '+catalog.articles.length+' 篇文章。按主归属专题排列，保留原始来源与验证说明。</p><p><a href="/#/docs/find">搜索与多维筛选</a> · <a href="/#/docs/paths">学习路径</a></p>'+catalog.topics.map(t=>'<section><h2>'+e(t.title)+'</h2><ul>'+catalog.articles.filter(a=>a.topics[0]===t.id).map(a=>`<li><a href="${view.url(a.id)}">${e(a.title)}</a></li>`).join('')+'</ul></section>').join('');
   outputs.set('articles/index.html',page({title:'全部文章',description:'按技术专题浏览 PostgreSQL Howto 中文版的全部文章。',body:directory}));
-  outputs.set('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+['/', '/articles/', ...catalog.articles.map(a=>view.url(a.id))].map(p=>`  <url><loc>${origin+p}</loc></url>`).join('\n')+'\n</urlset>\n');
+  for(const name of ['topics','paths']){
+    const info=view.discovery('/docs/'+name);
+    outputs.set(name+'/index.html',page({...info,body:staticMarkup(new Marked({gfm:true}).parse(outputs.get('docs/'+name+'.md')))}));
+  }
+  outputs.set('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+['/', '/topics/', '/paths/', '/articles/', ...catalog.articles.map(a=>view.url(a.id))].map(p=>`  <url><loc>${origin+p}</loc></url>`).join('\n')+'\n</urlset>\n');
 }

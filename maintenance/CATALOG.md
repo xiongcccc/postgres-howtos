@@ -18,11 +18,11 @@
 2. 更新 `data/articles.json` 的对应记录。主题的第一个值决定侧栏位置，其他主题用于交叉收录；学习路径只填写不重复的真实文章 ID。
 3. 首页文字在 `maintenance/home-template.md` 编辑，推荐文章 ID 在元数据的 `featured` 中编辑。
 4. 执行 `node maintenance/build-catalog.mjs`。自动生成 README、网站首页、侧栏、专题、路径、会议页、搜索索引及静态文章；这些生成文件需要一起提交。
-5. 执行 `node --test maintenance/test-catalog.cjs` 和 `git diff --check`。
+5. 执行 `node --test maintenance/test-catalog.cjs maintenance/test-seo.cjs` 和 `git diff --check`。
 
 生成工具也会更新 `index.html` 中本地脚本和样式的内容哈希，避免发布后继续使用旧版资源。修改这些脚本或样式后也应重新运行生成工具。`index.html` 的其余配置仍可直接编辑。
 
-生成工具使用 Node.js 与仓库内固定版本的 Marked 解析器，不需要 npm install。网站访问不需要 Node.js 或额外服务。网站的全文索引在首次输入关键词时加载；失败时保留标题与别名搜索，显示重试入口。搜索内容不发送给外部搜索服务。
+生成工具使用 Node.js 与仓库内固定版本的 Marked、parse5 解析器，不需要 npm install。parse5 仅在构建和测试时使用，用于提取 HTML 可见文字和转换静态链接，不进入浏览器；不要通过全局替换实体字符改变代码字面量。网站访问不需要 Node.js 或额外服务。网站的全文索引在首次输入关键词时加载；失败时保留标题与别名搜索，显示重试入口。搜索内容不发送给外部搜索服务。
 
 路径记录还需提供稳定的 `id` 和 `goal`。首页各区块通过 `maintenance/home-template.md` 的具名 HOME 标记生成到 `docs/home.md`；Docsify 保留 `#/README` 和 `#/README.md` 作为首页别名。GitHub README 由 `maintenance/readme-template.md` 独立生成，不再承担网站的 HTML 首页。关于项目文字位于 `maintenance/about-template.md`，生成 `docs/about.md`；`docs/not-found.md`、robots 和 sitemap 同样由生成器维护。
 
@@ -32,9 +32,15 @@
 
 静态入口使用 `/articles/编号/`，自引用 canonical。旧 `#/docs/编号`、`.md` 形式及章节参数继续由 Docsify 提供，显示对应静态 canonical，不强制重定向。静态目录与 Sitemap 提供全部独立入口，首页页脚也链接到静态目录。仓库已有 `.nojekyll`，GitHub Pages 按原发布方式托管目录内的 index.html，不需要额外服务或 rewrite。
 
+首页初始 HTML 也由同一份 `maintenance/home-template.md` 生成，位于 `index.html` 的 `HOME_PRERENDER_START/END` 标记之间，不直接编辑标记内内容。无 JavaScript 时提供完整专题、路径和最近文章；搜索需要 JavaScript，初始入口为静态文章目录。加载旧文章 URL 时先显示载入提示，不闪现首页正文；Docsify 正常启动后接管 `#app`，不保留重复正文。
+
+`/topics/` 和 `/paths/` 从同轮生成的专题与路径 Markdown 构建，使用与文章一致的静态模板、样式及头部导航。首页初始链接、文章面包屑可直接进入这些页面；旧 Hash 入口继续工作，canonical 对应新静态入口。Sitemap 为首页、三种目录页和全部编号文章，不收录筛选参数或 Hash URL。共享 Hash 外壳的初始 HTML 不硬编码首页 canonical，以免旧文章地址先声明错误的 canonical；运行时按实际路由补齐，独立页面则始终在初始 HTML 提供自引用 canonical。
+
 `scripts/article-view.js` 由 Node 构建和浏览器共享元数据、文末推荐、代码类型与结构化数据逻辑；静态页和旧文章共用 CSS 与 `reading.js` 渐进增强。静态页面模板为 `maintenance/static-template.html`，不要直接编辑生成的 HTML。语法核心仅在构建时使用，静态浏览器不下载 Docsify/Marked/Prism 来重新生成正文。
 
 Sitemap 不填 fragment 地址，也不编造 lastmod。独立入口、可抓取正文、canonical 和结构化数据是可验证的工程条件，不保证搜索引擎收录或排名；上线后仍需核验生产 HTTP 响应及 Search Console。
+
+`maintenance/test-seo.cjs` 与目录测试一起在 CI 运行：核对全部编号文章的初始正文、元数据、代码保真、标题 ID 唯一性，以及 Sitemap 内部链接、章节锚点和静态发现路径。测试从同一元数据读取预期值，不另维护文章清单。
 
 `scripts/site.js` 管理主题、抽屉、对话框与剪贴板，`finder.js` 管理搜索状态，`reading.js` 管理文章导航、目录与元数据，`diagrams.js` 按需加载 Mermaid。基础版式在 custom.css，页面组件在 reading.css；修改后运行生成器更新内容哈希。Docsify 4.13.1 在 doneEach 之前计算锚点，阅读增强插入元数据和目录后会用其现有定位机制重新计算；升级框架时须回归深链接与刷新。
 
@@ -61,6 +67,9 @@ Docsify 4.13.1 的旧 Hash 锚点会自行启动 500ms JavaScript 动画；阅�
 提交后仍需待 GitHub Pages 完成部署，在实际域名复查首页、搜索索引版本与代表文章。静态检查通过不等于线上部署已完成；本地验收后不自动推送。
 
 V2.2.1 图片阅读回归运行 `node maintenance/test-v2.2.1.cjs`：覆盖六种精确视口、两种主题、旧路由及静态文章的适应窗口/原始尺寸切换、局部滚动、键盘与触摸平移、关闭后的焦点返回、重开复位，以及小图、竖图与横屏。复制按钮使用内侧焦点边框，避免被代码容器裁切。环境变量与上述浏览器脚本相同；默认输出 `docs/visual-qa/v2.2.1/reading`。图标沿用 `images/icons/LICENSE` 下的 Lucide 资源，不增加运行时依赖。
+
+发布后深度精修专项运行 `node maintenance/test-final.cjs`，默认输出 `docs/visual-qa/final/focused`。它验证无 JavaScript 的首页/专题/路径/目录，静态与旧入口的 canonical、四组桌面/移动深浅色检索、实体字符摘要、键盘复制、首页回顶，以及延迟加载 Docsify 时的初始内容与接管。通用精确尺寸矩阵现包含静态专题和路径；`test-v2.2-final.cjs --http-only` 不依赖 Playwright，只需 Node.js。
+
 # 收录日期
 
 首页“最近收录”使用文章的 `addedOn`（YYYY-MM-DD），按日期倒序排列，同日按编号倒序。历史日期取 Git 首次新增该文章的日期，不使用会议日期或后续校订日期；新增精选项必须补齐此字段。

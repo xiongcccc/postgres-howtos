@@ -1,0 +1,11 @@
+PASS: nine search queries, shortcuts, counts, preserved sidebar state, responsive TOC and refreshed anchors
+PASS: all 109 static HTML responses readable without JS, original fenced code byte-for-byte, canonical, native TOC and real 404
+PASS: static/legacy reading across six widths and both themes, copy, deep links, real QR images and focus
+AssertionError [ERR_ASSERTION]: Local startup layout shift: {"path":"/","width":1440,"lcp":116,"cls":0.186,"resources":[{"path":"/styles/reading.css","bytes":14346},{"path":"/styles/custom.css","bytes":19718},{"path":"/images/brand/symbol.svg","bytes":134},{"path":"/scripts/catalog-data.js","bytes":80896},{"path":"/scripts/search-core.js","bytes":3049},{"path":"/scripts/article-view.js","bytes":4908},{"path":"/images/brand/symbol-dark.svg","bytes":134},{"path":"/scripts/finder.js","bytes":9465},{"path":"/scripts/site.js","bytes":13747},{"path":"/scripts/diagrams.js","bytes":2281},{"path":"/scripts/reading.js","bytes":15610},{"path":"/scripts/comments.js","bytes":1088},{"path":"/vendor/prism-sql.min.js","bytes":3261},{"path":"/vendor/prism-json.min.js","bytes":449},{"path":"/vendor/prism-python.min.js","bytes":2113},{"path":"/vendor/prism-bash.min.js","bytes":6143},{"path":"/vendor/docsify.min.js","bytes":160920},{"path":"/vendor/prism-java.min.js","bytes":2770},{"path":"/vendor/prism-c.min.js","bytes":1893},{"path":"/vendor/prism-ini.min.js","bytes":607},{"path":"/vendor/prism-yaml.min.js","bytes":1970},{"path":"/images/icons/search.svg","bytes":273},{"path":"/images/icons/monitor.svg","bytes":346},{"path":"/docs/home.md","bytes":9116},{"path":"/images/brand/favicon.svg","bytes":208},{"path":"/_sidebar.md","bytes":6806},{"path":"/images/icons/sliders-horizontal.svg","bytes":583},{"path":"/images/brand/favicon.svg","bytes":208}],"conditions":"Local Chrome, height 1000px, no throttling, independent profile, 1s after content, analytics blocked; not field CWV"}
+    at /Users/xiongcancan/.codex/worktrees/3a30/postgres-howto/maintenance/test-v2.1.cjs:103:41 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '=='
+}

@@ -1,0 +1,120 @@
+{
+  "head": "eb067abd83f9b5f5efc25865c6618b4b9a98d3f5",
+  "phase": "fresh baseline before product edits",
+  "files": [
+    {
+      "file": "home-1440x900-light.png",
+      "source": "/tmp/howto-final-before/home-1440x900-light.png",
+      "bytes": 349069,
+      "sha256": "ff7f031acb7c774ed575e2db9976d241ba8d581ea05423cdc44445d067e98f8b"
+    },
+    {
+      "file": "home-1440x900-dark.png",
+      "source": "/tmp/howto-final-before/home-1440x900-dark.png",
+      "bytes": 349948,
+      "sha256": "f31bf09212f37217cdd6d39e23a5b3d229011b3eb0b961a0349a8a73b087d315"
+    },
+    {
+      "file": "home-390x844-dark.png",
+      "source": "/tmp/howto-final-before/home-390x844-dark.png",
+      "bytes": 317772,
+      "sha256": "94880fba8d4265fe61dce29530e5c20afa988d41007e81a87ea27dbb50ef9a4b"
+    },
+    {
+      "file": "search-1440x900-light.png",
+      "source": "/tmp/howto-final-before/search-1440x900-light.png",
+      "bytes": 540976,
+      "sha256": "4970342feb8fcf3cc06aadd86b04477afc7d7114bf390fa7f8528d478f888782"
+    },
+    {
+      "file": "table-390x844-dark.png",
+      "source": "/tmp/howto-final-before/table-390x844-dark.png",
+      "bytes": 75623,
+      "sha256": "7f705100854d753a8d8269e6949bd0aceff5ef971f49bfd1f20f763bb854a91a"
+    },
+    {
+      "file": "sql-1440x900-light.png",
+      "source": "/tmp/howto-final-before/sql-1440x900-light.png",
+      "bytes": 170625,
+      "sha256": "8ba37c813145f9a2cd619da18cc927a9538950c4656567530ad9e506c58c1b1a"
+    },
+    {
+      "file": "long-390x844-dark.png",
+      "source": "/tmp/howto-final-before/long-390x844-dark.png",
+      "bytes": 96958,
+      "sha256": "9b9606270392d143f068afd5f440d27fe0bea9f0978f1b54122e4cd858af925b"
+    },
+    {
+      "file": "matrix.json",
+      "source": "/tmp/howto-final-before/matrix.json",
+      "bytes": 207684,
+      "sha256": "e0d1045147ce405c8bc63d50bbbd78f263245353c8b44ad3c058e2b8ca29ba2e"
+    },
+    {
+      "file": "version.json",
+      "source": "/tmp/howto-final-before/version.json",
+      "bytes": 25662,
+      "sha256": "cc6f444368c9dd8acdfbf0b587a8960eb1addd86affbad8ddb564434b5b0afc7"
+    },
+    {
+      "file": "home-no-js.png",
+      "source": "/tmp/howto-final-semantic-before/home-no-js.png",
+      "bytes": 39254,
+      "sha256": "b14bf299ed8ca97f891ab6b6c39f4e5a336ef04d0ab6ac398a1d52bc9a1c02a7"
+    },
+    {
+      "file": "search-entities.png",
+      "source": "/tmp/howto-final-semantic-before/search-entities.png",
+      "bytes": 540829,
+      "sha256": "230870913cf6b06b943b2cc8bff15c733d6f2eb7e272fe8da04d93cd57b35848"
+    },
+    {
+      "file": "seo.json",
+      "source": "/tmp/howto-final-semantic-before/seo.json",
+      "bytes": 1131,
+      "sha256": "796967166dae2621e823a3be6a34eb72d2892ea0531d938929f251950336f9c1"
+    },
+    {
+      "file": "browser.json",
+      "source": "/tmp/howto-final-semantic-before/browser.json",
+      "bytes": 4730,
+      "sha256": "cf0efa639216ca5863823669a2381bfbab49a00dde8898fe78b734a99c0e0f05"
+    },
+    {
+      "file": "production-http.json",
+      "source": "/tmp/howto-final-live-before/version.json",
+      "bytes": 25666,
+      "sha256": "045778ebeb2ed459de7330c0a7bb9ce02e60d297a5d7fbf684b60488d5effcfd"
+    },
+    {
+      "file": "production-browser.json",
+      "source": "/tmp/howto-final-production-browser/production.json",
+      "bytes": 5886,
+      "sha256": "35729f38e242ec471290e8064c72462d430d2583647f20f21f7f4f4f91416240"
+    },
+    {
+      "file": "production-home-1440-light.png",
+      "source": "/tmp/howto-final-production-browser/home-1440-light.png",
+      "bytes": 110062,
+      "sha256": "a7d72ad3f9878ffe32a528e381262699b1ed7884f04b94f3011d22175492c5e6"
+    },
+    {
+      "file": "production-home-390-dark.png",
+      "source": "/tmp/howto-final-production-browser/home-390-dark.png",
+      "bytes": 73241,
+      "sha256": "cc050b5776152906027fa7da1482f440a3a4a98c4448b42b34fde1b0c5fefea7"
+    },
+    {
+      "file": "production-search-fulltext-1440-light.png",
+      "source": "/tmp/howto-final-production-browser/search-fulltext-1440-light.png",
+      "bytes": 186330,
+      "sha256": "3b01736ab6718f5f6b85f3b64908508f582298333c3c538eef5d7146d5b146ad"
+    },
+    {
+      "file": "production-search-fulltext-390-dark.png",
+      "source": "/tmp/howto-final-production-browser/search-fulltext-390-dark.png",
+      "bytes": 97994,
+      "sha256": "b372696b3b056c88c00329dbd16a84b03fa15fcc7bdd2579e36b98a5773ce455"
+    }
+  ]
+}

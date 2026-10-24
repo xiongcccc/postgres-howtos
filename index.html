@@ -28,17 +28,17 @@
       document.documentElement.dataset.view=/^\/?(?:README(?:\.md)?)?$/i.test(route)?'home':/^\/docs\/\d+/.test(route)?'article':'page';
     })();
   </script>
-  <link rel="stylesheet" href="./styles/custom.css?v=0c60c003b9cbb000">
+  <link rel="stylesheet" href="./styles/custom.css?v=8808497e22e2b3a2">
   <link rel="stylesheet" href="./styles/reading.css?v=0955980ffd4a6a57">
 </head>
-<body data-loading>
+<body class="reading-home" data-loading>
   <script>document.body.classList.toggle('reading-home',document.documentElement.dataset.view==='home');document.body.classList.toggle('reading-article',document.documentElement.dataset.view==='article');</script>
   <a class="skip-link" href="#main" data-skip>跳至正文</a>
   <header class="site-header">
     <button id="sidebar-toggle" class="icon-button mobile-menu js-only" type="button" aria-label="打开导航" aria-controls="site-sidebar" aria-expanded="false" title="打开导航"><span class="icon icon-menu" aria-hidden="true"></span></button>
-    <a class="site-brand" href="#/README" aria-label="PostgreSQL Howto 中文版首页"><span class="brand-icon" aria-hidden="true"><img class="brand-light" src="./images/brand/symbol.svg?v=2e286b3c74e47be8" width="32" height="32" alt=""><img class="brand-dark" src="./images/brand/symbol-dark.svg?v=ae07e0e7f1880588" width="32" height="32" alt=""></span><span class="brand-wordmark">PostgreSQL <strong>Howto</strong><small>中文版</small></span></a>
+    <a class="site-brand" href="/" data-docs-route="/README" aria-label="PostgreSQL Howto 中文版首页"><span class="brand-icon" aria-hidden="true"><img class="brand-light" src="./images/brand/symbol.svg?v=2e286b3c74e47be8" width="32" height="32" alt=""><img class="brand-dark" src="./images/brand/symbol-dark.svg?v=ae07e0e7f1880588" width="32" height="32" alt=""></span><span class="brand-wordmark">PostgreSQL <strong>Howto</strong><small>中文版</small></span></a>
     <nav class="app-nav" aria-label="主导航">
-      <a href="#/README">首页</a><a href="#/docs/topics">专题</a><a href="#/docs/paths">学习路径</a><a href="#/docs/find">全部文章</a><a href="https://github.com/xiongcccc/postgres-howto" target="_blank" rel="noopener">GitHub</a>
+      <a href="/" data-docs-route="/README">首页</a><a href="/topics/" data-docs-route="/docs/topics">专题</a><a href="/paths/" data-docs-route="/docs/paths">学习路径</a><a href="/articles/" data-docs-route="/docs/find">全部文章</a><a href="https://github.com/xiongcccc/postgres-howto" target="_blank" rel="noopener">GitHub</a>
     </nav>
     <div class="header-tools js-only">
       <button type="button" class="icon-button" data-open-search aria-label="搜索文章" aria-keyshortcuts="Control+K Meta+K" title="搜索文章 (Ctrl / Cmd + K)"><span class="icon icon-search" aria-hidden="true"></span></button>
@@ -46,11 +46,60 @@
     </div>
   </header>
   <button class="sidebar-backdrop" type="button" aria-label="关闭导航" tabindex="-1" hidden></button>
-  <div id="app"><p class="loading-message">PostgreSQL Howto · 正在载入文章</p></div>
-  <noscript><style>#app{display:none}</style><section class="no-js-intro"><h1>PostgreSQL Howto 中文版</h1><p>面向真实工程问题的 PostgreSQL 实践知识库。</p><p><a href="/articles/">阅读全部文章</a>，或在 <a href="https://github.com/xiongcccc/postgres-howto">GitHub 仓库</a>查看原文。</p></section></noscript>
+  <div id="app"><p class="loading-message route-loading">PostgreSQL Howto · 正在载入文章</p>
+<!-- HOME_PRERENDER_START -->
+<main class="content home-prerender"><article id="main" class="markdown-section" tabindex="-1"><section class="home-hero" aria-labelledby="home-title">
+  <h1 id="home-title">PostgreSQL Howto</h1>
+  <p class="home-hero__lead">面向真实工程问题的 PostgreSQL 实践知识库。</p>
+  <p class="home-hero__summary">从慢 SQL、锁等待到索引、WAL 与复制，记录问题背后的机制，也整理可以动手验证的方法。</p>
+  <p class="home-stats"><span><strong>108</strong> 篇技术文章</span><span><strong>9</strong> 个专题</span><span><strong>6</strong> 条学习路径</span></p>
+  <div class="article-finder" data-finder="" data-home=""><a class="button button-secondary" href="/articles/">全部文章</a></div>
+</section>
+
+<section class="home-section" aria-labelledby="home-problems">
+  <div class="section-heading"><h2 id="home-problems">从一个问题开始</h2><a href="/articles/">全部文章</a></div>
+  <div class="problem-links" aria-label="按问题查找"><a href="/#/docs/find?q=%E6%85%A2SQL">查询为什么慢？</a><a href="/#/docs/find?q=%E9%94%81%E7%AD%89%E5%BE%85">DDL 卡住了？</a><a href="/#/docs/find?q=WAL%E6%9A%B4%E6%B6%A8">WAL 突然暴涨？</a><a href="/#/docs/find?q=%E7%B4%A2%E5%BC%95%E6%B8%85%E7%90%86">哪些索引可以删？</a><a href="/#/docs/find?q=%E5%A4%8D%E5%88%B6%E5%BB%B6%E8%BF%9F">主从为什么有延迟？</a><a href="/#/docs/find?q=%E5%9C%A8%E7%BA%BF%E5%8F%98%E6%9B%B4">怎么安全加列？</a></div>
+</section>
+
+<section class="home-section" aria-labelledby="home-topics">
+  <div class="section-heading"><div><h2 id="home-topics">按专题探索</h2><p class="section-note">含跨专题收录</p></div><a href="/topics/">全部专题</a></div>
+  <div class="topic-grid"><a class="topic-card" href="/topics/#topic-performance" title="22 篇收录，16 篇主归属"><span class="topic-copy"><strong>查询性能与观测</strong><span>执行计划、慢 SQL、统计信息与基准测试。</span></span><span class="topic-count">22 <span>篇收录</span><span class="sr-only">，16 篇主归属</span></span></a>
+<a class="topic-card" href="/topics/#topic-ops" title="27 篇收录，21 篇主归属"><span class="topic-copy"><strong>运维排障与日常工具</strong><span>备份恢复、psql、Docker 和日常运维。</span></span><span class="topic-count">27 <span>篇收录</span><span class="sr-only">，21 篇主归属</span></span></a>
+<a class="topic-card" href="/topics/#topic-locks" title="19 篇收录，19 篇主归属"><span class="topic-copy"><strong>锁、事务与在线变更</strong><span>长事务、锁等待、DDL 与在线变更。</span></span><span class="topic-count">19 <span>篇收录</span><span class="sr-only">，19 篇主归属</span></span></a>
+<a class="topic-card" href="/topics/#topic-indexes" title="11 篇收录，9 篇主归属"><span class="topic-copy"><strong>索引治理</strong><span>索引创建、维护、清理和损坏检查。</span></span><span class="topic-count">11 <span>篇收录</span><span class="sr-only">，9 篇主归属</span></span></a>
+<a class="topic-card" href="/topics/#topic-storage" title="24 篇收录，19 篇主归属"><span class="topic-copy"><strong>存储、WAL 与 Vacuum</strong><span>WAL、膨胀、Vacuum 与存储布局。</span></span><span class="topic-count">24 <span>篇收录</span><span class="sr-only">，19 篇主归属</span></span></a>
+<a class="topic-card" href="/topics/#topic-sql" title="12 篇收录，12 篇主归属"><span class="topic-copy"><strong>SQL、数据建模与扩展玩法</strong><span>SQL、数组、UUID、元数据和数据建模。</span></span><span class="topic-count">12 <span>篇收录</span><span class="sr-only">，12 篇主归属</span></span></a>
+<a class="topic-card" href="/topics/#topic-replication" title="8 篇收录，7 篇主归属"><span class="topic-copy"><strong>复制、校验与升级</strong><span>复制延迟、数据校验与主版本升级。</span></span><span class="topic-count">8 <span>篇收录</span><span class="sr-only">，7 篇主归属</span></span></a>
+<a class="topic-card" href="/topics/#topic-practice" title="3 篇收录，3 篇主归属"><span class="topic-copy"><strong>实践剖析</strong><span>真实问题、源码分析与操作系统观测。</span></span><span class="topic-count">3 <span>篇收录</span><span class="sr-only">，3 篇主归属</span></span></a>
+<a class="topic-card" href="/topics/#topic-engineering" title="3 篇收录，3 篇主归属"><span class="topic-copy"><strong>工程实践与后记</strong><span>工程方法、协作与项目后记。</span></span><span class="topic-count">3 <span>篇收录</span><span class="sr-only">，3 篇主归属</span></span></a></div>
+</section>
+
+<section class="home-section" aria-labelledby="home-paths">
+  <div class="section-heading"><h2 id="home-paths">沿一条路径深入</h2><a href="/paths/">学习路径</a></div>
+  <div class="home-paths"><a href="/paths/#path-performance"><span class="path-copy"><strong>性能优化路径</strong><span>从执行计划与负载统计定位慢 SQL，建立可重复的诊断顺序。</span></span><small>7 篇</small></a><a href="/paths/#path-operations"><span class="path-copy"><strong>DBA 排障路径</strong><span>区分启动、锁、WAL 与复制问题，逐步缩小生产故障范围。</span></span><small>7 篇</small></a><a href="/paths/#path-indexes"><span class="path-copy"><strong>索引治理路径</strong><span>从索引设计到维护与清理，判断哪些索引值得保留。</span></span><small>6 篇</small></a><a href="/paths/#path-changes"><span class="path-copy"><strong>在线变更路径</strong><span>理解 DDL 的持锁过程，为数据回填与结构变更控制风险。</span></span><small>7 篇</small></a><a href="/paths/#path-storage"><span class="path-copy"><strong>存储与 Vacuum 路径</strong><span>把行版本、清理和 WAL 联系起来，理解空间与事务年龄问题。</span></span><small>6 篇</small></a><a href="/paths/#path-tools"><span class="path-copy"><strong>日常工具路径</strong><span>熟悉 psql、备份恢复与脚本工具，完善日常数据库操作。</span></span><small>6 篇</small></a></div>
+  <p class="home-secondary-links"><a href="/#/docs/series">系列阅读</a><a href="/#/docs/conferences">会议精选</a><a href="/#/docs/find?type=blog">技术博客</a></p>
+</section>
+
+<section class="home-section" aria-labelledby="home-recent"><div class="section-heading"><h2 id="home-recent">最近收录</h2><a href="/articles/">全部文章</a></div><ul class="recent-articles">
+<li><time datetime="2026-10-09">2026-10-09</time><div><a href="/articles/109/">备库查询为什么被取消：WAL 回放冲突与等待预算</a><span>复制、校验与升级 · 专题解读 · 技术博客</span></div></li>
+<li><time datetime="2026-10-09">2026-10-09</time><div><a href="/articles/108/">一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离</a><span>查询性能与观测 · 专题解读 · 技术博客</span></div></li>
+<li><time datetime="2026-10-09">2026-10-09</time><div><a href="/articles/107/">外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务</a><span>锁、事务与在线变更 · 专题解读 · 技术博客</span></div></li>
+<li><time datetime="2026-09-30">2026-09-30</time><div><a href="/articles/106/">PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化</a><span>复制、校验与升级 · 专题解读 · 会议材料</span></div></li>
+<li><time datetime="2026-09-24">2026-09-24</time><div><a href="/articles/105/">深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复</a><span>复制、校验与升级 · 专题解读 · 会议材料</span></div></li>
+</ul></section>
+
+
+<section class="home-section home-about" aria-labelledby="about-author">
+  <div><h2 id="about-author">从 Howto 出发，持续积累</h2></div>
+  <div><p>项目起步于 Nikolay Samokhvalov 发起的 PostgreSQL Howtos 中文翻译，如今也收录工程实践、社区会议和技术博客解读。文章保留原始来源，经过验证的内容会附上实验记录。</p><p>由 <a href="https://xiongcc.cn/" target="_blank" rel="noopener">xiongcc</a> 维护，PostgreSQL / Greenplum 工程师、技术写作者。</p><p class="home-secondary-links"><a href="/#/docs/about">关于项目与贡献</a><a href="https://github.com/xiongcccc/postgres-howto" target="_blank" rel="noopener">GitHub</a><a href="https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos" target="_blank" rel="noopener">上游项目</a></p></div>
+</section>
+</article></main>
+<!-- HOME_PRERENDER_END -->
+  </div>
+  <noscript><style>body[data-loading] .site-footer{visibility:visible}.home-prerender .article-finder{min-height:0}.home-prerender [aria-labelledby="home-problems"]{display:none}</style></noscript>
   <footer class="site-footer">
     <div><a href="#/docs/about">关于项目</a><a href="/articles/">文章目录</a><a href="https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos" target="_blank" rel="noopener">上游来源</a><a href="https://xiongcc.cn/" target="_blank" rel="noopener">xiongcc</a></div>
-    <div><button type="button" data-dialog="communityModal">读者交流</button><button type="button" data-dialog="imageModal">支持作者</button><span class="site-stats" aria-label="站点访问统计"><span id="busuanzi_container_site_pv">访问 <strong id="busuanzi_value_site_pv">--</strong> 次</span><span id="busuanzi_container_site_uv">访客 <strong id="busuanzi_value_site_uv">--</strong> 人</span></span></div>
+    <div class="js-only"><button type="button" data-dialog="communityModal">读者交流</button><button type="button" data-dialog="imageModal">支持作者</button><span class="site-stats" aria-label="站点访问统计"><span id="busuanzi_container_site_pv">访问 <strong id="busuanzi_value_site_pv">--</strong> 次</span><span id="busuanzi_container_site_uv">访客 <strong id="busuanzi_value_site_uv">--</strong> 人</span></span></div>
   </footer>
   <dialog id="imageModal" class="support-modal" aria-labelledby="support-title"><div class="dialog-heading"><h2 id="support-title">支持作者</h2><button class="icon-button" type="button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>感谢支持 PostgreSQL Howto 的长期维护。</p><img data-src="./images/wechat_pay.png" width="280" height="280" alt="微信赞赏码"></dialog>
   <dialog id="communityModal" class="support-modal" aria-labelledby="community-title"><div class="dialog-heading"><h2 id="community-title">读者交流群</h2><button class="icon-button" type="button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>二维码若已过期，可通过公众号 PostgreSQL 学徒或邮件联系。</p><img data-src="./images/wechatgroup.jpeg" width="280" height="427" alt="PostgreSQL 学徒读者交流群二维码"></dialog>
@@ -61,13 +110,13 @@
       auto2top: true, topMargin: 88, notFoundPage: 'docs/not-found.md'
     };
   </script>
-  <script src="./scripts/catalog-data.js?v=beaba606436c9ec0"></script>
+  <script src="./scripts/catalog-data.js?v=2cfe09e68864a17a"></script>
   <script src="./scripts/search-core.js?v=6e4ff33700ab76b7"></script>
-  <script src="./scripts/article-view.js?v=6829aa0a0e6fa0db"></script>
-  <script src="./scripts/site.js?v=77f25db896d7574e"></script>
+  <script src="./scripts/article-view.js?v=920d423f096574f5"></script>
+  <script src="./scripts/site.js?v=4078958efe73863d"></script>
   <script src="./scripts/finder.js?v=2ab948b07c73c440"></script>
   <script src="./scripts/diagrams.js?v=b6991107c7eeb48d"></script>
-  <script src="./scripts/reading.js?v=2bf8ff8f831421a2"></script>
+  <script src="./scripts/reading.js?v=f3b98b9b136850b5"></script>
   <script src="./scripts/comments.js?v=c8b87fcdfd828c7c"></script>
   <script src="./vendor/docsify.min.js"></script>
   <script src="./vendor/prism-sql.min.js"></script>

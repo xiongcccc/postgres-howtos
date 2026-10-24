@@ -137,18 +137,19 @@
     });
   }
   function updateMetadata(section) {
-    var a=currentArticle(),title=a?a.title:(document.body.classList.contains('reading-home')?'PostgreSQL Howto':section.querySelector('h1')?.textContent||'PostgreSQL Howto');
-    var description=a?a.title+'。'+a.versionNote:'面向真实工程问题的 PostgreSQL 中文实践知识库。查询性能、索引、锁、WAL、Vacuum、复制与日常运维。';
-    document.title=title+' | PostgreSQL Howto 中文版';
+    var a=currentArticle(),discovery=view.discovery(route()),home=document.body.classList.contains('reading-home');
+    var title=a?a.title:(home?'PostgreSQL Howto':section.querySelector('h1')?.textContent||'PostgreSQL Howto');
+    var description=a?a.title+'。'+a.versionNote:discovery?discovery.description:'面向真实工程问题的 PostgreSQL 中文实践知识库。查询性能、索引、锁、WAL、Vacuum、复制与日常运维。';
+    document.title=home?'PostgreSQL Howto 中文版':title+' | PostgreSQL Howto 中文版';
     document.querySelector('meta[name="description"]').content=description;
     document.querySelector('meta[property="og:title"]').content=title;
     document.querySelector('meta[property="og:description"]').content=description;
     document.querySelector('meta[property="og:type"]').content=a?'article':'website';
     var canonical=document.querySelector('link[rel="canonical"]')||document.head.appendChild(document.createElement('link'));
-    canonical.rel='canonical';canonical.href=a?view.canonical(a.id):'https://postgres-howto.cn/';
+    canonical.rel='canonical';canonical.href=a?view.canonical(a.id):'https://postgres-howto.cn'+(discovery?discovery.url:'/');
     document.querySelector('meta[property="og:url"]').content=canonical.href;
     var robots=document.querySelector('meta[name="robots"]');
-    if(!a&&!document.body.classList.contains('reading-home')){if(!robots){robots=document.createElement('meta');robots.name='robots';document.head.append(robots);}robots.content='noindex,follow';}else robots?.remove();
+    if(!a&&!home&&!discovery){if(!robots){robots=document.createElement('meta');robots.name='robots';document.head.append(robots);}robots.content='noindex,follow';}else robots?.remove();
     document.getElementById('article-schema')?.remove();
     if(a){var script=document.createElement('script');script.id='article-schema';script.type='application/ld+json';script.textContent=JSON.stringify(view.schema(a));document.head.append(script);}
   }

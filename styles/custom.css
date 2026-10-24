@@ -191,7 +191,9 @@ dialog::backdrop { background: rgba(10,15,20,.65); }
 .reading-home .site-footer { margin-left: 0; padding-inline: max(40px,calc((100vw - var(--home-width))/2)); }
 .loading-message { min-height: calc(100vh - 120px); display: flex; align-items: center; justify-content: center; margin: 0; padding: 80px 24px 24px; color: var(--muted); }
 body[data-loading] .site-footer { visibility: hidden; }
-.no-js-intro { margin: 110px auto 40px; padding: 24px; max-width: var(--home-width); }
+.route-loading { display: none; }
+html[data-view]:not([data-view="home"]) .home-prerender { display: none; }
+html[data-view]:not([data-view="home"]) .route-loading { display: flex; }
 html:not(.has-js) .js-only { visibility: hidden; }
 .progress { position: fixed; height: 2px; background: var(--accent); top: var(--header-height); z-index: 40; }
 @media (min-width:1280px) {

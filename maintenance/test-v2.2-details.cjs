@@ -41,7 +41,8 @@ const {chromium}=require(process.env.PLAYWRIGHT_PACKAGE||'playwright');
           const urls=[...xml.querySelectorAll('loc')].map(e=>e.textContent);
           return {sitemapUrls:urls.length,unique:new Set(urls).size,fragmentUrls:urls.filter(u=>u.includes('#')),canonical:document.querySelector('link[rel=canonical]').href};
         });
-        assert.equal(result.seo.sitemapUrls,111);assert.equal(result.seo.unique,111);assert.deepEqual(result.seo.fragmentUrls,[]);
+        const expected=require('../data/articles.json').articles.length+4;
+        assert.equal(result.seo.sitemapUrls,expected);assert.equal(result.seo.unique,expected);assert.deepEqual(result.seo.fragmentUrls,[]);
         const response=await c.request.get(base+'articles/99999/');assert.equal(response.status(),404);result.seo.missingStaticStatus=response.status();
       }
       await c.close();

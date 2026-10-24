@@ -272,7 +272,7 @@ test('all static articles have initial content and canonical metadata without fr
   const view=require('../scripts/article-view.js');
   const sitemap=fs.readFileSync(path.join(root,'sitemap.xml'),'utf8');
   const locations=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);
-  assert.equal(locations.length,catalog.articles.length+2);
+  assert.equal(locations.length,catalog.articles.length+4);
   assert.equal(new Set(locations).size,locations.length);
   for(const a of catalog.articles){
     const html=fs.readFileSync(path.join(root,'articles',String(a.id),'index.html'),'utf8');
@@ -304,7 +304,7 @@ test('static directory discovers every document and README is separate from the 
   assert.doesNotMatch(html,/<link rel="canonical"/,'Hash views must not inherit a hardcoded homepage canonical');
 });
 test('search quality matrix and topic count semantics are derived from actual metadata',()=>{
-  for(const [query,id] of [['work_mem',92],['pg_stat_statements',5],['EXPLAIN BUFFERS',1],['autovacuum',102],['xmin',45],['replication lag',93],['锁等待',42],['索引膨胀',46],['WAL',31]])assert.ok(find(query).includes(id),query);
+  for(const [query,id] of [['work_mem',92],['pg_stat_statements',5],['EXPLAIN BUFFERS',1],['autovacuum',102],['xmin',45],['replication lag',93],['锁等待',42],['索引膨胀',46],['WAL',31],['vacuum freeze',44]])assert.ok(find(query).includes(id),query);
   const topics=fs.readFileSync(path.join(root,'docs/topics.md'),'utf8');
   for(const t of catalog.topics){
     const all=catalog.articles.filter(a=>a.topics.includes(t.id)).length,primary=catalog.articles.filter(a=>a.topics[0]===t.id).length;
