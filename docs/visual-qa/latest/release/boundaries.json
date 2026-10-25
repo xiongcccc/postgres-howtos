@@ -1,0 +1,349 @@
+{
+  "checkedAt": "2026-10-25T05:08:53.888Z",
+  "base": "https://postgres-howto.cn/",
+  "baseline": false,
+  "browser": "155.0.8059.86",
+  "cases": [
+    {
+      "name": "alias-topics",
+      "width": 1440,
+      "mode": "light",
+      "passed": true,
+      "errors": [],
+      "active": [
+        "专题"
+      ],
+      "sidebar": [
+        "专题"
+      ],
+      "final": {
+        "route": "#/docs/topics.md",
+        "title": "专题",
+        "renderedRoute": "#/docs/topics.md"
+      }
+    },
+    {
+      "name": "alias-paths",
+      "width": 1440,
+      "mode": "light",
+      "passed": true,
+      "errors": [],
+      "active": [
+        "学习路径"
+      ],
+      "sidebar": [
+        "学习路径"
+      ],
+      "final": {
+        "route": "#/docs/paths.md",
+        "title": "学习路径",
+        "renderedRoute": "#/docs/paths.md"
+      }
+    },
+    {
+      "name": "search-leave-fast",
+      "width": 1440,
+      "mode": "light",
+      "passed": true,
+      "errors": [],
+      "delayedDocumentRequests": 0,
+      "afterNavigation": {
+        "route": "#/docs/92",
+        "title": "work_mem 调优"
+      },
+      "refreshAndBack": true,
+      "final": {
+        "route": "#/docs/find?q=work_mem",
+        "title": "全部文章",
+        "renderedRoute": "#/docs/find?q=work_mem"
+      }
+    },
+    {
+      "name": "search-leave-slow",
+      "width": 1440,
+      "mode": "light",
+      "passed": true,
+      "errors": [],
+      "delayedDocumentRequests": 1,
+      "afterNavigation": {
+        "route": "#/docs/92",
+        "title": "work_mem 调优"
+      },
+      "refreshAndBack": true,
+      "final": {
+        "route": "#/docs/find?q=work_mem",
+        "title": "全部文章",
+        "renderedRoute": "#/docs/find?q=work_mem"
+      }
+    },
+    {
+      "name": "clear-loading-search",
+      "width": 1440,
+      "mode": "light",
+      "passed": true,
+      "errors": [],
+      "busy": "false",
+      "final": {
+        "route": "#/README",
+        "title": "PostgreSQL Howto",
+        "renderedRoute": "#/README"
+      }
+    },
+    {
+      "name": "alias-topics",
+      "width": 390,
+      "mode": "light",
+      "passed": true,
+      "errors": [],
+      "active": [
+        "专题"
+      ],
+      "sidebar": [
+        "专题"
+      ],
+      "final": {
+        "route": "#/docs/topics.md",
+        "title": "专题",
+        "renderedRoute": "#/docs/topics.md"
+      }
+    },
+    {
+      "name": "alias-paths",
+      "width": 390,
+      "mode": "light",
+      "passed": true,
+      "errors": [],
+      "active": [
+        "学习路径"
+      ],
+      "sidebar": [
+        "学习路径"
+      ],
+      "final": {
+        "route": "#/docs/paths.md",
+        "title": "学习路径",
+        "renderedRoute": "#/docs/paths.md"
+      }
+    },
+    {
+      "name": "search-leave-fast",
+      "width": 390,
+      "mode": "light",
+      "passed": true,
+      "errors": [],
+      "delayedDocumentRequests": 0,
+      "afterNavigation": {
+        "route": "#/docs/92",
+        "title": "work_mem 调优"
+      },
+      "refreshAndBack": true,
+      "final": {
+        "route": "#/docs/find?q=work_mem",
+        "title": "全部文章",
+        "renderedRoute": "#/docs/find?q=work_mem"
+      }
+    },
+    {
+      "name": "search-leave-slow",
+      "width": 390,
+      "mode": "light",
+      "passed": true,
+      "errors": [],
+      "delayedDocumentRequests": 1,
+      "afterNavigation": {
+        "route": "#/docs/92",
+        "title": "work_mem 调优"
+      },
+      "refreshAndBack": true,
+      "final": {
+        "route": "#/docs/find?q=work_mem",
+        "title": "全部文章",
+        "renderedRoute": "#/docs/find?q=work_mem"
+      }
+    },
+    {
+      "name": "clear-loading-search",
+      "width": 390,
+      "mode": "light",
+      "passed": true,
+      "errors": [],
+      "busy": "false",
+      "final": {
+        "route": "#/README",
+        "title": "PostgreSQL Howto",
+        "renderedRoute": "#/README"
+      }
+    },
+    {
+      "name": "alias-topics",
+      "width": 1440,
+      "mode": "dark",
+      "passed": true,
+      "errors": [],
+      "active": [
+        "专题"
+      ],
+      "sidebar": [
+        "专题"
+      ],
+      "final": {
+        "route": "#/docs/topics.md",
+        "title": "专题",
+        "renderedRoute": "#/docs/topics.md"
+      }
+    },
+    {
+      "name": "alias-paths",
+      "width": 1440,
+      "mode": "dark",
+      "passed": true,
+      "errors": [],
+      "active": [
+        "学习路径"
+      ],
+      "sidebar": [
+        "学习路径"
+      ],
+      "final": {
+        "route": "#/docs/paths.md",
+        "title": "学习路径",
+        "renderedRoute": "#/docs/paths.md"
+      }
+    },
+    {
+      "name": "search-leave-fast",
+      "width": 1440,
+      "mode": "dark",
+      "passed": true,
+      "errors": [],
+      "delayedDocumentRequests": 0,
+      "afterNavigation": {
+        "route": "#/docs/92",
+        "title": "work_mem 调优"
+      },
+      "refreshAndBack": true,
+      "final": {
+        "route": "#/docs/find?q=work_mem",
+        "title": "全部文章",
+        "renderedRoute": "#/docs/find?q=work_mem"
+      }
+    },
+    {
+      "name": "search-leave-slow",
+      "width": 1440,
+      "mode": "dark",
+      "passed": true,
+      "errors": [],
+      "delayedDocumentRequests": 1,
+      "afterNavigation": {
+        "route": "#/docs/92",
+        "title": "work_mem 调优"
+      },
+      "refreshAndBack": true,
+      "final": {
+        "route": "#/docs/find?q=work_mem",
+        "title": "全部文章",
+        "renderedRoute": "#/docs/find?q=work_mem"
+      }
+    },
+    {
+      "name": "clear-loading-search",
+      "width": 1440,
+      "mode": "dark",
+      "passed": true,
+      "errors": [],
+      "busy": "false",
+      "final": {
+        "route": "#/README",
+        "title": "PostgreSQL Howto",
+        "renderedRoute": "#/README"
+      }
+    },
+    {
+      "name": "alias-topics",
+      "width": 390,
+      "mode": "dark",
+      "passed": true,
+      "errors": [],
+      "active": [
+        "专题"
+      ],
+      "sidebar": [
+        "专题"
+      ],
+      "final": {
+        "route": "#/docs/topics.md",
+        "title": "专题",
+        "renderedRoute": "#/docs/topics.md"
+      }
+    },
+    {
+      "name": "alias-paths",
+      "width": 390,
+      "mode": "dark",
+      "passed": true,
+      "errors": [],
+      "active": [
+        "学习路径"
+      ],
+      "sidebar": [
+        "学习路径"
+      ],
+      "final": {
+        "route": "#/docs/paths.md",
+        "title": "学习路径",
+        "renderedRoute": "#/docs/paths.md"
+      }
+    },
+    {
+      "name": "search-leave-fast",
+      "width": 390,
+      "mode": "dark",
+      "passed": true,
+      "errors": [],
+      "delayedDocumentRequests": 0,
+      "afterNavigation": {
+        "route": "#/docs/92",
+        "title": "work_mem 调优"
+      },
+      "refreshAndBack": true,
+      "final": {
+        "route": "#/docs/find?q=work_mem",
+        "title": "全部文章",
+        "renderedRoute": "#/docs/find?q=work_mem"
+      }
+    },
+    {
+      "name": "search-leave-slow",
+      "width": 390,
+      "mode": "dark",
+      "passed": true,
+      "errors": [],
+      "delayedDocumentRequests": 1,
+      "afterNavigation": {
+        "route": "#/docs/92",
+        "title": "work_mem 调优"
+      },
+      "refreshAndBack": true,
+      "final": {
+        "route": "#/docs/find?q=work_mem",
+        "title": "全部文章",
+        "renderedRoute": "#/docs/find?q=work_mem"
+      }
+    },
+    {
+      "name": "clear-loading-search",
+      "width": 390,
+      "mode": "dark",
+      "passed": true,
+      "errors": [],
+      "busy": "false",
+      "final": {
+        "route": "#/README",
+        "title": "PostgreSQL Howto",
+        "renderedRoute": "#/README"
+      }
+    }
+  ],
+  "errors": []
+}

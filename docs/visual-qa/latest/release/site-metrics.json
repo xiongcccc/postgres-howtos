@@ -1,0 +1,129 @@
+{
+  "viewports": [
+    1440,
+    1280,
+    1024,
+    768,
+    390,
+    360
+  ],
+  "articles": 109,
+  "homeResources": [
+    {
+      "name": "/styles/custom.css",
+      "bytes": 4861
+    },
+    {
+      "name": "/styles/reading.css",
+      "bytes": 2936
+    },
+    {
+      "name": "/scripts/catalog-data.js",
+      "bytes": 13147
+    },
+    {
+      "name": "/images/brand/symbol-dark.svg",
+      "bytes": 134
+    },
+    {
+      "name": "/images/brand/symbol.svg",
+      "bytes": 134
+    },
+    {
+      "name": "/scripts/search-core.js",
+      "bytes": 1137
+    },
+    {
+      "name": "/scripts/article-view.js",
+      "bytes": 2259
+    },
+    {
+      "name": "/scripts/diagrams.js",
+      "bytes": 917
+    },
+    {
+      "name": "/scripts/site.js",
+      "bytes": 4099
+    },
+    {
+      "name": "/scripts/finder.js",
+      "bytes": 3353
+    },
+    {
+      "name": "/scripts/reading.js",
+      "bytes": 5350
+    },
+    {
+      "name": "/scripts/comments.js",
+      "bytes": 611
+    },
+    {
+      "name": "/vendor/prism-bash.min.js",
+      "bytes": 2951
+    },
+    {
+      "name": "/vendor/docsify.min.js",
+      "bytes": 48646
+    },
+    {
+      "name": "/vendor/prism-sql.min.js",
+      "bytes": 1811
+    },
+    {
+      "name": "/vendor/prism-json.min.js",
+      "bytes": 271
+    },
+    {
+      "name": "/vendor/prism-python.min.js",
+      "bytes": 1078
+    },
+    {
+      "name": "/vendor/prism-ini.min.js",
+      "bytes": 271
+    },
+    {
+      "name": "/vendor/prism-yaml.min.js",
+      "bytes": 859
+    },
+    {
+      "name": "/vendor/prism-c.min.js",
+      "bytes": 959
+    },
+    {
+      "name": "/vendor/prism-java.min.js",
+      "bytes": 1216
+    },
+    {
+      "name": "/images/icons/search.svg",
+      "bytes": 195
+    },
+    {
+      "name": "/images/icons/monitor.svg",
+      "bytes": 210
+    },
+    {
+      "name": "/docs/home.md",
+      "bytes": 2832
+    },
+    {
+      "name": "/images/brand/favicon.svg",
+      "bytes": 208
+    },
+    {
+      "name": "/_sidebar.md",
+      "bytes": 3171
+    }
+  ],
+  "localSearchUiMilliseconds": [
+    130,
+    136,
+    136,
+    143,
+    137
+  ],
+  "technicalImage": {
+    "url": "https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos/-/raw/main/files/0042_example_output.jpeg",
+    "width": 1409,
+    "height": 565
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "sha": "f0ea4c453d187d82cbc11f49974f91a6694fa0d1",
+  "base": "https://postgres-howto.cn/",
+  "startedAt": "2026-10-25T05:08:52.948Z",
+  "runs": [
+    {
+      "name": "test-latest.cjs",
+      "code": 0,
+      "milliseconds": 38106,
+      "completedAt": "2026-10-25T05:09:31.057Z"
+    },
+    {
+      "name": "test-site.cjs",
+      "code": 0,
+      "milliseconds": 45832,
+      "completedAt": "2026-10-25T05:10:16.889Z"
+    },
+    {
+      "name": "test-final.cjs",
+      "code": 0,
+      "milliseconds": 35827,
+      "completedAt": "2026-10-25T05:10:52.716Z"
+    },
+    {
+      "name": "test-seo-response.cjs",
+      "code": 0,
+      "milliseconds": 30597,
+      "completedAt": "2026-10-25T05:11:23.313Z"
+    },
+    {
+      "name": "test-v2.2-final.cjs",
+      "code": 0,
+      "milliseconds": 347833,
+      "completedAt": "2026-10-25T05:17:11.146Z"
+    }
+  ]
+}

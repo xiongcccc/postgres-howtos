@@ -1,0 +1,134 @@
+{
+  "startedAt": "2026-10-25T05:07:46.401Z",
+  "sha": "f0ea4c453d187d82cbc11f49974f91a6694fa0d1",
+  "polls": [
+    {
+      "checkedAt": "2026-10-25T05:07:47.177Z",
+      "runs": [
+        {
+          "id": 40164378951,
+          "name": "Validate article catalog",
+          "path": ".github/workflows/catalog-check.yml",
+          "sha": "f0ea4c453d187d82cbc11f49974f91a6694fa0d1",
+          "status": "in_progress",
+          "conclusion": null,
+          "url": "https://github.com/xiongcccc/postgres-howtos/actions/runs/40164378951"
+        },
+        {
+          "id": 40164378538,
+          "name": "pages build and deployment",
+          "path": "dynamic/pages/pages-build-deployment",
+          "sha": "f0ea4c453d187d82cbc11f49974f91a6694fa0d1",
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/xiongcccc/postgres-howtos/actions/runs/40164378538"
+        }
+      ]
+    },
+    {
+      "checkedAt": "2026-10-25T05:08:07.473Z",
+      "runs": [
+        {
+          "id": 40164378951,
+          "name": "Validate article catalog",
+          "path": ".github/workflows/catalog-check.yml",
+          "sha": "f0ea4c453d187d82cbc11f49974f91a6694fa0d1",
+          "status": "in_progress",
+          "conclusion": null,
+          "url": "https://github.com/xiongcccc/postgres-howtos/actions/runs/40164378951"
+        },
+        {
+          "id": 40164378538,
+          "name": "pages build and deployment",
+          "path": "dynamic/pages/pages-build-deployment",
+          "sha": "f0ea4c453d187d82cbc11f49974f91a6694fa0d1",
+          "status": "queued",
+          "conclusion": null,
+          "url": "https://github.com/xiongcccc/postgres-howtos/actions/runs/40164378538"
+        }
+      ]
+    },
+    {
+      "checkedAt": "2026-10-25T05:08:27.775Z",
+      "runs": [
+        {
+          "id": 40164378951,
+          "name": "Validate article catalog",
+          "path": ".github/workflows/catalog-check.yml",
+          "sha": "f0ea4c453d187d82cbc11f49974f91a6694fa0d1",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/xiongcccc/postgres-howtos/actions/runs/40164378951"
+        },
+        {
+          "id": 40164378538,
+          "name": "pages build and deployment",
+          "path": "dynamic/pages/pages-build-deployment",
+          "sha": "f0ea4c453d187d82cbc11f49974f91a6694fa0d1",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/xiongcccc/postgres-howtos/actions/runs/40164378538"
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "file": "index.html",
+      "status": 200,
+      "sha256": "da8128faec205d9d636e0ce5149b1d7fdf681ec20cd920b78ff00def867fd464",
+      "expected": "da8128faec205d9d636e0ce5149b1d7fdf681ec20cd920b78ff00def867fd464",
+      "matches": true
+    },
+    {
+      "file": "scripts/finder.js",
+      "status": 200,
+      "sha256": "443bbfb66f755198d350d12ac23a8417cf0b8ea20ef7530c579a394bd94f2eff",
+      "expected": "443bbfb66f755198d350d12ac23a8417cf0b8ea20ef7530c579a394bd94f2eff",
+      "matches": true
+    },
+    {
+      "file": "scripts/site.js",
+      "status": 200,
+      "sha256": "9855fa12757e68bc3e90dfd6ead6daf22fca59a6f31708cb733b3cf2aaa7ddb1",
+      "expected": "9855fa12757e68bc3e90dfd6ead6daf22fca59a6f31708cb733b3cf2aaa7ddb1",
+      "matches": true
+    },
+    {
+      "file": "scripts/reading.js",
+      "status": 200,
+      "sha256": "7bb991e77cb1bf0724a4a119df71ed456b22f1b17498e9e5a03775bd44f9237c",
+      "expected": "7bb991e77cb1bf0724a4a119df71ed456b22f1b17498e9e5a03775bd44f9237c",
+      "matches": true
+    },
+    {
+      "file": "data/search-index.json",
+      "status": 200,
+      "sha256": "7fd6be642d0ad938b4baeb582f2f5f664e6b9df9402e70ac077f02a3f8332ba4",
+      "expected": "7fd6be642d0ad938b4baeb582f2f5f664e6b9df9402e70ac077f02a3f8332ba4",
+      "matches": true
+    },
+    {
+      "file": "topics/index.html",
+      "status": 200,
+      "sha256": "4f29b7ca931eb7f722ae8ef5cb0ca9a418553e01077d61542f32e5217ef5020a",
+      "expected": "4f29b7ca931eb7f722ae8ef5cb0ca9a418553e01077d61542f32e5217ef5020a",
+      "matches": true
+    },
+    {
+      "file": "paths/index.html",
+      "status": 200,
+      "sha256": "b5f2dde3c54e0e960925892f24e5a60f4bac97f53b0eec4bcf8620704dfe422c",
+      "expected": "b5f2dde3c54e0e960925892f24e5a60f4bac97f53b0eec4bcf8620704dfe422c",
+      "matches": true
+    },
+    {
+      "file": "articles/92/index.html",
+      "status": 200,
+      "sha256": "4ffd438e2f3e6abec77944f59e2a356877a72bdb28e99ff5aa91c4e6687193f2",
+      "expected": "4ffd438e2f3e6abec77944f59e2a356877a72bdb28e99ff5aa91c4e6687193f2",
+      "matches": true
+    }
+  ],
+  "completedAt": "2026-10-25T05:08:30.549Z"
+}

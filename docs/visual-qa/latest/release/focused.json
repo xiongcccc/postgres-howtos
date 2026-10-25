@@ -1,0 +1,471 @@
+{
+  "base": "https://postgres-howto.cn/",
+  "browser": "155.0.8059.86",
+  "noJS": [
+    {
+      "width": 1440,
+      "route": "/",
+      "status": 200,
+      "main": true
+    },
+    {
+      "width": 1440,
+      "route": "/topics/",
+      "status": 200,
+      "main": true
+    },
+    {
+      "width": 1440,
+      "route": "/paths/",
+      "status": 200,
+      "main": true
+    },
+    {
+      "width": 1440,
+      "route": "/articles/",
+      "status": 200,
+      "main": true
+    },
+    {
+      "width": 390,
+      "route": "/",
+      "status": 200,
+      "main": true
+    },
+    {
+      "width": 390,
+      "route": "/topics/",
+      "status": 200,
+      "main": true
+    },
+    {
+      "width": 390,
+      "route": "/paths/",
+      "status": 200,
+      "main": true
+    },
+    {
+      "width": 390,
+      "route": "/articles/",
+      "status": 200,
+      "main": true
+    }
+  ],
+  "discovery": [
+    {
+      "width": 1440,
+      "mode": "light",
+      "name": "topics",
+      "static": true,
+      "legacy": true,
+      "canonical": true,
+      "shortcut": true
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "name": "paths",
+      "static": true,
+      "legacy": true,
+      "canonical": true,
+      "shortcut": true
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "name": "topics",
+      "static": true,
+      "legacy": true,
+      "canonical": true,
+      "shortcut": true
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "name": "paths",
+      "static": true,
+      "legacy": true,
+      "canonical": true,
+      "shortcut": true
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "name": "topics",
+      "static": true,
+      "legacy": true,
+      "canonical": true,
+      "shortcut": true
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "name": "paths",
+      "static": true,
+      "legacy": true,
+      "canonical": true,
+      "shortcut": true
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "name": "topics",
+      "static": true,
+      "legacy": true,
+      "canonical": true,
+      "shortcut": true
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "name": "paths",
+      "static": true,
+      "legacy": true,
+      "canonical": true,
+      "shortcut": true
+    }
+  ],
+  "queries": [
+    {
+      "width": 1440,
+      "mode": "light",
+      "query": "work_mem",
+      "id": 92
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "query": "pg_stat_statements",
+      "id": 5
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "query": "EXPLAIN BUFFERS",
+      "id": 1
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "query": "autovacuum",
+      "id": 102
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "query": "xmin",
+      "id": 45
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "query": "replication lag",
+      "id": 93
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "query": "WAL",
+      "id": 31
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "query": "锁等待",
+      "id": 42
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "query": "索引膨胀",
+      "id": 46
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "query": "vacuum freeze",
+      "id": 44
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "query": "WORK_MEM",
+      "id": 92
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "query": "pg stat statements",
+      "id": 5
+    },
+    {
+      "width": 1440,
+      "mode": "light",
+      "query": "锁 等待",
+      "id": 42
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "query": "work_mem",
+      "id": 92
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "query": "pg_stat_statements",
+      "id": 5
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "query": "EXPLAIN BUFFERS",
+      "id": 1
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "query": "autovacuum",
+      "id": 102
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "query": "xmin",
+      "id": 45
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "query": "replication lag",
+      "id": 93
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "query": "WAL",
+      "id": 31
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "query": "锁等待",
+      "id": 42
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "query": "索引膨胀",
+      "id": 46
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "query": "vacuum freeze",
+      "id": 44
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "query": "WORK_MEM",
+      "id": 92
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "query": "pg stat statements",
+      "id": 5
+    },
+    {
+      "width": 390,
+      "mode": "light",
+      "query": "锁 等待",
+      "id": 42
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "query": "work_mem",
+      "id": 92
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "query": "pg_stat_statements",
+      "id": 5
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "query": "EXPLAIN BUFFERS",
+      "id": 1
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "query": "autovacuum",
+      "id": 102
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "query": "xmin",
+      "id": 45
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "query": "replication lag",
+      "id": 93
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "query": "WAL",
+      "id": 31
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "query": "锁等待",
+      "id": 42
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "query": "索引膨胀",
+      "id": 46
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "query": "vacuum freeze",
+      "id": 44
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "query": "WORK_MEM",
+      "id": 92
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "query": "pg stat statements",
+      "id": 5
+    },
+    {
+      "width": 1440,
+      "mode": "dark",
+      "query": "锁 等待",
+      "id": 42
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "query": "work_mem",
+      "id": 92
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "query": "pg_stat_statements",
+      "id": 5
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "query": "EXPLAIN BUFFERS",
+      "id": 1
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "query": "autovacuum",
+      "id": 102
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "query": "xmin",
+      "id": 45
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "query": "replication lag",
+      "id": 93
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "query": "WAL",
+      "id": 31
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "query": "锁等待",
+      "id": 42
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "query": "索引膨胀",
+      "id": 46
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "query": "vacuum freeze",
+      "id": 44
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "query": "WORK_MEM",
+      "id": 92
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "query": "pg stat statements",
+      "id": 5
+    },
+    {
+      "width": 390,
+      "mode": "dark",
+      "query": "锁 等待",
+      "id": 42
+    }
+  ],
+  "bootstrap": [
+    {
+      "route": "#/README",
+      "initialContent": "home",
+      "noFlash": true,
+      "noDuplicate": true
+    },
+    {
+      "route": "#/docs/42",
+      "initialContent": "loading",
+      "noFlash": true,
+      "noDuplicate": true
+    }
+  ],
+  "lab": [
+    {
+      "cls": 0,
+      "lcp": 556,
+      "width": 1440,
+      "conditions": "Local Chrome, 1000px height, no throttling, independent profile, 1s after content; not field CWV"
+    },
+    {
+      "cls": 0,
+      "lcp": 556,
+      "width": 390,
+      "conditions": "Local Chrome, 1000px height, no throttling, independent profile, 1s after content; not field CWV"
+    }
+  ],
+  "errors": []
+}

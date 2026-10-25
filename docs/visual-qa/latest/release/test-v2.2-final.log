@@ -1,0 +1,14 @@
+PASS: 140 HTTP files match working files (HEAD f0ea4c453d187d82cbc11f49974f91a6694fa0d1)
+CHECKED: 1440x900-light
+CHECKED: 1280x800-light
+CHECKED: 1024x768-light
+CHECKED: 768x1024-light
+CHECKED: 390x844-light
+CHECKED: 360x800-light
+CHECKED: 1440x900-dark
+CHECKED: 1280x800-dark
+CHECKED: 1024x768-dark
+CHECKED: 768x1024-dark
+CHECKED: 390x844-dark
+CHECKED: 360x800-dark
+PASS: 204 pages and 12 component sets
