@@ -43,6 +43,11 @@
     input.value=params.get('q')||'';topic.value=params.get('topic')||'';series.value=params.get('series')||'';
     if(params.get('type')==='editorial'){var legacy=document.createElement('option');legacy.value='editorial';legacy.textContent=catalog.types.editorial;legacy.hidden=true;type.append(legacy);}
     type.value=params.get('type')||'';advanced.open=Boolean(series.value||type.value);
+    function active() {
+      if(!el.isConnected)return false;
+      var path=location.hash.slice(1).split('?')[0].replace(/\.md$/,'');
+      return home?['','/','/README'].includes(path):path==='/docs/find';
+    }
     function url(homeState) {
       var p=new URLSearchParams();
       if(input.value.trim())p.set('q',input.value.trim());
@@ -51,15 +56,16 @@
       return (homeState?'#/README':'#/docs/find')+(p.size?'?'+p.toString():'');
     }
     function render() {
-      if(!el.isConnected)return;
+      if(!active())return;
       var query=input.value.trim(),empty=!query&&!topic.value&&!type.value&&!series.value;
       clear.hidden=empty;
       el.querySelector('.filter-count').textContent=series.value||type.value?' · '+(Number(Boolean(series.value))+Number(Boolean(type.value))):'';
+      results.setAttribute('aria-busy',String(Boolean(query&&!bodies&&!failed)));
       if(empty&&home){status.textContent='';results.replaceChildren();more.hidden=true;retry.hidden=true;return;}
       var matches=search.search(catalog,query,{topic:topic.value,type:type.value,series:series.value},bodies);
       var message=matches.length?matches.length+' 篇匹配文章':'没有找到匹配文章，试试更短的关键词或清除筛选。';
       if(query&&!bodies)message+=failed?' · 全文索引暂不可用，当前仅匹配标题与别名。':' · 正在加载全文索引…';
-      status.textContent=message;results.setAttribute('aria-busy',String(Boolean(query&&!bodies&&!failed)));results.replaceChildren();
+      status.textContent=message;results.replaceChildren();
       matches.slice(0,limit).forEach(function(result){
         var a=result.article,li=document.createElement('li'),link=document.createElement('a');
         link.href='#/docs/'+a.id;highlighted(link,a.title,query);
@@ -71,6 +77,9 @@
       more.hidden=matches.length<=limit;retry.hidden=!query||!failed;
     }
     function update() {
+      clearTimeout(timer);
+      // A debounced input can finish after Docsify has started another route.
+      if(!active())return;
       if(!input.value.trim())failed=false;
       limit=home?5:20;history.replaceState(null,'',url(home));render();
       el.closest('.markdown-section').dataset.renderedRoute=location.hash;
@@ -93,8 +102,8 @@
       if(event.key==='Escape'){event.preventDefault();input.focus();}
     });
     el.restoreFromUrl=function(){
-      var path=location.hash.slice(1).split('?')[0].replace(/\.md$/,'');
-      if(home?!['','/','/README'].includes(path):path!=='/docs/find')return;
+      clearTimeout(timer);
+      if(!active())return;
       var state=new URLSearchParams(location.hash.split('?')[1]||'');
       input.value=state.get('q')||'';topic.value=state.get('topic')||'';series.value=state.get('series')||'';
       if(state.get('type')==='editorial'&&!type.querySelector('[value=editorial]')){var option=document.createElement('option');option.value='editorial';option.textContent=catalog.types.editorial;option.hidden=true;type.append(option);}

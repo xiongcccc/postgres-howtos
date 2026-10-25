@@ -29,7 +29,8 @@
     try { state=JSON.parse(localStorage.getItem('howto-sidebar-v3')||'{}'); } catch (_) {}
     var previousScroll=sidebar.scrollTop;
     var pages=[['首页','/README'],['专题','/docs/topics'],['学习路径','/docs/paths'],['全部文章','/docs/find']];
-    nav.innerHTML='<div class="sidebar-heading"><span>知识导航</span><button class="icon-button" type="button" data-close-nav aria-label="关闭导航" title="关闭导航">'+HowtoUI.icon('x')+'</button></div><nav class="catalog-navigation" aria-label="文章分类"><ul class="catalog-pages">'+pages.map(function(p){return '<li><a href="'+href(p[1])+'"'+(route()===p[1]?' aria-current="page"':'')+'>'+p[0]+'</a></li>';}).join('')+'</ul><p class="sidebar-label">技术专题 <span>主归属文章</span></p>'+catalog.topics.map(function(t){
+    var pageRoute=route().replace(/\.md$/,'');
+    nav.innerHTML='<div class="sidebar-heading"><span>知识导航</span><button class="icon-button" type="button" data-close-nav aria-label="关闭导航" title="关闭导航">'+HowtoUI.icon('x')+'</button></div><nav class="catalog-navigation" aria-label="文章分类"><ul class="catalog-pages">'+pages.map(function(p){return '<li><a href="'+href(p[1])+'"'+(pageRoute===p[1]?' aria-current="page"':'')+'>'+p[0]+'</a></li>';}).join('')+'</ul><p class="sidebar-label">技术专题 <span>主归属文章</span></p>'+catalog.topics.map(function(t){
       var items=catalog.articles.filter(function(a){return a.topics[0]===t.id;});
       var selected=active&&active.topics[0]===t.id;
       var open=selected||Boolean(state[t.id]);

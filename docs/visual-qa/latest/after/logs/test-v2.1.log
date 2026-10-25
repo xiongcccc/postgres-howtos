@@ -1,0 +1,4 @@
+PASS: nine search queries, shortcuts, counts, preserved sidebar state, responsive TOC and refreshed anchors
+PASS: all 109 static HTML responses readable without JS, original fenced code byte-for-byte, canonical, native TOC and real 404
+PASS: static/legacy reading across six widths and both themes, copy, deep links, real QR images and focus
+PASS: no browser exceptions; measured local LCP/CLS, resource and search records saved

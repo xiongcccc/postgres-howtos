@@ -1,0 +1,981 @@
+{
+  "checkedAt": "2026-10-24T17:23:12.510Z",
+  "head": "5e6ec69844ed42b420310a4d27a917e5fedfb6d4",
+  "comparison": "uncommitted-working-tree",
+  "protectedFiles": [
+    {
+      "file": "README.md",
+      "unchanged": true
+    },
+    {
+      "file": "data/articles.json",
+      "unchanged": true
+    },
+    {
+      "file": "data/search-index.json",
+      "unchanged": true
+    },
+    {
+      "file": "docs/1.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/10.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/100.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/101.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/102.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/103.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/104.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/105.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/106.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/107.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/108.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/109.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/11.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/12.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/13.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/14.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/15.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/16.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/17.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/18.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/19.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/2.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/20.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/21.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/22.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/23.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/24.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/25.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/26.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/27.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/28.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/29.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/3.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/30.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/31.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/32.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/33.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/34.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/35.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/36.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/37.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/38.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/39.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/4.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/40.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/41.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/42.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/43.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/44.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/45.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/46.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/47.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/48.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/49.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/5.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/50.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/51.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/52.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/53.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/54.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/55.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/56.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/57.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/58.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/59.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/6.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/60.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/61.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/62.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/63.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/64.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/65.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/66.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/67.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/68.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/69.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/7.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/70.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/71.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/72.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/73.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/74.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/75.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/76.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/77.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/78.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/79.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/8.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/80.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/81.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/82.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/83.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/84.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/85.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/86.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/87.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/88.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/89.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/9.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/90.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/91.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/92.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/93.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/94.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/95.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/96.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/97.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/98.md",
+      "unchanged": true
+    },
+    {
+      "file": "docs/99.md",
+      "unchanged": true
+    },
+    {
+      "file": "images/brand/README.md",
+      "unchanged": true
+    },
+    {
+      "file": "images/brand/favicon-32.png",
+      "unchanged": true
+    },
+    {
+      "file": "images/brand/favicon.svg",
+      "unchanged": true
+    },
+    {
+      "file": "images/brand/logo-dark.svg",
+      "unchanged": true
+    },
+    {
+      "file": "images/brand/logo.svg",
+      "unchanged": true
+    },
+    {
+      "file": "images/brand/raster-manifest.json",
+      "unchanged": true
+    },
+    {
+      "file": "images/brand/social.png",
+      "unchanged": true
+    },
+    {
+      "file": "images/brand/social.svg",
+      "unchanged": true
+    },
+    {
+      "file": "images/brand/symbol-dark.svg",
+      "unchanged": true
+    },
+    {
+      "file": "images/brand/symbol.svg",
+      "unchanged": true
+    },
+    {
+      "file": "images/brand/touch-180.png",
+      "unchanged": true
+    },
+    {
+      "file": "maintenance/about-template.md",
+      "unchanged": true
+    },
+    {
+      "file": "maintenance/home-template.md",
+      "unchanged": true
+    },
+    {
+      "file": "maintenance/readme-template.md",
+      "unchanged": true
+    },
+    {
+      "file": "scripts/catalog-data.js",
+      "unchanged": true
+    },
+    {
+      "file": "sitemap.xml",
+      "unchanged": true
+    },
+    {
+      "file": "styles/custom.css",
+      "unchanged": true
+    },
+    {
+      "file": "styles/reading.css",
+      "unchanged": true
+    }
+  ],
+  "generated": [
+    {
+      "file": "articles/1/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/10/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/100/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/101/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/102/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/103/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/104/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/105/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/106/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/107/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/108/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/109/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/11/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/12/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/13/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/14/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/15/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/16/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/17/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/18/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/19/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/2/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/20/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/21/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/22/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/23/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/24/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/25/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/26/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/27/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/28/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/29/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/3/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/30/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/31/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/32/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/33/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/34/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/35/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/36/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/37/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/38/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/39/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/4/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/40/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/41/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/42/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/43/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/44/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/45/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/46/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/47/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/48/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/49/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/5/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/50/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/51/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/52/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/53/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/54/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/55/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/56/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/57/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/58/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/59/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/6/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/60/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/61/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/62/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/63/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/64/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/65/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/66/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/67/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/68/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/69/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/7/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/70/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/71/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/72/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/73/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/74/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/75/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/76/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/77/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/78/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/79/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/8/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/80/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/81/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/82/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/83/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/84/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/85/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/86/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/87/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/88/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/89/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/9/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/90/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/91/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/92/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/93/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/94/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/95/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/96/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/97/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/98/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/99/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "articles/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "paths/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    },
+    {
+      "file": "topics/index.html",
+      "onlyRuntimeFingerprintsChanged": true
+    }
+  ]
+}

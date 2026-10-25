@@ -1,0 +1,30 @@
+TAP version 13
+# Subtest: initial home, topics and paths are real content, not loading placeholders
+ok 1 - initial home, topics and paths are real content, not loading placeholders
+  ---
+  duration_ms: 31.304792
+  ...
+# Subtest: all article metadata, primary body, structured data and fenced code survive the static build
+ok 2 - all article metadata, primary body, structured data and fenced code survive the static build
+  ---
+  duration_ms: 313.525083
+  ...
+# Subtest: sitemap and crawlable internal links discover every canonical article without fragments
+ok 3 - sitemap and crawlable internal links discover every canonical article without fragments
+  ---
+  duration_ms: 1351.780333
+  ...
+# Subtest: HTML extraction decodes prose once while preserving inline and fenced code literals
+ok 4 - HTML extraction decodes prose once while preserving inline and fenced code literals
+  ---
+  duration_ms: 3.145375
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1757.503292

@@ -64,7 +64,7 @@
   function finishNavigation() {
     closeNavigation(false);
     document.querySelectorAll('.app-nav a').forEach(function (a) {
-      var current = location.hash.split('?')[0] || '#/README';
+      var current = (location.hash.split('?')[0] || '#/README').replace(/\.md$/,'');
       var route=a.dataset.docsRoute?'#'+a.dataset.docsRoute:a.hash;
       if (route === current || (route === '#/README' && current === '#/')) a.setAttribute('aria-current', 'page');
       else a.removeAttribute('aria-current');

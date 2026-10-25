@@ -1,0 +1,130 @@
+TAP version 13
+# Subtest: generated files match the catalog and all numbered documents
+ok 1 - generated files match the catalog and all numbered documents
+  ---
+  duration_ms: 461.097791
+  ...
+# Subtest: Chinese, English, aliases, article numbers and normalized spelling
+ok 2 - Chinese, English, aliases, article numbers and normalized spelling
+  ---
+  duration_ms: 34.26375
+  ...
+# Subtest: full text, empty input, no result and filters
+ok 3 - full text, empty input, no result and filters
+  ---
+  duration_ms: 20.645
+  ...
+# Subtest: series and source are independent and preserve old routes
+ok 4 - series and source are independent and preserve old routes
+  ---
+  duration_ms: 6.73525
+  ...
+# Subtest: autovacuum interpretation is discoverable and has verification evidence
+ok 5 - autovacuum interpretation is discoverable and has verification evidence
+  ---
+  duration_ms: 10.134916
+  ...
+# Subtest: collation interpretation is discoverable and has verification evidence
+ok 6 - collation interpretation is discoverable and has verification evidence
+  ---
+  duration_ms: 9.986917
+  ...
+# Subtest: generated internal article links exist and titles come from metadata
+ok 7 - generated internal article links exist and titles come from metadata
+  ---
+  duration_ms: 1.602875
+  ...
+# Subtest: OLTP lock interpretation is discoverable and has verification evidence
+ok 8 - OLTP lock interpretation is discoverable and has verification evidence
+  ---
+  duration_ms: 9.496417
+  ...
+# Subtest: logical replication interpretation is discoverable and has verification evidence
+ok 9 - logical replication interpretation is discoverable and has verification evidence
+  ---
+  duration_ms: 10.407833
+  ...
+# Subtest: PG19 preview is discoverable and distinguishes documentation checks from experiments
+ok 10 - PG19 preview is discoverable and distinguishes documentation checks from experiments
+  ---
+  duration_ms: 10.543833
+  ...
+# Subtest: technical blog interpretation has its own source filter and verification evidence
+ok 11 - technical blog interpretation has its own source filter and verification evidence
+  ---
+  duration_ms: 10.7325
+  ...
+# Subtest: query memory interpretation includes bounded experiments and accurate failure scope
+ok 12 - query memory interpretation includes bounded experiments and accurate failure scope
+  ---
+  duration_ms: 10.194792
+  ...
+# Subtest: standby recovery interpretation includes reproducible physical replication experiments
+ok 13 - standby recovery interpretation includes reproducible physical replication experiments
+  ---
+  duration_ms: 10.173292
+  ...
+# Subtest: root opens the searchable homepage and local assets exist
+ok 14 - root opens the searchable homepage and local assets exist
+  ---
+  duration_ms: 0.42025
+  ...
+# Subtest: catalog totals distinguish technical articles, editorial records and topic memberships
+ok 15 - catalog totals distinguish technical articles, editorial records and topic memberships
+  ---
+  duration_ms: 2.082125
+  ...
+# Subtest: normalized excerpts and highlights use the same matching semantics
+ok 16 - normalized excerpts and highlights use the same matching semantics
+  ---
+  duration_ms: 0.392875
+  ...
+# Subtest: all static articles have initial content and canonical metadata without fragment URLs
+ok 17 - all static articles have initial content and canonical metadata without fragment URLs
+  ---
+  duration_ms: 29.567833
+  ...
+# Subtest: static directory discovers every document and README is separate from the website homepage
+ok 18 - static directory discovers every document and README is separate from the website homepage
+  ---
+  duration_ms: 0.769541
+  ...
+# Subtest: search quality matrix and topic count semantics are derived from actual metadata
+ok 19 - search quality matrix and topic count semantics are derived from actual metadata
+  ---
+  duration_ms: 52.522333
+  ...
+# Subtest: code language aliases and execution plans preserve their display semantics
+ok 20 - code language aliases and execution plans preserve their display semantics
+  ---
+  duration_ms: 0.358125
+  ...
+# Subtest: vendored browser libraries are pinned and match recorded checksums
+ok 21 - vendored browser libraries are pinned and match recorded checksums
+  ---
+  duration_ms: 7.474959
+  ...
+# Subtest: text and interactive colors retain AA contrast in both themes
+ok 22 - text and interactive colors retain AA contrast in both themes
+  ---
+  duration_ms: 0.412541
+  ...
+# Subtest: brand SVGs and raster exports share one original symbol
+ok 23 - brand SVGs and raster exports share one original symbol
+  ---
+  duration_ms: 1.166125
+  ...
+# Subtest: ordinary homepage links are quiet, while real navigation states remain explicit
+ok 24 - ordinary homepage links are quiet, while real navigation states remain explicit
+  ---
+  duration_ms: 0.681083
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 24
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 759.754833

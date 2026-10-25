@@ -14,7 +14,7 @@ const routes = [
   ['home','#/README'], ['topics','#/docs/topics'], ['paths','#/docs/paths'],
   ['all','#/docs/find'], ['search','#/docs/find?q=work_mem'],
   ['explain','#/docs/1'], ['ordinary','#/docs/7'], ['locks','#/docs/42'],
-  ['bpftrace','#/docs/98'], ['autovacuum','#/docs/102'], ['long','#/docs/105'],
+  ['bpftrace-in-depth','#/docs/97'], ['bpftrace','#/docs/98'], ['autovacuum','#/docs/102'], ['long','#/docs/105'],
   ['about','#/docs/about'], ['static','/articles/105/'], ['directory','/articles/'],
   ['static-topics','/topics/'], ['static-paths','/paths/']
 ];
@@ -159,7 +159,10 @@ async function verifyVersion() {
       console.log('CHECKED: '+suffix);
     }
     assert.deepEqual(result.errors,[],'Uncaught browser exceptions');
-    if(!baseline)assert.deepEqual(result.consoleErrors,[],'Unexpected console errors');
+    if(!baseline){
+      assert.deepEqual(result.consoleErrors,[],'Unexpected console errors');
+      assert.deepEqual(result.httpErrors,[],'Unexpected HTTP errors');
+    }
     else assert.ok(result.httpErrors.every(r=>r.status===404&&r.url.endsWith('/docs/_sidebar.md')),'Only the recorded Docsify fallback may fail on baseline');
     assert.deepEqual(result.failures,[],'Matrix defects; see matrix.json and failure screenshots');
     console.log((baseline?'BASELINE RECORDED: ':'PASS: ')+result.cases.length+' pages and '+result.components.length+' component sets'+(baseline?'; '+result.components.filter(c=>!c.tocRefresh).length+' known anchor misalignments':''));

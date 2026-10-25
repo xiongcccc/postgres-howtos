@@ -1,0 +1,24 @@
+{
+  "observedDateLocal": "2026-10-25",
+  "timezone": "Asia/Shanghai",
+  "kind": "Human-readable observation of the external extraction tool, not an origin HTTP capture",
+  "root": {
+    "url": "https://postgres-howto.cn/",
+    "returnedTitle": "PostgreSQL Howto 中文版 | postgres-howto",
+    "crawlLabel": "Crawled: yesterday",
+    "excerpt": "别急,你也即将成为一名PostgreSQL高手!",
+    "returnedLines": 9
+  },
+  "inaccessibleViaTool": [
+    "https://postgres-howto.cn/topics/",
+    "https://postgres-howto.cn/paths/",
+    "https://postgres-howto.cn/articles/105/"
+  ],
+  "originHttpStatusProvidedByTool": false,
+  "interpretation": "The extractor output differs from the current direct HTTP and browser evidence. Its cache, proxy, historical index and extraction implementation are not inspectable; no exact internal cause is established.",
+  "notVerified": [
+    "Actual Googlebot fetch or rendering",
+    "Google Search Console or Bing indexing",
+    "External extractor cache/proxy internals"
+  ]
+}

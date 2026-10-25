@@ -1,0 +1,61 @@
+{
+  "checkedAt": "2026-10-24T16:59:32.396Z",
+  "runs": {
+    "status": 200,
+    "data": [
+      {
+        "id": 40102431806,
+        "name": "Validate article catalog",
+        "sha": "5e6ec69844ed42b420310a4d27a917e5fedfb6d4",
+        "path": ".github/workflows/catalog-check.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/xiongcccc/postgres-howtos/actions/runs/40102431806"
+      },
+      {
+        "id": 40102431557,
+        "name": "pages build and deployment",
+        "sha": "5e6ec69844ed42b420310a4d27a917e5fedfb6d4",
+        "path": "dynamic/pages/pages-build-deployment",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/xiongcccc/postgres-howtos/actions/runs/40102431557"
+      },
+      {
+        "id": 40101565802,
+        "name": "pages build and deployment",
+        "sha": "36c598aaf8a7cca594b9efe8b073da08a0c6e2cf",
+        "path": "dynamic/pages/pages-build-deployment",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/xiongcccc/postgres-howtos/actions/runs/40101565802"
+      },
+      {
+        "id": 40101565784,
+        "name": "Validate article catalog",
+        "sha": "36c598aaf8a7cca594b9efe8b073da08a0c6e2cf",
+        "path": ".github/workflows/catalog-check.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/xiongcccc/postgres-howtos/actions/runs/40101565784"
+      },
+      {
+        "id": 40092970925,
+        "name": "Validate article catalog",
+        "sha": "eb067abd83f9b5f5efc25865c6618b4b9a98d3f5",
+        "path": ".github/workflows/catalog-check.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/xiongcccc/postgres-howtos/actions/runs/40092970925"
+      }
+    ]
+  },
+  "pages": {
+    "status": 404,
+    "data": {
+      "message": "Not Found",
+      "documentation_url": "https://docs.github.com/rest/pages/pages#get-a-apiname-pages-site",
+      "status": "404"
+    }
+  }
+}

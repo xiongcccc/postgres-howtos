@@ -1,0 +1,144 @@
+{
+  "total": 109,
+  "technical": 108,
+  "editorial": 1,
+  "topics": [
+    {
+      "id": "performance",
+      "title": "查询性能与观测",
+      "primary": 16,
+      "included": 22
+    },
+    {
+      "id": "ops",
+      "title": "运维排障与日常工具",
+      "primary": 21,
+      "included": 27
+    },
+    {
+      "id": "locks",
+      "title": "锁、事务与在线变更",
+      "primary": 19,
+      "included": 19
+    },
+    {
+      "id": "indexes",
+      "title": "索引治理",
+      "primary": 9,
+      "included": 11
+    },
+    {
+      "id": "storage",
+      "title": "存储、WAL 与 Vacuum",
+      "primary": 19,
+      "included": 24
+    },
+    {
+      "id": "sql",
+      "title": "SQL、数据建模与扩展玩法",
+      "primary": 12,
+      "included": 12
+    },
+    {
+      "id": "replication",
+      "title": "复制、校验与升级",
+      "primary": 7,
+      "included": 8
+    },
+    {
+      "id": "practice",
+      "title": "实践剖析",
+      "primary": 3,
+      "included": 3
+    },
+    {
+      "id": "engineering",
+      "title": "工程实践与后记",
+      "primary": 3,
+      "included": 3
+    }
+  ],
+  "paths": [
+    {
+      "id": "performance",
+      "title": "性能优化路径",
+      "articles": [
+        1,
+        96,
+        5,
+        12,
+        14,
+        13,
+        92
+      ],
+      "count": 7
+    },
+    {
+      "id": "operations",
+      "title": "DBA 排障路径",
+      "articles": [
+        2,
+        3,
+        31,
+        22,
+        71,
+        100,
+        93
+      ],
+      "count": 7
+    },
+    {
+      "id": "indexes",
+      "title": "索引治理路径",
+      "articles": [
+        18,
+        61,
+        62,
+        53,
+        75,
+        76
+      ],
+      "count": 6
+    },
+    {
+      "id": "changes",
+      "title": "在线变更路径",
+      "articles": [
+        99,
+        30,
+        42,
+        55,
+        60,
+        69,
+        70
+      ],
+      "count": 7
+    },
+    {
+      "id": "storage",
+      "title": "存储与 Vacuum 路径",
+      "articles": [
+        4,
+        9,
+        44,
+        45,
+        46,
+        67
+      ],
+      "count": 6
+    },
+    {
+      "id": "tools",
+      "title": "日常工具路径",
+      "articles": [
+        25,
+        58,
+        19,
+        20,
+        49,
+        68
+      ],
+      "count": 6
+    }
+  ]
+}

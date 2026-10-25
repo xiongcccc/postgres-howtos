@@ -1,0 +1,489 @@
+{
+  "checkedAt": "2026-10-24T17:23:12.510Z",
+  "head": "5e6ec69844ed42b420310a4d27a917e5fedfb6d4",
+  "files": [
+    {
+      "file": "before/boundaries.json",
+      "sha256": "aaf10ffb83c20e47ffc8eb2733d68beba83ee4acaa8591b68ebe26fadeb409f4",
+      "source": "/tmp/howto-latest-specific-before/boundaries.json",
+      "sourceModifiedAt": "2026-10-24T17:06:49.405Z",
+      "bytes": 9504
+    },
+    {
+      "file": "before/matrix.json",
+      "sha256": "1a4d92360eba702cb6caf5c2ac11a21537c853c0d89b5d65aab1056dbee2ad06",
+      "source": "/tmp/howto-latest-before/matrix.json",
+      "sourceModifiedAt": "2026-10-24T17:01:01.713Z",
+      "bytes": 233780
+    },
+    {
+      "file": "before/version.json",
+      "sha256": "03a89428381831b972c443aff1291d7ca7e719259abdfaa00604d6b54323ce50",
+      "source": "/tmp/howto-latest-before/version.json",
+      "sourceModifiedAt": "2026-10-24T16:57:20.417Z",
+      "bytes": 26053
+    },
+    {
+      "file": "before/alias-topics-1440-light.png",
+      "sha256": "be801a1bebc8f7897e2f226b0766c72fdd83b6cd7ecfbe9ffaf0eb5deceb7f41",
+      "source": "/tmp/howto-latest-specific-before/alias-topics-1440-light.png",
+      "sourceModifiedAt": "2026-10-24T17:04:41.157Z",
+      "bytes": 194119
+    },
+    {
+      "file": "before/alias-paths-390-dark.png",
+      "sha256": "c746d3b0af51f82f2834f67e538b1612af727d6d0ff190ce4532f23043e7b58a",
+      "source": "/tmp/howto-latest-specific-before/alias-paths-390-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:06:17.884Z",
+      "bytes": 65416
+    },
+    {
+      "file": "before/search-leave-fast-1440-light.png",
+      "sha256": "bd2fe2132e63be2a2181722114a0f487e99aca430636a48917b940ac25e617e7",
+      "source": "/tmp/howto-latest-specific-before/search-leave-fast-1440-light.png",
+      "sourceModifiedAt": "2026-10-24T17:04:42.252Z",
+      "bytes": 222927
+    },
+    {
+      "file": "before/clear-loading-search-390-dark.png",
+      "sha256": "bb9f578d1336d8094c3c82c72afa965b5aabbeea1938ca079508e6f15c314cb5",
+      "source": "/tmp/howto-latest-specific-before/clear-loading-search-390-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:06:49.389Z",
+      "bytes": 67209
+    },
+    {
+      "file": "after/matrix.json",
+      "sha256": "8eaf9c153325e2590495e603596f4b6277ce9e140fbe31bc08757b3a4a9ad3e7",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/matrix.json",
+      "sourceModifiedAt": "2026-10-24T17:20:55.406Z",
+      "bytes": 248556
+    },
+    {
+      "file": "after/version.json",
+      "sha256": "3362a810ca0a119f86a4836d0298bbfc22666e1d4395195540f903c072e38698",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/version.json",
+      "sourceModifiedAt": "2026-10-24T17:17:06.468Z",
+      "bytes": 26053
+    },
+    {
+      "file": "after/boundaries.json",
+      "sha256": "1fb2d9cfafd75bedf0ee0bf89ea1c97be65ed423a8f6368359ba2dbed4092c15",
+      "source": "/tmp/howto-latest-after/test-latest/boundaries.json",
+      "sourceModifiedAt": "2026-10-24T17:22:45.783Z",
+      "bytes": 7778
+    },
+    {
+      "file": "after/responses.json",
+      "sha256": "ba76ae8bc7886d24699d3ce6b2fc17e650f07b65831c999191638ed103924866",
+      "source": "/tmp/howto-latest-after/responses/responses.json",
+      "sourceModifiedAt": "2026-10-24T17:17:20.097Z",
+      "bytes": 899493
+    },
+    {
+      "file": "after/runs.json",
+      "sha256": "083b940d5df4ebed0269b6041ca00aaf804485e7c0051624314f7fc71f6aed4c",
+      "source": "/tmp/howto-latest-after/runs.json",
+      "sourceModifiedAt": "2026-10-24T17:14:13.536Z",
+      "bytes": 908
+    },
+    {
+      "file": "after/site-metrics.json",
+      "sha256": "f962de628fdd196dcf56d73224ba6c7f890e779218a618c0d96e3ee69f23400d",
+      "source": "/tmp/howto-latest-after/test-site/metrics.json",
+      "sourceModifiedAt": "2026-10-24T17:11:52.041Z",
+      "bytes": 2529
+    },
+    {
+      "file": "after/v2.1-metrics.json",
+      "sha256": "fe1f694634d85268f65c75aa7ffbb70065c86615065951cb46560ee9ea6e4bdd",
+      "source": "/tmp/howto-latest-after/test-v2.1/v2.1-metrics.json",
+      "sourceModifiedAt": "2026-10-24T17:12:13.881Z",
+      "bytes": 8613
+    },
+    {
+      "file": "after/images.json",
+      "sha256": "f5dfa575ea1237f4176ef220186f357108f5e3ba3b87f9df1dc86357b122d38d",
+      "source": "/tmp/howto-latest-after/test-v2.2.1/reading.json",
+      "sourceModifiedAt": "2026-10-24T17:12:39.799Z",
+      "bytes": 56441
+    },
+    {
+      "file": "after/anchors.json",
+      "sha256": "eb65399b78aa9c453749a64b153233aaa31a20d43075f7c5a62bb5688b2a7e8c",
+      "source": "/tmp/howto-latest-after/test-anchor-stability/metrics.json",
+      "sourceModifiedAt": "2026-10-24T17:13:12.922Z",
+      "bytes": 3094
+    },
+    {
+      "file": "after/touch.json",
+      "sha256": "6e4d96fb73d32373d0cd9ee63115a4e6063ff3ef542e3a0a52a58411f2019a8e",
+      "source": "/tmp/howto-latest-after/test-v2.2-touch/touch.json",
+      "sourceModifiedAt": "2026-10-24T17:13:21.254Z",
+      "bytes": 1348
+    },
+    {
+      "file": "after/details.json",
+      "sha256": "ce94f08ee837dbe932267a5fdbade0982833d80d185d947b1b7a531556ebfc64",
+      "source": "/tmp/howto-latest-after/test-v2.2-details/metrics.json",
+      "sourceModifiedAt": "2026-10-24T17:13:38.999Z",
+      "bytes": 6514
+    },
+    {
+      "file": "after/focused.json",
+      "sha256": "c3cba929c86c82ab378dc3b53e62ab09f6038825cad6e4c4569dfc39caaa7d93",
+      "source": "/tmp/howto-latest-after/test-final/focused.json",
+      "sourceModifiedAt": "2026-10-24T17:13:56.530Z",
+      "bytes": 8204
+    },
+    {
+      "file": "after/logs/test-catalog.log",
+      "sha256": "6e809c50e30d27431402b6e92f313eb38d7579ff49ecf51d7bfb89ab0c2ed1bc",
+      "source": "/tmp/howto-latest-after/test-catalog/run.log",
+      "sourceModifiedAt": "2026-10-24T17:07:56.644Z",
+      "bytes": 4925
+    },
+    {
+      "file": "after/logs/test-seo.log",
+      "sha256": "677f3e7d86a9216803cedd4ab43ce6e006c57d81ea6cc1afd27c9132a9aeb031",
+      "source": "/tmp/howto-latest-after/test-seo/run.log",
+      "sourceModifiedAt": "2026-10-24T17:07:58.434Z",
+      "bytes": 1020
+    },
+    {
+      "file": "after/logs/test-site.log",
+      "sha256": "4ae2a18a199a8ebf3b13c74ca66d11f49961b2c8ed67bb01c5554946d68ddf6c",
+      "source": "/tmp/howto-latest-after/test-site/run.log",
+      "sourceModifiedAt": "2026-10-24T17:11:52.147Z",
+      "bytes": 553
+    },
+    {
+      "file": "after/logs/test-v2.1.log",
+      "sha256": "6f04197f43cf624dc28efadeee3e55fd10ca14b7b7693dab3c595e14e8f2da28",
+      "source": "/tmp/howto-latest-after/test-v2.1/run.log",
+      "sourceModifiedAt": "2026-10-24T17:12:14.011Z",
+      "bytes": 429
+    },
+    {
+      "file": "after/logs/test-v2.2.1.log",
+      "sha256": "9b6e346f099362d5662ba77fb96ecaf5457d39bf0c029355a469bf319a79be92",
+      "source": "/tmp/howto-latest-after/test-v2.2.1/run.log",
+      "sourceModifiedAt": "2026-10-24T17:12:39.882Z",
+      "bytes": 564
+    },
+    {
+      "file": "after/logs/test-anchor-stability.log",
+      "sha256": "41c44cfe347e46f8a15cc4042ba30e396bf0ebad1da0d1c277b23b712a7ad725",
+      "source": "/tmp/howto-latest-after/test-anchor-stability/run.log",
+      "sourceModifiedAt": "2026-10-24T17:13:12.977Z",
+      "bytes": 103
+    },
+    {
+      "file": "after/logs/test-v2.2-touch.log",
+      "sha256": "95bf7431895e4b6c8abae7cc49ff4bafe394f113977ef188ad9068d28f181841",
+      "source": "/tmp/howto-latest-after/test-v2.2-touch/run.log",
+      "sourceModifiedAt": "2026-10-24T17:13:21.335Z",
+      "bytes": 92
+    },
+    {
+      "file": "after/logs/test-v2.2-details.log",
+      "sha256": "670ca8b52b25dab5e6c58a4355602268affae0051a906f03fd8bfa58b7ab27de",
+      "source": "/tmp/howto-latest-after/test-v2.2-details/run.log",
+      "sourceModifiedAt": "2026-10-24T17:13:39.069Z",
+      "bytes": 110
+    },
+    {
+      "file": "after/logs/test-final.log",
+      "sha256": "69c706cb4e627ab9e075ad1b1e93bb6989afbe9d4a20f8708976b108ea2fd793",
+      "source": "/tmp/howto-latest-after/test-final/run.log",
+      "sourceModifiedAt": "2026-10-24T17:13:56.608Z",
+      "bytes": 136
+    },
+    {
+      "file": "after/logs/test-latest.log",
+      "sha256": "85d9d576f50828c355a8970207a8e30306be343b093b1ee3f77545f2b81574d5",
+      "source": "/tmp/howto-latest-after/test-latest/run.log",
+      "sourceModifiedAt": "2026-10-24T17:14:13.536Z",
+      "bytes": 36
+    },
+    {
+      "file": "after/logs/matrix-initial-192.log",
+      "sha256": "85a3c9e123914611ab6c947b60deeed3b582962cd1f9e91aa78e8b7052fee475",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/run.log",
+      "sourceModifiedAt": "2026-10-24T17:11:38.480Z",
+      "bytes": 405
+    },
+    {
+      "file": "after/alias-topics-1440-light.png",
+      "sha256": "f090b98fad809148107d7936fdf068ed1f4e8479085528e6950c4873aabeb26f",
+      "source": "/tmp/howto-latest-after/test-latest/alias-topics-1440-light.png",
+      "sourceModifiedAt": "2026-10-24T17:22:29.131Z",
+      "bytes": 194435
+    },
+    {
+      "file": "after/alias-paths-390-dark.png",
+      "sha256": "1be2d904773b512f8318a4fd6b0d1a2db3da968ece486a8ece3b3a2deea79f63",
+      "source": "/tmp/howto-latest-after/test-latest/alias-paths-390-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:22:42.307Z",
+      "bytes": 43436
+    },
+    {
+      "file": "after/navigated-fast-1440-light.png",
+      "sha256": "bd2fe2132e63be2a2181722114a0f487e99aca430636a48917b940ac25e617e7",
+      "source": "/tmp/howto-latest-after/test-latest/navigated-fast-1440-light.png",
+      "sourceModifiedAt": "2026-10-24T17:22:30.236Z",
+      "bytes": 222927
+    },
+    {
+      "file": "after/clear-loading-search-390-dark.png",
+      "sha256": "edf6e5c45d2c6254f4da2b917bfbc0e7d9952d924a0b1012418f03a7af828928",
+      "source": "/tmp/howto-latest-after/test-latest/clear-loading-search-390-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:22:45.765Z",
+      "bytes": 67205
+    },
+    {
+      "file": "after/home-1440x900-light.png",
+      "sha256": "e6ac43758ec26234d2d72e7c00d2e0238f5c47f9018fc3dd81840cd2c072588f",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/home-1440x900-light.png",
+      "sourceModifiedAt": "2026-10-24T17:17:08.122Z",
+      "bytes": 349070
+    },
+    {
+      "file": "after/home-390x844-dark.png",
+      "sha256": "94880fba8d4265fe61dce29530e5c20afa988d41007e81a87ea27dbb50ef9a4b",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/home-390x844-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:20:18.248Z",
+      "bytes": 317772
+    },
+    {
+      "file": "after/home-1280x800-light.png",
+      "sha256": "6d23ee7b263bf05258ecdf824d56619941156a1b5450e02cd70c5ca0b9c238b2",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/home-1280x800-light.png",
+      "sourceModifiedAt": "2026-10-24T17:17:27.560Z",
+      "bytes": 86408
+    },
+    {
+      "file": "after/home-1280x800-dark.png",
+      "sha256": "f7c5b35cec81d35b44bf79318805656797d2ad72c7b8fbe6dab77f13e5babe59",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/home-1280x800-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:19:21.761Z",
+      "bytes": 86269
+    },
+    {
+      "file": "after/ordinary-1024x768-light.png",
+      "sha256": "22216148d617ed00abe5490d22c1186dcfb21a852bf28ca50c12e21f8cb8fd52",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/ordinary-1024x768-light.png",
+      "sourceModifiedAt": "2026-10-24T17:17:50.687Z",
+      "bytes": 207135
+    },
+    {
+      "file": "after/ordinary-1024x768-dark.png",
+      "sha256": "a8213bae9ccd2517ac8f4128dd56c56a8c6bc87f6922765314692a8dfb2309dd",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/ordinary-1024x768-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:19:44.954Z",
+      "bytes": 207460
+    },
+    {
+      "file": "after/autovacuum-768x1024-light.png",
+      "sha256": "df9e7bbd62de2832ad5899150713b454b08a63c52fd4a45687d8933b4ee93d7c",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/autovacuum-768x1024-light.png",
+      "sourceModifiedAt": "2026-10-24T17:18:12.385Z",
+      "bytes": 170128
+    },
+    {
+      "file": "after/autovacuum-768x1024-dark.png",
+      "sha256": "a9a0433d72becf438af65e4ede771410b7bd6f4d3a7d64982d6888f6843d9b14",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/autovacuum-768x1024-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:20:06.579Z",
+      "bytes": 176877
+    },
+    {
+      "file": "after/search-1440x900-light.png",
+      "sha256": "bbcf6214745fd797afda903ca05c1b052150ec55bb1b48981c0ddf772ebde971",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/search-1440x900-light.png",
+      "sourceModifiedAt": "2026-10-24T17:17:11.479Z",
+      "bytes": 545726
+    },
+    {
+      "file": "after/search-390x844-dark.png",
+      "sha256": "8c626c864c021e9ee17d9d3fd554919d3813bef5edb8681df85c7cb0d39f3ad8",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/search-390x844-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:20:21.450Z",
+      "bytes": 470041
+    },
+    {
+      "file": "after/ordinary-1440x900-dark.png",
+      "sha256": "8a8a2c9ca4f6223d4c38d80d8b5fccde9324663c74e0f35f338ae81a41392f6d",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/ordinary-1440x900-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:19:07.066Z",
+      "bytes": 421106
+    },
+    {
+      "file": "after/bpftrace-in-depth-390x844-dark.png",
+      "sha256": "6bacc3b868c78d0cce5cb078dcd45cd86c3031f27aa1df29b6dfe3365d8bdf96",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/bpftrace-in-depth-390x844-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:20:24.387Z",
+      "bytes": 76397
+    },
+    {
+      "file": "after/table-390x844-dark.png",
+      "sha256": "7f705100854d753a8d8269e6949bd0aceff5ef971f49bfd1f20f763bb854a91a",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/table-390x844-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:20:31.395Z",
+      "bytes": 75623
+    },
+    {
+      "file": "after/sql-360x800-dark.png",
+      "sha256": "4cab551537b442bd849bd88aa3c82edc4d95b89e3aefd258bb7ce680a327bc41",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/sql-360x800-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:20:51.031Z",
+      "bytes": 53289
+    },
+    {
+      "file": "after/toc-1440x900-light.png",
+      "sha256": "4f9a311efc6eb762f005ede9aafe39562ab2d8b918a31a74c5fab8c1c1312721",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/toc-1440x900-light.png",
+      "sourceModifiedAt": "2026-10-24T17:17:23.383Z",
+      "bytes": 260497
+    },
+    {
+      "file": "after/anchor-refresh-390x844-dark.png",
+      "sha256": "908206d9a4a7e516f25c6f76daa8d6c62741eb8ca8276ca83d17f0d02c212a98",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/anchor-refresh-390x844-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:20:34.039Z",
+      "bytes": 122630
+    },
+    {
+      "file": "after/static-topics-390x844-dark.png",
+      "sha256": "705f6f11860c0052946558d2054bd8b05689034dae18c309eedb6d9f22ee01d4",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/static-topics-390x844-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:20:29.847Z",
+      "bytes": 70338
+    },
+    {
+      "file": "after/static-paths-1440x900-light.png",
+      "sha256": "44e1e707079c459589766fc0f12ff03ce785786110dfa5ac8224c06e55fa2447",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/static-paths-1440x900-light.png",
+      "sourceModifiedAt": "2026-10-24T17:17:20.835Z",
+      "bytes": 155530
+    },
+    {
+      "file": "after/footer-390x844-dark.png",
+      "sha256": "36bf9ac05a8d1a464b45a8841332a343928ae5e338c5733dd6b8c50781ba7d25",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/footer-390x844-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:20:35.906Z",
+      "bytes": 65288
+    },
+    {
+      "file": "after/sidebar-390x844-dark.png",
+      "sha256": "70e4841e199aee5f915984793670bf7902f95a374c4c874f58afb1b35d442a40",
+      "source": "/tmp/howto-latest-after/test-v2.2-final/sidebar-390x844-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:20:35.163Z",
+      "bytes": 44388
+    },
+    {
+      "file": "after/image-original-390x844-dark.png",
+      "sha256": "11d1b45044fbd8eeb1891f5c3d4a0849df74b7de8ae0e7d8d1bf6bda2b9458b8",
+      "source": "/tmp/howto-latest-after/test-v2.2.1/image-original-390x844-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:12:35.324Z",
+      "bytes": 205556
+    },
+    {
+      "file": "after/image-fit-1440x900-light.png",
+      "sha256": "82e120b630782f2e7aaa699cae943ec56b04f6ab2b9fdb78ffc1aa6082194403",
+      "source": "/tmp/howto-latest-after/test-v2.2.1/image-fit-1440x900-light.png",
+      "sourceModifiedAt": "2026-10-24T17:12:15.954Z",
+      "bytes": 614261
+    },
+    {
+      "file": "after/code-focus-390x844-dark.png",
+      "sha256": "06288d6a007291a9ead861f481e9d59c496600988ce894d46fd8d45e1365eb20",
+      "source": "/tmp/howto-latest-after/test-v2.2.1/code-focus-390x844-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:12:36.906Z",
+      "bytes": 5624
+    },
+    {
+      "file": "after/explain.png",
+      "sha256": "1992df7451276d2dbc7f47e676727484ab684281bc80542a66515686fa8d8ed9",
+      "source": "/tmp/howto-latest-after/test-v2.1/explain.png",
+      "sourceModifiedAt": "2026-10-24T17:12:08.722Z",
+      "bytes": 188301
+    },
+    {
+      "file": "after/static-article.png",
+      "sha256": "3f98a8c9d748eae8d22af86eeaceb098bb6d9cf97f722616473424c40de734e3",
+      "source": "/tmp/howto-latest-after/test-v2.1/static-article.png",
+      "sourceModifiedAt": "2026-10-24T17:12:09.125Z",
+      "bytes": 282862
+    },
+    {
+      "file": "after/no-js-home-390.png",
+      "sha256": "23236c73c49bc70d3abdd658594ebe4709e5b7a8eaabfa7e42d4e0c0d7d78fae",
+      "source": "/tmp/howto-latest-after/test-final/no-js-home-390.png",
+      "sourceModifiedAt": "2026-10-24T17:13:40.821Z",
+      "bytes": 70459
+    },
+    {
+      "file": "after/no-js-topics-390.png",
+      "sha256": "55d84b94b442720a8e45a20adbc7c5a8e1dec1141aa7d84dfe7f2b84fb5c6949",
+      "source": "/tmp/howto-latest-after/test-final/no-js-topics-390.png",
+      "sourceModifiedAt": "2026-10-24T17:13:40.872Z",
+      "bytes": 69358
+    },
+    {
+      "file": "online/version.json",
+      "sha256": "e4fb84eba6ff7c4187ba0604e2d47f5b42175174b01e7e050fe58ec9986501af",
+      "source": "/tmp/howto-latest-online-baseline/version.json",
+      "sourceModifiedAt": "2026-10-24T16:59:01.590Z",
+      "bytes": 26057
+    },
+    {
+      "file": "online/deployment.json",
+      "sha256": "5a2cefadf9f71a0942583d319b3a8a560378962f89ec3098f40b7e0dd20397d1",
+      "source": "/tmp/howto-latest-audit/deployment.json",
+      "sourceModifiedAt": "2026-10-24T16:59:33.636Z",
+      "bytes": 2077
+    },
+    {
+      "file": "online/http-variants.json",
+      "sha256": "41781b5830873ad5aa6178f5c71513a0c7f6d5b3061785c0309094b2eacc7fb3",
+      "source": "/tmp/howto-latest-audit/http-variants.json",
+      "sourceModifiedAt": "2026-10-24T17:01:55.282Z",
+      "bytes": 9321
+    },
+    {
+      "file": "online/responses.json",
+      "sha256": "1591cb4c2ab6d6d5895944f58c04c43d561739883de4824e1d4b3caf4ef81275",
+      "source": "/tmp/howto-latest-online/responses/responses.json",
+      "sourceModifiedAt": "2026-10-24T17:17:37.093Z",
+      "bytes": 899673
+    },
+    {
+      "file": "online/focused.json",
+      "sha256": "b0462eb159d794675554fed24e712f5667a971cf89a8ec87054332f83577fcd7",
+      "source": "/tmp/howto-latest-online/focused/focused.json",
+      "sourceModifiedAt": "2026-10-24T17:11:56.598Z",
+      "bytes": 8208
+    },
+    {
+      "file": "online/home-390-dark.png",
+      "sha256": "ec3dda5b2b007b67ff50bd289b54365899e276b9b42bf63717761c46a7f18d48",
+      "source": "/tmp/howto-latest-online/responses/--390-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:17:24.852Z",
+      "bytes": 65610
+    },
+    {
+      "file": "online/static-105-1440-light.png",
+      "sha256": "ce9a3f67076a46b2699d5d321f792d74db64ff70366e170348bfdde5406cef7b",
+      "source": "/tmp/howto-latest-online/responses/-articles-105--1440-light.png",
+      "sourceModifiedAt": "2026-10-24T17:17:22.734Z",
+      "bytes": 269411
+    },
+    {
+      "file": "online/search-390-dark.png",
+      "sha256": "833880089ae5d97d4f471eca99a11a24e85958c1b9b6dc543c7770299e624d7c",
+      "source": "/tmp/howto-latest-online/focused/search-390-dark.png",
+      "sourceModifiedAt": "2026-10-24T17:11:48.417Z",
+      "bytes": 98870
+    }
+  ]
+}

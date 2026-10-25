@@ -1,0 +1,321 @@
+{
+  "base": "http://127.0.0.1:4176/",
+  "baseline": true,
+  "browser": "155.0.8059.86",
+  "cases": [
+    {
+      "name": "alias-topics",
+      "width": 1440,
+      "mode": "light",
+      "passed": false,
+      "errors": [],
+      "active": [],
+      "sidebar": [],
+      "failure": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   '专题'\n- ]",
+      "final": {
+        "route": "#/docs/topics.md",
+        "title": "专题",
+        "renderedRoute": "#/docs/topics.md"
+      }
+    },
+    {
+      "name": "alias-paths",
+      "width": 1440,
+      "mode": "light",
+      "passed": false,
+      "errors": [],
+      "active": [],
+      "sidebar": [],
+      "failure": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   '学习路径'\n- ]",
+      "final": {
+        "route": "#/docs/paths.md",
+        "title": "学习路径",
+        "renderedRoute": "#/docs/paths.md"
+      }
+    },
+    {
+      "name": "search-leave-fast",
+      "width": 1440,
+      "mode": "light",
+      "passed": false,
+      "errors": [
+        "Cannot read properties of null (reading 'dataset')"
+      ],
+      "delayedDocumentRequests": 0,
+      "afterNavigation": {
+        "route": "#/docs/find?q=xmin",
+        "title": "work_mem 调优"
+      },
+      "failure": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '#/docs/find?q=xmin'\n- '#/docs/92'\n          ^",
+      "final": {
+        "route": "#/docs/find?q=xmin",
+        "title": "work_mem 调优",
+        "renderedRoute": "#/docs/92"
+      }
+    },
+    {
+      "name": "search-leave-slow",
+      "width": 1440,
+      "mode": "light",
+      "passed": false,
+      "errors": [],
+      "failure": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.article-id') to be visible\u001b[22m\n",
+      "final": {
+        "route": "#/docs/find?q=xmin",
+        "title": "How to tune work_mem",
+        "renderedRoute": "#/docs/find?q=xmin"
+      }
+    },
+    {
+      "name": "clear-loading-search",
+      "width": 1440,
+      "mode": "light",
+      "passed": false,
+      "errors": [],
+      "busy": "true",
+      "failure": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'true'\n- 'false'",
+      "final": {
+        "route": "#/README",
+        "title": "PostgreSQL Howto",
+        "renderedRoute": "#/README"
+      }
+    },
+    {
+      "name": "alias-topics",
+      "width": 390,
+      "mode": "light",
+      "passed": false,
+      "errors": [],
+      "active": [],
+      "sidebar": [],
+      "failure": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   '专题'\n- ]",
+      "final": {
+        "route": "#/docs/topics.md",
+        "title": "专题",
+        "renderedRoute": "#/docs/topics.md"
+      }
+    },
+    {
+      "name": "alias-paths",
+      "width": 390,
+      "mode": "light",
+      "passed": false,
+      "errors": [],
+      "active": [],
+      "sidebar": [],
+      "failure": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   '学习路径'\n- ]",
+      "final": {
+        "route": "#/docs/paths.md",
+        "title": "学习路径",
+        "renderedRoute": "#/docs/paths.md"
+      }
+    },
+    {
+      "name": "search-leave-fast",
+      "width": 390,
+      "mode": "light",
+      "passed": false,
+      "errors": [
+        "Cannot read properties of null (reading 'dataset')"
+      ],
+      "delayedDocumentRequests": 0,
+      "afterNavigation": {
+        "route": "#/docs/find?q=xmin",
+        "title": "work_mem 调优"
+      },
+      "failure": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '#/docs/find?q=xmin'\n- '#/docs/92'\n          ^",
+      "final": {
+        "route": "#/docs/find?q=xmin",
+        "title": "work_mem 调优",
+        "renderedRoute": "#/docs/92"
+      }
+    },
+    {
+      "name": "search-leave-slow",
+      "width": 390,
+      "mode": "light",
+      "passed": false,
+      "errors": [],
+      "failure": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.article-id') to be visible\u001b[22m\n",
+      "final": {
+        "route": "#/docs/find?q=xmin",
+        "title": "How to tune work_mem",
+        "renderedRoute": "#/docs/find?q=xmin"
+      }
+    },
+    {
+      "name": "clear-loading-search",
+      "width": 390,
+      "mode": "light",
+      "passed": false,
+      "errors": [],
+      "busy": "true",
+      "failure": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'true'\n- 'false'",
+      "final": {
+        "route": "#/README",
+        "title": "PostgreSQL Howto",
+        "renderedRoute": "#/README"
+      }
+    },
+    {
+      "name": "alias-topics",
+      "width": 1440,
+      "mode": "dark",
+      "passed": false,
+      "errors": [],
+      "active": [],
+      "sidebar": [],
+      "failure": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   '专题'\n- ]",
+      "final": {
+        "route": "#/docs/topics.md",
+        "title": "专题",
+        "renderedRoute": "#/docs/topics.md"
+      }
+    },
+    {
+      "name": "alias-paths",
+      "width": 1440,
+      "mode": "dark",
+      "passed": false,
+      "errors": [],
+      "active": [],
+      "sidebar": [],
+      "failure": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   '学习路径'\n- ]",
+      "final": {
+        "route": "#/docs/paths.md",
+        "title": "学习路径",
+        "renderedRoute": "#/docs/paths.md"
+      }
+    },
+    {
+      "name": "search-leave-fast",
+      "width": 1440,
+      "mode": "dark",
+      "passed": false,
+      "errors": [
+        "Cannot read properties of null (reading 'dataset')"
+      ],
+      "delayedDocumentRequests": 0,
+      "afterNavigation": {
+        "route": "#/docs/find?q=xmin",
+        "title": "work_mem 调优"
+      },
+      "failure": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '#/docs/find?q=xmin'\n- '#/docs/92'\n          ^",
+      "final": {
+        "route": "#/docs/find?q=xmin",
+        "title": "work_mem 调优",
+        "renderedRoute": "#/docs/92"
+      }
+    },
+    {
+      "name": "search-leave-slow",
+      "width": 1440,
+      "mode": "dark",
+      "passed": false,
+      "errors": [],
+      "failure": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.article-id') to be visible\u001b[22m\n",
+      "final": {
+        "route": "#/docs/find?q=xmin",
+        "title": "How to tune work_mem",
+        "renderedRoute": "#/docs/find?q=xmin"
+      }
+    },
+    {
+      "name": "clear-loading-search",
+      "width": 1440,
+      "mode": "dark",
+      "passed": false,
+      "errors": [],
+      "busy": "true",
+      "failure": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'true'\n- 'false'",
+      "final": {
+        "route": "#/README",
+        "title": "PostgreSQL Howto",
+        "renderedRoute": "#/README"
+      }
+    },
+    {
+      "name": "alias-topics",
+      "width": 390,
+      "mode": "dark",
+      "passed": false,
+      "errors": [],
+      "active": [],
+      "sidebar": [],
+      "failure": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   '专题'\n- ]",
+      "final": {
+        "route": "#/docs/topics.md",
+        "title": "专题",
+        "renderedRoute": "#/docs/topics.md"
+      }
+    },
+    {
+      "name": "alias-paths",
+      "width": 390,
+      "mode": "dark",
+      "passed": false,
+      "errors": [],
+      "active": [],
+      "sidebar": [],
+      "failure": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   '学习路径'\n- ]",
+      "final": {
+        "route": "#/docs/paths.md",
+        "title": "学习路径",
+        "renderedRoute": "#/docs/paths.md"
+      }
+    },
+    {
+      "name": "search-leave-fast",
+      "width": 390,
+      "mode": "dark",
+      "passed": false,
+      "errors": [
+        "Cannot read properties of null (reading 'dataset')"
+      ],
+      "delayedDocumentRequests": 0,
+      "afterNavigation": {
+        "route": "#/docs/find?q=xmin",
+        "title": "work_mem 调优"
+      },
+      "failure": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '#/docs/find?q=xmin'\n- '#/docs/92'\n          ^",
+      "final": {
+        "route": "#/docs/find?q=xmin",
+        "title": "work_mem 调优",
+        "renderedRoute": "#/docs/92"
+      }
+    },
+    {
+      "name": "search-leave-slow",
+      "width": 390,
+      "mode": "dark",
+      "passed": false,
+      "errors": [],
+      "failure": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.article-id') to be visible\u001b[22m\n",
+      "final": {
+        "route": "#/docs/find?q=xmin",
+        "title": "How to tune work_mem",
+        "renderedRoute": "#/docs/find?q=xmin"
+      }
+    },
+    {
+      "name": "clear-loading-search",
+      "width": 390,
+      "mode": "dark",
+      "passed": false,
+      "errors": [],
+      "busy": "true",
+      "failure": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'true'\n- 'false'",
+      "final": {
+        "route": "#/README",
+        "title": "PostgreSQL Howto",
+        "renderedRoute": "#/README"
+      }
+    }
+  ],
+  "errors": [
+    "Cannot read properties of null (reading 'dataset')",
+    "Cannot read properties of null (reading 'dataset')",
+    "Cannot read properties of null (reading 'dataset')",
+    "Cannot read properties of null (reading 'dataset')"
+  ]
+}

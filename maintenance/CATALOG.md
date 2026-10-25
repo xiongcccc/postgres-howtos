@@ -70,6 +70,10 @@ V2.2.1 图片阅读回归运行 `node maintenance/test-v2.2.1.cjs`：覆盖六�
 
 发布后深度精修专项运行 `node maintenance/test-final.cjs`，默认输出 `docs/visual-qa/final/focused`。它验证无 JavaScript 的首页/专题/路径/目录，静态与旧入口的 canonical、四组桌面/移动深浅色检索、实体字符摘要、键盘复制、首页回顶，以及延迟加载 Docsify 时的初始内容与接管。通用精确尺寸矩阵现包含静态专题和路径；`test-v2.2-final.cjs --http-only` 不依赖 Playwright，只需 Node.js。
 
+最新提交质量回归运行 `node maintenance/test-latest.cjs`：覆盖桌面/移动、深浅色下的旧 `.md` 专题与路径高亮、输入后立即跳转文章（包含延迟响应）、刷新与返回，以及清空加载中的首页搜索。结果中的 URL、正文标题与异常一并保存，不能只凭截图判断异步路由是否一致。
+
+HTTP/产物/DOM 三方验证运行 `node maintenance/test-seo-response.cjs`，覆盖首页、静态目录及七篇代表文章的新旧入口，并检查真实 HTTP 404。默认比较当前工作区；核验已部署版本时设置 `HOWTO_URL` 和精确的 `HOWTO_COMPARE_REF`，从该 Git 提交读取对比 HTML，避免把未发布修复误判为线上漂移。输出到 `HOWTO_SCREENSHOTS` 指定目录，默认 `docs/visual-qa/latest/after/responses`。该检查不访问 Search Console，不能据此宣称已经收录。
+
 # 收录日期
 
 首页“最近收录”使用文章的 `addedOn`（YYYY-MM-DD），按日期倒序排列，同日按编号倒序。历史日期取 Git 首次新增该文章的日期，不使用会议日期或后续校订日期；新增精选项必须补齐此字段。

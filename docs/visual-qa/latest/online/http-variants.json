@@ -1,0 +1,300 @@
+{
+  "checkedAt": "2026-10-24T17:01:55.280Z",
+  "note": "Changing a User-Agent header is not an actual Google crawl or indexing check",
+  "rows": [
+    {
+      "agent": "standard",
+      "url": "https://postgres-howto.cn/",
+      "status": 200,
+      "sha256": "23b4f6dcdf4487ae02c606e081861fb142b35b8b463e543af8157e2f7107c74e",
+      "matchesLocal": true,
+      "headers": {
+        "server": "GitHub.com",
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "max-age=600",
+        "age": "0",
+        "etag": "W/\"6adcbff9-3fb3\"",
+        "last-modified": "Sat, 24 Oct 2026 14:26:01 GMT",
+        "vary": "Accept-Encoding",
+        "x-cache": "MISS"
+      },
+      "title": "PostgreSQL Howto 中文版",
+      "h1": [
+        "PostgreSQL Howto"
+      ],
+      "canonical": [],
+      "main": 1
+    },
+    {
+      "agent": "standard",
+      "url": "https://postgres-howto.cn/topics/",
+      "status": 200,
+      "sha256": "115f115448671c6dc1c69f47812a8a83d79d406d2fb2f6193382be3d9cb52f51",
+      "matchesLocal": true,
+      "headers": {
+        "server": "GitHub.com",
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "max-age=600",
+        "age": "0",
+        "etag": "W/\"6adcbff9-90df\"",
+        "last-modified": "Sat, 24 Oct 2026 14:26:01 GMT",
+        "vary": "Accept-Encoding",
+        "x-cache": "MISS"
+      },
+      "title": "专题 | PostgreSQL Howto 中文版",
+      "h1": [
+        "专题"
+      ],
+      "canonical": [
+        "https://postgres-howto.cn/topics/"
+      ],
+      "main": 1
+    },
+    {
+      "agent": "standard",
+      "url": "https://postgres-howto.cn/paths/",
+      "status": 200,
+      "sha256": "94c615144dd86b6367a2b44cc0955d14510672a729a856f577deb1cf990ab11c",
+      "matchesLocal": true,
+      "headers": {
+        "server": "GitHub.com",
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "max-age=600",
+        "age": "0",
+        "etag": "W/\"6adcbff8-6285\"",
+        "last-modified": "Sat, 24 Oct 2026 14:26:00 GMT",
+        "vary": "Accept-Encoding",
+        "x-cache": "MISS"
+      },
+      "title": "学习路径 | PostgreSQL Howto 中文版",
+      "h1": [
+        "学习路径"
+      ],
+      "canonical": [
+        "https://postgres-howto.cn/paths/"
+      ],
+      "main": 1
+    },
+    {
+      "agent": "standard",
+      "url": "https://postgres-howto.cn/articles/105/",
+      "status": 200,
+      "sha256": "611dddaa4b2e7287f801d439317cc2465578be135b00ddb32a6eed63dee7a0ca",
+      "matchesLocal": true,
+      "headers": {
+        "server": "GitHub.com",
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "max-age=600",
+        "age": "0",
+        "etag": "W/\"6adcbff9-e32c\"",
+        "last-modified": "Sat, 24 Oct 2026 14:26:01 GMT",
+        "vary": "Accept-Encoding",
+        "x-cache": "MISS"
+      },
+      "title": "深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复 | PostgreSQL Howto 中文版",
+      "h1": [
+        "深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复"
+      ],
+      "canonical": [
+        "https://postgres-howto.cn/articles/105/"
+      ],
+      "main": 1
+    },
+    {
+      "agent": "browser",
+      "url": "https://postgres-howto.cn/",
+      "status": 200,
+      "sha256": "23b4f6dcdf4487ae02c606e081861fb142b35b8b463e543af8157e2f7107c74e",
+      "matchesLocal": true,
+      "headers": {
+        "server": "GitHub.com",
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "max-age=600",
+        "age": "1",
+        "etag": "W/\"6adcbff9-3fb3\"",
+        "last-modified": "Sat, 24 Oct 2026 14:26:01 GMT",
+        "vary": "Accept-Encoding",
+        "x-cache": "HIT"
+      },
+      "title": "PostgreSQL Howto 中文版",
+      "h1": [
+        "PostgreSQL Howto"
+      ],
+      "canonical": [],
+      "main": 1
+    },
+    {
+      "agent": "browser",
+      "url": "https://postgres-howto.cn/topics/",
+      "status": 200,
+      "sha256": "115f115448671c6dc1c69f47812a8a83d79d406d2fb2f6193382be3d9cb52f51",
+      "matchesLocal": true,
+      "headers": {
+        "server": "GitHub.com",
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "max-age=600",
+        "age": "1",
+        "etag": "W/\"6adcbff9-90df\"",
+        "last-modified": "Sat, 24 Oct 2026 14:26:01 GMT",
+        "vary": "Accept-Encoding",
+        "x-cache": "HIT"
+      },
+      "title": "专题 | PostgreSQL Howto 中文版",
+      "h1": [
+        "专题"
+      ],
+      "canonical": [
+        "https://postgres-howto.cn/topics/"
+      ],
+      "main": 1
+    },
+    {
+      "agent": "browser",
+      "url": "https://postgres-howto.cn/paths/",
+      "status": 200,
+      "sha256": "94c615144dd86b6367a2b44cc0955d14510672a729a856f577deb1cf990ab11c",
+      "matchesLocal": true,
+      "headers": {
+        "server": "GitHub.com",
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "max-age=600",
+        "age": "1",
+        "etag": "W/\"6adcbff8-6285\"",
+        "last-modified": "Sat, 24 Oct 2026 14:26:00 GMT",
+        "vary": "Accept-Encoding",
+        "x-cache": "HIT"
+      },
+      "title": "学习路径 | PostgreSQL Howto 中文版",
+      "h1": [
+        "学习路径"
+      ],
+      "canonical": [
+        "https://postgres-howto.cn/paths/"
+      ],
+      "main": 1
+    },
+    {
+      "agent": "browser",
+      "url": "https://postgres-howto.cn/articles/105/",
+      "status": 200,
+      "sha256": "611dddaa4b2e7287f801d439317cc2465578be135b00ddb32a6eed63dee7a0ca",
+      "matchesLocal": true,
+      "headers": {
+        "server": "GitHub.com",
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "max-age=600",
+        "age": "1",
+        "etag": "W/\"6adcbff9-e32c\"",
+        "last-modified": "Sat, 24 Oct 2026 14:26:01 GMT",
+        "vary": "Accept-Encoding",
+        "x-cache": "HIT"
+      },
+      "title": "深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复 | PostgreSQL Howto 中文版",
+      "h1": [
+        "深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复"
+      ],
+      "canonical": [
+        "https://postgres-howto.cn/articles/105/"
+      ],
+      "main": 1
+    },
+    {
+      "agent": "bot-header-test",
+      "url": "https://postgres-howto.cn/",
+      "status": 200,
+      "sha256": "23b4f6dcdf4487ae02c606e081861fb142b35b8b463e543af8157e2f7107c74e",
+      "matchesLocal": true,
+      "headers": {
+        "server": "GitHub.com",
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "max-age=600",
+        "age": "2",
+        "etag": "W/\"6adcbff9-3fb3\"",
+        "last-modified": "Sat, 24 Oct 2026 14:26:01 GMT",
+        "vary": "Accept-Encoding",
+        "x-cache": "HIT"
+      },
+      "title": "PostgreSQL Howto 中文版",
+      "h1": [
+        "PostgreSQL Howto"
+      ],
+      "canonical": [],
+      "main": 1
+    },
+    {
+      "agent": "bot-header-test",
+      "url": "https://postgres-howto.cn/topics/",
+      "status": 200,
+      "sha256": "115f115448671c6dc1c69f47812a8a83d79d406d2fb2f6193382be3d9cb52f51",
+      "matchesLocal": true,
+      "headers": {
+        "server": "GitHub.com",
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "max-age=600",
+        "age": "2",
+        "etag": "W/\"6adcbff9-90df\"",
+        "last-modified": "Sat, 24 Oct 2026 14:26:01 GMT",
+        "vary": "Accept-Encoding",
+        "x-cache": "HIT"
+      },
+      "title": "专题 | PostgreSQL Howto 中文版",
+      "h1": [
+        "专题"
+      ],
+      "canonical": [
+        "https://postgres-howto.cn/topics/"
+      ],
+      "main": 1
+    },
+    {
+      "agent": "bot-header-test",
+      "url": "https://postgres-howto.cn/paths/",
+      "status": 200,
+      "sha256": "94c615144dd86b6367a2b44cc0955d14510672a729a856f577deb1cf990ab11c",
+      "matchesLocal": true,
+      "headers": {
+        "server": "GitHub.com",
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "max-age=600",
+        "age": "2",
+        "etag": "W/\"6adcbff8-6285\"",
+        "last-modified": "Sat, 24 Oct 2026 14:26:00 GMT",
+        "vary": "Accept-Encoding",
+        "x-cache": "HIT"
+      },
+      "title": "学习路径 | PostgreSQL Howto 中文版",
+      "h1": [
+        "学习路径"
+      ],
+      "canonical": [
+        "https://postgres-howto.cn/paths/"
+      ],
+      "main": 1
+    },
+    {
+      "agent": "bot-header-test",
+      "url": "https://postgres-howto.cn/articles/105/",
+      "status": 200,
+      "sha256": "611dddaa4b2e7287f801d439317cc2465578be135b00ddb32a6eed63dee7a0ca",
+      "matchesLocal": true,
+      "headers": {
+        "server": "GitHub.com",
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "max-age=600",
+        "age": "2",
+        "etag": "W/\"6adcbff9-e32c\"",
+        "last-modified": "Sat, 24 Oct 2026 14:26:01 GMT",
+        "vary": "Accept-Encoding",
+        "x-cache": "HIT"
+      },
+      "title": "深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复 | PostgreSQL Howto 中文版",
+      "h1": [
+        "深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复"
+      ],
+      "canonical": [
+        "https://postgres-howto.cn/articles/105/"
+      ],
+      "main": 1
+    }
+  ]
+}
