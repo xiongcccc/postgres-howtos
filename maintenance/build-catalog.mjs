@@ -10,9 +10,20 @@ import {visibleText, staticMarkup} from './html-tools.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = p => fs.readFileSync(path.join(root, p), 'utf8');
 const catalog = JSON.parse(read('data/articles.json'));
+const comments = JSON.parse(read('data/comment-threads.json'));
 const html = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const md = s => String(s).replace(/[\\[\]]/g, '\\$&');
 const byId = new Map(catalog.articles.map(a => [a.id, a]));
+assert.equal(comments.repo, 'xiongcccc/gitalk-comment', 'Comment repository must remain explicit');
+const issueNumbers = new Set();
+for (const [id, record] of Object.entries(comments.threads)) {
+  assert.ok(byId.has(Number(id)), 'Unknown comment article: ' + id);
+  assert.ok(Array.isArray(record.other));
+  for (const number of [record.issue, ...record.other]) {
+    assert.ok(Number.isSafeInteger(number) && number > 0 && !issueNumbers.has(number), 'Invalid or duplicated Issue: ' + number);
+    issueNumbers.add(number);
+  }
+}
 assert.equal(byId.size, catalog.articles.length, 'Duplicate article ID');
 const topicIds = new Set(catalog.topics.map(t => t.id));
 assert.equal(topicIds.size, catalog.topics.length);
@@ -97,7 +108,7 @@ const index = catalog.articles.map(a=>({id:a.id,text:visibleText(parse(read(`doc
   .replace(/https?:\/\/[^\s)]+/g,' ').replace(/\s+/g,' ').trim()}));
 const revision = createHash('sha256').update(JSON.stringify(catalog)+JSON.stringify(index)).digest('hex').slice(0,16);
 outputs.set('data/search-index.json', JSON.stringify({revision,articles:index})+'\n');
-outputs.set('scripts/catalog-data.js', '// Generated; do not edit.\nwindow.HowtoCatalog = '+JSON.stringify({...catalog,statistics,revision}).replaceAll('<','\\u003c')+';\n');
+outputs.set('scripts/catalog-data.js', '// Generated; do not edit.\nwindow.HowtoCatalog = '+JSON.stringify({...catalog,statistics,revision,comments}).replaceAll('<','\\u003c')+';\n');
 let entry = read('index.html');
 const homeMarkers=/<!-- HOME_PRERENDER_START -->[^]*?<!-- HOME_PRERENDER_END -->/;
 assert.ok(homeMarkers.test(entry),'Homepage pre-render markers required');
@@ -110,7 +121,7 @@ for (const asset of ['scripts/catalog-data.js','scripts/search-core.js','scripts
   entry=entry.replace(pattern,'$1?v='+hash);
 }
 outputs.set('index.html',entry);
-staticPages(catalog,read,outputs);
+staticPages(catalog,read,outputs,comments);
 let stale = false;
 for (const [file,text] of outputs) {
   if (process.argv.includes('--check')) {

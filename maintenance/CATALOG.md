@@ -54,7 +54,7 @@ Sitemap 不填 fragment 地址，也不编造 lastmod。独立入口、可抓取
 
 推送前检查：根地址、`#/` 与 `#/README` 均直接显示可搜索首页；旧封面文件保留，但不再增加一次进入步骤。首页搜索、6 个问题入口、专题、系列、路径和会议页可用；元数据中的全部编号文档都能打开；系列与来源组合筛选、表格横向滚动、中文标题、目录定位、浏览器前进后退、移动端菜单和暗色模式正常。
 
-可选浏览器回归：使用已有 Playwright 及 Chromium，执行 `node maintenance/test-site.cjs`。默认连接本机 4176 端口；可用 `HOWTO_URL` 指定预览地址，`PLAYWRIGHT_PACKAGE` 指定已有安装，`CHROME_PATH` 指定本机 Chrome 可执行文件。`HOWTO_SCREENSHOTS` 可指定截图输出位置。测试采用独立浏览器配置，并屏蔽统计请求；网页不再加载 Gitalk OAuth 脚本，历史讨论通过原 GitHub Issues 访问。
+可选浏览器回归：使用已有 Playwright 及 Chromium，执行 `node maintenance/test-site.cjs`。默认连接本机 4176 端口；可用 `HOWTO_URL` 指定预览地址，`PLAYWRIGHT_PACKAGE` 指定已有安装，`CHROME_PATH` 指定本机 Chrome 可执行文件。`HOWTO_SCREENSHOTS` 可指定截图输出位置。测试采用独立浏览器配置，并屏蔽统计请求。文章通过 Utterances 在页内评论，沿用原 GitHub Issues；首页及发现页不挂载评论。历史编号映射、专门回归与旧密钥撤销要求见 `maintenance/COMMENTS.md`。
 
 V2.1 专项运行 `node maintenance/test-v2.1.cjs`：新增无 JavaScript 的全部静态文章、逐块代码保真、目录跨断点/刷新、九组检索、静态 URL、真实二维码图片加载和本地性能记录。环境变量与旧回归相同，默认截图输出 `docs/v2.1/after`。这些脚本不替代真机 Safari 与真实网络测试。
 

@@ -2,6 +2,7 @@ import {createRequire} from 'node:module';
 import {createHash} from 'node:crypto';
 import {Marked, Renderer} from '../vendor/marked.cjs';
 import view from '../scripts/article-view.js';
+import commentsView from '../scripts/comments.js';
 import {staticHref, staticMarkup, visibleText} from './html-tools.mjs';
 
 const require=createRequire(import.meta.url);
@@ -21,10 +22,10 @@ function slugger() {
     const count=used.get(base)||0;used.set(base,count+1);return base+(count?'-'+count:'');
   };
 }
-export function staticPages(catalog, read, outputs) {
+export function staticPages(catalog, read, outputs, comments) {
   const template=read('maintenance/static-template.html');
   const asset=file=>'/'+file+'?v='+createHash('sha256').update(outputs.get(file)||read(file)).digest('hex').slice(0,16);
-  const scripts=['scripts/catalog-data.js','scripts/article-view.js','scripts/site.js','scripts/diagrams.js','scripts/reading.js'];
+  const scripts=['scripts/catalog-data.js','scripts/article-view.js','scripts/site.js','scripts/diagrams.js','scripts/reading.js','scripts/comments.js'];
   function sidebar(active) {
     return '<aside class="sidebar" id="site-sidebar" aria-label="文章导航"><div class="sidebar-nav"><div class="sidebar-heading"><span>知识导航</span><button class="icon-button" data-close-nav aria-label="关闭导航" title="关闭导航">'+icon('x')+'</button></div><nav class="catalog-navigation" aria-label="文章分类"><ul class="catalog-pages"><li><a href="/#/README">首页</a></li><li><a href="/#/docs/topics">专题</a></li><li><a href="/#/docs/paths">学习路径</a></li><li><a href="/articles/">全部文章</a></li></ul><p class="sidebar-label">技术专题 <span>主归属文章</span></p>'+catalog.topics.map(t=>{
       const items=catalog.articles.filter(a=>a.topics[0]===t.id),current=active?.topics[0]===t.id;
@@ -79,7 +80,7 @@ export function staticPages(catalog, read, outputs) {
     const firstHeadingEnd=body.indexOf('</h1>')+5;
     body=body.slice(0,firstHeadingEnd)+meta+toc+body.slice(firstHeadingEnd);
     const top=`<div class="article-topline"><nav class="breadcrumbs" aria-label="面包屑"><a href="/">首页</a><span aria-hidden="true">/</span><a href="/topics/#topic-${primary.id}">${e(primary.title)}</a></nav></div>`;
-    const discussion='<section id="gitalk-container" class="article-discussion"><h2>讨论与补充</h2><a target="_blank" rel="noopener" href="https://github.com/xiongcccc/gitalk-comment/issues?q='+encodeURIComponent('is:issue "/docs/'+a.id+'"')+'">查看与参与 GitHub 讨论</a></section>';
+    const discussion=commentsView.markup(a.id,comments);
     return page({a,title:a.title,description:a.title+'。'+a.versionNote,body:top+body+view.footer(catalog,a,view.url)+discussion});
   }
   for(const a of catalog.articles)outputs.set(`articles/${a.id}/index.html`,render(a));

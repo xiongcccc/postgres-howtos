@@ -120,7 +120,13 @@ mark { color: var(--ink); background: var(--accent-soft); padding: 1px 0; box-sh
 .article-source-links a { font-size: 12px; min-height: 36px; display: inline-flex; align-items: center; gap: 6px; }
 .article-source-links .icon { width: 12px; height: 12px; }
 .article-discussion { border-top: 1px solid var(--border); margin-top: 24px; padding-top: 8px; }
-.article-discussion > a { font-size: 13px; }
+.article-discussion > a, .discussion-history { font-size: 13px; }
+.discussion-history { margin-top: 12px; }
+.discussion-history summary { cursor: pointer; color: var(--muted); }
+.discussion-status { color: var(--muted); font-size: 14px; }
+.discussion-retry { margin-left: 12px; border: 0; padding: 4px; min-height: 44px; background: transparent; color: var(--brand); cursor: pointer; text-decoration: underline; font: inherit; }
+.discussion-embed { position: relative; width: 100%; min-width: 0; height: 300px; margin-top: 16px; }
+.discussion-frame { position: absolute; left: 0; right: 0; width: 1px; min-width: 100%; max-width: 100%; height: 100%; border: 0; color-scheme: light; }
 @media (min-width:1280px) {
   .article-toc { position: fixed; width: var(--toc-width); right: 24px; top: 92px; max-height: calc(100dvh - 120px); overflow: auto; margin: 0; border: 0; padding: 0 8px; background: var(--page); }
 }

@@ -194,6 +194,8 @@
   window.HowtoUI = {icon: icon, finishNavigation: finishNavigation};
   // Statistics are non-blocking and never add fixed UI over the article.
   setTimeout(function () {
+    // A delayed comment bundle must not expose an OAuth hand-off URL to analytics.
+    if (new URL(location.href).searchParams.has('utterances')) return;
     var script = document.createElement('script'); script.async = true;
     script.src = 'https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
     document.body.append(script);
