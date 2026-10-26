@@ -4,7 +4,7 @@
   <h1 id="home-title">PostgreSQL Howto</h1>
   <p class="home-hero__lead">面向真实工程问题的 PostgreSQL 实践知识库。</p>
   <p class="home-hero__summary">从慢 SQL、锁等待到索引、WAL 与复制，记录问题背后的机制，也整理可以动手验证的方法。</p>
-  <p class="home-stats"><span><strong>109</strong> 篇技术文章</span><span><strong>9</strong> 个专题</span><span><strong>6</strong> 条学习路径</span></p>
+  <p class="home-stats"><span><strong>110</strong> 篇技术文章</span><span><strong>9</strong> 个专题</span><span><strong>6</strong> 条学习路径</span></p>
   <div class="article-finder" data-finder data-home></div>
 </section>
 
@@ -15,10 +15,10 @@
 
 <section class="home-section" aria-labelledby="home-topics">
   <div class="section-heading"><div><h2 id="home-topics">按专题探索</h2><p class="section-note">含跨专题收录</p></div><a href="#/docs/topics">全部专题</a></div>
-  <div class="topic-grid"><a class="topic-card" href="#/docs/topics?id=topic-performance" data-docs-route="/docs/topics?id=topic-performance" title="23 篇收录，17 篇主归属"><span class="topic-copy"><strong>查询性能与观测</strong><span>执行计划、慢 SQL、统计信息与基准测试。</span></span><span class="topic-count">23 <span>篇收录</span><span class="sr-only">，17 篇主归属</span></span></a>
+  <div class="topic-grid"><a class="topic-card" href="#/docs/topics?id=topic-performance" data-docs-route="/docs/topics?id=topic-performance" title="24 篇收录，17 篇主归属"><span class="topic-copy"><strong>查询性能与观测</strong><span>执行计划、慢 SQL、统计信息与基准测试。</span></span><span class="topic-count">24 <span>篇收录</span><span class="sr-only">，17 篇主归属</span></span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-ops" data-docs-route="/docs/topics?id=topic-ops" title="28 篇收录，21 篇主归属"><span class="topic-copy"><strong>运维排障与日常工具</strong><span>备份恢复、psql、Docker 和日常运维。</span></span><span class="topic-count">28 <span>篇收录</span><span class="sr-only">，21 篇主归属</span></span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-locks" data-docs-route="/docs/topics?id=topic-locks" title="19 篇收录，19 篇主归属"><span class="topic-copy"><strong>锁、事务与在线变更</strong><span>长事务、锁等待、DDL 与在线变更。</span></span><span class="topic-count">19 <span>篇收录</span><span class="sr-only">，19 篇主归属</span></span></a>
-<a class="topic-card" href="#/docs/topics?id=topic-indexes" data-docs-route="/docs/topics?id=topic-indexes" title="11 篇收录，9 篇主归属"><span class="topic-copy"><strong>索引治理</strong><span>索引创建、维护、清理和损坏检查。</span></span><span class="topic-count">11 <span>篇收录</span><span class="sr-only">，9 篇主归属</span></span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-indexes" data-docs-route="/docs/topics?id=topic-indexes" title="12 篇收录，10 篇主归属"><span class="topic-copy"><strong>索引治理</strong><span>索引创建、维护、清理和损坏检查。</span></span><span class="topic-count">12 <span>篇收录</span><span class="sr-only">，10 篇主归属</span></span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-storage" data-docs-route="/docs/topics?id=topic-storage" title="24 篇收录，19 篇主归属"><span class="topic-copy"><strong>存储、WAL 与 Vacuum</strong><span>WAL、膨胀、Vacuum 与存储布局。</span></span><span class="topic-count">24 <span>篇收录</span><span class="sr-only">，19 篇主归属</span></span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-sql" data-docs-route="/docs/topics?id=topic-sql" title="12 篇收录，12 篇主归属"><span class="topic-copy"><strong>SQL、数据建模与扩展玩法</strong><span>SQL、数组、UUID、元数据和数据建模。</span></span><span class="topic-count">12 <span>篇收录</span><span class="sr-only">，12 篇主归属</span></span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-replication" data-docs-route="/docs/topics?id=topic-replication" title="8 篇收录，7 篇主归属"><span class="topic-copy"><strong>复制、校验与升级</strong><span>复制延迟、数据校验与主版本升级。</span></span><span class="topic-count">8 <span>篇收录</span><span class="sr-only">，7 篇主归属</span></span></a>
@@ -33,11 +33,11 @@
 </section>
 
 <section class="home-section" aria-labelledby="home-recent"><div class="section-heading"><h2 id="home-recent">最近收录</h2><a href="#/docs/find">全部文章</a></div><ul class="recent-articles">
+<li><time datetime="2026-10-26">2026-10-26</time><div><a href="#/docs/111">PostgreSQL B-tree 为什么快：有序查找、复合索引与 skip scan</a><span>索引治理 · 专题解读 · 会议材料</span></div></li>
 <li><time datetime="2026-10-26">2026-10-26</time><div><a href="#/docs/110">PostgreSQL 优化器提示：怎样干预和稳定执行计划</a><span>查询性能与观测 · 专题解读 · 会议材料</span></div></li>
 <li><time datetime="2026-10-09">2026-10-09</time><div><a href="#/docs/109">备库查询为什么被取消：WAL 回放冲突与等待预算</a><span>复制、校验与升级 · 专题解读 · 技术博客</span></div></li>
 <li><time datetime="2026-10-09">2026-10-09</time><div><a href="#/docs/108">一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离</a><span>查询性能与观测 · 专题解读 · 技术博客</span></div></li>
 <li><time datetime="2026-10-09">2026-10-09</time><div><a href="#/docs/107">外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务</a><span>锁、事务与在线变更 · 专题解读 · 技术博客</span></div></li>
-<li><time datetime="2026-09-30">2026-09-30</time><div><a href="#/docs/106">PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化</a><span>复制、校验与升级 · 专题解读 · 会议材料</span></div></li>
 </ul></section>
 
 

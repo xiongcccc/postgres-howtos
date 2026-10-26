@@ -72,6 +72,7 @@
   * [83. 修改 Postgres 参数](/docs/83.md)
 
 * **索引治理**
+  * [111. PostgreSQL B-tree 为什么快：有序查找、复合索引与 skip scan](/docs/111.md)
   * [15. 监控 CREATE INDEX / REINDEX 进度](/docs/15.md)
   * [18. 过度索引](/docs/18.md)
   * [53. 索引维护](/docs/53.md)

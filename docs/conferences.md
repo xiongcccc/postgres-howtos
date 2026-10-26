@@ -64,6 +64,18 @@ Baji Shaik、Mohamed Ali · Autovacuum Blocked, Backlogged, or Slow?! Understand
 
 [原始材料](https://postgresconf.org/conferences/postgresconf_2026) · [Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢](/docs/102.md)
 
+## PostgreSQL Conference Germany 2026
+
+### [PostgreSQL B-tree 为什么快：有序查找、复合索引与 skip scan](/docs/111.md)
+
+Sergey Dudoladov / Zalando · Into the Woods · 2026-04-22
+
+原题：Into the Woods: Finding Your Way with B-Trees in PostgreSQL
+
+按 PostgreSQL 18 核对，示例使用 18.4；B-tree skip scan 始于 PG18。 临时实例核对 NULL 排序、反向扫描、前导列等值与组内排序、skip scan 和索引层数；向量部分按原材料与 pgvector 文档解读。
+
+[原始材料](https://www.postgresql.eu/events/pgconfde2026/schedule/session/7600-into-the-woods-finding-your-way-with-b-trees-in-postgresql/) · [PostgreSQL B-tree 为什么快：有序查找、复合索引与 skip scan](/docs/111.md)
+
 ## Postgres Conference 2026 · San Jose
 
 ### [PostgreSQL 性能排查：规划开销、分区锁与表膨胀](/docs/101.md)

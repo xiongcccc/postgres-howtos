@@ -148,8 +148,9 @@ const shots=path.resolve(process.env.HOWTO_SCREENSHOTS||path.join(__dirname,'../
       await page.setViewportSize({width,height:900});
       for(const mode of ['light','dark']){
         await theme(mode);
-        for(const route of ['#/README','#/docs/topics','#/docs/find?q=work_mem','#/docs/1','#/docs/5','#/docs/22','#/docs/98','#/docs/102','#/docs/109','#/docs/110','#/docs/25']){
+        for(const route of ['#/README','#/docs/topics','#/docs/find?q=work_mem','#/docs/1','#/docs/5','#/docs/22','#/docs/98','#/docs/102','#/docs/109','#/docs/110','#/docs/111','#/docs/25']){
           await go(route);await noOverflow(width+' '+mode+' '+route);
+          if(route.includes('/111'))await page.locator('.mermaid svg').waitFor();
           if(route.includes('/109')){
             await page.locator('.mermaid svg').waitFor();
             const table=page.locator('.table-scroll').first();

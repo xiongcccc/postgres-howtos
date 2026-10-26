@@ -170,13 +170,36 @@
     }
   ],
   "featured": [
+    111,
     110,
     109,
     108,
-    107,
-    106
+    107
   ],
   "articles": [
+    {
+      "id": 111,
+      "title": "PostgreSQL B-tree 为什么快：有序查找、复合索引与 skip scan",
+      "originalTitle": "Into the Woods: Finding Your Way with B-Trees in PostgreSQL",
+      "topics": ["indexes", "performance"],
+      "aliases": ["B树", "B+树", "B-tree", "B-trees", "有序查找", "索引顺序", "NULL排序", "NULLS FIRST", "NULLS LAST", "复合索引列顺序", "多列索引", "最左前缀", "跳跃扫描", "skip scan", "Index Searches", "反向索引扫描", "Sergey Dudoladov", "Into the Woods"],
+      "type": "conference",
+      "series": "interpretation",
+      "addedOn": "2026-10-26",
+      "source": {
+        "label": "Sergey Dudoladov / Zalando · Into the Woods",
+        "url": "https://www.postgresql.eu/events/pgconfde2026/schedule/session/7600-into-the-woods-finding-your-way-with-b-trees-in-postgresql/",
+        "event": "PostgreSQL Conference Germany 2026",
+        "date": "2026-04-22"
+      },
+      "versionNote": "按 PostgreSQL 18 核对，示例使用 18.4；B-tree skip scan 始于 PG18。",
+      "validation": {
+        "status": "tested",
+        "date": "2026-10-26",
+        "record": "/maintenance/111-review.md",
+        "note": "临时实例核对 NULL 排序、反向扫描、前导列等值与组内排序、skip scan 和索引层数；向量部分按原材料与 pgvector 文档解读。"
+      }
+    },
     {
       "id": 110,
       "title": "PostgreSQL 优化器提示：怎样干预和稳定执行计划",
