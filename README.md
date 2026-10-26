@@ -29,11 +29,11 @@
 
 ## 最近收录
 
+- 2026-10-26 · [PostgreSQL 优化器提示：怎样干预和稳定执行计划](https://postgres-howto.cn/articles/110/)
 - 2026-10-09 · [备库查询为什么被取消：WAL 回放冲突与等待预算](https://postgres-howto.cn/articles/109/)
 - 2026-10-09 · [一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离](https://postgres-howto.cn/articles/108/)
 - 2026-10-09 · [外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务](https://postgres-howto.cn/articles/107/)
 - 2026-09-30 · [PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化](https://postgres-howto.cn/articles/106/)
-- 2026-09-24 · [深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复](https://postgres-howto.cn/articles/105/)
 
 ## 来源与致谢
 

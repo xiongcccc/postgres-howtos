@@ -63,6 +63,20 @@ const shots=path.resolve(process.env.HOWTO_SCREENSHOTS||path.join(__dirname,'../
       await noOverflow('article '+a.id);
     }
     console.log('PASS: all numbered routes, Chinese headings, attribution, primary categories and diagrams');
+    await article(110);
+    assert.equal(await page.locator('pre[data-lang="sql"]').count(),10);
+    assert.equal(await page.locator('pre[data-lang="text"]').count(),6);
+    assert.ok((await page.locator('.article-meta').textContent()).includes('19rc1'));
+    await page.evaluate(()=>scrollTo(0,0));
+    await page.screenshot({path:path.join(shots,'110-desktop.png')});
+    await go('#/docs/find?q='+encodeURIComponent('计划突变')+'&series=interpretation&type=conference');
+    await page.waitForFunction(()=>document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/110');
+    await page.reload();
+    await page.waitForFunction(()=>document.querySelector('.finder-results a')?.getAttribute('href')==='#/docs/110');
+    assert.equal(await page.locator('[name=series]').inputValue(),'interpretation');
+    assert.equal(await page.locator('[name=type]').inputValue(),'conference');
+    await page.locator('.finder-results a').first().click();
+    await page.waitForFunction(()=>document.querySelector('.article-id')?.textContent==='#110');
     await go('#/docs/12.md');assert.equal(await page.locator('.article-id').textContent(),'#12');
     await go('#/README?id=about-author');assert.equal(await page.locator('#about-author').count(),1);
     assert.ok(await page.evaluate(()=>location.hash.includes('id=about-author')));
@@ -134,7 +148,7 @@ const shots=path.resolve(process.env.HOWTO_SCREENSHOTS||path.join(__dirname,'../
       await page.setViewportSize({width,height:900});
       for(const mode of ['light','dark']){
         await theme(mode);
-        for(const route of ['#/README','#/docs/topics','#/docs/find?q=work_mem','#/docs/1','#/docs/5','#/docs/22','#/docs/98','#/docs/102','#/docs/109','#/docs/25']){
+        for(const route of ['#/README','#/docs/topics','#/docs/find?q=work_mem','#/docs/1','#/docs/5','#/docs/22','#/docs/98','#/docs/102','#/docs/109','#/docs/110','#/docs/25']){
           await go(route);await noOverflow(width+' '+mode+' '+route);
           if(route.includes('/109')){
             await page.locator('.mermaid svg').waitFor();
@@ -150,6 +164,29 @@ const shots=path.resolve(process.env.HOWTO_SCREENSHOTS||path.join(__dirname,'../
             if(width===390&&mode==='dark'){await table.scrollIntoViewIfNeeded();await page.screenshot({path:path.join(shots,'article-mobile-dark.png')});}
           }
           if(route==='#/README'&&width===390){await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:path.join(shots,mode==='light'?'home-mobile.png':'home-mobile-dark.png')});}
+          if(route.includes('/110')){
+            const table=page.locator('.table-scroll').first();
+            if(width<768){
+              await table.scrollIntoViewIfNeeded();
+              assert.ok(await table.evaluate(e=>e.scrollWidth>e.clientWidth));
+              await table.evaluate(e=>{e.scrollLeft=120;});
+              assert.ok(await table.evaluate(e=>e.scrollLeft>0));
+              await table.evaluate(e=>{e.scrollLeft=0;});
+            }
+            if([390,1440].includes(width)){
+              await table.scrollIntoViewIfNeeded();
+              await page.screenshot({path:path.join(shots,`110-${width}-${mode}-table.png`)});
+              const result=page.locator('pre[data-lang="text"]').filter({hasText:'matched, inapplicable, failed'});
+              await result.scrollIntoViewIfNeeded();
+              if(width===390){
+                assert.ok(await result.evaluate(e=>e.scrollWidth>e.clientWidth));
+                await result.evaluate(e=>{e.scrollLeft=180;});
+                assert.ok(await result.evaluate(e=>e.scrollLeft>0));
+                await result.evaluate(e=>{e.scrollLeft=0;});
+              }
+              await page.screenshot({path:path.join(shots,`110-${width}-${mode}-feedback.png`)});
+            }
+          }
         }
       }
       if(width<1024){

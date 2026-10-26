@@ -26,15 +26,15 @@ test('full text, empty input, no result and filters',()=>{
   assert.ok(find('PreCommit_Notify').includes(100));
   assert.equal(find('').length,catalog.articles.length);
   assert.deepEqual(find('does-not-exist-xyz987654321'),[]);
-  assert.deepEqual(find('',{type:'conference'}),[99,100,101,102,103,104,105,106]);
+  assert.deepEqual(find('',{type:'conference'}),[99,100,101,102,103,104,105,106,110]);
   assert.ok(find('',{topic:'performance'}).includes(96));
   assert.deepEqual(find('WAL暴涨',{type:'conference'}),[]);
   assert.deepEqual(find('<script>alert(1)</script>'),[]);
 });
 test('series and source are independent and preserve old routes',()=>{
-  assert.deepEqual(find('',{series:'interpretation'}),[101,102,103,104,105,106,107,108,109]);
-  assert.deepEqual(find('',{series:'interpretation',topic:'ops'}),[102,103,108,109]);
-  assert.deepEqual(find('',{series:'interpretation',type:'conference',topic:'performance'}),[101,104,106]);
+  assert.deepEqual(find('',{series:'interpretation'}),[101,102,103,104,105,106,107,108,109,110]);
+  assert.deepEqual(find('',{series:'interpretation',topic:'ops'}),[102,103,108,109,110]);
+  assert.deepEqual(find('',{series:'interpretation',type:'conference',topic:'performance'}),[101,104,106,110]);
   assert.deepEqual(find('',{series:'interpretation',type:'translation'}),[]);
   assert.deepEqual(find('',{series:'guide',type:'conference'}),[99]);
   assert.deepEqual(find('',{series:'practice',type:'conference'}),[100]);
@@ -78,7 +78,7 @@ test('collation interpretation is discoverable and has verification evidence',()
   }
 });
 test('generated internal article links exist and titles come from metadata',()=>{
-  const files=['README.md','docs/home.md','_sidebar.md','docs/topics.md','docs/paths.md','docs/conferences.md','docs/series.md','docs/101.md','docs/102.md','docs/103.md','docs/104.md','docs/105.md','docs/106.md','docs/107.md','docs/108.md','docs/109.md'];
+  const files=['README.md','docs/home.md','_sidebar.md','docs/topics.md','docs/paths.md','docs/conferences.md','docs/series.md','docs/101.md','docs/102.md','docs/103.md','docs/104.md','docs/105.md','docs/106.md','docs/107.md','docs/108.md','docs/109.md','docs/110.md'];
   const map=new Map(catalog.articles.map(a=>[a.id,a]));
   for(const file of files){
     const text=fs.readFileSync(path.join(root,file),'utf8');
@@ -99,7 +99,7 @@ test('OLTP lock interpretation is discoverable and has verification evidence',()
   assert.equal([...article.matchAll(/```sql\n/g)].length,8);
   assert.doesNotMatch(article.split('## 参考资料')[0],/https:\/\/www\.postgresql\.org/);
   assert.doesNotMatch(article,/先把.+说具体|材料没有提供可供复现|反人类|反直觉|讲者/);
-  for(const file of ['docs/series.md','docs/conferences.md','docs/topics.md']) {
+  for(const file of ['docs/conferences.md','docs/topics.md']) {
     assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/104(?:\.md|")/);
   }
 });
@@ -116,7 +116,7 @@ test('logical replication interpretation is discoverable and has verification ev
   assert.equal([...article.matchAll(/```mermaid\n/g)].length,1);
   assert.doesNotMatch(article.split('## 参考资料')[0],/https:\/\/www\.postgresql\.org/);
   assert.doesNotMatch(article,/先把.+说具体|材料没有提供可供复现|反人类|反直觉|讲者/);
-  for(const file of ['docs/home.md','docs/conferences.md','docs/topics.md']) {
+  for(const file of ['docs/conferences.md','docs/topics.md']) {
     assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/105(?:\.md|")/);
   }
 });
@@ -229,6 +229,40 @@ test('standby recovery interpretation includes reproducible physical replication
     assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/109(?:\.md|")/);
   }
   assert.doesNotMatch(fs.readFileSync(path.join(root,'docs/conferences.md'),'utf8'),/\/docs\/109(?:\.md|")/);
+});
+test('optimizer hints interpretation retains useful comparisons without lab boilerplate',()=>{
+  assert.equal(find('计划突变')[0],110);
+  assert.equal(find('Optimizer Hints in PostgreSQL')[0],110);
+  const entry=catalog.articles.find(a=>a.id===110);
+  assert.equal(entry.series,'interpretation');
+  assert.equal(entry.type,'conference');
+  assert.equal(entry.source.event,'PGDay Lowlands 2026');
+  assert.equal(entry.source.date,'2026-09-10');
+  assert.equal(entry.addedOn,'2026-10-26');
+  assert.equal(entry.validation.status,'tested');
+  assert.match(entry.versionNote,/19rc1/);
+  assert.match(entry.validation.note,/正常重启恢复/);
+  assert.ok(fs.existsSync(path.join(root,entry.validation.record)));
+  assert.ok(fs.existsSync(path.join(root,'maintenance/110-verify.py')));
+  const article=fs.readFileSync(path.join(root,'docs/110.md'),'utf8');
+  const steps=[...article.matchAll(/<!-- verify:([a-z-]+) -->\s*```sql\n/g)].map(m=>m[1]);
+  assert.deepEqual(steps,['setup','baseline','planner-switch','hint-scan','hint-table-set',
+    'hint-table-priority','advice-generate','advice-scan','advice-invalid','stash-set']);
+  assert.equal([...article.matchAll(/```sql\n/g)].length,10);
+  assert.equal([...article.matchAll(/<!-- result:([a-z-]+) -->\s*```text\n/g)].length,6);
+  assert.match(article,/Rows Removed by Filter: 19999/);
+  assert.match(article,/matched, inapplicable, failed/);
+  assert.match(article,/VALUES \(:query_id, 'howto110', 'SeqScan\(i\)'\)/);
+  assert.doesNotMatch(article,/先确认数据|实验完成后|DROP (?:EXTENSION|SCHEMA)|不能把它们的语法|不表示 PG19 默认识别/);
+  const verifier=fs.readFileSync(path.join(root,'maintenance/110-verify.py'),'utf8');
+  assert.match(verifier,/Query Identifier/);
+  assert.match(verifier,/stash-restart/);
+  assert.match(verifier,/DROP SCHEMA hint_demo CASCADE/);
+  assert.doesNotMatch(article.split('## 参考资料')[0],/https:\/\/www\.postgresql\.org/);
+  assert.doesNotMatch(article,/先把.+说具体|材料没有提供可供复现|反人类|反直觉|讲者/);
+  for(const file of ['docs/home.md','docs/series.md','docs/conferences.md','docs/topics.md']) {
+    assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/110(?:\.md|")/);
+  }
 });
 test('root opens the searchable homepage and local assets exist',()=>{
   const html=fs.readFileSync(path.join(root,'index.html'),'utf8');

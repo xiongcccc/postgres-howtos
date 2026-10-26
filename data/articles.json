@@ -170,13 +170,36 @@
     }
   ],
   "featured": [
+    110,
     109,
     108,
     107,
-    106,
-    105
+    106
   ],
   "articles": [
+    {
+      "id": 110,
+      "title": "PostgreSQL 优化器提示：怎样干预和稳定执行计划",
+      "originalTitle": "Optimizer Hints in PostgreSQL",
+      "topics": ["performance", "ops"],
+      "aliases": ["优化器提示", "计划突变", "计划稳定", "计划固定", "执行计划干预", "optimizer hints", "plan flip", "plan pinning", "pg_hint_plan", "pg_plan_advice", "pg_stash_advice", "enable_seqscan", "Disabled: true", "query_id", "Leading", "Rows", "Michael Banck", "PGDay Lowlands"],
+      "type": "conference",
+      "series": "interpretation",
+      "addedOn": "2026-10-26",
+      "source": {
+        "label": "Michael Banck / credativ · Optimizer Hints in PostgreSQL",
+        "url": "https://www.postgresql.eu/events/pgdaynl2026/schedule/session/7815-optimizer-hints-in-postgresql/",
+        "event": "PGDay Lowlands 2026",
+        "date": "2026-09-10"
+      },
+      "versionNote": "PostgreSQL 18.4、pg_hint_plan 1.8.1；PG19 部分按候选版本 19rc1 核对。",
+      "validation": {
+        "status": "tested",
+        "date": "2026-10-26",
+        "record": "/maintenance/110-review.md",
+        "note": "临时实例实测规划开关、提示别名与规则优先级、query ID 常量归一化、advice 反馈，以及 stash 跨连接和正常重启恢复。"
+      }
+    },
     {
       "id": 109,
       "title": "备库查询为什么被取消：WAL 回放冲突与等待预算",

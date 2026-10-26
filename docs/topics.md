@@ -2,11 +2,11 @@
 
 # 专题
 
-108 篇技术文章 · 1 篇项目后记 · 9 个专题。下列数量含跨专题收录；侧栏数量只计算主归属文章。
+109 篇技术文章 · 1 篇项目后记 · 9 个专题。下列数量含跨专题收录；侧栏数量只计算主归属文章。
 
 <div class="topic-grid">
-<a class="topic-card" href="#/docs/topics?id=topic-performance" data-docs-route="/docs/topics?id=topic-performance" title="22 篇收录，16 篇主归属"><span class="topic-copy"><strong>查询性能与观测</strong><span>执行计划、慢 SQL、统计信息与基准测试。</span></span><span class="topic-count">22 <span>篇收录</span><span class="sr-only">，16 篇主归属</span></span></a>
-<a class="topic-card" href="#/docs/topics?id=topic-ops" data-docs-route="/docs/topics?id=topic-ops" title="27 篇收录，21 篇主归属"><span class="topic-copy"><strong>运维排障与日常工具</strong><span>备份恢复、psql、Docker 和日常运维。</span></span><span class="topic-count">27 <span>篇收录</span><span class="sr-only">，21 篇主归属</span></span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-performance" data-docs-route="/docs/topics?id=topic-performance" title="23 篇收录，17 篇主归属"><span class="topic-copy"><strong>查询性能与观测</strong><span>执行计划、慢 SQL、统计信息与基准测试。</span></span><span class="topic-count">23 <span>篇收录</span><span class="sr-only">，17 篇主归属</span></span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-ops" data-docs-route="/docs/topics?id=topic-ops" title="28 篇收录，21 篇主归属"><span class="topic-copy"><strong>运维排障与日常工具</strong><span>备份恢复、psql、Docker 和日常运维。</span></span><span class="topic-count">28 <span>篇收录</span><span class="sr-only">，21 篇主归属</span></span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-locks" data-docs-route="/docs/topics?id=topic-locks" title="19 篇收录，19 篇主归属"><span class="topic-copy"><strong>锁、事务与在线变更</strong><span>长事务、锁等待、DDL 与在线变更。</span></span><span class="topic-count">19 <span>篇收录</span><span class="sr-only">，19 篇主归属</span></span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-indexes" data-docs-route="/docs/topics?id=topic-indexes" title="11 篇收录，9 篇主归属"><span class="topic-copy"><strong>索引治理</strong><span>索引创建、维护、清理和损坏检查。</span></span><span class="topic-count">11 <span>篇收录</span><span class="sr-only">，9 篇主归属</span></span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-storage" data-docs-route="/docs/topics?id=topic-storage" title="24 篇收录，19 篇主归属"><span class="topic-copy"><strong>存储、WAL 与 Vacuum</strong><span>WAL、膨胀、Vacuum 与存储布局。</span></span><span class="topic-count">24 <span>篇收录</span><span class="sr-only">，19 篇主归属</span></span></a>
@@ -22,8 +22,9 @@
 
 执行计划、慢 SQL、统计信息与基准测试。
 
-收录 22 篇 · 主归属 16 篇
+收录 23 篇 · 主归属 17 篇
 
+- [PostgreSQL 优化器提示：怎样干预和稳定执行计划](/docs/110.md) · 会议材料
 - [一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离](/docs/108.md) · 技术博客
 - [外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务](/docs/107.md) · 技术博客
 - [PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化](/docs/106.md) · 会议材料
@@ -53,8 +54,9 @@
 
 备份恢复、psql、Docker 和日常运维。
 
-收录 27 篇 · 主归属 21 篇
+收录 28 篇 · 主归属 21 篇
 
+- [PostgreSQL 优化器提示：怎样干预和稳定执行计划](/docs/110.md) · 会议材料
 - [备库查询为什么被取消：WAL 回放冲突与等待预算](/docs/109.md) · 技术博客
 - [一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离](/docs/108.md) · 技术博客
 - [PostgreSQL 排序规则：文本比较、索引与升级风险](/docs/103.md) · 会议材料

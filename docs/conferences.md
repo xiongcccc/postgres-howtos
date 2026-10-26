@@ -16,6 +16,18 @@ Pranav Ghotekar · PostgreSQL 19: What to Expect from the Upcoming Release · 20
 
 [原始材料](https://www.meetup.com/mydbops-database-meetup/events/316578787/) · [PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化](/docs/106.md)
 
+## PGDay Lowlands 2026
+
+### [PostgreSQL 优化器提示：怎样干预和稳定执行计划](/docs/110.md)
+
+Michael Banck / credativ · Optimizer Hints in PostgreSQL · 2026-09-10
+
+原题：Optimizer Hints in PostgreSQL
+
+PostgreSQL 18.4、pg_hint_plan 1.8.1；PG19 部分按候选版本 19rc1 核对。 临时实例实测规划开关、提示别名与规则优先级、query ID 常量归一化、advice 反馈，以及 stash 跨连接和正常重启恢复。
+
+[原始材料](https://www.postgresql.eu/events/pgdaynl2026/schedule/session/7815-optimizer-hints-in-postgresql/) · [PostgreSQL 优化器提示：怎样干预和稳定执行计划](/docs/110.md)
+
 ## PG DATA 2026
 
 ### [如何排查 LISTEN／NOTIFY 引起的提交阻塞](/docs/100.md)
