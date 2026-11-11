@@ -170,13 +170,35 @@
     }
   ],
   "featured": [
+    114,
     113,
     112,
     111,
-    110,
-    109
+    110
   ],
   "articles": [
+    {
+      "id": 114,
+      "title": "为什么 PostgreSQL 的 numeric 类型这么慢？",
+      "originalTitle": "Why is PostgreSQL's Numeric Type so Slow?",
+      "topics": ["performance", "sql", "storage"],
+      "aliases": ["numeric", "decimal", "精确十进制", "定点数", "数值精度", "小数位数", "dscale", "typmod", "Datum", "NumericShort", "NumericSumAccum", "元组拆解", "tuple deforming", "DuckDB", "INT128", "Andrei Lepikhov", "pgEdge"],
+      "type": "blog",
+      "series": "translation",
+      "addedOn": "2026-11-11",
+      "source": {
+        "label": "Andrei Lepikhov / pgEdge",
+        "url": "https://www.pgedge.com/blog/why-is-postgresql-s-numeric-type-so-slow",
+        "date": "2026-10-08"
+      },
+      "versionNote": "PostgreSQL 内部实现按 REL_18_STABLE 核对；原文包含 PostgreSQL 19 开发改进及 DuckDB 对照，性能数据引用原作者测试。",
+      "validation": {
+        "status": "tested",
+        "date": "2026-11-11",
+        "record": "/maintenance/114-review.md",
+        "note": "仅实测 PostgreSQL 18.4 与 DuckDB 1.5.5 的存储长度、小数位数、运算类型及溢出示例；原作者性能测试未复现，源码核对及译注见记录。"
+      }
+    },
     {
       "id": 113,
       "title": "PostgreSQL 连接意外关闭：server closed the connection unexpectedly",
