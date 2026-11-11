@@ -4,7 +4,9 @@
 
 ## 系列与来源
 
-`series` 独立描述阅读形式：`guide`（实用指南）、`practice`（实践剖析）、`interpretation`（专题解读）。技术主题仍由 `topics` 决定，系列定义来自顶层 `series`，自动生成 `docs/series.md`。项目后记的系列为 `null`，不进入三个正文系列。
+`series` 独立描述阅读形式：`guide`（实用指南）、`practice`（实践剖析）、`interpretation`（专题解读）、`translation`（技术译文）。技术主题仍由 `topics` 决定，系列定义来自顶层 `series`，自动生成 `docs/series.md`。项目后记的系列为 `null`，不进入正文系列。
+
+技术译文用于明确要求忠实翻译的材料，不改动原有 Howto 的系列归属。它与来源类别独立：例如翻译技术博客的文章可填写 `series=translation`、`type=blog`；历史 `type=translation` 仍表示 Postgres.ai 上游译文，不批量迁移既有文章。新增系列的筛选项由元数据自动生成，首页提供技术译文入口。
 
 保留历史 `type` 字段与 URL 的 `type` 参数作为来源类别，避免旧筛选链接失效：`translation` 上游译文、`practice` 本站实践材料、`conference` 会议材料、`blog` 技术博客。具体归属与引用放在 `source`。界面将来源与系列分开筛选；会议入口仍按 `type=conference` 汇总，技术博客不进入会议页，也不改变文章的阅读系列。
 

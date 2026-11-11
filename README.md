@@ -29,11 +29,11 @@
 
 ## 最近收录
 
+- 2026-11-11 · [PostgreSQL 连接意外关闭：server closed the connection unexpectedly](https://postgres-howto.cn/articles/113/)
+- 2026-11-03 · [PostgreSQL 写入成功之后：缓存、刷盘与掉电安全](https://postgres-howto.cn/articles/112/)
 - 2026-10-26 · [PostgreSQL B-tree 为什么快：有序查找、复合索引与 skip scan](https://postgres-howto.cn/articles/111/)
 - 2026-10-26 · [PostgreSQL 优化器提示：怎样干预和稳定执行计划](https://postgres-howto.cn/articles/110/)
 - 2026-10-09 · [备库查询为什么被取消：WAL 回放冲突与等待预算](https://postgres-howto.cn/articles/109/)
-- 2026-10-09 · [一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离](https://postgres-howto.cn/articles/108/)
-- 2026-10-09 · [外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务](https://postgres-howto.cn/articles/107/)
 
 ## 来源与致谢
 

@@ -30,11 +30,19 @@
 
 精选社区材料，梳理原理、诊断思路与工程取舍。
 
+- [PostgreSQL 写入成功之后：缓存、刷盘与掉电安全](/docs/112.md) · 会议材料
 - [PostgreSQL 优化器提示：怎样干预和稳定执行计划](/docs/110.md) · 会议材料
 - [PostgreSQL B-tree 为什么快：有序查找、复合索引与 skip scan](/docs/111.md) · 会议材料
 - [外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务](/docs/107.md) · 技术博客
 - [一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离](/docs/108.md) · 技术博客
 - [备库查询为什么被取消：WAL 回放冲突与等待预算](/docs/109.md) · 技术博客
-- [PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化](/docs/106.md) · 会议材料
 
-[全部 11 篇](/docs/find.md?series=interpretation)
+[全部 12 篇](/docs/find.md?series=interpretation)
+
+## 技术译文
+
+忠实翻译优质技术文章，保留原文结构、案例与技术细节。
+
+- [PostgreSQL 连接意外关闭：server closed the connection unexpectedly](/docs/113.md) · 技术博客
+
+[全部 1 篇](/docs/find.md?series=translation)

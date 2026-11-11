@@ -123,3 +123,15 @@ Daria Nikolaenko（Data Egret） · 2026-04-21
 实测 PostgreSQL 16.14；文中 PG18 语法仅作文档核对。 隔离集群验证 DDL、锁队列与分批修改；未做生产规模测试。
 
 [原始材料](https://dataegret.com/wp-content/uploads/2026/04/DariaNikolaenko-pgconf2026.reveal.pdf) · [如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除](/docs/99.md)
+
+## Open Source Summit / Embedded Linux Conference Europe
+
+### [PostgreSQL 写入成功之后：缓存、刷盘与掉电安全](/docs/112.md)
+
+Werner Fischer / Thomas-Krenn · Caching in the Storage Path
+
+原题：Caching in the Storage Path: How to Gain Performance Without Loosing Data
+
+PostgreSQL 部分按 18 文档核对；Linux 与 QEMU 部分按官方缓存和持久化接口说明解读。 已核对 WAL 同步、FLUSH/FUA 与 QEMU 缓存模式；断电数据引用原分享，未独立执行断电实验。
+
+[原始材料](https://osselceu2026.sched.com/) · [PostgreSQL 写入成功之后：缓存、刷盘与掉电安全](/docs/112.md)

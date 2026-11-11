@@ -28,6 +28,7 @@
   * [94. 运行 ANALYZE 收集统计信息](/docs/94.md)
 
 * **运维排障与日常工具**
+  * [113. PostgreSQL 连接意外关闭：server closed the connection unexpectedly](/docs/113.md)
   * [2. 排查并加速 Postgres 停止和重启](/docs/2.md)
   * [3. 排查 Postgres 启动缓慢](/docs/3.md)
   * [8. 加速大库 pg_dump](/docs/8.md)
@@ -84,6 +85,7 @@
   * [79. 并行重建大量索引并避免死锁](/docs/79.md)
 
 * **存储、WAL 与 Vacuum**
+  * [112. PostgreSQL 写入成功之后：缓存、刷盘与掉电安全](/docs/112.md)
   * [102. Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢](/docs/102.md)
   * [4. 理解 tuple 在表中的稀疏存储](/docs/4.md)
   * [9. 理解 LSN 和 WAL 文件名](/docs/9.md)

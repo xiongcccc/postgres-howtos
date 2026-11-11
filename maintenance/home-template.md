@@ -19,7 +19,7 @@
 <section class="home-section" aria-labelledby="home-paths">
   <div class="section-heading"><h2 id="home-paths">沿一条路径深入</h2><a href="#/docs/paths">学习路径</a></div>
   <!-- HOME_PATHS -->
-  <p class="home-secondary-links"><a href="#/docs/series">系列阅读</a><a href="#/docs/conferences">会议精选</a><a href="#/docs/find?type=blog">技术博客</a></p>
+  <p class="home-secondary-links"><a href="#/docs/series">系列阅读</a><a href="#/docs/find?series=translation">技术译文</a><a href="#/docs/conferences">会议精选</a><a href="#/docs/find?type=blog">技术博客</a></p>
 </section>
 
 <!-- HOME_FEATURED -->

@@ -26,14 +26,14 @@ test('full text, empty input, no result and filters',()=>{
   assert.ok(find('PreCommit_Notify').includes(100));
   assert.equal(find('').length,catalog.articles.length);
   assert.deepEqual(find('does-not-exist-xyz987654321'),[]);
-  assert.deepEqual(find('',{type:'conference'}),[99,100,101,102,103,104,105,106,110,111]);
+  assert.deepEqual(find('',{type:'conference'}),[99,100,101,102,103,104,105,106,110,111,112]);
   assert.ok(find('',{topic:'performance'}).includes(96));
   assert.deepEqual(find('WAL暴涨',{type:'conference'}),[]);
   assert.deepEqual(find('<script>alert(1)</script>'),[]);
 });
 test('series and source are independent and preserve old routes',()=>{
-  assert.deepEqual(find('',{series:'interpretation'}),[101,102,103,104,105,106,107,108,109,110,111]);
-  assert.deepEqual(find('',{series:'interpretation',topic:'ops'}),[102,103,108,109,110]);
+  assert.deepEqual(find('',{series:'interpretation'}),[101,102,103,104,105,106,107,108,109,110,111,112]);
+  assert.deepEqual(find('',{series:'interpretation',topic:'ops'}),[102,103,108,109,110,112]);
   assert.deepEqual(find('',{series:'interpretation',type:'conference',topic:'performance'}),[101,104,106,110,111]);
   assert.deepEqual(find('',{series:'interpretation',type:'translation'}),[]);
   assert.deepEqual(find('',{series:'guide',type:'conference'}),[99]);
@@ -78,7 +78,7 @@ test('collation interpretation is discoverable and has verification evidence',()
   }
 });
 test('generated internal article links exist and titles come from metadata',()=>{
-  const files=['README.md','docs/home.md','_sidebar.md','docs/topics.md','docs/paths.md','docs/conferences.md','docs/series.md','docs/101.md','docs/102.md','docs/103.md','docs/104.md','docs/105.md','docs/106.md','docs/107.md','docs/108.md','docs/109.md','docs/110.md','docs/111.md'];
+  const files=['README.md','docs/home.md','_sidebar.md','docs/topics.md','docs/paths.md','docs/conferences.md','docs/series.md','docs/101.md','docs/102.md','docs/103.md','docs/104.md','docs/105.md','docs/106.md','docs/107.md','docs/108.md','docs/109.md','docs/110.md','docs/111.md','docs/112.md','docs/113.md'];
   const map=new Map(catalog.articles.map(a=>[a.id,a]));
   for(const file of files){
     const text=fs.readFileSync(path.join(root,file),'utf8');
@@ -138,14 +138,14 @@ test('PG19 preview is discoverable and distinguishes documentation checks from e
   assert.match(article,/REPACK \(CONCURRENTLY\)/);
   assert.doesNotMatch(article.split('## 参考资料')[0],/https:\/\/www\.postgresql\.org/);
   assert.doesNotMatch(article,/先把.+说具体|材料没有提供可供复现|反人类|反直觉|讲者/);
-  for(const file of ['docs/series.md','docs/conferences.md','docs/topics.md']) {
+  for(const file of ['docs/conferences.md','docs/topics.md']) {
     assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/106(?:\.md|")/);
   }
 });
 test('technical blog interpretation has its own source filter and verification evidence',()=>{
   assert.equal(find('multixact_offset_buffers')[0],107);
   assert.equal(find('外键写入')[0],107);
-  assert.deepEqual(find('',{type:'blog'}),[107,108,109]);
+  assert.deepEqual(find('',{type:'blog'}),[107,108,109,113]);
   assert.deepEqual(find('',{series:'interpretation',type:'blog',topic:'locks'}),[107]);
   assert.deepEqual(find('',{series:'guide',type:'blog'}),[]);
   const entry=catalog.articles.find(a=>a.id===107);
@@ -163,7 +163,7 @@ test('technical blog interpretation has its own source filter and verification e
   assert.equal([...article.matchAll(/<!-- result:([a-z-]+) -->\s*```text\n/g)].length,8);
   assert.equal([...article.matchAll(/```mermaid\n/g)].length,1);
   assert.doesNotMatch(article.split('## 参考资料')[0],/https:\/\/www\.postgresql\.org/);
-  for(const file of ['docs/home.md','docs/series.md','docs/topics.md']) {
+  for(const file of ['docs/series.md','docs/topics.md']) {
     assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/107(?:\.md|")/);
   }
   assert.doesNotMatch(fs.readFileSync(path.join(root,'docs/conferences.md'),'utf8'),/\/docs\/107(?:\.md|")/);
@@ -193,7 +193,7 @@ test('query memory interpretation includes bounded experiments and accurate fail
   assert.match(article,/53400/);
   assert.doesNotMatch(article.split('## 参考资料')[0],/https:\/\/www\.postgresql\.org/);
   assert.doesNotMatch(article,/先把.+说具体|材料没有提供可供复现|反人类|反直觉|讲者/);
-  for(const file of ['docs/home.md','docs/series.md','docs/topics.md']) {
+  for(const file of ['docs/series.md','docs/topics.md']) {
     assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/108(?:\.md|")/);
   }
   assert.doesNotMatch(fs.readFileSync(path.join(root,'docs/conferences.md'),'utf8'),/\/docs\/108(?:\.md|")/);
@@ -287,6 +287,20 @@ test('B-tree interpretation connects order, NULL placement and skip scan',()=>{
   assert.doesNotMatch(article,/实验完成后|先确认数据|DROP TABLE|免责|先把.+说具体|反直觉|讲者/);
   for(const file of ['docs/home.md','docs/series.md','docs/conferences.md','docs/topics.md']) {
     assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/111(?:\.md|")/);
+  }
+});
+test('technical translations are discoverable independently of source and interpretations',()=>{
+  assert.equal(catalog.series.translation.title,'技术译文');
+  assert.deepEqual(find('连接意外关闭',{series:'translation',type:'blog'}),[113]);
+  assert.equal(find('COMMIT结果不确定',{series:'translation'})[0],113);
+  assert.ok(!find('',{series:'interpretation'}).includes(113));
+  assert.ok(!find('',{type:'translation'}).includes(113));
+  const entry=catalog.articles.find(a=>a.id===113);
+  assert.equal(entry.source.date,'2026-11-02');
+  assert.equal(entry.validation.status,'not-recorded');
+  assert.ok(fs.existsSync(path.join(root,entry.validation.record)));
+  for(const file of ['docs/home.md','docs/topics.md','docs/series.md']) {
+    assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/113(?:\.md|")/);
   }
 });
 test('root opens the searchable homepage and local assets exist',()=>{
