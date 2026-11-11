@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PostgreSQL 中的查询计划重写 | PostgreSQL Howto 中文版</title>
+  <meta name="description" content="PostgreSQL 中的查询计划重写。原文示例基于 PostgreSQL 18；计划节点、并行度与扫描方式还受统计信息、配置及环境影响。">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="canonical" href="https://postgres-howto.cn/articles/115/">
+  <meta property="og:title" content="PostgreSQL 中的查询计划重写 | PostgreSQL Howto 中文版">
+  <meta property="og:description" content="PostgreSQL 中的查询计划重写。原文示例基于 PostgreSQL 18；计划节点、并行度与扫描方式还受统计信息、配置及环境影响。">
+  <meta property="og:url" content="https://postgres-howto.cn/articles/115/">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://postgres-howto.cn/images/brand/social.png?v=29beb85ab20dba8f">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="PostgreSQL Howto 中文版">
+  <link rel="icon" href="/images/brand/favicon-32.png?v=ae83f57c8dc93baf" sizes="32x32" type="image/png">
+  <link rel="icon" href="/images/brand/favicon.svg?v=c3ba1e771fe2090e" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/images/brand/touch-180.png?v=f68658cb984ff3b3" sizes="180x180">
+  <script>(function(){var m='auto';try{m=localStorage.getItem('howto-theme')||'auto';}catch(_){}var d=m==='dark'||(m==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=d?'dark':'light';document.documentElement.style.colorScheme=d?'dark':'light';})();</script>
+  <link rel="stylesheet" href="/styles/custom.css?v=8808497e22e2b3a2">
+  <link rel="stylesheet" href="/styles/reading.css?v=745dda59e2ad8511">
+<script id="article-schema" type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"PostgreSQL 中的查询计划重写","inLanguage":"zh-CN","url":"https://postgres-howto.cn/articles/115/","mainEntityOfPage":"https://postgres-howto.cn/articles/115/","citation":"https://theconsensus.dev/p/2026/09/13/query-plan-rewriting-in-postgresql.html","keywords":["查询重写","查询计划重写","常量折叠","constant folding","条件下推","谓词下推","filter pushdown","子查询拉起","函数内联","表达式索引","连接消除","自连接消除","semi join","anti join","半连接","反连接","NOT IN","NOT EXISTS","hashed SubPlan","loose index scan","Phil Eaton","The Consensus"],"datePublished":"2026-11-11"}</script>
+</head>
+<body class="reading-article" data-static-page data-static-article="115">
+  <a class="skip-link" href="#main" data-skip>跳至正文</a>
+  <header class="site-header">
+    <button id="sidebar-toggle" class="icon-button mobile-menu js-only" type="button" aria-label="打开导航" aria-controls="site-sidebar" aria-expanded="false" title="打开导航"><span class="icon icon-menu" aria-hidden="true"></span></button>
+    <a class="site-brand" href="/" aria-label="PostgreSQL Howto 中文版首页"><span class="brand-icon" aria-hidden="true"><img class="brand-light" src="/images/brand/symbol.svg?v=2e286b3c74e47be8" width="32" height="32" alt=""><img class="brand-dark" src="/images/brand/symbol-dark.svg?v=ae07e0e7f1880588" width="32" height="32" alt=""></span><span class="brand-wordmark">PostgreSQL <strong>Howto</strong><small>中文版</small></span></a>
+    <nav class="app-nav" aria-label="主导航"><a href="/">首页</a><a href="/topics/">专题</a><a href="/paths/">学习路径</a><a href="/articles/">全部文章</a><a href="https://github.com/xiongcccc/postgres-howto" target="_blank" rel="noopener">GitHub</a></nav>
+    <div class="header-tools js-only"><button class="icon-button" type="button" data-open-search aria-label="搜索文章" aria-keyshortcuts="Control+K Meta+K" title="搜索文章 (Ctrl / Cmd + K)"><span class="icon icon-search" aria-hidden="true"></span></button><button class="icon-button theme-toggle" aria-label="切换阅读主题" title="切换阅读主题"><span class="icon icon-monitor" aria-hidden="true"></span></button></div>
+  </header>
+  <button class="sidebar-backdrop" type="button" aria-label="关闭导航" tabindex="-1" hidden></button>
+  <aside class="sidebar" id="site-sidebar" aria-label="文章导航"><div class="sidebar-nav"><div class="sidebar-heading"><span>知识导航</span><button class="icon-button" data-close-nav aria-label="关闭导航" title="关闭导航"><span class="icon icon-x" aria-hidden="true"></span></button></div><nav class="catalog-navigation" aria-label="文章分类"><ul class="catalog-pages"><li><a href="/#/README">首页</a></li><li><a href="/#/docs/topics">专题</a></li><li><a href="/#/docs/paths">学习路径</a></li><li><a href="/articles/">全部文章</a></li></ul><p class="sidebar-label">技术专题 <span>主归属文章</span></p><details data-topic="performance" open data-current-topic="true"><summary><span>查询性能与观测</span><small>19</small></summary><ul><li><a href="/articles/115/" aria-current="page"><span class="article-number">115</span><span>PostgreSQL 中的查询计划重写</span></a></li><li><a href="/articles/114/"><span class="article-number">114</span><span>为什么 PostgreSQL 的 numeric 类型这么慢？</span></a></li><li><a href="/articles/110/"><span class="article-number">110</span><span>PostgreSQL 优化器提示：怎样干预和稳定执行计划</span></a></li><li><a href="/articles/108/"><span class="article-number">108</span><span>一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离</span></a></li><li><a href="/articles/101/"><span class="article-number">101</span><span>PostgreSQL 性能排查：规划开销、分区锁与表膨胀</span></a></li><li><a href="/articles/1/"><span class="article-number">1</span><span>EXPLAIN 为什么应该带 BUFFERS</span></a></li><li><a href="/articles/5/"><span class="article-number">5</span><span>pg_stat_statements 入门</span></a></li><li><a href="/articles/6/"><span class="article-number">6</span><span>pg_stat_statements 进阶</span></a></li><li><a href="/articles/7/"><span class="article-number">7</span><span>pg_stat_statements 深入使用</span></a></li><li><a href="/articles/10/"><span class="article-number">10</span><span>使用 FlameGraph 和 eBPF/perf 排查性能</span></a></li><li><a href="/articles/11/"><span class="article-number">11</span><span>临时监控方法</span></a></li><li><a href="/articles/12/"><span class="article-number">12</span><span>为 pg_stat_statements 找到真实 SQL 样例</span></a></li><li><a href="/articles/13/"><span class="article-number">13</span><span>如何做基准测试</span></a></li><li><a href="/articles/14/"><span class="article-number">14</span><span>如何判断一个查询是否太慢</span></a></li><li><a href="/articles/50/"><span class="article-number">50</span><span>基准测试迭代前后的准备工作</span></a></li><li><a href="/articles/56/"><span class="article-number">56</span><span>让非生产环境 Planner 更像生产环境</span></a></li><li><a href="/articles/89/"><span class="article-number">89</span><span>OLTP 粗略配置调优</span></a></li><li><a href="/articles/92/"><span class="article-number">92</span><span>work_mem 调优</span></a></li><li><a href="/articles/94/"><span class="article-number">94</span><span>运行 ANALYZE 收集统计信息</span></a></li></ul></details><details data-topic="ops"><summary><span>运维排障与日常工具</span><small>22</small></summary><ul><li><a href="/articles/113/"><span class="article-number">113</span><span>PostgreSQL 连接意外关闭：server closed the connection unexpectedly</span></a></li><li><a href="/articles/2/"><span class="article-number">2</span><span>排查并加速 Postgres 停止和重启</span></a></li><li><a href="/articles/3/"><span class="article-number">3</span><span>排查 Postgres 启动缓慢</span></a></li><li><a href="/articles/8/"><span class="article-number">8</span><span>加速大库 pg_dump</span></a></li><li><a href="/articles/19/"><span class="article-number">19</span><span>导入 CSV 到 Postgres</span></a></li><li><a href="/articles/20/"><span class="article-number">20</span><span>使用 pg_restore</span></a></li><li><a href="/articles/21/"><span class="article-number">21</span><span>不发额外查询设置 application_name</span></a></li><li><a href="/articles/25/"><span class="article-number">25</span><span>如何退出 psql</span></a></li><li><a href="/articles/27/"><span class="article-number">27</span><span>在 Ubuntu 22.04 编译 Postgres</span></a></li><li><a href="/articles/34/"><span class="article-number">34</span><span>初步配置调优</span></a></li><li><a href="/articles/47/"><span class="article-number">47</span><span>安装带 plpython3u 的 Postgres 16</span></a></li><li><a href="/articles/49/"><span class="article-number">49</span><span>在 psql 脚本中使用变量</span></a></li><li><a href="/articles/51/"><span class="article-number">51</span><span>通过观察 psql 学习元数据</span></a></li><li><a href="/articles/58/"><span class="article-number">58</span><span>使用 Docker 运行 Postgres</span></a></li><li><a href="/articles/59/"><span class="article-number">59</span><span>psql 调优</span></a></li><li><a href="/articles/68/"><span class="article-number">68</span><span>psql 快捷操作</span></a></li><li><a href="/articles/81/"><span class="article-number">81</span><span>在 psql 中绘图</span></a></li><li><a href="/articles/86/"><span class="article-number">86</span><span>修复 psql 中的 \\e 编辑器问题</span></a></li><li><a href="/articles/87/"><span class="article-number">87</span><span>修改数据库中所有对象所有者</span></a></li><li><a href="/articles/88/"><span class="article-number">88</span><span>面向 OLTP 的 Linux 参数调优</span></a></li><li><a href="/articles/90/"><span class="article-number">90</span><span>使用 lib_pgquery 归一化和匹配查询</span></a></li><li><a href="/articles/91/"><span class="article-number">91</span><span>格式化 psql 脚本文本输出</span></a></li></ul></details><details data-topic="locks"><summary><span>锁、事务与在线变更</span><small>19</small></summary><ul><li><a href="/articles/107/"><span class="article-number">107</span><span>外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务</span></a></li><li><a href="/articles/104/"><span class="article-number">104</span><span>SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争</span></a></li><li><a href="/articles/99/"><span class="article-number">99</span><span>如何安全执行 PostgreSQL 在线变更：DDL、数据回填与批量删除</span></a></li><li><a href="/articles/100/"><span class="article-number">100</span><span>如何排查 LISTEN／NOTIFY 引起的提交阻塞</span></a></li><li><a href="/articles/22/"><span class="article-number">22</span><span>heavyweight locks 分析：基础</span></a></li><li><a href="/articles/30/"><span class="article-number">30</span><span>处理 OLTP 长事务</span></a></li><li><a href="/articles/33/"><span class="article-number">33</span><span>无停机重定义主键</span></a></li><li><a href="/articles/35/"><span class="article-number">35</span><span>使用子事务</span></a></li><li><a href="/articles/36/"><span class="article-number">36</span><span>单条查询实现 find-or-insert</span></a></li><li><a href="/articles/37/"><span class="article-number">37</span><span>无停机启用 data checksums</span></a></li><li><a href="/articles/42/"><span class="article-number">42</span><span>heavyweight locks 分析：锁树</span></a></li><li><a href="/articles/55/"><span class="article-number">55</span><span>删除列</span></a></li><li><a href="/articles/60/"><span class="article-number">60</span><span>添加列</span></a></li><li><a href="/articles/69/"><span class="article-number">69</span><span>无停机添加 CHECK 约束</span></a></li><li><a href="/articles/70/"><span class="article-number">70</span><span>添加外键</span></a></li><li><a href="/articles/71/"><span class="article-number">71</span><span>理解 DDL 被什么阻塞</span></a></li><li><a href="/articles/72/"><span class="article-number">72</span><span>移除外键</span></a></li><li><a href="/articles/73/"><span class="article-number">73</span><span>heavyweight locks 分析：持久监控</span></a></li><li><a href="/articles/83/"><span class="article-number">83</span><span>修改 Postgres 参数</span></a></li></ul></details><details data-topic="indexes"><summary><span>索引治理</span><small>10</small></summary><ul><li><a href="/articles/111/"><span class="article-number">111</span><span>PostgreSQL B-tree 为什么快：有序查找、复合索引与 skip scan</span></a></li><li><a href="/articles/15/"><span class="article-number">15</span><span>监控 CREATE INDEX / REINDEX 进度</span></a></li><li><a href="/articles/18/"><span class="article-number">18</span><span>过度索引</span></a></li><li><a href="/articles/53/"><span class="article-number">53</span><span>索引维护</span></a></li><li><a href="/articles/54/"><span class="article-number">54</span><span>使用 pg_amcheck 检查 btree 索引损坏</span></a></li><li><a href="/articles/61/"><span class="article-number">61</span><span>创建索引：基础</span></a></li><li><a href="/articles/62/"><span class="article-number">62</span><span>创建索引：进阶</span></a></li><li><a href="/articles/75/"><span class="article-number">75</span><span>查找未使用索引</span></a></li><li><a href="/articles/76/"><span class="article-number">76</span><span>查找冗余索引</span></a></li><li><a href="/articles/79/"><span class="article-number">79</span><span>并行重建大量索引并避免死锁</span></a></li></ul></details><details data-topic="storage"><summary><span>存储、WAL 与 Vacuum</span><small>20</small></summary><ul><li><a href="/articles/112/"><span class="article-number">112</span><span>PostgreSQL 写入成功之后：缓存、刷盘与掉电安全</span></a></li><li><a href="/articles/102/"><span class="article-number">102</span><span>Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢</span></a></li><li><a href="/articles/4/"><span class="article-number">4</span><span>理解 tuple 在表中的稀疏存储</span></a></li><li><a href="/articles/9/"><span class="article-number">9</span><span>理解 LSN 和 WAL 文件名</span></a></li><li><a href="/articles/16/"><span class="article-number">16</span><span>容易踩坑的 Postgres 特性</span></a></li><li><a href="/articles/26/"><span class="article-number">26</span><span>检查 btree 索引损坏</span></a></li><li><a href="/articles/31/"><span class="article-number">31</span><span>排查 pg_wal 目录增长</span></a></li><li><a href="/articles/39/"><span class="article-number">39</span><span>如何破坏数据库：制造损坏</span></a></li><li><a href="/articles/40/"><span class="article-number">40</span><span>如何破坏数据库：模拟 XID 回卷</span></a></li><li><a href="/articles/41/"><span class="article-number">41</span><span>如何破坏数据库：有害负载</span></a></li><li><a href="/articles/44/"><span class="article-number">44</span><span>监控 XID 回卷风险</span></a></li><li><a href="/articles/45/"><span class="article-number">45</span><span>监控 xmin horizon 避免回卷和膨胀</span></a></li><li><a href="/articles/46/"><span class="article-number">46</span><span>处理 bloat</span></a></li><li><a href="/articles/52/"><span class="article-number">52</span><span>降低 WAL 生成速率</span></a></li><li><a href="/articles/66/"><span class="article-number">66</span><span>一个 page 能插入多少 tuple</span></a></li><li><a href="/articles/67/"><span class="article-number">67</span><span>Autovacuum 队列和进度</span></a></li><li><a href="/articles/74/"><span class="article-number">74</span><span>刷新 OS page cache 和 Postgres buffer pool</span></a></li><li><a href="/articles/80/"><span class="article-number">80</span><span>查找有 int4 主键溢出风险的表</span></a></li><li><a href="/articles/84/"><span class="article-number">84</span><span>列顺序与存储优化：Column Tetris</span></a></li><li><a href="/articles/85/"><span class="article-number">85</span><span>快速检查值的数据类型和存储大小</span></a></li></ul></details><details data-topic="sql"><summary><span>SQL、数据建模与扩展玩法</span><small>12</small></summary><ul><li><a href="/articles/103/"><span class="article-number">103</span><span>PostgreSQL 排序规则：文本比较、索引与升级风险</span></a></li><li><a href="/articles/23/"><span class="article-number">23</span><span>在 Postgres 中调用 OpenAI API 实现语义搜索和 GPT Chat</span></a></li><li><a href="/articles/24/"><span class="article-number">24</span><span>使用元数据</span></a></li><li><a href="/articles/28/"><span class="article-number">28</span><span>数组使用：基础</span></a></li><li><a href="/articles/29/"><span class="article-number">29</span><span>数组使用：进阶</span></a></li><li><a href="/articles/32/"><span class="article-number">32</span><span>加速批量加载</span></a></li><li><a href="/articles/43/"><span class="article-number">43</span><span>SQL 格式化与风格指南</span></a></li><li><a href="/articles/48/"><span class="article-number">48</span><span>生成测试数据</span></a></li><li><a href="/articles/64/"><span class="article-number">64</span><span>使用 UUID</span></a></li><li><a href="/articles/65/"><span class="article-number">65</span><span>UUID v7 与分区</span></a></li><li><a href="/articles/78/"><span class="article-number">78</span><span>使用创建时间和统计信息估算大表同比增长</span></a></li><li><a href="/articles/82/"><span class="article-number">82</span><span>用 SQL 绘制霜花图案</span></a></li></ul></details><details data-topic="replication"><summary><span>复制、校验与升级</span><small>7</small></summary><ul><li><a href="/articles/109/"><span class="article-number">109</span><span>备库查询为什么被取消：WAL 回放冲突与等待预算</span></a></li><li><a href="/articles/106/"><span class="article-number">106</span><span>PostgreSQL 19 值得关注什么：在线维护、复制改进与升级变化</span></a></li><li><a href="/articles/105/"><span class="article-number">105</span><span>深入 PostgreSQL 逻辑复制：性能测试、历史快照与故障恢复</span></a></li><li><a href="/articles/17/"><span class="article-number">17</span><span>判断复制延迟</span></a></li><li><a href="/articles/57/"><span class="article-number">57</span><span>将物理副本转换为逻辑副本</span></a></li><li><a href="/articles/77/"><span class="article-number">77</span><span>大型高负载集群的无停机大版本升级</span></a></li><li><a href="/articles/93/"><span class="article-number">93</span><span>排查流复制延迟</span></a></li></ul></details><details data-topic="practice"><summary><span>实践剖析</span><small>3</small></summary><ul><li><a href="/articles/96/"><span class="article-number">96</span><span>为什么 actual time 和 Execution Time 有很大差异？</span></a></li><li><a href="/articles/97/"><span class="article-number">97</span><span>深入浅出 bpftrace 分析 PostgreSQL</span></a></li><li><a href="/articles/98/"><span class="article-number">98</span><span>当 PostgreSQL 慢在数据库之外：用 bpftrace 打通 SQL 与内核观测</span></a></li></ul></details><details data-topic="engineering"><summary><span>工程实践与后记</span><small>3</small></summary><ul><li><a href="/articles/38/"><span class="article-number">38</span><span>如何不把 DBA/DBRE 工作搞砸</span></a></li><li><a href="/articles/63/"><span class="article-number">63</span><span>如何帮助别人</span></a></li><li><a href="/articles/95/"><span class="article-number">95</span><span>后记</span></a></li></ul></details><div class="sidebar-resources"><a href="/#/docs/series">系列阅读</a><a href="/#/docs/conferences">会议精选</a><a href="/#/docs/about">关于项目</a></div></nav></div></aside>
+  <main class="content"><article id="main" class="markdown-section" tabindex="-1"><div class="article-topline"><nav class="breadcrumbs" aria-label="面包屑"><a href="/">首页</a><span aria-hidden="true">/</span><a href="/topics/#topic-performance">查询性能与观测</a></nav></div><h1 id="query-plan-rewriting-in-postgresql">PostgreSQL 中的查询计划重写</h1><div class="article-meta"><p class="article-kicker"><a href="/#/docs/find?series=translation">技术译文</a> · 技术博客 <span class="article-id">#115</span> <time datetime="2026-11-11">收录于 2026-11-11</time></p><p class="article-version">原文示例基于 PostgreSQL 18；计划节点、并行度与扫描方式还受统计信息、配置及环境影响。</p><details><summary>来源与验证说明</summary><dl><dt>原题</dt><dd>Query plan rewriting in PostgreSQL</dd><dt>来源</dt><dd><a href="https://theconsensus.dev/p/2026/09/13/query-plan-rewriting-in-postgresql.html" target="_blank" rel="noopener">Phil Eaton / The Consensus</a></dd><dt>中文翻译与校订</dt><dd>xiongcc</dd><dt>验证状态</dt><dd>在隔离的 PostgreSQL 18.4 上依次运行全部 38 个 SQL 块，核验 31 份计划及 NULL、LIMIT 与自连接消除语义；未作性能基准测试。（2026-11-11） <a href="/#/maintenance/115-review">验证记录</a></dd></dl></details></div><details class="article-toc"><summary>本页目录<span class="icon icon-chevron-down" aria-hidden="true"></span></summary><nav aria-label="本页目录"><ol><li class="toc-level-2"><a data-heading="常量折叠" href="#%E5%B8%B8%E9%87%8F%E6%8A%98%E5%8F%A0">常量折叠</a></li><li class="toc-level-2"><a data-heading="子查询展开与条件下推" href="#%E5%AD%90%E6%9F%A5%E8%AF%A2%E5%B1%95%E5%BC%80%E4%B8%8E%E6%9D%A1%E4%BB%B6%E4%B8%8B%E6%8E%A8">子查询展开与条件下推</a></li><li class="toc-level-2"><a data-heading="连接" href="#%E8%BF%9E%E6%8E%A5">连接</a></li><li class="toc-level-2"><a data-heading="将条件下推到连接两侧" href="#%E5%B0%86%E6%9D%A1%E4%BB%B6%E4%B8%8B%E6%8E%A8%E5%88%B0%E8%BF%9E%E6%8E%A5%E4%B8%A4%E4%BE%A7">将条件下推到连接两侧</a></li><li class="toc-level-2"><a data-heading="连接消除" href="#%E8%BF%9E%E6%8E%A5%E6%B6%88%E9%99%A4">连接消除</a></li><li class="toc-level-2"><a data-heading="in-与-exists" href="#in-%E4%B8%8E-exists">IN 与 EXISTS</a></li><li class="toc-level-2"><a data-heading="聚合查询中的读取" href="#%E8%81%9A%E5%90%88%E6%9F%A5%E8%AF%A2%E4%B8%AD%E7%9A%84%E8%AF%BB%E5%8F%96">聚合查询中的读取</a></li><li class="toc-level-2"><a data-heading="最后几点想法" href="#%E6%9C%80%E5%90%8E%E5%87%A0%E7%82%B9%E6%83%B3%E6%B3%95">最后几点想法</a></li><li class="toc-level-2"><a data-heading="原文资料与技术核对" href="#%E5%8E%9F%E6%96%87%E8%B5%84%E6%96%99%E4%B8%8E%E6%8A%80%E6%9C%AF%E6%A0%B8%E5%AF%B9">原文资料与技术核对</a></li></ol></nav></details>
+<p>原作者：Phil Eaton，The Consensus。原文发表于 2026 年 9 月 13 日：<a href="https://theconsensus.dev/p/2026/09/13/query-plan-rewriting-in-postgresql.html">Query plan rewriting in PostgreSQL</a>。</p>
+<p>以下为原文翻译，示例与执行计划来自原作者。终端中的 SQL 提取为可直接执行的代码块；必要的技术说明以“译注”标出。中文翻译与校订：xiongcc。</p>
+<p>查询计划抽象地描述了对数据执行的操作，例如扫描磁盘中的行、扫描索引、应用过滤条件、选择部分列、连接两张表，以及对列进行运算。为了得到查询计划，数据库会将 SQL 解析为抽象语法树（AST），再解析其中的标识符，最终生成查询计划。</p>
+<p>在数据库内部，查询规划器负责重写和优化查询计划：折叠常量、决定是否使用索引、先扫描哪张表、采用哪种连接方式等。本文用“重写”指代静态可知的变换，例如 <code>i+0</code> 与 <code>i</code> 相同；“优化”则指需要检查统计信息或其他数据相关信息才能作出的选择。</p>
+<blockquote>
+<p>译注：这里沿用作者对 rewriting 的宽泛用法。PostgreSQL 正式的 rewrite 阶段主要应用规则、展开视图，之后规划器才生成执行计划。本文的常量折叠、子查询拉起和连接消除等，大多属于规划器内部的变换；解析并绑定标识符之后得到的查询树，也还不是最终执行计划。</p>
+</blockquote>
+<p>各数据库虽然都有查询规划器，也会执行类似工作，但对一个数据库规划器的了解，未必能直接套用到另一个数据库。本文看看 PostgreSQL 会做、以及不会做哪些查询计划重写，为另一篇讨论依赖统计信息的优化文章作准备。</p>
+<p>先准备 PostgreSQL 18。原文使用以下安装命令：</p>
+<div class="code-block"><div class="code-toolbar"><span>Shell</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="bash" data-code-kind="code" tabindex="0" aria-label="Shell 代码"><code><span class="token function">sudo</span> <span class="token function">apt-get</span> update <span class="token parameter variable">-y</span>
+<span class="token function">sudo</span> <span class="token function">apt</span> <span class="token function">install</span> <span class="token parameter variable">-y</span> postgresql-common
+<span class="token function">sudo</span> /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh
+<span class="token function">sudo</span> <span class="token function">apt</span> update <span class="token parameter variable">-y</span>
+<span class="token function">sudo</span> <span class="token function">apt</span> <span class="token function">install</span> <span class="token parameter variable">-y</span> postgresql-18
+</code></pre></div>
+<p>接着建立两张测试表。以下初始化语句包含 <code>DROP TABLE</code>，应当在独立测试库中运行。</p>
+<!-- verify:setup -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">DROP</span> <span class="token keyword">TABLE</span> <span class="token keyword">IF</span> <span class="token keyword">EXISTS</span> users<span class="token punctuation">;</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> users <span class="token punctuation">(</span>user_id <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span> user_name <span class="token keyword">TEXT</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> users
+  <span class="token keyword">SELECT</span> i<span class="token punctuation">,</span> substring<span class="token punctuation">(</span>md5<span class="token punctuation">(</span>random<span class="token punctuation">(</span><span class="token punctuation">)</span>::<span class="token keyword">text</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">12</span><span class="token punctuation">)</span>
+  <span class="token keyword">FROM</span> generate_series<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">200</span>_000<span class="token punctuation">)</span> <span class="token keyword">as</span> i<span class="token punctuation">;</span>
+
+<span class="token keyword">DROP</span> <span class="token keyword">TABLE</span> <span class="token keyword">IF</span> <span class="token keyword">EXISTS</span> orders<span class="token punctuation">;</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> orders <span class="token punctuation">(</span>order_id <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span> order_user_id <span class="token keyword">INT</span><span class="token punctuation">,</span> order_status <span class="token keyword">TEXT</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> orders
+  <span class="token keyword">SELECT</span> i<span class="token punctuation">,</span> <span class="token number">1</span> <span class="token operator">+</span> <span class="token punctuation">(</span>i <span class="token operator">%</span> <span class="token number">200</span>_000<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>ARRAY<span class="token punctuation">[</span><span class="token string">'paid'</span><span class="token punctuation">,</span> <span class="token string">'shipped'</span><span class="token punctuation">,</span> <span class="token string">'delivered'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token operator">+</span>i<span class="token operator">%</span><span class="token number">3</span><span class="token punctuation">]</span>
+  <span class="token keyword">FROM</span> generate_series<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">500</span>_000<span class="token punctuation">)</span> i<span class="token punctuation">;</span>
+VACUUM <span class="token keyword">ANALYZE</span> users<span class="token punctuation">;</span>
+VACUUM <span class="token keyword">ANALYZE</span> orders<span class="token punctuation">;</span>
+</code></pre></div>
+<p>将上述内容保存为 <code>/tmp/init.sql</code>。执行 <code>VACUUM ANALYZE</code>，让后面的查询计划基于经过维护、已有统计信息的表。</p>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>$ sudo -u postgres psql -f /tmp/init.sql
+DROP TABLE
+CREATE TABLE
+INSERT 0 200000
+DROP TABLE
+CREATE TABLE
+INSERT 0 500000
+VACUUM
+VACUUM
+</code></pre></div>
+<h2 id="常量折叠">常量折叠</h2>
+<p>常量折叠是编译原理中的基础概念。假设 AST 中有一个 <code>+ 3 4</code> 子树，至少包含三个节点，就可以将它改写成单个节点 <code>7</code>。在编译阶段提前计算这部分表达式，便减少了运行时的工作。</p>
+<p>PostgreSQL 会这样做：</p>
+<!-- verify:constant-add -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> users <span class="token keyword">WHERE</span> user_id <span class="token operator">=</span> <span class="token number">100</span> <span class="token operator">+</span> <span class="token number">100</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Index Scan using users_pkey on users
+  Index Cond: (user_id = 200)
+</code></pre></div>
+<p>就像直接传入 <code>200</code> 一样：</p>
+<!-- verify:constant-literal -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> users <span class="token keyword">WHERE</span> user_id <span class="token operator">=</span> <span class="token number">200</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Index Scan using users_pkey on users
+  Index Cond: (user_id = 200)
+</code></pre></div>
+<!-- verify:constant-reversed -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> users <span class="token keyword">WHERE</span> <span class="token number">200</span> <span class="token operator">=</span> user_id<span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Index Scan using users_pkey on users
+  Index Cond: (user_id = 200)
+</code></pre></div>
+<p>列写在等号的哪一侧也没有关系：</p>
+<!-- verify:constant-add-reversed -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> users <span class="token keyword">WHERE</span> <span class="token number">100</span> <span class="token operator">+</span> <span class="token number">100</span> <span class="token operator">=</span> user_id<span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Index Scan using users_pkey on users
+  Index Cond: (user_id = 200)
+</code></pre></div>
+<p>不过，加法需要发生在常量这一侧。否则，常量折叠和这里的普通索引扫描都不会出现：</p>
+<!-- verify:column-expression -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> users <span class="token keyword">WHERE</span> user_id <span class="token operator">+</span> <span class="token number">0</span> <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Gather
+  Workers Planned: 1
+  ->  Parallel Seq Scan on users
+        Filter: ((user_id + 0) = 100)
+</code></pre></div>
+<!-- verify:column-expression-reversed -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> users <span class="token keyword">WHERE</span> <span class="token number">100</span> <span class="token operator">=</span> user_id <span class="token operator">+</span> <span class="token number">0</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Gather
+  Workers Planned: 1
+  ->  Parallel Seq Scan on users
+        Filter: (100 = (user_id + 0))
+</code></pre></div>
+<p>当然，消去“加零”算是一个比较特殊的例子。至少我们知道，可以为表达式建立索引，让规划器有相应的索引路径可选。试试看：</p>
+<!-- verify:expression-index -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">CREATE</span> <span class="token keyword">INDEX</span> <span class="token keyword">ON</span> users <span class="token punctuation">(</span><span class="token punctuation">(</span>user_id <span class="token operator">+</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+VACUUM <span class="token keyword">ANALYZE</span> users<span class="token punctuation">;</span>
+</code></pre></div>
+<p>这次能用上了：</p>
+<!-- verify:expression-index-match -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> users <span class="token keyword">WHERE</span> user_id <span class="token operator">+</span> <span class="token number">0</span> <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Index Scan using users_expr_idx on users
+  Index Cond: ((user_id + 0) = 100)
+</code></pre></div>
+<p>但交换加法的操作数之后，就又不走这个索引了，尽管加法满足交换律：</p>
+<!-- verify:expression-index-commuted -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> users <span class="token keyword">WHERE</span> <span class="token number">0</span> <span class="token operator">+</span> user_id <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Gather
+  Workers Planned: 1
+  ->  Parallel Seq Scan on users
+        Filter: ((0 + user_id) = 100)
+</code></pre></div>
+<p>对于函数，如果标记为 <code>IMMUTABLE</code>，并且参数也是常量或可折叠的不变表达式，PostgreSQL 就可以在规划时计算它：</p>
+<!-- verify:immutable-function -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">CREATE</span> <span class="token keyword">FUNCTION</span> <span class="token keyword">double</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token keyword">RETURNS</span> <span class="token keyword">int</span> <span class="token keyword">AS</span> $$
+  <span class="token keyword">BEGIN</span> <span class="token keyword">RETURN</span> $<span class="token number">1</span> <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token keyword">END</span> $$ <span class="token keyword">LANGUAGE</span> plpgsql IMMUTABLE<span class="token punctuation">;</span>
+</code></pre></div>
+<!-- verify:immutable-fold -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> users <span class="token keyword">WHERE</span> user_id <span class="token operator">=</span> <span class="token keyword">double</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Index Scan using users_pkey on users
+  Index Cond: (user_id = 200)
+</code></pre></div>
+<p>足够简单的 SQL 函数也可以：</p>
+<!-- verify:sql-function -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">CREATE</span> <span class="token keyword">FUNCTION</span> triple<span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token keyword">RETURNS</span> <span class="token keyword">int</span> <span class="token keyword">AS</span> <span class="token string">'SELECT $1 * 3'</span> <span class="token keyword">LANGUAGE</span> <span class="token keyword">sql</span><span class="token punctuation">;</span>
+</code></pre></div>
+<!-- verify:sql-inline-fold -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> users <span class="token keyword">WHERE</span> user_id <span class="token operator">=</span> triple<span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Index Scan using users_pkey on users
+  Index Cond: (user_id = 300)
+</code></pre></div>
+<blockquote>
+<p>译注：<code>triple</code> 没有声明易变性类别，默认是 <code>VOLATILE</code>。这里先将符合条件的简单 SQL 函数内联为乘法表达式，再折叠常量；不能据此认为任意 <code>VOLATILE</code> 函数都能在规划时求值。</p>
+</blockquote>
+<p>如果函数不是 <code>IMMUTABLE</code>，而是 <code>STABLE</code>，仍然可以用于索引条件，但不会这样折叠成常量。例如 <code>now()</code> 的值由事务开始时间确定：</p>
+<!-- verify:stable-index-condition -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> users <span class="token keyword">WHERE</span> <span class="token number">100</span> <span class="token operator">+</span> EXTRACT<span class="token punctuation">(</span><span class="token keyword">DAY</span> <span class="token keyword">FROM</span> <span class="token function">NOW</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>::<span class="token keyword">INT</span> <span class="token operator">=</span> user_id<span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Index Scan using users_pkey on users
+  Index Cond: (user_id = (100 + (EXTRACT(day FROM now()))::integer))
+</code></pre></div>
+<p>这又不同于表达式包含 <code>VOLATILE</code> 调用，或依赖正在扫描的行时的情况。下面的表达式依赖该行的 <code>user_name</code>：</p>
+<!-- verify:row-dependent-expression -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> users <span class="token keyword">WHERE</span> length<span class="token punctuation">(</span>user_name<span class="token punctuation">)</span> <span class="token operator">=</span> user_id<span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Gather
+  Workers Planned: 1
+  ->  Parallel Seq Scan on users
+        Filter: (length(user_name) = user_id)
+</code></pre></div>
+<h2 id="子查询展开与条件下推">子查询展开与条件下推</h2>
+<p>子查询足够简单时，PostgreSQL 会把内外两层查询合并起来：</p>
+<!-- verify:flatten-subquery -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> user_id<span class="token punctuation">,</span> length<span class="token punctuation">(</span>user_name<span class="token punctuation">)</span> <span class="token keyword">AS</span> n <span class="token keyword">FROM</span> users<span class="token punctuation">)</span> x <span class="token keyword">WHERE</span> x<span class="token punctuation">.</span>user_id <span class="token operator">=</span> <span class="token number">42</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Index Scan using users_pkey on users
+  Index Cond: (user_id = 42)
+</code></pre></div>
+<p>但如果变换会改变查询含义，就不能这样处理。例如，子查询带有 <code>LIMIT</code>：</p>
+<!-- verify:limit-barrier -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> user_id<span class="token punctuation">,</span> length<span class="token punctuation">(</span>user_name<span class="token punctuation">)</span> <span class="token keyword">AS</span> l <span class="token keyword">FROM</span> users <span class="token keyword">LIMIT</span> <span class="token number">3</span><span class="token punctuation">)</span> u <span class="token keyword">WHERE</span> u<span class="token punctuation">.</span>user_id <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Subquery Scan on u
+  Filter: (u.user_id = 100)
+  ->  Limit
+        ->  Seq Scan on users
+</code></pre></div>
+<p>对比原查询与错误改写后的结果，就容易理解了：</p>
+<!-- verify:limit-original-result -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SELECT</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> user_id<span class="token punctuation">,</span> length<span class="token punctuation">(</span>user_name<span class="token punctuation">)</span> <span class="token keyword">AS</span> l <span class="token keyword">FROM</span> users <span class="token keyword">LIMIT</span> <span class="token number">3</span><span class="token punctuation">)</span> u <span class="token keyword">WHERE</span> u<span class="token punctuation">.</span>user_id <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>count
+-----
+    0
+</code></pre></div>
+<!-- verify:limit-pushed-result -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">SELECT</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> user_id<span class="token punctuation">,</span> length<span class="token punctuation">(</span>user_name<span class="token punctuation">)</span> <span class="token keyword">AS</span> l <span class="token keyword">FROM</span> users <span class="token keyword">WHERE</span> user_id <span class="token operator">=</span> <span class="token number">100</span> <span class="token keyword">LIMIT</span> <span class="token number">3</span><span class="token punctuation">)</span> u <span class="token keyword">WHERE</span> u<span class="token punctuation">.</span>user_id <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>count
+-----
+    1
+</code></pre></div>
+<blockquote>
+<p>译注：没有 <code>ORDER BY</code> 的 <code>LIMIT 3</code> 不保证选中哪三行，<code>0</code> 是原文这次执行的结果。关键差别是先取三行再筛选，还是先筛选再取三行；不能依赖无序查询总会返回同样的计数。</p>
+</blockquote>
+<p>对于更复杂的子查询，PostgreSQL 会尝试把过滤条件向下推：</p>
+<!-- verify:group-filter-equality -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> <span class="token punctuation">(</span>
+  <span class="token keyword">SELECT</span> order_user_id<span class="token punctuation">,</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> orders
+  <span class="token keyword">FROM</span> orders <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> order_user_id<span class="token punctuation">)</span> s
+<span class="token keyword">WHERE</span> s<span class="token punctuation">.</span>order_user_id <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Finalize GroupAggregate
+  ->  Gather
+        Workers Planned: 1
+        ->  Partial GroupAggregate
+              ->  Parallel Seq Scan on orders
+                    Filter: (order_user_id = 100)
+</code></pre></div>
+<p>不只等值条件可以下推：</p>
+<!-- verify:group-filter-range -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> <span class="token punctuation">(</span>
+  <span class="token keyword">SELECT</span> order_user_id<span class="token punctuation">,</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> orders
+  <span class="token keyword">FROM</span> orders <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> order_user_id<span class="token punctuation">)</span> s
+<span class="token keyword">WHERE</span> s<span class="token punctuation">.</span>order_user_id <span class="token operator">></span> <span class="token number">100</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>HashAggregate
+  Group Key: orders.order_user_id
+  ->  Seq Scan on orders
+        Filter: (order_user_id > 100)
+</code></pre></div>
+<p>接下来先回顾两种基本连接，以及 PostgreSQL 执行连接的几种策略。</p>
+<h2 id="连接">连接</h2>
+<p><code>JOIN</code> 是内连接，要求两侧的行满足连接条件。<code>LEFT JOIN</code> 是外连接，无论是否匹配，都会保留左侧的每一行；如果右侧没有匹配行，就用 <code>NULL</code> 补齐右侧列。</p>
+<p>PostgreSQL 有三种主要的连接策略。官方文档的描述很清楚，下面直接引用其含义。</p>
+<p><strong>嵌套循环连接（Nested Loop Join）：</strong></p>
+<blockquote>
+<p>对于左侧关系中的每一行，都扫描一次右侧关系。这种策略容易实现，但可能非常耗时。不过，如果可以通过索引扫描右侧关系，它就可能是一个不错的选择：可以将当前左侧行中的值作为右侧索引扫描的键。</p>
+</blockquote>
+<p><strong>归并连接（Merge Join）：</strong></p>
+<blockquote>
+<p>连接开始前，先按连接属性对两侧关系排序，再沿两侧有序数据推进，合并匹配行。这种策略的吸引力在于，每侧关系都只需扫描一次。所需顺序可以通过显式排序获得，也可以通过按适当顺序扫描索引获得。</p>
+</blockquote>
+<p><strong>哈希连接（Hash Join）：</strong></p>
+<blockquote>
+<p>先扫描右侧关系，以连接属性为哈希键，将其装入哈希表；然后扫描左侧关系，根据每行的连接属性值，在哈希表中查找匹配行。</p>
+</blockquote>
+<p>因此，<code>EXPLAIN</code> 中的 <code>Hash Left Join</code>，就是采用哈希算法执行的左外连接。</p>
+<blockquote>
+<p>译注：这里的左右侧用于解释物理算法。规划器可以调整内连接的顺序，哈希表的构建侧也不由 SQL 中表名的书写顺序固定；应结合实际计划的子节点判断。</p>
+</blockquote>
+<p>执行计划中还会看到半连接和反连接。半连接（Semi Join）判断是否至少有一个匹配，反连接（Anti Join）则判断是否完全没有匹配。</p>
+<h2 id="将条件下推到连接两侧">将条件下推到连接两侧</h2>
+<p>与子查询中的条件下推类似，PostgreSQL 可以利用连接条件，把一个等值过滤条件传播到另一侧：</p>
+<!-- verify:join-equality-propagation -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span>
+<span class="token keyword">SELECT</span> o<span class="token punctuation">.</span>order_id<span class="token punctuation">,</span> u<span class="token punctuation">.</span>user_name
+<span class="token keyword">FROM</span> orders o <span class="token keyword">JOIN</span> users u <span class="token keyword">ON</span> u<span class="token punctuation">.</span>user_id <span class="token operator">=</span> o<span class="token punctuation">.</span>order_user_id
+<span class="token keyword">WHERE</span> o<span class="token punctuation">.</span>order_user_id <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Gather
+  Workers Planned: 1
+  ->  Nested Loop
+        ->  Parallel Seq Scan on orders o
+              Filter: (order_user_id = 100)
+        ->  Materialize
+              ->  Index Scan using users_pkey on users u
+                    Index Cond: (user_id = 100)
+</code></pre></div>
+<p>但下面的不等值条件还不会得到同样的传播：</p>
+<!-- verify:join-range-propagation -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span>
+<span class="token keyword">SELECT</span> o<span class="token punctuation">.</span>order_id<span class="token punctuation">,</span> u<span class="token punctuation">.</span>user_name
+<span class="token keyword">FROM</span> orders o <span class="token keyword">JOIN</span> users u <span class="token keyword">ON</span> u<span class="token punctuation">.</span>user_id <span class="token operator">=</span> o<span class="token punctuation">.</span>order_user_id
+<span class="token keyword">WHERE</span> o<span class="token punctuation">.</span>order_user_id <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Gather
+  Workers Planned: 1
+  ->  Nested Loop
+        ->  Parallel Seq Scan on orders o
+              Filter: (order_user_id &lt; 100)
+        ->  Index Scan using users_pkey on users u
+              Index Cond: (user_id = o.order_user_id)
+</code></pre></div>
+<h2 id="连接消除">连接消除</h2>
+<p>当 PostgreSQL 能证明一个连接不影响查询结果时，就可能将其消除。例如，执行 <code>LEFT JOIN</code>，查询没有使用右侧列，并且可以证明每个左侧行在右侧至多匹配一行：</p>
+<!-- verify:left-join-elimination -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> o<span class="token punctuation">.</span>order_id <span class="token keyword">FROM</span> orders o <span class="token keyword">LEFT</span> <span class="token keyword">JOIN</span> users u <span class="token keyword">ON</span> u<span class="token punctuation">.</span>user_id <span class="token operator">=</span> o<span class="token punctuation">.</span>order_user_id<span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Seq Scan on orders o
+</code></pre></div>
+<p>但这并不适用于所有连接。假设给两张表添加外键关系，再执行内连接：右侧的连接列是主键，保证唯一；左侧连接列有外键约束且为 <code>NOT NULL</code>，因此每个左侧行恰好有一个匹配，但连接仍没有被消除。</p>
+<!-- verify:foreign-key-setup -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> orders <span class="token keyword">ALTER</span> <span class="token keyword">COLUMN</span> order_user_id <span class="token keyword">SET</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">;</span>
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> orders <span class="token keyword">ADD</span> <span class="token keyword">CONSTRAINT</span> orders_user_fk <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span>order_user_id<span class="token punctuation">)</span> <span class="token keyword">REFERENCES</span> users<span class="token punctuation">(</span>user_id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+VACUUM <span class="token keyword">ANALYZE</span> orders<span class="token punctuation">;</span>
+</code></pre></div>
+<!-- verify:foreign-key-inner-join -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> o<span class="token punctuation">.</span>order_id <span class="token keyword">FROM</span> orders o <span class="token keyword">JOIN</span> users u <span class="token keyword">ON</span> u<span class="token punctuation">.</span>user_id <span class="token operator">=</span> o<span class="token punctuation">.</span>order_user_id<span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Hash Join
+  Hash Cond: (o.order_user_id = u.user_id)
+  ->  Seq Scan on orders o
+  ->  Hash
+        ->  Seq Scan on users u
+</code></pre></div>
+<p>不过，PostgreSQL 18 新增了对一类内连接的消除：同一张表在唯一列上的自连接。</p>
+<!-- verify:self-join-elimination -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> a<span class="token punctuation">.</span>order_status<span class="token punctuation">,</span> b<span class="token punctuation">.</span>order_user_id <span class="token keyword">FROM</span> orders a <span class="token keyword">JOIN</span> orders b <span class="token keyword">ON</span> a<span class="token punctuation">.</span>order_id <span class="token operator">=</span> b<span class="token punctuation">.</span>order_id<span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Seq Scan on orders b
+</code></pre></div>
+<h2 id="in-与-exists">IN 与 EXISTS</h2>
+<p>简单的 <code>IN</code> 和 <code>EXISTS</code> 可以被展开，并进行常量折叠：</p>
+<!-- verify:constant-in -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> users u <span class="token keyword">WHERE</span> u<span class="token punctuation">.</span>user_id <span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token number">100</span> <span class="token operator">+</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Index Scan using users_pkey on users u
+  Index Cond: (user_id = 200)
+</code></pre></div>
+<!-- verify:constant-exists -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> users u <span class="token keyword">WHERE</span> <span class="token keyword">EXISTS</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token number">1</span> <span class="token keyword">WHERE</span> u<span class="token punctuation">.</span>user_id <span class="token operator">=</span> <span class="token number">100</span> <span class="token operator">+</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Index Scan using users_pkey on users u
+  Index Cond: (user_id = 200)
+</code></pre></div>
+<p>下面两种更复杂的写法，也会转换为连接，而不是为外侧的每一行分别执行一次子查询：</p>
+<!-- verify:in-semi-join -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> users u <span class="token keyword">WHERE</span> u<span class="token punctuation">.</span>user_id <span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> o<span class="token punctuation">.</span>order_user_id <span class="token keyword">FROM</span> orders o <span class="token keyword">WHERE</span> o<span class="token punctuation">.</span>order_status <span class="token operator">=</span> <span class="token string">'paid'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Hash Right Semi Join
+  Hash Cond: (o.order_user_id = u.user_id)
+  ->  Seq Scan on orders o
+        Filter: (order_status = 'paid'::text)
+  ->  Hash
+        ->  Seq Scan on users u
+</code></pre></div>
+<!-- verify:exists-semi-join -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> users u <span class="token keyword">WHERE</span> <span class="token keyword">EXISTS</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token number">1</span> <span class="token keyword">FROM</span> orders o <span class="token keyword">WHERE</span> o<span class="token punctuation">.</span>order_status <span class="token operator">=</span> <span class="token string">'paid'</span> <span class="token operator">AND</span> o<span class="token punctuation">.</span>order_user_id <span class="token operator">=</span> u<span class="token punctuation">.</span>user_id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Hash Right Semi Join
+  Hash Cond: (o.order_user_id = u.user_id)
+  ->  Seq Scan on orders o
+        Filter: (order_status = 'paid'::text)
+  ->  Hash
+        ->  Seq Scan on users u
+</code></pre></div>
+<p>连 <code>NOT EXISTS</code> 也可以转换为反连接：</p>
+<!-- verify:not-exists-anti-join -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> users u <span class="token keyword">WHERE</span> <span class="token operator">NOT</span> <span class="token keyword">EXISTS</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token number">1</span> <span class="token keyword">FROM</span> orders o <span class="token keyword">WHERE</span> o<span class="token punctuation">.</span>order_status <span class="token operator">=</span> <span class="token string">'paid'</span> <span class="token operator">AND</span> o<span class="token punctuation">.</span>order_user_id <span class="token operator">=</span> u<span class="token punctuation">.</span>user_id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Gather
+  Workers Planned: 1
+  ->  Parallel Hash Anti Join
+        Hash Cond: (u.user_id = o.order_user_id)
+        ->  Parallel Seq Scan on users u
+        ->  Parallel Hash
+              ->  Parallel Seq Scan on orders o
+                    Filter: (order_status = 'paid'::text)
+</code></pre></div>
+<p>但换成 <code>NOT IN</code>，似乎就无法进行同样的变换。一般情况下，如果子查询包含 <code>NULL</code>，<code>NOT IN</code> 可能返回 <code>NULL</code> 而不是 <code>true</code>；不过，在本例中，我们已经将 <code>user_id</code> 和 <code>order_user_id</code> 都定义为 <code>NOT NULL</code>，计划仍是下面这样：</p>
+<!-- verify:not-in-subplan -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> users u <span class="token keyword">WHERE</span> u<span class="token punctuation">.</span>user_id <span class="token operator">NOT</span> <span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> o<span class="token punctuation">.</span>order_user_id <span class="token keyword">FROM</span> orders o <span class="token keyword">WHERE</span> o<span class="token punctuation">.</span>order_status <span class="token operator">=</span> <span class="token string">'paid'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Seq Scan on users u
+  Filter: (NOT (ANY (user_id = (hashed SubPlan 1).col1)))
+  SubPlan 1
+    ->  Seq Scan on orders o
+          Filter: (order_status = 'paid'::text)
+</code></pre></div>
+<blockquote>
+<p>译注：准确地说，右侧含 <code>NULL</code> 且没有相等匹配时，<code>NOT IN</code> 的结果为 <code>NULL</code>；如果已经有相等匹配，结果仍为 <code>false</code>。这里的 hashed SubPlan 会先构建哈希表，不代表为每个外侧行完整重跑一次子查询。前面的连接转换也针对可安全拉起的子查询，并非所有 <code>IN</code> 或 <code>EXISTS</code> 都有相同计划。</p>
+</blockquote>
+<p>前面介绍的等值条件传播，在这里仍然有效：</p>
+<!-- verify:semi-join-pushdown -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> users u <span class="token keyword">WHERE</span> <span class="token keyword">EXISTS</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token number">1</span> <span class="token keyword">FROM</span> orders o <span class="token keyword">WHERE</span> o<span class="token punctuation">.</span>order_status <span class="token operator">=</span> <span class="token string">'paid'</span> <span class="token operator">AND</span> o<span class="token punctuation">.</span>order_user_id <span class="token operator">=</span> u<span class="token punctuation">.</span>user_id<span class="token punctuation">)</span> <span class="token operator">AND</span> u<span class="token punctuation">.</span>user_id <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Nested Loop Semi Join
+  ->  Index Scan using users_pkey on users u
+        Index Cond: (user_id = 100)
+  ->  Gather
+        Workers Planned: 1
+        ->  Parallel Seq Scan on orders o
+              Filter: ((order_user_id = 100) AND (order_status = 'paid'::text))
+</code></pre></div>
+<p><code>order_user_id</code> 上没有索引，所以这里出现扫描并不意外，但过滤条件仍被下推到了这一侧。</p>
+<h2 id="聚合查询中的读取">聚合查询中的读取</h2>
+<p>最后看一类特殊情况：PostgreSQL 可以把某些不带 <code>GROUP BY</code> 的普通聚合，变成只从索引中获取一个所需值的操作。</p>
+<!-- verify:min-index-shortcut -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token function">min</span><span class="token punctuation">(</span>order_id<span class="token punctuation">)</span> <span class="token keyword">FROM</span> orders o<span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Result
+  InitPlan 1
+    ->  Limit
+          ->  Index Only Scan using orders_pkey on orders o
+</code></pre></div>
+<p>这很合理。<code>sum</code> 和 <code>count</code> 无法用同样的方式，只看一个值就完成计算，也同样合理：</p>
+<!-- verify:count-scan -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> <span class="token function">count</span><span class="token punctuation">(</span>order_id<span class="token punctuation">)</span> <span class="token keyword">FROM</span> orders o<span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>Finalize Aggregate
+  ->  Gather
+        Workers Planned: 1
+        ->  Partial Aggregate
+              ->  Parallel Seq Scan on orders o
+</code></pre></div>
+<p>对于带 <code>GROUP BY</code> 的查询，PostgreSQL 也不会进行同样的变换：</p>
+<!-- verify:group-min-scan -->
+<div class="code-block"><div class="code-toolbar"><span>SQL</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="sql" data-code-kind="code" tabindex="0" aria-label="SQL 代码"><code><span class="token keyword">EXPLAIN</span> <span class="token punctuation">(</span>COSTS <span class="token keyword">OFF</span><span class="token punctuation">)</span> <span class="token keyword">SELECT</span> order_user_id<span class="token punctuation">,</span> <span class="token function">min</span><span class="token punctuation">(</span>order_id<span class="token punctuation">)</span> <span class="token keyword">FROM</span> orders <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> order_user_id<span class="token punctuation">;</span>
+</code></pre></div>
+<div class="code-block"><div class="code-toolbar"><span>TEXT</span><button class="icon-button code-copy js-only" type="button" title="复制代码" aria-label="复制代码"><span class="icon icon-copy" aria-hidden="true"></span></button></div><pre data-lang="text" data-code-kind="code" tabindex="0" aria-label="TEXT 代码"><code>HashAggregate
+  Group Key: order_user_id
+  ->  Seq Scan on orders
+</code></pre></div>
+<p>要优化这种访问方式，需要类似 loose index scan 的索引扫描能力。</p>
+<blockquote>
+<p>译注：loose index scan 可以跳过同一分组键的重复项，与 PostgreSQL 18 用于多列 B-tree 条件查找的 skip scan 是两种优化。此外，本例只有 <code>order_id</code> 的主键索引，没有与 <code>order_user_id</code> 分组顺序匹配的索引；不能仅凭这份计划，把所有分组 <code>min</code> 查询都归为同一种访问方式。</p>
+</blockquote>
+<h2 id="最后几点想法">最后几点想法</h2>
+<p>PostgreSQL 一直在演进。其中一些改进，看起来并没有特别复杂或特别高的风险；相比依赖统计信息的优化，规划器中的这些重写或许也是较容易着手的部分。当然，PostgreSQL 至今没有采用某些变换，也可能有充分的理由。</p>
+<p>下一篇再讨论依赖统计信息的查询优化。</p>
+<h2 id="原文资料与技术核对">原文资料与技术核对</h2>
+<ul>
+<li><a href="https://theconsensus.dev/p/2026/09/13/query-plan-rewriting-in-postgresql.html">Phil Eaton / The Consensus：Query plan rewriting in PostgreSQL</a>。</li>
+<li>查询处理阶段：<a href="https://www.postgresql.org/docs/18/query-path.html">The Path of a Query</a>；函数属性：<a href="https://www.postgresql.org/docs/18/xfunc-volatility.html">Function Volatility Categories</a>。</li>
+<li>子查询语义：<a href="https://www.postgresql.org/docs/18/functions-subquery.html">Subquery Expressions</a>；表达式索引：<a href="https://www.postgresql.org/docs/18/indexes-expressional.html">Indexes on Expressions</a>。</li>
+<li>PostgreSQL 18 实现：<a href="https://github.com/postgres/postgres/blob/REL_18_STABLE/src/backend/optimizer/util/clauses.c">clauses.c</a>、<a href="https://github.com/postgres/postgres/blob/REL_18_STABLE/src/backend/optimizer/prep/prepjointree.c">prepjointree.c</a>、<a href="https://github.com/postgres/postgres/blob/REL_18_STABLE/src/backend/optimizer/plan/analyzejoins.c">analyzejoins.c</a>。</li>
+<li>自连接消除与计划选项：<a href="https://www.postgresql.org/docs/18/runtime-config-query.html">Query Planning</a>；扫描方式：<a href="https://wiki.postgresql.org/wiki/Loose_indexscan">Loose indexscan</a>、<a href="https://www.postgresql.org/docs/18/indexes-multicolumn.html">Multicolumn Indexes</a>。</li>
+</ul>
+<footer class="article-footer"><p class="article-topic-label">所属专题：<a href="/#/docs/topics?id=topic-performance">查询性能与观测</a></p><div class="article-neighbors"><a rel="prev" href="/articles/114/"><small><span class="icon icon-arrow-left" aria-hidden="true"></span>同专题上一篇</small><strong>为什么 PostgreSQL 的 numeric 类型这么慢？</strong></a><span></span></div><h2>继续阅读</h2><ul><li><a href="/articles/114/">为什么 PostgreSQL 的 numeric 类型这么慢？</a></li><li><a href="/articles/111/">PostgreSQL B-tree 为什么快：有序查找、复合索引与 skip scan</a></li><li><a href="/articles/103/">PostgreSQL 排序规则：文本比较、索引与升级风险</a></li></ul><div class="article-source-links"><a href="https://github.com/xiongcccc/postgres-howto/blob/master/docs/115.md" target="_blank" rel="noopener">查看源文件</a><a href="https://github.com/xiongcccc/postgres-howto/issues/new?title=%E6%96%87%E7%AB%A0%20%23115%EF%BC%9APostgreSQL%20%E4%B8%AD%E7%9A%84%E6%9F%A5%E8%AF%A2%E8%AE%A1%E5%88%92%E9%87%8D%E5%86%99" target="_blank" rel="noopener">反馈与纠错</a></div></footer><section id="gitalk-container" class="article-discussion" aria-label="文章讨论" data-comment-article="115"><h2>讨论与补充</h2><a class="discussion-link" href="https://github.com/xiongcccc/gitalk-comment/issues?q=is%3Aissue%20in%3Atitle%20%22postgres-howto-article-115%22" target="_blank" rel="noopener noreferrer">在 GitHub 查看讨论</a></section></article></main>
+  <footer class="site-footer"><div><a href="/articles/">文章目录</a><a href="/#/docs/about">关于项目</a><a href="https://gitlab.com/postgres-ai/postgresql-consulting/postgres-howtos">上游来源</a><a href="https://xiongcc.cn/">xiongcc</a></div><div class="js-only"><button type="button" data-dialog="communityModal">读者交流</button><button type="button" data-dialog="imageModal">支持作者</button><span class="site-stats"><span id="busuanzi_container_site_pv">访问 <strong id="busuanzi_value_site_pv">--</strong> 次</span><span id="busuanzi_container_site_uv">访客 <strong id="busuanzi_value_site_uv">--</strong> 人</span></span></div></footer>
+  <dialog id="imageModal" class="support-modal" aria-labelledby="support-title"><div class="dialog-heading"><h2 id="support-title">支持作者</h2><button class="icon-button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>感谢支持 PostgreSQL Howto 的长期维护。</p><img data-src="/images/wechat_pay.png" width="280" height="280" alt="微信赞赏码"></dialog>
+  <dialog id="communityModal" class="support-modal" aria-labelledby="community-title"><div class="dialog-heading"><h2 id="community-title">读者交流群</h2><button class="icon-button" data-close-dialog aria-label="关闭弹窗" title="关闭"><span class="icon icon-x" aria-hidden="true"></span></button></div><p>二维码若已过期，可通过公众号 PostgreSQL 学徒或邮件联系。</p><img data-src="/images/wechatgroup.jpeg" width="280" height="427" alt="PostgreSQL 学徒读者交流群二维码"></dialog>
+  <script src="/scripts/catalog-data.js?v=a5315fad3922e6ea" defer></script>
+<script src="/scripts/article-view.js?v=920d423f096574f5" defer></script>
+<script src="/scripts/site.js?v=ac9eeb661db7ac1d" defer></script>
+<script src="/scripts/diagrams.js?v=b6991107c7eeb48d" defer></script>
+<script src="/scripts/reading.js?v=7bb991e77cb1bf07" defer></script>
+<script src="/scripts/comments.js?v=d5664d5994af6fa8" defer></script>
+</body>
+</html>

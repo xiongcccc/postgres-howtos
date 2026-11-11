@@ -9,6 +9,7 @@
   * [会议精选](/docs/conferences.md)
 
 * **查询性能与观测**
+  * [115. PostgreSQL 中的查询计划重写](/docs/115.md)
   * [114. 为什么 PostgreSQL 的 numeric 类型这么慢？](/docs/114.md)
   * [110. PostgreSQL 优化器提示：怎样干预和稳定执行计划](/docs/110.md)
   * [108. 一条坏 SQL 会拖垮 PostgreSQL 吗？理解查询内存与故障隔离](/docs/108.md)

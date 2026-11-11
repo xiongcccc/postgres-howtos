@@ -170,13 +170,35 @@
     }
   ],
   "featured": [
+    115,
     114,
     113,
     112,
-    111,
-    110
+    111
   ],
   "articles": [
+    {
+      "id": 115,
+      "title": "PostgreSQL 中的查询计划重写",
+      "originalTitle": "Query plan rewriting in PostgreSQL",
+      "topics": ["performance", "sql", "indexes"],
+      "aliases": ["查询重写", "查询计划重写", "常量折叠", "constant folding", "条件下推", "谓词下推", "filter pushdown", "子查询拉起", "函数内联", "表达式索引", "连接消除", "自连接消除", "semi join", "anti join", "半连接", "反连接", "NOT IN", "NOT EXISTS", "hashed SubPlan", "loose index scan", "Phil Eaton", "The Consensus"],
+      "type": "blog",
+      "series": "translation",
+      "addedOn": "2026-11-11",
+      "source": {
+        "label": "Phil Eaton / The Consensus",
+        "url": "https://theconsensus.dev/p/2026/09/13/query-plan-rewriting-in-postgresql.html",
+        "date": "2026-09-13"
+      },
+      "versionNote": "原文示例基于 PostgreSQL 18；计划节点、并行度与扫描方式还受统计信息、配置及环境影响。",
+      "validation": {
+        "status": "tested",
+        "date": "2026-11-11",
+        "record": "/maintenance/115-review.md",
+        "note": "在隔离的 PostgreSQL 18.4 上依次运行全部 38 个 SQL 块，核验 31 份计划及 NULL、LIMIT 与自连接消除语义；未作性能基准测试。"
+      }
+    },
     {
       "id": 114,
       "title": "为什么 PostgreSQL 的 numeric 类型这么慢？",

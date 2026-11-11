@@ -29,11 +29,11 @@
 
 ## 最近收录
 
+- 2026-11-11 · [PostgreSQL 中的查询计划重写](https://postgres-howto.cn/articles/115/)
 - 2026-11-11 · [为什么 PostgreSQL 的 numeric 类型这么慢？](https://postgres-howto.cn/articles/114/)
 - 2026-11-11 · [PostgreSQL 连接意外关闭：server closed the connection unexpectedly](https://postgres-howto.cn/articles/113/)
 - 2026-11-03 · [PostgreSQL 写入成功之后：缓存、刷盘与掉电安全](https://postgres-howto.cn/articles/112/)
 - 2026-10-26 · [PostgreSQL B-tree 为什么快：有序查找、复合索引与 skip scan](https://postgres-howto.cn/articles/111/)
-- 2026-10-26 · [PostgreSQL 优化器提示：怎样干预和稳定执行计划](https://postgres-howto.cn/articles/110/)
 
 ## 来源与致谢
 

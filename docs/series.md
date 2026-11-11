@@ -45,5 +45,6 @@
 
 - [PostgreSQL 连接意外关闭：server closed the connection unexpectedly](/docs/113.md) · 技术博客
 - [为什么 PostgreSQL 的 numeric 类型这么慢？](/docs/114.md) · 技术博客
+- [PostgreSQL 中的查询计划重写](/docs/115.md) · 技术博客
 
-[全部 2 篇](/docs/find.md?series=translation)
+[全部 3 篇](/docs/find.md?series=translation)

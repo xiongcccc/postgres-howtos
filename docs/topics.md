@@ -2,15 +2,15 @@
 
 # 专题
 
-113 篇技术文章 · 1 篇项目后记 · 9 个专题。下列数量含跨专题收录；侧栏数量只计算主归属文章。
+114 篇技术文章 · 1 篇项目后记 · 9 个专题。下列数量含跨专题收录；侧栏数量只计算主归属文章。
 
 <div class="topic-grid">
-<a class="topic-card" href="#/docs/topics?id=topic-performance" data-docs-route="/docs/topics?id=topic-performance" title="25 篇收录，18 篇主归属"><span class="topic-copy"><strong>查询性能与观测</strong><span>执行计划、慢 SQL、统计信息与基准测试。</span></span><span class="topic-count">25 <span>篇收录</span><span class="sr-only">，18 篇主归属</span></span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-performance" data-docs-route="/docs/topics?id=topic-performance" title="26 篇收录，19 篇主归属"><span class="topic-copy"><strong>查询性能与观测</strong><span>执行计划、慢 SQL、统计信息与基准测试。</span></span><span class="topic-count">26 <span>篇收录</span><span class="sr-only">，19 篇主归属</span></span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-ops" data-docs-route="/docs/topics?id=topic-ops" title="30 篇收录，22 篇主归属"><span class="topic-copy"><strong>运维排障与日常工具</strong><span>备份恢复、psql、Docker 和日常运维。</span></span><span class="topic-count">30 <span>篇收录</span><span class="sr-only">，22 篇主归属</span></span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-locks" data-docs-route="/docs/topics?id=topic-locks" title="20 篇收录，19 篇主归属"><span class="topic-copy"><strong>锁、事务与在线变更</strong><span>长事务、锁等待、DDL 与在线变更。</span></span><span class="topic-count">20 <span>篇收录</span><span class="sr-only">，19 篇主归属</span></span></a>
-<a class="topic-card" href="#/docs/topics?id=topic-indexes" data-docs-route="/docs/topics?id=topic-indexes" title="12 篇收录，10 篇主归属"><span class="topic-copy"><strong>索引治理</strong><span>索引创建、维护、清理和损坏检查。</span></span><span class="topic-count">12 <span>篇收录</span><span class="sr-only">，10 篇主归属</span></span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-indexes" data-docs-route="/docs/topics?id=topic-indexes" title="13 篇收录，10 篇主归属"><span class="topic-copy"><strong>索引治理</strong><span>索引创建、维护、清理和损坏检查。</span></span><span class="topic-count">13 <span>篇收录</span><span class="sr-only">，10 篇主归属</span></span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-storage" data-docs-route="/docs/topics?id=topic-storage" title="26 篇收录，20 篇主归属"><span class="topic-copy"><strong>存储、WAL 与 Vacuum</strong><span>WAL、膨胀、Vacuum 与存储布局。</span></span><span class="topic-count">26 <span>篇收录</span><span class="sr-only">，20 篇主归属</span></span></a>
-<a class="topic-card" href="#/docs/topics?id=topic-sql" data-docs-route="/docs/topics?id=topic-sql" title="13 篇收录，12 篇主归属"><span class="topic-copy"><strong>SQL、数据建模与扩展玩法</strong><span>SQL、数组、UUID、元数据和数据建模。</span></span><span class="topic-count">13 <span>篇收录</span><span class="sr-only">，12 篇主归属</span></span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-sql" data-docs-route="/docs/topics?id=topic-sql" title="14 篇收录，12 篇主归属"><span class="topic-copy"><strong>SQL、数据建模与扩展玩法</strong><span>SQL、数组、UUID、元数据和数据建模。</span></span><span class="topic-count">14 <span>篇收录</span><span class="sr-only">，12 篇主归属</span></span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-replication" data-docs-route="/docs/topics?id=topic-replication" title="8 篇收录，7 篇主归属"><span class="topic-copy"><strong>复制、校验与升级</strong><span>复制延迟、数据校验与主版本升级。</span></span><span class="topic-count">8 <span>篇收录</span><span class="sr-only">，7 篇主归属</span></span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-practice" data-docs-route="/docs/topics?id=topic-practice" title="3 篇收录，3 篇主归属"><span class="topic-copy"><strong>实践剖析</strong><span>真实问题、源码分析与操作系统观测。</span></span><span class="topic-count">3 <span>篇收录</span><span class="sr-only">，3 篇主归属</span></span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-engineering" data-docs-route="/docs/topics?id=topic-engineering" title="3 篇收录，3 篇主归属"><span class="topic-copy"><strong>工程实践与后记</strong><span>工程方法、协作与项目后记。</span></span><span class="topic-count">3 <span>篇收录</span><span class="sr-only">，3 篇主归属</span></span></a>
@@ -22,8 +22,9 @@
 
 执行计划、慢 SQL、统计信息与基准测试。
 
-收录 25 篇 · 主归属 18 篇
+收录 26 篇 · 主归属 19 篇
 
+- [PostgreSQL 中的查询计划重写](/docs/115.md) · 技术博客
 - [为什么 PostgreSQL 的 numeric 类型这么慢？](/docs/114.md) · 技术博客
 - [PostgreSQL B-tree 为什么快：有序查找、复合索引与 skip scan](/docs/111.md) · 会议材料
 - [PostgreSQL 优化器提示：怎样干预和稳定执行计划](/docs/110.md) · 会议材料
@@ -124,8 +125,9 @@
 
 索引创建、维护、清理和损坏检查。
 
-收录 12 篇 · 主归属 10 篇
+收录 13 篇 · 主归属 10 篇
 
+- [PostgreSQL 中的查询计划重写](/docs/115.md) · 技术博客
 - [PostgreSQL B-tree 为什么快：有序查找、复合索引与 skip scan](/docs/111.md) · 会议材料
 - [PostgreSQL 排序规则：文本比较、索引与升级风险](/docs/103.md) · 会议材料
 - [监控 CREATE INDEX / REINDEX 进度](/docs/15.md) · 上游译文
@@ -180,8 +182,9 @@ WAL、膨胀、Vacuum 与存储布局。
 
 SQL、数组、UUID、元数据和数据建模。
 
-收录 13 篇 · 主归属 12 篇
+收录 14 篇 · 主归属 12 篇
 
+- [PostgreSQL 中的查询计划重写](/docs/115.md) · 技术博客
 - [为什么 PostgreSQL 的 numeric 类型这么慢？](/docs/114.md) · 技术博客
 - [PostgreSQL 排序规则：文本比较、索引与升级风险](/docs/103.md) · 会议材料
 - [在 Postgres 中调用 OpenAI API 实现语义搜索和 GPT Chat](/docs/23.md) · 上游译文

@@ -78,7 +78,7 @@ test('collation interpretation is discoverable and has verification evidence',()
   }
 });
 test('generated internal article links exist and titles come from metadata',()=>{
-  const files=['README.md','docs/home.md','_sidebar.md','docs/topics.md','docs/paths.md','docs/conferences.md','docs/series.md','docs/101.md','docs/102.md','docs/103.md','docs/104.md','docs/105.md','docs/106.md','docs/107.md','docs/108.md','docs/109.md','docs/110.md','docs/111.md','docs/112.md','docs/113.md','docs/114.md'];
+  const files=['README.md','docs/home.md','_sidebar.md','docs/topics.md','docs/paths.md','docs/conferences.md','docs/series.md','docs/101.md','docs/102.md','docs/103.md','docs/104.md','docs/105.md','docs/106.md','docs/107.md','docs/108.md','docs/109.md','docs/110.md','docs/111.md','docs/112.md','docs/113.md','docs/114.md','docs/115.md'];
   const map=new Map(catalog.articles.map(a=>[a.id,a]));
   for(const file of files){
     const text=fs.readFileSync(path.join(root,file),'utf8');
@@ -145,7 +145,7 @@ test('PG19 preview is discoverable and distinguishes documentation checks from e
 test('technical blog interpretation has its own source filter and verification evidence',()=>{
   assert.equal(find('multixact_offset_buffers')[0],107);
   assert.equal(find('外键写入')[0],107);
-  assert.deepEqual(find('',{type:'blog'}),[107,108,109,113,114]);
+  assert.deepEqual(find('',{type:'blog'}),[107,108,109,113,114,115]);
   assert.deepEqual(find('',{series:'interpretation',type:'blog',topic:'locks'}),[107]);
   assert.deepEqual(find('',{series:'guide',type:'blog'}),[]);
   const entry=catalog.articles.find(a=>a.id===107);
@@ -260,7 +260,7 @@ test('optimizer hints interpretation retains useful comparisons without lab boil
   assert.match(verifier,/DROP SCHEMA hint_demo CASCADE/);
   assert.doesNotMatch(article.split('## 参考资料')[0],/https:\/\/www\.postgresql\.org/);
   assert.doesNotMatch(article,/先把.+说具体|材料没有提供可供复现|反人类|反直觉|讲者/);
-  for(const file of ['docs/home.md','docs/series.md','docs/conferences.md','docs/topics.md']) {
+  for(const file of ['docs/series.md','docs/conferences.md','docs/topics.md']) {
     assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/110(?:\.md|")/);
   }
 });
@@ -324,6 +324,30 @@ test('numeric translation preserves attribution and records technical correction
   for(const file of ['docs/home.md','docs/topics.md','docs/series.md']) {
     assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/114(?:\.md|")/);
   }
+});
+test('query plan rewriting translation has complete SQL and bounded technical review',()=>{
+  assert.deepEqual(find('Phil Eaton',{series:'translation',type:'blog'}),[115]);
+  assert.equal(find('查询计划重写',{series:'translation'})[0],115);
+  const entry=catalog.articles.find(a=>a.id===115);
+  assert.equal(entry.source.date,'2026-09-13');
+  assert.equal(entry.series,'translation');
+  assert.equal(entry.validation.status,'tested');
+  assert.match(entry.validation.note,/38 个 SQL/);
+  assert.ok(fs.existsSync(path.join(root,entry.validation.record)));
+  assert.ok(fs.existsSync(path.join(root,'maintenance/115-verify.py')));
+  const article=fs.readFileSync(path.join(root,'docs/115.md'),'utf8');
+  assert.equal([...article.matchAll(/<!-- verify:[a-z-]+ -->\s*```sql\n/g)].length,38);
+  assert.equal([...article.matchAll(/^EXPLAIN \(COSTS OFF\)/gm)].length,31);
+  assert.match(article,/中文翻译与校订：xiongcc/);
+  assert.match(article,/正式的 rewrite 阶段/);
+  assert.match(article,/默认是 `VOLATILE`/);
+  assert.match(article,/loose index scan/);
+  assert.match(article,/hashed SubPlan/);
+  assert.doesNotMatch(article,/先把.+说具体|反直觉|反人类|讲者|实验完成后/);
+  for(const file of ['docs/home.md','docs/series.md','docs/topics.md']) {
+    assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/115(?:\.md|")/);
+  }
+  assert.doesNotMatch(fs.readFileSync(path.join(root,'docs/conferences.md'),'utf8'),/\/docs\/115(?:\.md|")/);
 });
 test('root opens the searchable homepage and local assets exist',()=>{
   const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
