@@ -78,7 +78,7 @@ test('collation interpretation is discoverable and has verification evidence',()
   }
 });
 test('generated internal article links exist and titles come from metadata',()=>{
-  const files=['README.md','docs/home.md','_sidebar.md','docs/topics.md','docs/paths.md','docs/conferences.md','docs/series.md','docs/101.md','docs/102.md','docs/103.md','docs/104.md','docs/105.md','docs/106.md','docs/107.md','docs/108.md','docs/109.md','docs/110.md','docs/111.md','docs/112.md','docs/113.md','docs/114.md','docs/115.md'];
+  const files=['README.md','docs/home.md','_sidebar.md','docs/topics.md','docs/paths.md','docs/conferences.md','docs/series.md','docs/101.md','docs/102.md','docs/103.md','docs/104.md','docs/105.md','docs/106.md','docs/107.md','docs/108.md','docs/109.md','docs/110.md','docs/111.md','docs/112.md','docs/113.md','docs/114.md','docs/115.md','docs/116.md'];
   const map=new Map(catalog.articles.map(a=>[a.id,a]));
   for(const file of files){
     const text=fs.readFileSync(path.join(root,file),'utf8');
@@ -145,7 +145,7 @@ test('PG19 preview is discoverable and distinguishes documentation checks from e
 test('technical blog interpretation has its own source filter and verification evidence',()=>{
   assert.equal(find('multixact_offset_buffers')[0],107);
   assert.equal(find('外键写入')[0],107);
-  assert.deepEqual(find('',{type:'blog'}),[107,108,109,113,114,115]);
+  assert.deepEqual(find('',{type:'blog'}),[107,108,109,113,114,115,116]);
   assert.deepEqual(find('',{series:'interpretation',type:'blog',topic:'locks'}),[107]);
   assert.deepEqual(find('',{series:'guide',type:'blog'}),[]);
   const entry=catalog.articles.find(a=>a.id===107);
@@ -285,7 +285,7 @@ test('B-tree interpretation connects order, NULL placement and skip scan',()=>{
   assert.match(article,/可见性映射/);
   assert.match(article,/近似最近邻/);
   assert.doesNotMatch(article,/实验完成后|先确认数据|DROP TABLE|免责|先把.+说具体|反直觉|讲者/);
-  for(const file of ['docs/home.md','docs/series.md','docs/conferences.md','docs/topics.md']) {
+  for(const file of ['docs/series.md','docs/conferences.md','docs/topics.md']) {
     assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/111(?:\.md|")/);
   }
 });
@@ -348,6 +348,34 @@ test('query plan rewriting translation has complete SQL and bounded technical re
     assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/115(?:\.md|")/);
   }
   assert.doesNotMatch(fs.readFileSync(path.join(root,'docs/conferences.md'),'utf8'),/\/docs\/115(?:\.md|")/);
+});
+test('TOAST translation keeps the technical figure and bounded verification',async()=>{
+  assert.deepEqual(find('Shaun Thomas',{series:'translation',type:'blog'}),[116]);
+  assert.ok(find('垂直拆表',{series:'translation'}).includes(116));
+  const entry=catalog.articles.find(a=>a.id===116);
+  assert.equal(entry.source.date,'2026-10-30');
+  assert.equal(entry.series,'translation');
+  assert.equal(entry.validation.status,'tested');
+  assert.match(entry.validation.note,/仅在.*小规模/);
+  assert.ok(fs.existsSync(path.join(root,entry.validation.record)));
+  assert.ok(fs.existsSync(path.join(root,'maintenance/116-verify.py')));
+  const article=fs.readFileSync(path.join(root,'docs/116.md'),'utf8');
+  assert.equal([...article.matchAll(/<!-- verify:[a-z0-9-]+ -->\s*```sql\n/g)].length,22);
+  const {parseFragment,elements,attribute}=await import('./html-tools.mjs');
+  const images=elements(parseFragment(article),node=>node.tagName==='img');
+  assert.equal(images.length,1);
+  assert.equal(attribute(images[0],'src'),'/images/articles/116/toast-storage-flowchart.png');
+  assert.match(attribute(images[0],'alt'),/TOAST 存储流程/);
+  assert.ok(fs.existsSync(path.join(root,attribute(images[0],'src'))));
+  assert.match(article,/中文翻译与校订：xiongcc/);
+  assert.match(article,/整个元组/);
+  assert.match(article,/不会推进新表的 identity 序列/);
+  assert.match(article,/29\.4 倍/);
+  assert.doesNotMatch(article,/先把.+说具体|反直觉|反人类|讲者|实验完成后/);
+  for(const file of ['docs/home.md','docs/series.md','docs/topics.md']) {
+    assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/116(?:\.md|")/);
+  }
+  assert.doesNotMatch(fs.readFileSync(path.join(root,'docs/conferences.md'),'utf8'),/\/docs\/116(?:\.md|")/);
 });
 test('root opens the searchable homepage and local assets exist',()=>{
   const html=fs.readFileSync(path.join(root,'index.html'),'utf8');

@@ -170,13 +170,35 @@
     }
   ],
   "featured": [
+    116,
     115,
     114,
     113,
-    112,
-    111
+    112
   ],
   "articles": [
+    {
+      "id": 116,
+      "title": "PostgreSQL TOAST：大字段存储与性能的取舍",
+      "originalTitle": "PG Phriday: Burnt TOAST",
+      "topics": ["storage", "performance", "sql"],
+      "aliases": ["TOAST", "大字段", "行外存储", "垂直拆表", "toast_tuple_target", "TOAST_TUPLE_THRESHOLD", "detoast", "EXTENDED", "EXTERNAL", "MAIN", "pglz", "lz4", "TOAST 压缩", "Shaun Thomas", "pgEdge"],
+      "type": "blog",
+      "series": "translation",
+      "addedOn": "2026-11-11",
+      "source": {
+        "label": "Shaun Thomas / pgEdge",
+        "url": "https://www.pgedge.com/blog/burnt-toast",
+        "date": "2026-10-30"
+      },
+      "versionNote": "示例按 PostgreSQL 18.4 核验；random(min,max) 与 pg_column_toast_chunk_id 始于 PostgreSQL 17，列压缩算法选择始于 14，lz4 需要构建支持。图中阈值按常见 8KB 页构建说明。",
+      "validation": {
+        "status": "tested",
+        "date": "2026-11-11",
+        "record": "/maintenance/116-review.md",
+        "note": "仅在 PostgreSQL 18.4 小规模核验存储策略、TOAST 值复用、拆表与连接消除、压缩及启动阈值；原作者性能数字未复现，范围见记录。"
+      }
+    },
     {
       "id": 115,
       "title": "PostgreSQL 中的查询计划重写",

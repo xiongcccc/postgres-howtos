@@ -87,6 +87,7 @@
   * [79. 并行重建大量索引并避免死锁](/docs/79.md)
 
 * **存储、WAL 与 Vacuum**
+  * [116. PostgreSQL TOAST：大字段存储与性能的取舍](/docs/116.md)
   * [112. PostgreSQL 写入成功之后：缓存、刷盘与掉电安全](/docs/112.md)
   * [102. Autovacuum 为什么跟不上：清理受阻、任务积压与执行缓慢](/docs/102.md)
   * [4. 理解 tuple 在表中的稀疏存储](/docs/4.md)
