@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" width="760" height="330" role="img" aria-labelledby="t d">
+<title id="t">Profile share versus slow-request share per wait event</title>
+<desc id="d">Paired bars for five wait events. WAL write lock 34.5% of all wait time but the main wait in 12% of slow requests; WAL fsync 30% vs 3%; client round trip 20.5% vs 33%; disk read 11.5% vs 0%; row lock 2.5% of all wait time but the main wait in 51% of slow requests.</desc>
+<style>
+.bg{fill:#fcfcfb}.t1{fill:#0b0b0b}.t2{fill:#52514e}.grid{stroke:#e4e3df}.axis{stroke:#9a9993}.gap{stroke:#fcfcfb}
+.s1{fill:#2a78d6}.s2{fill:#eb6834}.s3{fill:#1baf7a}.s4{fill:#eda100}.s5{fill:#4a3aa7}.n{fill:#c7c6c1}.ann{stroke:#52514e}
+.l1{stroke:#2a78d6}.l2{stroke:#eb6834}.l3{stroke:#1baf7a}.l4{stroke:#eda100}
+text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.bg{fill:#1a1a19}.t1{fill:#fff}.t2{fill:#c3c2b7}.grid{stroke:#383835}.axis{stroke:#6f6e69}.gap{stroke:#1a1a19}.ann{stroke:#c3c2b7}
+.s1{fill:#3987e5}.s2{fill:#d95926}.s3{fill:#199e70}.s4{fill:#c98500}.s5{fill:#9085e9}.n{fill:#55544f}
+.l1{stroke:#3987e5}.l2{stroke:#d95926}.l3{stroke:#199e70}.l4{stroke:#c98500}
+</style>
+<rect class="bg" width="760" height="330" rx="8"/>
+<text class="t1" x="40" y="28" font-size="15" font-weight="600">Where the time went vs. what made requests slow</text>
+<rect class="s1" x="40" y="42" width="12" height="12"/><text class="t1" x="58" y="53" font-size="12">share of all wait time (what a profile ranks by)</text>
+<rect class="s2" x="380" y="42" width="12" height="12"/><text class="t1" x="398" y="53" font-size="12">share of slow requests (&gt; 5 ms) where this was the main wait</text>
+<text class="t1" x="290" y="92" font-size="12" text-anchor="end">WAL write lock</text>
+<rect class="s1" x="300" y="74" width="241.5" height="14" rx="2"/><text class="t1" x="547.5" y="85" font-size="11">34.5%</text>
+<rect class="s2" x="300" y="91" width="82.2" height="14" rx="2"/><text class="t1" x="388.2" y="102" font-size="11">12%</text>
+<text class="t1" x="290" y="136" font-size="12" text-anchor="end">WAL fsync</text>
+<rect class="s1" x="300" y="118" width="209.8" height="14" rx="2"/><text class="t1" x="515.8" y="129" font-size="11">30.0%</text>
+<rect class="s2" x="300" y="135" width="18.1" height="14" rx="2"/><text class="t1" x="324.1" y="146" font-size="11">3%</text>
+<text class="t1" x="290" y="180" font-size="12" text-anchor="end">client round trip inside the transaction</text>
+<rect class="s1" x="300" y="162" width="143.2" height="14" rx="2"/><text class="t1" x="449.2" y="173" font-size="11">20.5%</text>
+<rect class="s2" x="300" y="179" width="232.1" height="14" rx="2"/><text class="t1" x="538.1" y="190" font-size="11">33%</text>
+<text class="t1" x="290" y="224" font-size="12" text-anchor="end">disk read</text>
+<rect class="s1" x="300" y="206" width="80.7" height="14" rx="2"/><text class="t1" x="386.7" y="217" font-size="11">11.5%</text>
+<rect class="s2" x="300" y="223" width="2.4" height="14" rx="2"/><text class="t1" x="308.4" y="234" font-size="11">0%</text>
+<text class="t1" x="290" y="268" font-size="12" text-anchor="end">row lock (Lock:transactionid)</text>
+<rect class="s1" x="300" y="250" width="17.3" height="14" rx="2"/><text class="t1" x="323.3" y="261" font-size="11">2.5%</text>
+<rect class="s2" x="300" y="267" width="359.1" height="14" rx="2"/><text class="t1" x="665.1" y="278" font-size="11">51%</text>
+<line class="axis" x1="300" x2="300" y1="70" y2="290" stroke-width="1"/>
+<text class="t2" x="40" y="316" font-size="11">Patch run R1b: 107,533 requests rebuilt from trace rings over ~50 s; 579 of them took more than 5 ms of server time.</text>
+</svg>

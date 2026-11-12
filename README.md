@@ -29,11 +29,11 @@
 
 ## 最近收录
 
+- 2026-11-12 · [PostgreSQL 在等待什么：为什么等待事件仪表盘解释不了单个慢请求](https://postgres-howto.cn/articles/117/)
 - 2026-11-11 · [PostgreSQL TOAST：大字段存储与性能的取舍](https://postgres-howto.cn/articles/116/)
 - 2026-11-11 · [PostgreSQL 中的查询计划重写](https://postgres-howto.cn/articles/115/)
 - 2026-11-11 · [为什么 PostgreSQL 的 numeric 类型这么慢？](https://postgres-howto.cn/articles/114/)
 - 2026-11-11 · [PostgreSQL 连接意外关闭：server closed the connection unexpectedly](https://postgres-howto.cn/articles/113/)
-- 2026-11-03 · [PostgreSQL 写入成功之后：缓存、刷盘与掉电安全](https://postgres-howto.cn/articles/112/)
 
 ## 来源与致谢
 

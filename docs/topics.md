@@ -2,12 +2,12 @@
 
 # 专题
 
-115 篇技术文章 · 1 篇项目后记 · 9 个专题。下列数量含跨专题收录；侧栏数量只计算主归属文章。
+116 篇技术文章 · 1 篇项目后记 · 9 个专题。下列数量含跨专题收录；侧栏数量只计算主归属文章。
 
 <div class="topic-grid">
-<a class="topic-card" href="#/docs/topics?id=topic-performance" data-docs-route="/docs/topics?id=topic-performance" title="27 篇收录，19 篇主归属"><span class="topic-copy"><strong>查询性能与观测</strong><span>执行计划、慢 SQL、统计信息与基准测试。</span></span><span class="topic-count">27 <span>篇收录</span><span class="sr-only">，19 篇主归属</span></span></a>
-<a class="topic-card" href="#/docs/topics?id=topic-ops" data-docs-route="/docs/topics?id=topic-ops" title="30 篇收录，22 篇主归属"><span class="topic-copy"><strong>运维排障与日常工具</strong><span>备份恢复、psql、Docker 和日常运维。</span></span><span class="topic-count">30 <span>篇收录</span><span class="sr-only">，22 篇主归属</span></span></a>
-<a class="topic-card" href="#/docs/topics?id=topic-locks" data-docs-route="/docs/topics?id=topic-locks" title="20 篇收录，19 篇主归属"><span class="topic-copy"><strong>锁、事务与在线变更</strong><span>长事务、锁等待、DDL 与在线变更。</span></span><span class="topic-count">20 <span>篇收录</span><span class="sr-only">，19 篇主归属</span></span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-performance" data-docs-route="/docs/topics?id=topic-performance" title="28 篇收录，20 篇主归属"><span class="topic-copy"><strong>查询性能与观测</strong><span>执行计划、慢 SQL、统计信息与基准测试。</span></span><span class="topic-count">28 <span>篇收录</span><span class="sr-only">，20 篇主归属</span></span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-ops" data-docs-route="/docs/topics?id=topic-ops" title="31 篇收录，22 篇主归属"><span class="topic-copy"><strong>运维排障与日常工具</strong><span>备份恢复、psql、Docker 和日常运维。</span></span><span class="topic-count">31 <span>篇收录</span><span class="sr-only">，22 篇主归属</span></span></a>
+<a class="topic-card" href="#/docs/topics?id=topic-locks" data-docs-route="/docs/topics?id=topic-locks" title="21 篇收录，19 篇主归属"><span class="topic-copy"><strong>锁、事务与在线变更</strong><span>长事务、锁等待、DDL 与在线变更。</span></span><span class="topic-count">21 <span>篇收录</span><span class="sr-only">，19 篇主归属</span></span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-indexes" data-docs-route="/docs/topics?id=topic-indexes" title="13 篇收录，10 篇主归属"><span class="topic-copy"><strong>索引治理</strong><span>索引创建、维护、清理和损坏检查。</span></span><span class="topic-count">13 <span>篇收录</span><span class="sr-only">，10 篇主归属</span></span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-storage" data-docs-route="/docs/topics?id=topic-storage" title="27 篇收录，21 篇主归属"><span class="topic-copy"><strong>存储、WAL 与 Vacuum</strong><span>WAL、膨胀、Vacuum 与存储布局。</span></span><span class="topic-count">27 <span>篇收录</span><span class="sr-only">，21 篇主归属</span></span></a>
 <a class="topic-card" href="#/docs/topics?id=topic-sql" data-docs-route="/docs/topics?id=topic-sql" title="15 篇收录，12 篇主归属"><span class="topic-copy"><strong>SQL、数据建模与扩展玩法</strong><span>SQL、数组、UUID、元数据和数据建模。</span></span><span class="topic-count">15 <span>篇收录</span><span class="sr-only">，12 篇主归属</span></span></a>
@@ -22,8 +22,9 @@
 
 执行计划、慢 SQL、统计信息与基准测试。
 
-收录 27 篇 · 主归属 19 篇
+收录 28 篇 · 主归属 20 篇
 
+- [PostgreSQL 在等待什么：为什么等待事件仪表盘解释不了单个慢请求](/docs/117.md) · 技术博客
 - [PostgreSQL TOAST：大字段存储与性能的取舍](/docs/116.md) · 技术博客
 - [PostgreSQL 中的查询计划重写](/docs/115.md) · 技术博客
 - [为什么 PostgreSQL 的 numeric 类型这么慢？](/docs/114.md) · 技术博客
@@ -58,8 +59,9 @@
 
 备份恢复、psql、Docker 和日常运维。
 
-收录 30 篇 · 主归属 22 篇
+收录 31 篇 · 主归属 22 篇
 
+- [PostgreSQL 在等待什么：为什么等待事件仪表盘解释不了单个慢请求](/docs/117.md) · 技术博客
 - [PostgreSQL 连接意外关闭：server closed the connection unexpectedly](/docs/113.md) · 技术博客
 - [PostgreSQL 写入成功之后：缓存、刷盘与掉电安全](/docs/112.md) · 会议材料
 - [PostgreSQL 优化器提示：怎样干预和稳定执行计划](/docs/110.md) · 会议材料
@@ -97,8 +99,9 @@
 
 长事务、锁等待、DDL 与在线变更。
 
-收录 20 篇 · 主归属 19 篇
+收录 21 篇 · 主归属 19 篇
 
+- [PostgreSQL 在等待什么：为什么等待事件仪表盘解释不了单个慢请求](/docs/117.md) · 技术博客
 - [PostgreSQL 连接意外关闭：server closed the connection unexpectedly](/docs/113.md) · 技术博客
 - [外键写入为什么会变慢：理解 PostgreSQL 的 MultiXact 与长事务](/docs/107.md) · 技术博客
 - [SQL 很快，事务却在排队：PostgreSQL OLTP 锁竞争](/docs/104.md) · 会议材料

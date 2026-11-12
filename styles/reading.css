@@ -94,6 +94,12 @@ mark { color: var(--ink); background: var(--accent-soft); padding: 1px 0; box-sh
 .article-meta dd { margin: 0; }
 .article-meta blockquote { margin-top: 16px; }
 .article-meta blockquote p { font-size: 12px; }
+.markdown-section .themed-image { margin: 26px 0; }
+.markdown-section .themed-image img { display: block; }
+.markdown-section .themed-image .figure-dark { display: none; }
+:root[data-theme="dark"] .markdown-section .themed-image .figure-light { display: none; }
+:root[data-theme="dark"] .markdown-section .themed-image .figure-dark { display: block; }
+.markdown-section .themed-image figcaption { margin-top: 12px; color: var(--muted); font-size: 13px; line-height: 1.8; }
 .article-toc { margin: 24px 0; padding: 0 12px; border-block: 1px solid var(--border); color: var(--muted); }
 .article-toc summary { display: flex; align-items: center; justify-content: space-between; list-style: none; cursor: pointer; font-size: 12px; font-weight: 600; padding: 14px 0; color: var(--ink); }
 .article-toc summary::-webkit-details-marker { display: none; }

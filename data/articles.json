@@ -170,13 +170,35 @@
     }
   ],
   "featured": [
+    117,
     116,
     115,
     114,
-    113,
-    112
+    113
   ],
   "articles": [
+    {
+      "id": 117,
+      "title": "PostgreSQL 在等待什么：为什么等待事件仪表盘解释不了单个慢请求",
+      "originalTitle": "What your Postgres is waiting for, and why the dashboard can't tell you",
+      "topics": ["performance", "ops", "locks"],
+      "aliases": ["等待事件", "wait event", "wait_event_info", "pg_wait_sampling", "等待采样", "尾延迟", "慢请求归因", "p99.9", "pg_stat_lock", "pg_wait_event_tracing", "pg_wait_tracer", "Lock:transactionid", "Dmitry Fomin", "PostgresAI"],
+      "type": "blog",
+      "series": "translation",
+      "addedOn": "2026-11-12",
+      "source": {
+        "label": "Dmitry Fomin / PostgresAI",
+        "url": "https://postgres.ai/blog/20261103-what-postgres-is-waiting-for",
+        "date": "2026-11-03"
+      },
+      "versionNote": "原文主实验使用带追踪补丁的 20devel，并有正式版 PostgreSQL 18 对照；pg_stat_lock 始于 19，log_lock_waits 从 19 起默认开启。追踪补丁仍在评审，eBPF 工具需 Linux 主机权限。",
+      "validation": {
+        "status": "tested",
+        "date": "2026-11-12",
+        "record": "/maintenance/117-review.md",
+        "note": "仅在 PostgreSQL 18.4 核验实时等待标志、阻塞链、锁等待日志和统计接口，并复核计算；未复现原文性能负载或运行追踪工具。"
+      }
+    },
     {
       "id": 116,
       "title": "PostgreSQL TOAST：大字段存储与性能的取舍",

@@ -78,7 +78,7 @@ test('collation interpretation is discoverable and has verification evidence',()
   }
 });
 test('generated internal article links exist and titles come from metadata',()=>{
-  const files=['README.md','docs/home.md','_sidebar.md','docs/topics.md','docs/paths.md','docs/conferences.md','docs/series.md','docs/101.md','docs/102.md','docs/103.md','docs/104.md','docs/105.md','docs/106.md','docs/107.md','docs/108.md','docs/109.md','docs/110.md','docs/111.md','docs/112.md','docs/113.md','docs/114.md','docs/115.md','docs/116.md'];
+  const files=['README.md','docs/home.md','_sidebar.md','docs/topics.md','docs/paths.md','docs/conferences.md','docs/series.md','docs/101.md','docs/102.md','docs/103.md','docs/104.md','docs/105.md','docs/106.md','docs/107.md','docs/108.md','docs/109.md','docs/110.md','docs/111.md','docs/112.md','docs/113.md','docs/114.md','docs/115.md','docs/116.md','docs/117.md'];
   const map=new Map(catalog.articles.map(a=>[a.id,a]));
   for(const file of files){
     const text=fs.readFileSync(path.join(root,file),'utf8');
@@ -145,7 +145,7 @@ test('PG19 preview is discoverable and distinguishes documentation checks from e
 test('technical blog interpretation has its own source filter and verification evidence',()=>{
   assert.equal(find('multixact_offset_buffers')[0],107);
   assert.equal(find('外键写入')[0],107);
-  assert.deepEqual(find('',{type:'blog'}),[107,108,109,113,114,115,116]);
+  assert.deepEqual(find('',{type:'blog'}),[107,108,109,113,114,115,116,117]);
   assert.deepEqual(find('',{series:'interpretation',type:'blog',topic:'locks'}),[107]);
   assert.deepEqual(find('',{series:'guide',type:'blog'}),[]);
   const entry=catalog.articles.find(a=>a.id===107);
@@ -376,6 +376,51 @@ test('TOAST translation keeps the technical figure and bounded verification',asy
     assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/116(?:\.md|")/);
   }
   assert.doesNotMatch(fs.readFileSync(path.join(root,'docs/conferences.md'),'utf8'),/\/docs\/116(?:\.md|")/);
+});
+test('wait events translation preserves tables, themed figures and experiment attribution',async()=>{
+  assert.deepEqual(find('Dmitry Fomin',{series:'translation',type:'blog'}),[117]);
+  assert.ok(find('慢请求归因',{series:'translation'}).includes(117));
+  const entry=catalog.articles.find(a=>a.id===117);
+  assert.equal(entry.source.date,'2026-11-03');
+  assert.equal(entry.addedOn,'2026-11-12');
+  assert.equal(entry.topics[0],'performance');
+  assert.equal(entry.series,'translation');
+  assert.equal(entry.validation.status,'tested');
+  assert.match(entry.validation.note,/仅在.*未复现/);
+  assert.ok(fs.existsSync(path.join(root,entry.validation.record)));
+  assert.ok(fs.existsSync(path.join(root,'maintenance/117-verify.py')));
+  const article=fs.readFileSync(path.join(root,'docs/117.md'),'utf8');
+  assert.match(article,/中文翻译与校订：xiongcc/);
+  assert.match(article,/原作者构造的复现负载/);
+  assert.match(article,/20devel/);
+  assert.match(article,/固定周期采样/);
+  assert.match(article,/分母不同/);
+  assert.match(article,/分批提交/);
+  assert.match(article,/107533/);
+  assert.match(article,/125 对 0、300 对 24、334 对 245/);
+  assert.match(article,/\| 基线 \| 不作改变 \| 1\.51 ms \| 3\.08 ms \| 10\.98 ms \| 26\.7 ms \| 972 \|/);
+  assert.match(article,/\| 方案 C \| 后台任务每批处理 5 行 \| 1\.52 ms \| 2\.92 ms \| 5\.78 ms \| 10\.0 ms \| 388 \|/);
+  assert.doesNotMatch(article,/先把.+说具体|反直觉|反人类|讲者|实验完成后|aiContext/);
+  const {parseFragment,elements,attribute}=await import('./html-tools.mjs');
+  const figures=elements(parseFragment(article),n=>n.tagName==='figure');
+  assert.equal(figures.length,4);
+  const names=['sampling','latency-tail','profile-vs-tail','one-slow-request'];
+  for(const [i,figure] of figures.entries()) {
+    const images=elements(figure,n=>n.tagName==='img');
+    assert.equal(images.length,2);
+    assert.ok(elements(figure,n=>n.tagName==='figcaption').length);
+    for(const [j,image] of images.entries()) {
+      const suffix=i===2?'.svg':'.gif';
+      const src='/images/articles/117/'+names[i]+(j?'-dark':'')+suffix;
+      assert.equal(attribute(image,'src'),src);
+      assert.equal(attribute(image,'class'),j?'figure-dark':'figure-light');
+      assert.match(attribute(image,'alt'),/[\u4e00-\u9fff]/);
+      assert.ok(fs.statSync(path.join(root,src)).size>1000);
+    }
+  }
+  for(const file of ['docs/home.md','docs/series.md','docs/topics.md'])
+    assert.match(fs.readFileSync(path.join(root,file),'utf8'),/\/docs\/117(?:\.md|")/);
+  assert.doesNotMatch(fs.readFileSync(path.join(root,'docs/conferences.md'),'utf8'),/\/docs\/117(?:\.md|")/);
 });
 test('root opens the searchable homepage and local assets exist',()=>{
   const html=fs.readFileSync(path.join(root,'index.html'),'utf8');

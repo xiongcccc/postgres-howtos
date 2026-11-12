@@ -43,9 +43,10 @@
 
 忠实翻译优质技术文章，保留原文结构、案例与技术细节。
 
+- [PostgreSQL 在等待什么：为什么等待事件仪表盘解释不了单个慢请求](/docs/117.md) · 技术博客
 - [PostgreSQL 连接意外关闭：server closed the connection unexpectedly](/docs/113.md) · 技术博客
 - [为什么 PostgreSQL 的 numeric 类型这么慢？](/docs/114.md) · 技术博客
 - [PostgreSQL 中的查询计划重写](/docs/115.md) · 技术博客
 - [PostgreSQL TOAST：大字段存储与性能的取舍](/docs/116.md) · 技术博客
 
-[全部 4 篇](/docs/find.md?series=translation)
+[全部 5 篇](/docs/find.md?series=translation)

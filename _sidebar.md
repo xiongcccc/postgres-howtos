@@ -9,6 +9,7 @@
   * [会议精选](/docs/conferences.md)
 
 * **查询性能与观测**
+  * [117. PostgreSQL 在等待什么：为什么等待事件仪表盘解释不了单个慢请求](/docs/117.md)
   * [115. PostgreSQL 中的查询计划重写](/docs/115.md)
   * [114. 为什么 PostgreSQL 的 numeric 类型这么慢？](/docs/114.md)
   * [110. PostgreSQL 优化器提示：怎样干预和稳定执行计划](/docs/110.md)
